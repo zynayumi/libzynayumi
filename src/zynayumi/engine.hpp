@@ -87,12 +87,11 @@ public:
 
 private:
 
-	ayumi _ayumi;
+	ayumi _ay;
 
-	const float LOWER_NOTE_FREQ=8.176;
-	const float LOG2=log(2.0);
-	const int SAMPLE_RATE=48000; // TODO: should be provided by the host
-	const int CLOCK_RATE=50;
+	const float LOWER_NOTE_FREQ;
+	const int SAMPLE_RATE; // TODO: should be provided by the host
+	const int CLOCK_RATE;
 
 	float pitch2period(float pitch);
 };
