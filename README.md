@@ -10,8 +10,8 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - Buzzer (not implemented)
 - LFO (not implemented)
 - Envelope (not implemented)
-- DSSI (not implemented)
-- VST (not implemented)
+- DSSI
+- VST
 
 ## Install
 
