@@ -1,12 +1,12 @@
-# ZynAyumi
+# Zynayumi
 
-Synth basd on Yaumi, the highly precise emulator of AY-8910 and YM2149
+Synth basd on ayumi, the highly precise emulator of AY-8910 and YM2149
 http://sovietov.com/app/ayumi/ayumi.html.
 
-# Features
+## Features
 
-TBD. Will support both DSSI and VST.
+TBD. Will support DSSI and VST.
 
-# Author
+## Author
 
 Nil Geisweiller
