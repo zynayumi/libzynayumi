@@ -5,7 +5,13 @@ http://sovietov.com/app/ayumi/ayumi.html.
 
 ## Features
 
-TBD. Will support DSSI and VST.
+- Arpeggio (not implemented)
+- Portamento (not implemented)
+- Buzzer (not implemented)
+- LFO (not implemented)
+- Envelope (not implemented)
+- DSSI (not implemented)
+- VST (not implemented)
 
 ## Author
 
