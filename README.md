@@ -13,7 +13,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - DSSI (not implemented)
 - VST (not implemented)
 
-# Install
+## Install
 
 1. Fetch ayumi-lib
 ```bash

@@ -27,7 +27,10 @@
 
 #include <cmath>
 
-#include "../../../ayumi-lib/ayumi.h"
+extern "C"
+{
+#include "../../ayumi-lib/ayumi.h"
+}
 
 namespace zynayumi {
 

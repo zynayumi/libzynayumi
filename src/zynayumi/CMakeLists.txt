@@ -1,3 +1,4 @@
 add_library(zynayumi SHARED
   zynayumi
-  engine)
+  engine
+  ../../ayumi-lib/ayumi)
