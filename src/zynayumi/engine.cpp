@@ -26,28 +26,41 @@
 #include "engine.hpp"
 #include "zynayumi.hpp"
 
-using namespace zynayumi;
+namespace zynayumi {
 
 // Constructor destructor
-Engine::Engine(const Zynayumi& ref) : zynayumi(ref) {}
+Engine::Engine(const Zynayumi& ref) : zynayumi(ref) {
+	ayumi_configure(&_ayumi, true, CLOCK_RATE, SAMPLE_RATE);
+}
 
 void Engine::audio_process(float* left_out, float* right_out,
                            unsigned long sample_count) {
-	// TODO
+	for (unsigned long i = 0; i < sample_count; i++) {
+		ayumi_process(&_ayumi);
+		left_out[i] = (float) _ayumi.left;
+		right_out[i] = (float) _ayumi.right;
+	}
 }
 
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
                             unsigned char velocity) {
-	// TODO
+	ayumi_set_tone(&_ayumi, 0, (int)pitch2period(pitch));
+	ayumi_set_volume(&_ayumi, 0, velocity / 8);
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
-	// TODO
+	ayumi_set_volume(&_ayumi, 0, 0);
 }
 
-
-//print method
+// Print method
 void Engine::print(int m) const {
 	// TODO
 }
+
+float Engine::pitch2period(float pitch)  {
+	static float coef = SAMPLE_RATE / LOWER_NOTE_FREQ;
+	return coef * exp(-pitch * LOG2 / 12.0);
+}
+
+} // ~namespace zynauimi

@@ -32,6 +32,7 @@ namespace zynayumi {
 
 class DSSIZynayumi : public DSSIPlugin {
 public:
+
 	Zynayumi zynayumi;
 
 	DSSIZynayumi(unsigned long frame_rate);
@@ -46,7 +47,6 @@ public:
 	char* configure(const char* key, const char* value);
 
 protected:
-
 
 	unsigned long m_frame_rate;
 	unsigned long m_last_frame;

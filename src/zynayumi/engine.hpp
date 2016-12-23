@@ -25,6 +25,10 @@
 #ifndef __ZYNAYUMI_ENGINE_HPP
 #define __ZYNAYUMI_ENGINE_HPP
 
+#include <cmath>
+
+#include "../../../ayumi-lib/ayumi.h"
+
 namespace zynayumi {
 
 class Zynayumi;
@@ -43,6 +47,7 @@ class Zynayumi;
  */
 
 class Engine {
+
 public:
 
 	///////////////////
@@ -76,6 +81,17 @@ public:
 	void noteOff_process(unsigned char channel, unsigned char pitch);
 
 	void print(int m) const;
+
+private:
+
+	ayumi _ayumi;
+
+	const float LOWER_NOTE_FREQ=8.176;
+	const float LOG2=log(2.0);
+	const int SAMPLE_RATE=48000; // TODO: should be provided by the host
+	const int CLOCK_RATE=50;
+
+	float pitch2period(float pitch);
 };
 
 } // ~namespace zynayumi
