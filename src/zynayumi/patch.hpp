@@ -25,8 +25,6 @@
 #ifndef __ZYNAYUMI_PATCH_HPP
 #define __ZYNAYUMI_PATCH_HPP
 
-#include <cmath>
-
 namespace zynayumi {
 
 /**
@@ -35,30 +33,36 @@ namespace zynayumi {
  */
 class Env {
 public:
-	float l1;                   // Attack level
-	float t1;                   // Duration between attack and hold-1
-	float l2;                   // Hold-1 level
-	float t2;                   // Duration between hold-1 and hold-2
-	float l3;                   // Hold-2 level
-	float t3;                   // Duration between hold-2 and sustain
-	float l4;                   // Sustain level
-	float r;                    // Release
+	Env();
+
+	float level1;               // Attack level
+	float time1;                // Duration between attack and hold-1
+	float level2;               // Hold-1 level
+	float time2;                // Duration between hold-1 and hold-2
+	float level3;               // Hold-2 level
+	float time3;                // Duration between hold-2 and sustain
+	float level4;               // Sustain level
+	float release;              // Release
 };
 
 class Noise {
 public:
-	float t;                    // Noise duration in second, inf if negative
-	float f;                    // Noise frequency
+	Noise();
+
+	float time;                 // Noise duration in second, inf if negative
+	float freq;                 // Noise frequency
 };
 
 class Arp {
 public:
-	float p1;                   // First pitch in semi-tones
-	float t1;                   // First pitch duration in second
-	float p2;                   // Second pitch in semi-tones
-	float t2;                   // Second pitch duration in second
-	float p3;                   // Third pitch in semi-tones
-	float t3;                   // Third pitch duration in second
+	Arp();
+
+	float pitch1;               // First pitch in semi-tones
+	float time1;                // First pitch duration in second
+	float pitch2;               // Second pitch in semi-tones
+	float time2;                // Second pitch duration in second
+	float pitch3;               // Third pitch in semi-tones
+	float time3;                // Third pitch duration in second
 	bool repeat;                // Whether it should be repeated
 };
 
@@ -69,8 +73,10 @@ public:
  */
 class Buzz {
 public:
-	int envelope_period;        // Duration of the envelope in sample
-	int envelope_shape;         // Envelope shape
+	Buzz();
+
+	int period;                 // Duration of the envelope in sample
+	int shape;                  // Envelope shape
 	float detune;               // Relative detune in semitone
                                 // compared to the tone
 };
@@ -80,6 +86,8 @@ public:
  */
 class LFO {
 public:
+	LFO();
+
 	float freq;                 // LFO frequency
 	float delay;                // LFO progressive delay in second
 	float depth;                // LFO depth in semitone
@@ -90,12 +98,14 @@ public:
  */
 class Patch {
 public:
+	Patch();
+
 	Env env;                    // Amplitude envelope
 	Noise noise;                // Noise control
 	Arp arp;                    // Arpeggio
 	Buzz buzz;                  // Buzz
 	LFO lfo;                    // LFO
-	float pt;                   // Portamento time in second
+	float port;                 // Portamento time in second
 	float detune;               // Detune in semitone
 };
 
