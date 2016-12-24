@@ -25,6 +25,7 @@
 #ifndef __ZYNAYUMI_ZYNAYUMI_HPP
 #define __ZYNAYUMI_ZYNAYUMI_HPP
 
+#include "patch.hpp"
 #include "engine.hpp"
 
 // Set 1 if you want to print debug messages, 0 otherwise
@@ -46,6 +47,9 @@ class Zynayumi {
 
 public:
 
+	// Current patch
+	Patch patch;
+	
 	// Engine of the Zynayumi
 	Engine engine;
 
