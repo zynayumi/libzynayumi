@@ -50,7 +50,6 @@ class Zynayumi;
  */
 
 class Engine {
-
 public:
 
 	///////////////////
@@ -87,7 +86,9 @@ public:
 
 private:
 
-	ayumi _ay;
+	ayumi _ay;                  // current ayumi state
+
+	char _pitch;                // current pitch, negative if none
 
 	const float LOWER_NOTE_FREQ;
 	const int SAMPLE_RATE; // TODO: should be provided by the host

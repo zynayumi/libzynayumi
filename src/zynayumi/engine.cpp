@@ -30,6 +30,7 @@ namespace zynayumi {
 
 // Constructor destructor
 Engine::Engine(const Zynayumi& ref)	: zynayumi(ref),
+	  _pitch(-1),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
@@ -40,6 +41,8 @@ Engine::Engine(const Zynayumi& ref)	: zynayumi(ref),
 	ayumi_configure(&_ay, 1, CLOCK_RATE, SAMPLE_RATE);
 	ayumi_set_pan(&_ay, 0, 0.5, 0);
 	ayumi_set_mixer(&_ay, 0, 0, 1, 0);
+
+	// Tweak patch for testing
 }
 
 void Engine::audio_process(float* left_out, float* right_out,
@@ -55,12 +58,16 @@ void Engine::audio_process(float* left_out, float* right_out,
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
                             unsigned char velocity) {
-	ayumi_set_tone(&_ay, 0, (int)pitch2period(pitch));
+	_pitch = (char)pitch;
+	ayumi_set_tone(&_ay, 0, (int)pitch2period(_pitch));
 	ayumi_set_volume(&_ay, 0, velocity / 8);
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
-	ayumi_set_volume(&_ay, 0, 0);
+	if ((char)pitch == _pitch) {
+		ayumi_set_volume(&_ay, 0, 0);
+		_pitch = -1;
+	}
 }
 
 // Print method
