@@ -1,84 +1,70 @@
 /****************************************************************************
-    
+
     Zynayumi Synth based on ayumi, a highly precise emulation of the YM2149
 
-    zynayumi.hpp
+    voice.hpp
 
     Copyleft (c) 2016 Nil Geisweiller
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 01222-1307  USA
 
 ****************************************************************************/
 
-#ifndef __ZYNAYUMI_ZYNAYUMI_HPP
-#define __ZYNAYUMI_ZYNAYUMI_HPP
+#ifndef __ZYNAYUMI_VOICE_HPP
+#define __ZYNAYUMI_VOICE_HPP
 
 #include "patch.hpp"
-#include "engine.hpp"
-
-// Set 1 if you want to print debug messages, 0 otherwise
-#define ENABLE_PRINT_DEBUG 1
-
-#if ENABLE_PRINT_DEBUG
-#define dbg_printf(f, varargs...) printf(f, ##varargs)
-#else
-#define dbg_printf(f, varargs...)
-#endif
 
 namespace zynayumi {
 
-class Zynayumi {
+class Engine;
 
-	///////////////////
-	// Attributes    //
-	///////////////////
+/**
+ * Holds information about the state of a voice (note, sample freq,
+ * volume, etc)
+ */
 
+class Voice {
 public:
-
-	// Current patch
-	Patch patch;
-
-	// Engine of the Zynayumi
-	Engine engine;
 
 	/////////////////////////////////
 	// Constructors/descructors    //
 	/////////////////////////////////
 
-	Zynayumi();
-	~Zynayumi();
+	Voice(Engine& engine,
+	      const Patch& patch, unsigned char pitch, unsigned char velocity);
 
 	////////////////
 	// Methods    //
 	////////////////
 
-	// Assumptions:
-	//
-	// 1. The parameters do not change during audio processing
-	//
-	// 2. All processing is added to the buffers
-	void audio_process(float* left_out, float* right_out,
-	                   unsigned long sample_count);
-	void noteOn_process(unsigned char channel,
-	                    unsigned char pitch,
-	                    unsigned char velocity);
-	void noteOff_process(unsigned char channel, unsigned char pitch);
-	void sysex_process(unsigned length, unsigned char* data);
+	// Modifiers
+	void set_note_off();
+	void update();              // Update the voice state
 
-	// print method
-	void print();
+	///////////////////
+	// Attributes    //
+	///////////////////
+
+	unsigned char pitch;
+	unsigned char velocity;
+	bool note_on;
+
+private:
+	Engine& _engine;
+	const Patch& _patch;
 };
 
 } // ~namespace zynayumi

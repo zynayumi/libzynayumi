@@ -27,6 +27,12 @@
 
 namespace zynayumi {
 
+enum class PlayMode {
+	Legato,
+	UpArp,
+	DownArp
+};
+
 /**
  * Amplitude envelope. Durations are in second and levels are between
  * 0.0 and 1.0.
@@ -57,13 +63,11 @@ class Arp {
 public:
 	Arp();
 
-	float pitch1;               // First pitch in semi-tones
-	float time1;                // First pitch duration in second
-	float pitch2;               // Second pitch in semi-tones
-	float time2;                // Second pitch duration in second
-	float pitch3;               // Third pitch in semi-tones
-	float time3;                // Third pitch duration in second
-	bool repeat;                // Whether it should be repeated
+	float pitch1;               // First pitch in semitone
+	float pitch2;               // Second pitch in semitone
+	float pitch3;               // Third pitch in semitone
+	float freq;                 // Pitch change frequency
+	int repeat;                 // Repeat point
 };
 
 /**
@@ -100,6 +104,7 @@ class Patch {
 public:
 	Patch();
 
+	PlayMode playmode;          // Legato or arp
 	Env env;                    // Amplitude envelope
 	Noise noise;                // Noise control
 	Arp arp;                    // Arpeggio

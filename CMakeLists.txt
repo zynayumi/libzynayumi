@@ -4,7 +4,7 @@ project (Zynayumi)
 # Print pretty summary
 include(Summary.cmake)
 
-find_package (Boost 1.46 REQUIRED)
+find_package (Boost 1.54 REQUIRED)
 find_package (PkgConfig 0.16 REQUIRED)
 pkg_check_modules(DSSI dssi>=1.0)
 

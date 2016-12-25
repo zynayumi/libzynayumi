@@ -23,14 +23,18 @@
 ****************************************************************************/
 
 #include <iostream>
+
+#include <boost/range/algorithm/min_element.hpp>
+
 #include "engine.hpp"
 #include "zynayumi.hpp"
 
 namespace zynayumi {
 
 // Constructor destructor
-Engine::Engine(const Zynayumi& ref)	: zynayumi(ref),
-	  _pitch(-1),
+Engine::Engine(const Zynayumi& ref)
+	: _zynayumi(ref),
+	  _max_voices(1),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
@@ -38,35 +42,69 @@ Engine::Engine(const Zynayumi& ref)	: zynayumi(ref),
 	  LOWER_NOTE_FREQ(2.88310683),
 	  SAMPLE_RATE(44100),
 	  CLOCK_RATE(2000000) {
-	ayumi_configure(&_ay, 1, CLOCK_RATE, SAMPLE_RATE);
-	ayumi_set_pan(&_ay, 0, 0.5, 0);
-	ayumi_set_mixer(&_ay, 0, 0, 1, 0);
-
-	// Tweak patch for testing
+	ayumi_configure(&ay, 1, CLOCK_RATE, SAMPLE_RATE);
+	ayumi_set_pan(&ay, 0, 0.5, 0);
+	ayumi_set_mixer(&ay, 0, 0, 1, 0);
 }
 
 void Engine::audio_process(float* left_out, float* right_out,
                            unsigned long sample_count) {
 	for (unsigned long i = 0; i < sample_count; i++) {
-		ayumi_process(&_ay);
-		ayumi_remove_dc(&_ay);
-		left_out[i] = (float) _ay.left;
-		right_out[i] = (float) _ay.right;
+		// Update voice states (which will modulate ayumi state)
+		for (Voices::value_type v : _voices)
+			v.second.update();
+
+		// Update ayumi state
+		ayumi_process(&ay);
+		ayumi_remove_dc(&ay);
+
+		// Update outputs
+		left_out[i] = (float) ay.left;
+		right_out[i] = (float) ay.right;
 	}
 }
 
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
                             unsigned char velocity) {
-	_pitch = (char)pitch;
-	ayumi_set_tone(&_ay, 0, (int)pitch2period(_pitch));
-	ayumi_set_volume(&_ay, 0, velocity / 8);
+	pitches.insert(pitch);
+
+	// If all voices are used then free one
+	if ((size_t)_max_voices <= _voices.size()) {
+		// Select voice with the lowest velocity
+		Voices::const_iterator it =
+			boost::min_element(_voices, [](const Voices::value_type& v1,
+			                               const Voices::value_type& v2)
+			                   // TODO: use the current velocity as
+			                   // opposed to the note velocity
+			                   { return v1.second.velocity < v2.second.velocity; });
+		_voices.erase(it);
+	}
+
+	_voices.emplace(pitch, Voice(*this, _zynayumi.patch, pitch, velocity));
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
-	if ((char)pitch == _pitch) {
-		ayumi_set_volume(&_ay, 0, 0);
-		_pitch = -1;
+	auto print_err = [&]() {
+		std::cerr << "NoteOff (channel=" << channel
+		          << ", pitch=" << pitch << ") has no corresponding NoteOn"
+		          << std::endl;
+	};
+
+	auto pit = pitches.find(pitch);
+	if (pit != pitches.end()) {
+		pitches.erase(pit);
+	} else {
+		print_err();
+		return;
+	}
+
+	auto vit = _voices.find(pitch);
+	if (vit != _voices.end())
+		vit->second.set_note_off();
+	else {
+		print_err();
+		return;
 	}
 }
 
@@ -81,4 +119,4 @@ float Engine::pitch2period(float pitch)  {
 	return coef1 * exp(-pitch * coef2);
 }
 
-} // ~namespace zynauimi
+} // ~namespace zynayumi

@@ -26,6 +26,10 @@
 #define __ZYNAYUMI_ENGINE_HPP
 
 #include <cmath>
+#include <map>
+#include <set>
+
+#include "voice.hpp"
 
 extern "C"
 {
@@ -56,7 +60,12 @@ public:
 	// Attributes    //
 	///////////////////
 
-	const Zynayumi& zynayumi;
+	ayumi ay;                  // current ayumi state
+
+	// Current pitches. Useful for handling chord based arp.
+	//
+	// TODO: have a map from channel to this multiset
+	std::multiset<unsigned char> pitches;
 
 	/////////////////////////////////
 	// Constructors/descructors    //
@@ -84,17 +93,21 @@ public:
 
 	void print(int m) const;
 
+	float pitch2period(float pitch);
+
 private:
 
-	ayumi _ay;                  // current ayumi state
+	const Zynayumi& _zynayumi;
 
-	char _pitch;                // current pitch, negative if none
+	// Map pitch (possibly several times the same) to a voice
+	typedef std::multimap<unsigned char, Voice> Voices;
+	Voices _voices;
+
+	unsigned char _max_voices;
 
 	const float LOWER_NOTE_FREQ;
 	const int SAMPLE_RATE; // TODO: should be provided by the host
 	const int CLOCK_RATE;
-
-	float pitch2period(float pitch);
 };
 
 } // ~namespace zynayumi

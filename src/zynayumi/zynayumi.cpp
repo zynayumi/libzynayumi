@@ -27,7 +27,10 @@
 
 using namespace zynayumi;
 
-Zynayumi::Zynayumi() : engine(*this) {}
+Zynayumi::Zynayumi() : engine(*this) {
+	// Tweak patch for testing
+	patch.noise.time = -1;
+}
 
 Zynayumi::~Zynayumi() {}
 

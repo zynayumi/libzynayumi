@@ -2,7 +2,7 @@
 
     Zynayumi Synth based on ayumi, a highly precise emulation of the YM2149
 
-    patch.cpp
+    voice.cpp
 
     Copyleft (c) 2016 Nil Geisweiller
 
@@ -22,23 +22,23 @@
 
 ****************************************************************************/
 
-#include "patch.hpp"
+#include "voice.hpp"
+#include "engine.hpp"
 
-namespace zynayumi {
+using namespace zynayumi;
 
-Env::Env() : level1(1), time1(0),
-             level2(1), time2(0),
-             level3(1), time3(0),
-             level4(1), release(0) {}
+Voice::Voice(Engine& engine,
+             const Patch& pa, unsigned char pi, unsigned char vel) :
+	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa) {
+	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(pitch));
+	ayumi_set_volume(&_engine.ay, 0, velocity / 8);
+}
 
-Noise::Noise() : time(0), freq(1000) {}
+void Voice::set_note_off() {
+	note_on = false;
+	ayumi_set_volume(&_engine.ay, 0, 0);
+}
 
-Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), repeat(false) {}
-
-Buzz::Buzz() : period(0), shape(0), detune(0) {}
-
-LFO::LFO() : freq(1), delay(0), depth(0) {}
-
-Patch::Patch() : port(0), detune(0) {}
-
-} // ~namespace zynayumi
+void Voice::update() {
+	// TODO
+}
