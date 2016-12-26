@@ -33,6 +33,22 @@ enum class PlayMode {
 	DownArp
 };
 
+class Tone {
+public:
+	Tone();
+
+	float time;                 // Tone duration in second, inf if negative
+	float detune;               // Detune in semitone
+};
+	
+class Noise {
+public:
+	Noise();
+
+	float time;                 // Noise duration in second, inf if negative
+	float freq;                 // Noise frequency
+};
+
 /**
  * Amplitude envelope. Durations are in second and levels are between
  * 0.0 and 1.0.
@@ -49,14 +65,6 @@ public:
 	float time3;                // Duration between hold-2 and sustain
 	float level4;               // Sustain level
 	float release;              // Release
-};
-
-class Noise {
-public:
-	Noise();
-
-	float time;                 // Noise duration in second, inf if negative
-	float freq;                 // Noise frequency
 };
 
 class Arp {
@@ -105,13 +113,13 @@ public:
 	Patch();
 
 	PlayMode playmode;          // Legato or arp
-	Env env;                    // Amplitude envelope
+	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
+	Env env;                    // Amplitude envelope
 	Arp arp;                    // Arpeggio
 	Buzz buzz;                  // Buzz
 	LFO lfo;                    // LFO
 	float port;                 // Portamento time in second
-	float detune;               // Detune in semitone
 };
 
 } // ~namespace zynayumi

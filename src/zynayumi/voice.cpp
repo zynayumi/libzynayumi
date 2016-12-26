@@ -30,8 +30,20 @@ using namespace zynayumi;
 Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa) {
+
+	// Tone
+	// TODO: support positive time
+	bool t_off = _patch.tone.time == 0;
 	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(pitch));
+
+	// Noise
+	bool n_off = _patch.noise.time == 0;
+
+	// Env
 	ayumi_set_volume(&_engine.ay, 0, velocity / 8);
+
+	// Ayumi mixer
+	ayumi_set_mixer(&_engine.ay, 0, t_off, n_off, 0);
 }
 
 void Voice::set_note_off() {

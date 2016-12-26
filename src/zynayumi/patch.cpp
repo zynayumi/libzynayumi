@@ -26,12 +26,14 @@
 
 namespace zynayumi {
 
+Tone::Tone() : time(-1), detune(0) {}
+	
+Noise::Noise() : time(0), freq(1000) {}
+
 Env::Env() : level1(1), time1(0),
              level2(1), time2(0),
              level3(1), time3(0),
              level4(1), release(0) {}
-
-Noise::Noise() : time(0), freq(1000) {}
 
 Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), repeat(false) {}
 
@@ -39,6 +41,6 @@ Buzz::Buzz() : period(0), shape(0), detune(0) {}
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
-Patch::Patch() : port(0), detune(0) {}
+Patch::Patch() : port(0) {}
 
 } // ~namespace zynayumi
