@@ -23,6 +23,7 @@
 ****************************************************************************/
 
 #include <iostream>
+#include <cmath>
 
 #include "voice.hpp"
 #include "engine.hpp"
@@ -32,12 +33,12 @@ using namespace zynayumi;
 Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
-	_env_smp_count(0), _arp_smp_count(0) {
+	_pitch(pi), _fine_pitch(pi), _env_smp_count(0), _smp_count(0) {
 
 	// Tone
 	// TODO: support positive time
 	bool t_off = _patch.tone.time == 0;
-	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(pitch));
+	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_fine_pitch));
 
 	// Noise
 	bool n_off = _patch.noise.time == 0;
@@ -55,6 +56,10 @@ void Voice::set_note_off() {
 void Voice::update() {
 	update_env_level();
 	update_arp();
+	update_lfo();
+
+	// Increment sample count
+	_smp_count++;
 }
 
 float Voice::linear_interpolate(float x1, float y1, float x2, float y2,
@@ -67,7 +72,7 @@ float Voice::linear_interpolate(float x1, float y1, float x2, float y2,
 
 void Voice::update_env_level() {
 	// Determine portion of the envelope to interpolate
-	float env_time = (float)_env_smp_count / (float)_engine.sample_rate;
+	float env_time = _engine.smp2sec(_env_smp_count);
 	float x1, y1, x2, y2;
 	if (note_on) {
 		float t1 = _patch.env.time1;
@@ -123,14 +128,15 @@ void Voice::update_env_level() {
 
 void Voice::update_arp()
 {
-	// Find the pitch index and reset _arp_smp_count is necessary
+	// Find the pitch index
+	auto count2index = [&]() -> size_t {
+		size_t index = _smp_count / (_engine.sample_rate / _patch.arp.freq);
+		index %= _engine.pitches.size();
+		return index;
+	};
+	// Find the pitch
 	auto count2pitch = [&](bool down) -> unsigned char {
-		size_t index = _arp_smp_count / (_engine.sample_rate
-		                                 / _patch.arp.freq);
-		if (_engine.pitches.size() <= index) {
-			index = 0;
-			_arp_smp_count = 0;
-		}
+		size_t index = count2index();
 		if (down)
 			index = (_engine.pitches.size() - 1) - index;
 		return *std::next(_engine.pitches.begin(), index);
@@ -141,20 +147,26 @@ void Voice::update_arp()
 		break;
 	case PlayMode::UpArp:
 		if (1 < _engine.pitches.size()) {
-			unsigned char npitch = count2pitch(false);
-			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(npitch));
+			_pitch = count2pitch(false);
+			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_pitch));
 		}
 		break;
 	case PlayMode::DownArp:
 		if (1 < _engine.pitches.size()) {
-			unsigned char npitch = count2pitch(true);
-			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(npitch));
+			_pitch = count2pitch(true);
+			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_pitch));
 		}
 		break;
 	default:
-		std::cerr << "Not supported" << std::endl;
+		std::cerr << "Not implemented" << std::endl;
 	}
+}
 
-	// Increment the arp sample count
-	_arp_smp_count++;
+void Voice::update_lfo() {
+	float time = _engine.smp2sec(_smp_count);
+	float depth = _patch.lfo.delay < time ? _patch.lfo.depth
+		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, time);
+	float relative_fine_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
+	_fine_pitch = _pitch + relative_fine_pitch;
+	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_fine_pitch));
 }

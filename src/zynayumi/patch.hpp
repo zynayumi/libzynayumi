@@ -30,7 +30,8 @@ namespace zynayumi {
 enum class PlayMode {
 	Legato,
 	UpArp,
-	DownArp
+	DownArp,
+	RndArp                      // Not implemented
 };
 
 class Tone {

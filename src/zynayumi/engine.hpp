@@ -98,6 +98,7 @@ public:
 	void print(int m) const;
 
 	float pitch2period(float pitch);
+	float smp2sec(unsigned long long smp_count);
 
 private:
 

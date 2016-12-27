@@ -5,13 +5,12 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 
 ## Features
 
+- DSSI, VST
+- Vibrato
+- Envelope
 - Arpeggio (only chord mode for now)
 - Portamento (not implemented)
 - Buzzer (not implemented)
-- LFO (not implemented)
-- Envelope
-- DSSI
-- VST
 - No GUI
 
 ## Install

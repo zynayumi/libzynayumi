@@ -117,4 +117,8 @@ float Engine::pitch2period(float pitch)  {
 	return coef1 * exp(-pitch * coef2);
 }
 
+float Engine::smp2sec(unsigned long long smp_count) {
+	return (double)smp_count / (double)sample_rate;
+}
+
 } // ~namespace zynayumi

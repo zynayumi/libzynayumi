@@ -44,6 +44,10 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.env.release = 5;
 	// Arp
 	patch.arp.freq = 20;
+	// LFO
+	patch.lfo.freq = 8;
+	patch.lfo.delay = 4;
+	patch.lfo.depth = 1;
 }
 
 Zynayumi::~Zynayumi() {}
