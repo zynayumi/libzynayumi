@@ -9,7 +9,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - Portamento (not implemented)
 - Buzzer (not implemented)
 - LFO (not implemented)
-- Envelope (not implemented)
+- Envelope
 - DSSI
 - VST
 
