@@ -34,15 +34,15 @@ namespace zynayumi {
 // Constructor destructor
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
-	  _max_voices(1),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
 	  // bisective search using xsynth.
-	  LOWER_NOTE_FREQ(2.88310683),
-	  SAMPLE_RATE(44100),
-	  CLOCK_RATE(2000000) {
-	ayumi_configure(&ay, 1, CLOCK_RATE, SAMPLE_RATE);
+	  lower_note_freq(2.88310683),
+	  sample_rate(44100),
+	  clock_rate(2000000),
+	  _max_voices(1) {
+	ayumi_configure(&ay, 1, clock_rate, sample_rate);
 	ayumi_set_pan(&ay, 0, 0.5, 0);
 	ayumi_set_mixer(&ay, 0, 0, 1, 0);
 }
@@ -50,8 +50,8 @@ Engine::Engine(const Zynayumi& ref)
 void Engine::audio_process(float* left_out, float* right_out,
                            unsigned long sample_count) {
 	for (unsigned long i = 0; i < sample_count; i++) {
-		// Update voice states (which will modulate ayumi state)
-		for (Voices::value_type v : _voices)
+		// Update voice states (which modulates the ayumi state)
+		for (Pitch2Voice::value_type& v : _voices)
 			v.second.update();
 
 		// Update ayumi state
@@ -72,12 +72,10 @@ void Engine::noteOn_process(unsigned char channel,
 	// If all voices are used then free one
 	if ((size_t)_max_voices <= _voices.size()) {
 		// Select voice with the lowest velocity
-		Voices::const_iterator it =
-			boost::min_element(_voices, [](const Voices::value_type& v1,
-			                               const Voices::value_type& v2)
-			                   // TODO: use the current velocity as
-			                   // opposed to the note velocity
-			                   { return v1.second.velocity < v2.second.velocity; });
+		Pitch2Voice::const_iterator it =
+			boost::min_element(_voices, [](const Pitch2Voice::value_type& v1,
+			                               const Pitch2Voice::value_type& v2)
+			                   { return v1.second.env_level < v2.second.env_level; });
 		_voices.erase(it);
 	}
 
@@ -114,7 +112,7 @@ void Engine::print(int m) const {
 }
 
 float Engine::pitch2period(float pitch)  {
-	static float coef1 = SAMPLE_RATE / LOWER_NOTE_FREQ;
+	static float coef1 = sample_rate / lower_note_freq;
 	static float coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }

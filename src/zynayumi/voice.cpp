@@ -22,6 +22,8 @@
 
 ****************************************************************************/
 
+#include <iostream>
+
 #include "voice.hpp"
 #include "engine.hpp"
 
@@ -29,7 +31,8 @@ using namespace zynayumi;
 
 Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
-	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa) {
+	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
+	_env_smp_count(0) {
 
 	// Tone
 	// TODO: support positive time
@@ -39,18 +42,80 @@ Voice::Voice(Engine& engine,
 	// Noise
 	bool n_off = _patch.noise.time == 0;
 
-	// Env
-	ayumi_set_volume(&_engine.ay, 0, velocity / 8);
-
 	// Ayumi mixer
 	ayumi_set_mixer(&_engine.ay, 0, t_off, n_off, 0);
 }
 
 void Voice::set_note_off() {
 	note_on = false;
-	ayumi_set_volume(&_engine.ay, 0, 0);
+	_env_smp_count = 0;
+	_actual_sustain_level = env_level;
 }
 
 void Voice::update() {
-	// TODO
+	update_env_level();
+}
+
+float Voice::linear_interpolate(float x1, float y1, float x2, float y2,
+                                float x) const {
+	// assert(x1 <= x and x <= x2);
+	float a = (y2 - y1) / (x2 - x1);
+	float b = y1;
+	return a * (x - x1) + b;
+}
+
+void Voice::update_env_level() {
+	// Determine portion of the envelope to interpolate
+	float env_time = (float)_env_smp_count / (float)_engine.sample_rate;
+	float x1, y1, x2, y2;
+	if (note_on) {
+		float t1 = _patch.env.time1;
+		float t12 = t1 + _patch.env.time2;
+		float t123 = t12 + _patch.env.time3;
+		if (env_time <= t1) {
+			x1 = 0;
+			y1 = _patch.env.attack_level;
+			x2 = t1;
+			y2 = _patch.env.level1;
+		} else if (env_time <= t12) {
+			x1 = t1;
+			y1 = _patch.env.level1;
+			x2 = t12;
+			y2 = _patch.env.level2;
+		} else if (env_time <= t123) {
+			x1 = t12;
+			y1 = _patch.env.level2;
+			x2 = t123;
+			y2 = _patch.env.sustain_level;
+		} else {
+			x1 = t123;
+			y1 = _patch.env.sustain_level;
+			x2 = x1 + 1;
+			y2 = y1;
+		}
+	} else {                    // Note off
+		if (env_time <= _patch.env.release) {
+			x1 = 0;
+			y1 = _actual_sustain_level;
+			x2 = _patch.env.release;
+			y2 = 0;
+		} else {
+			x1 = _patch.env.release;
+			y1 = 0;
+			x2 = x1 + 1;
+			y2 = 0;
+		}
+	}
+
+	// Calculate the envelope level
+	env_level = linear_interpolate(x1, y1, x2, y2, env_time);
+
+	// Adjust according to key velocity
+	env_level *= (float)velocity / 127.0;
+
+	// Update the ayumi volume
+	ayumi_set_volume(&_engine.ay, 0, (int)(env_level * 15));
+
+	// Increment the envelope sample count
+	_env_smp_count++;
 }

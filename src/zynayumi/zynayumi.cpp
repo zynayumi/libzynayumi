@@ -30,6 +30,14 @@ using namespace zynayumi;
 Zynayumi::Zynayumi() : engine(*this) {
 	// Tweak patch for testing
 	patch.noise.time = -1;
+	patch.env.attack_level = 1;
+	patch.env.time1 = 1;
+	patch.env.level1 = 0;
+	patch.env.time2 = 1;
+	patch.env.level2 = 0.5;
+	patch.env.time3 = 1;
+	patch.env.sustain_level = 0.25;
+	patch.env.release = 5;
 }
 
 Zynayumi::~Zynayumi() {}

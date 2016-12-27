@@ -61,10 +61,17 @@ public:
 	unsigned char pitch;
 	unsigned char velocity;
 	bool note_on;
+	float env_level;            // Current envelope level
 
 private:
 	Engine& _engine;
 	const Patch& _patch;
+
+	unsigned long _env_smp_count; // Number of samples since note on or off
+	float _actual_sustain_level;
+
+	float linear_interpolate(float x1, float y1, float x2, float y2, float x) const;
+	void update_env_level();
 };
 
 } // ~namespace zynayumi

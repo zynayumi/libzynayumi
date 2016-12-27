@@ -57,13 +57,13 @@ class Env {
 public:
 	Env();
 
-	float level1;               // Attack level
+	float attack_level;         // Attack level
 	float time1;                // Duration between attack and hold-1
-	float level2;               // Hold-1 level
+	float level1;               // Hold-1 level
 	float time2;                // Duration between hold-1 and hold-2
-	float level3;               // Hold-2 level
+	float level2;               // Hold-2 level
 	float time3;                // Duration between hold-2 and sustain
-	float level4;               // Sustain level
+	float sustain_level;        // Sustain level
 	float release;              // Release
 };
 

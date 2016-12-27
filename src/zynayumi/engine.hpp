@@ -67,6 +67,10 @@ public:
 	// TODO: have a map from channel to this multiset
 	std::multiset<unsigned char> pitches;
 
+	const float lower_note_freq;
+	const int sample_rate; // TODO: should be provided by the host
+	const int clock_rate;
+
 	/////////////////////////////////
 	// Constructors/descructors    //
 	/////////////////////////////////
@@ -100,14 +104,10 @@ private:
 	const Zynayumi& _zynayumi;
 
 	// Map pitch (possibly several times the same) to a voice
-	typedef std::multimap<unsigned char, Voice> Voices;
-	Voices _voices;
+	typedef std::multimap<unsigned char, Voice> Pitch2Voice;
+	Pitch2Voice _voices;
 
 	unsigned char _max_voices;
-
-	const float LOWER_NOTE_FREQ;
-	const int SAMPLE_RATE; // TODO: should be provided by the host
-	const int CLOCK_RATE;
 };
 
 } // ~namespace zynayumi
