@@ -29,7 +29,11 @@ using namespace zynayumi;
 
 Zynayumi::Zynayumi() : engine(*this) {
 	// Tweak patch for testing
+	// PlayMode
+	patch.playmode = PlayMode::DownArp;
+	// Noise
 	patch.noise.time = -1;
+	// Env
 	patch.env.attack_level = 1;
 	patch.env.time1 = 1;
 	patch.env.level1 = 0;
@@ -38,6 +42,8 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.env.time3 = 1;
 	patch.env.sustain_level = 0.25;
 	patch.env.release = 5;
+	// Arp
+	patch.arp.freq = 20;
 }
 
 Zynayumi::~Zynayumi() {}

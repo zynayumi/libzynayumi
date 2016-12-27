@@ -67,11 +67,14 @@ private:
 	Engine& _engine;
 	const Patch& _patch;
 
-	unsigned long _env_smp_count; // Number of samples since note on or off
+	unsigned long long _env_smp_count; // Number of samples since note on or off
+	unsigned long long _arp_smp_count; // Number of samples since arp cycle
 	float _actual_sustain_level;
 
-	float linear_interpolate(float x1, float y1, float x2, float y2, float x) const;
+	float linear_interpolate(float x1, float y1,
+	                         float x2, float y2, float x) const;
 	void update_env_level();
+	void update_arp();
 };
 
 } // ~namespace zynayumi
