@@ -41,7 +41,7 @@ public:
 	float time;                 // Tone duration in second, inf if negative
 	float detune;               // Detune in semitone
 };
-	
+
 class Noise {
 public:
 	Noise();
@@ -80,16 +80,15 @@ public:
 };
 
 /**
- * Buzz trick based on YM2149 envelope. The Buzz period is distinct
- * from the tone period and modulates its timbre. It is actually a
- * sync buzz because the envelope is reset at each tone period.
+ * Ring modulation to allow the YM2149 to play other waveforms. The
+ * waveform is represented by 8 samples, i.e. volume levels from 0.0
+ * to 1.0.
  */
-class Buzz {
+class RingMod {
 public:
-	Buzz();
+	RingMod();
 
-	int period;                 // Duration of the envelope in sample
-	int shape;                  // Envelope shape
+	float smp[8];               // Sample volume levels
 	float detune;               // Relative detune in semitone
                                 // compared to the tone
 };
@@ -118,7 +117,7 @@ public:
 	Noise noise;                // Noise control
 	Env env;                    // Amplitude envelope
 	Arp arp;                    // Arpeggio
-	Buzz buzz;                  // Buzz
+	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
 	float port;                 // Portamento time in second
 };

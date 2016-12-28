@@ -37,7 +37,11 @@ Env::Env() : attack_level(1),
 
 Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(1), repeat(0) {}
 
-Buzz::Buzz() : period(0), shape(0), detune(0) {}
+RingMod::RingMod() : detune(0) {
+	// Initialize all samples to 1.0, meaning no ring modulation.
+	for (unsigned i = 0; i < 8; i++)
+		smp[i] = 1.0;
+}
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
