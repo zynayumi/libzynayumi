@@ -58,6 +58,7 @@ void Voice::update() {
 	update_arp();
 	update_lfo();
 	update_port();
+	update_ring();
 
 	// Increment sample count
 	_smp_count++;
@@ -184,4 +185,8 @@ void Voice::update_port() {
 
 		_engine.last_pitch = _port_relative_pitch + pitch;
 	}
+}
+
+void Voice::update_ring() {
+	// TODO
 }

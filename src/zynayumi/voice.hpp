@@ -80,6 +80,7 @@ private:
 	void update_arp();
 	void update_lfo();
 	void update_port();
+	void update_ring();
 };
 
 } // ~namespace zynayumi
