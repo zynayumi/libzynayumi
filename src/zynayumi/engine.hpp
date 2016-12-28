@@ -67,6 +67,11 @@ public:
 	// TODO: have a map from channel to this multiset
 	std::multiset<unsigned char> pitches;
 
+	// Keep track of the previous pitch for portamento. Negative means
+	// none.
+	float previous_pitch;
+	float last_pitch;
+
 	const float lower_note_freq;
 	const int sample_rate; // TODO: should be provided by the host
 	const int clock_rate;

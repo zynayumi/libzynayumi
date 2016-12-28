@@ -8,8 +8,8 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - DSSI, VST
 - Vibrato
 - Envelope
+- Portamento
 - Arpeggio (only chord mode for now)
-- Portamento (not implemented)
 - Buzzer (not implemented)
 - No GUI
 

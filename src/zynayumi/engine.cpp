@@ -34,6 +34,8 @@ namespace zynayumi {
 // Constructor destructor
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
+	  previous_pitch(-1),
+	  last_pitch(-1),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
@@ -67,6 +69,9 @@ void Engine::audio_process(float* left_out, float* right_out,
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
                             unsigned char velocity) {
+	previous_pitch = last_pitch;
+	last_pitch = pitch;
+
 	pitches.insert(pitch);
 
 	// If all voices are used then free one

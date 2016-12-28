@@ -57,6 +57,7 @@ void Voice::update() {
 	update_env_level();
 	update_arp();
 	update_lfo();
+	update_port();
 
 	// Increment sample count
 	_smp_count++;
@@ -169,4 +170,18 @@ void Voice::update_lfo() {
 	float relative_fine_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
 	_fine_pitch = _pitch + relative_fine_pitch;
 	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_fine_pitch));
+}
+
+void Voice::update_port() {
+	float time = _engine.smp2sec(_smp_count);
+	if (0 <= _engine.previous_pitch and time < _patch.port) {
+		_port_relative_pitch =
+			linear_interpolate(0, _engine.previous_pitch - pitch,
+			                   _patch.port, 0, time);
+		float _port_fine_pitch = _fine_pitch + _port_relative_pitch;
+		ayumi_set_tone(&_engine.ay, 0,
+		               (int)_engine.pitch2period(_port_fine_pitch));
+
+		_engine.last_pitch = _port_relative_pitch + pitch;
+	}
 }

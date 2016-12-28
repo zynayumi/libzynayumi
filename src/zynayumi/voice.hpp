@@ -69,6 +69,7 @@ private:
 
 	unsigned char _pitch;              // Pitch possibly modulated by arp
 	float _fine_pitch;                 // Like _pitch but continuous
+	float _port_relative_pitch;        // Relative portamento relative pitch
 	unsigned long long _env_smp_count; // Number of samples since note on or off
 	unsigned long long _smp_count;     // Number of samples since note on
 	float _actual_sustain_level;
@@ -78,6 +79,7 @@ private:
 	void update_env_level();
 	void update_arp();
 	void update_lfo();
+	void update_port();
 };
 
 } // ~namespace zynayumi
