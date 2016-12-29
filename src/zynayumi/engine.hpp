@@ -73,6 +73,7 @@ public:
 	float last_pitch;
 
 	const float lower_note_freq;
+	const float lower_note_freq_ym;
 	const int sample_rate; // TODO: should be provided by the host
 	const int clock_rate;
 
@@ -103,6 +104,9 @@ public:
 	void print(int m) const;
 
 	float pitch2period(float pitch);
+	// Same as pitch2period but for YM2149. The reason it is different
+	// has to do with ayumi emulation, don't understand it.
+	float pitch2period_ym(float pitch);
 	float smp2sec(unsigned long long smp_count);
 
 private:

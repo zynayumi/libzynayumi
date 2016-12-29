@@ -36,11 +36,12 @@ Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
 	  previous_pitch(-1),
 	  last_pitch(-1),
+	  lower_note_freq(8.1757989156),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
 	  // bisective search using xsynth.
-	  lower_note_freq(2.88310683),
+	  lower_note_freq_ym(2.88310683),
 	  sample_rate(44100),
 	  clock_rate(2000000),
 	  _max_voices(1) {
@@ -118,6 +119,12 @@ void Engine::print(int m) const {
 
 float Engine::pitch2period(float pitch)  {
 	static float coef1 = sample_rate / lower_note_freq;
+	static float coef2 = log(2.0) / 12.0;
+	return coef1 * exp(-pitch * coef2);
+}
+
+float Engine::pitch2period_ym(float pitch)  {
+	static float coef1 = sample_rate / lower_note_freq_ym;
 	static float coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }

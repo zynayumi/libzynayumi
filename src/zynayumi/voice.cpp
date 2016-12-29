@@ -38,7 +38,7 @@ Voice::Voice(Engine& engine,
 	// Tone
 	// TODO: support positive time
 	bool t_off = _patch.tone.time == 0;
-	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_fine_pitch));
+	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period_ym(_fine_pitch));
 
 	// Noise
 	bool n_off = _patch.noise.time == 0;
@@ -150,13 +150,13 @@ void Voice::update_arp()
 	case PlayMode::UpArp:
 		if (1 < _engine.pitches.size()) {
 			_pitch = count2pitch(false);
-			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_pitch));
+			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period_ym(_pitch));
 		}
 		break;
 	case PlayMode::DownArp:
 		if (1 < _engine.pitches.size()) {
 			_pitch = count2pitch(true);
-			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_pitch));
+			ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period_ym(_pitch));
 		}
 		break;
 	default:
@@ -170,7 +170,7 @@ void Voice::update_lfo() {
 		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, time);
 	float relative_fine_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
 	_fine_pitch = _pitch + relative_fine_pitch;
-	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period(_fine_pitch));
+	ayumi_set_tone(&_engine.ay, 0, (int)_engine.pitch2period_ym(_fine_pitch));
 }
 
 void Voice::update_port() {
@@ -181,7 +181,7 @@ void Voice::update_port() {
 			                   _patch.port, 0, time);
 		float _port_fine_pitch = _fine_pitch + _port_relative_pitch;
 		ayumi_set_tone(&_engine.ay, 0,
-		               (int)_engine.pitch2period(_port_fine_pitch));
+		               (int)_engine.pitch2period_ym(_port_fine_pitch));
 
 		_engine.last_pitch = _port_relative_pitch + pitch;
 	}
