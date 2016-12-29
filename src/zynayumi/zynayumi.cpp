@@ -32,24 +32,34 @@ Zynayumi::Zynayumi() : engine(*this) {
 	// PlayMode
 	patch.playmode = PlayMode::DownArp;
 	// Noise
-	patch.noise.time = -1;
+	patch.noise.time = 0;
 	// Env
 	patch.env.attack_level = 1;
-	patch.env.time1 = 1;
-	patch.env.level1 = 0;
-	patch.env.time2 = 1;
-	patch.env.level2 = 0.5;
-	patch.env.time3 = 1;
-	patch.env.sustain_level = 0.25;
+	// patch.env.time1 = 1;
+	// patch.env.level1 = 0;
+	// patch.env.time2 = 1;
+	// patch.env.level2 = 0.5;
+	// patch.env.time3 = 1;
+	// patch.env.sustain_level = 0.25;
 	patch.env.release = 5;
 	// Arp
 	patch.arp.freq = 20;
 	// LFO
 	patch.lfo.freq = 8;
 	patch.lfo.delay = 4;
-	patch.lfo.depth = 1;
+	// patch.lfo.depth = 1;
 	// Portamento
 	patch.port = 0.005;
+	// Ring modulation
+	patch.ringmod.waveform[0] = 0.7;
+	patch.ringmod.waveform[1] = 0.8;
+	patch.ringmod.waveform[2] = 0.9;
+	patch.ringmod.waveform[3] = 1.0;
+	patch.ringmod.waveform[4] = 1.0;
+	patch.ringmod.waveform[5] = 0.9;
+	patch.ringmod.waveform[6] = 0.8;
+	patch.ringmod.waveform[7] = 0.7;
+	patch.ringmod.detune = 0.0;
 }
 
 Zynayumi::~Zynayumi() {}

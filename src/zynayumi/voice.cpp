@@ -188,5 +188,20 @@ void Voice::update_port() {
 }
 
 void Voice::update_ring() {
-	// TODO
+	// Get the waveform value
+	float waveform_val = _patch.ringmod.waveform[_ringmod_waveform_index];
+	level = waveform_val * env_level;
+
+	// Update the ayumi volume
+	ayumi_set_volume(&_engine.ay, 0, (int)(level * 15));
+
+	// Update _ringmod_smp_count and _ringmod_waveform_index
+	float ringmod_fine_pitch = _patch.ringmod.detune + _fine_pitch;
+	unsigned waveform_period = _engine.pitch2period(ringmod_fine_pitch);
+    if (waveform_period <= ++_ringmod_smp_count) {
+	    _ringmod_smp_count = 0;
+	}
+    _ringmod_waveform_index =
+	    (float)(RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
+	    / (float)waveform_period;
 }

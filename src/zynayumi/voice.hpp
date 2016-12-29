@@ -61,7 +61,11 @@ public:
 	unsigned char pitch;
 	unsigned char velocity;
 	bool note_on;
-	float env_level;            // Current envelope level
+	float env_level;            // Current envelope level, taking into
+	                            // account velocity
+	float level;                // Current level, taking into account
+                                // envelope, velocity and ring
+                                // modulation
 
 private:
 	Engine& _engine;
@@ -69,9 +73,20 @@ private:
 
 	unsigned char _pitch;              // Pitch possibly modulated by arp
 	float _fine_pitch;                 // Like _pitch but continuous
+
+	// Portamento
 	float _port_relative_pitch;        // Relative portamento relative pitch
-	unsigned long long _env_smp_count; // Number of samples since note on or off
-	unsigned long long _smp_count;     // Number of samples since note on
+	float _port_fine_pitch;            // Absolute portamento pitch
+
+	unsigned _env_smp_count;           // Number of samples since note on or off
+	unsigned _smp_count;               // Number of samples since note on
+
+	// Ring Mod
+	unsigned _ringmod_smp_count;       // Number of samples since last
+                                       // ring modulation sample
+                                       // change
+	unsigned _ringmod_waveform_index;  // Current waveform index
+
 	float _actual_sustain_level;
 
 	float linear_interpolate(float x1, float y1,

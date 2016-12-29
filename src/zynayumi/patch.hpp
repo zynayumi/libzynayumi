@@ -84,13 +84,14 @@ public:
  * waveform is represented by 8 samples, i.e. volume levels from 0.0
  * to 1.0.
  */
+#define RING_MOD_WAVEFORM_SIZE 8
 class RingMod {
 public:
 	RingMod();
 
-	float smp[8];               // Sample volume levels
-	float detune;               // Relative detune in semitone
-                                // compared to the tone
+	float waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
+	float detune;                           // Relative detune in semitone
+                                            // compared to the tone
 };
 
 /**

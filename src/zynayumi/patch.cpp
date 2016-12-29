@@ -39,8 +39,8 @@ Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(1), repeat(0) {}
 
 RingMod::RingMod() : detune(0) {
 	// Initialize all samples to 1.0, meaning no ring modulation.
-	for (unsigned i = 0; i < 8; i++)
-		smp[i] = 1.0;
+	for (unsigned i = 0; i < RING_MOD_WAVEFORM_SIZE; i++)
+		waveform[i] = 1.0;
 }
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
