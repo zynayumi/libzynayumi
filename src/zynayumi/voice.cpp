@@ -33,7 +33,8 @@ using namespace zynayumi;
 Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
-	_pitch(pi), _fine_pitch(pi), _env_smp_count(0), _smp_count(0) {
+	_pitch(pi), _fine_pitch(pi), _env_smp_count(0), _smp_count(0),
+	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
 
 	// Tone
 	// TODO: support positive time
@@ -198,10 +199,11 @@ void Voice::update_ring() {
 	// Update _ringmod_smp_count and _ringmod_waveform_index
 	float ringmod_fine_pitch = _patch.ringmod.detune + _fine_pitch;
 	unsigned waveform_period = _engine.pitch2period(ringmod_fine_pitch);
-    if (waveform_period <= ++_ringmod_smp_count) {
+    if (waveform_period <= ++_ringmod_smp_count)
 	    _ringmod_smp_count = 0;
-	}
-    _ringmod_waveform_index =
-	    (float)(RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
-	    / (float)waveform_period;
+    _ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
+	    / (0.5 * waveform_period);
+    if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
+	    _ringmod_waveform_index =
+		    (2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index;
 }

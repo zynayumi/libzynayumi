@@ -81,10 +81,13 @@ public:
 
 /**
  * Ring modulation to allow the YM2149 to play other waveforms. The
- * waveform is represented by 8 samples, i.e. volume levels from 0.0
- * to 1.0.
+ * waveform is represented by 4 samples, i.e. volume levels from 0.0
+ * to 1.0. The modulating waveform is actually 8 samples long with the
+ * last 4 samples mirroring the first 4. We want that to have a smooth
+ * dephasing effect and that way only 4 values are required to define
+ * a waveform.
  */
-#define RING_MOD_WAVEFORM_SIZE 8
+#define RING_MOD_WAVEFORM_SIZE 4
 class RingMod {
 public:
 	RingMod();
