@@ -164,7 +164,7 @@ void ayumi_set_pan(struct ayumi* ay, int index, double pan, int is_eqp) {
 }
 
 void ayumi_set_tone(struct ayumi* ay, int index, int period) {
-  period &= 0xfff;
+  /* period &= 0xfff; */
   ay->channels[index].tone_period = (period == 0) | period;
 }
 
