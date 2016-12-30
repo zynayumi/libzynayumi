@@ -41,7 +41,7 @@ Engine::Engine(const Zynayumi& ref)
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
 	  // some reason it's out of tune so we found this value by
 	  // bisective search using xsynth.
-	  lower_note_freq_ym(2.88310683),
+	  lower_note_freq_ym(2.88310682560),
 	  sample_rate(44100),
 	  clock_rate(2000000),
 	  _max_voices(1) {
@@ -56,6 +56,9 @@ void Engine::audio_process(float* left_out, float* right_out,
 		// Update voice states (which modulates the ayumi state)
 		for (Pitch2Voice::value_type& v : _voices)
 			v.second.update();
+
+		if (_voices.empty())
+			continue;
 
 		// Update ayumi state
 		ayumi_process(&ay);
@@ -117,19 +120,19 @@ void Engine::print(int m) const {
 	// TODO
 }
 
-float Engine::pitch2period(float pitch)  {
-	static float coef1 = sample_rate / lower_note_freq;
-	static float coef2 = log(2.0) / 12.0;
+double Engine::pitch2period(double pitch)  {
+	static double coef1 = sample_rate / lower_note_freq;
+	static double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }
 
-float Engine::pitch2period_ym(float pitch)  {
-	static float coef1 = sample_rate / lower_note_freq_ym;
-	static float coef2 = log(2.0) / 12.0;
+double Engine::pitch2period_ym(double pitch)  {
+	static double coef1 = sample_rate / lower_note_freq_ym;
+	static double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }
 
-float Engine::smp2sec(unsigned long long smp_count) {
+double Engine::smp2sec(unsigned long long smp_count) {
 	return (double)smp_count / (double)sample_rate;
 }
 

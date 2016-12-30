@@ -61,9 +61,9 @@ public:
 	unsigned char pitch;
 	unsigned char velocity;
 	bool note_on;
-	float env_level;            // Current envelope level, taking into
+	double env_level;           // Current envelope level, taking into
 	                            // account velocity
-	float level;                // Current level, taking into account
+	double level;               // Current level, taking into account
                                 // envelope, velocity and ring
                                 // modulation
 
@@ -72,25 +72,26 @@ private:
 	const Patch& _patch;
 
 	unsigned char _pitch;              // Pitch possibly modulated by arp
-	float _fine_pitch;                 // Like _pitch but continuous
+	double _fine_pitch;                // Like _pitch but continuous
 
 	// Portamento
-	float _port_relative_pitch;        // Relative portamento relative pitch
-	float _port_fine_pitch;            // Absolute portamento pitch
+	double _port_relative_pitch;       // Relative portamento relative pitch
+	double _port_fine_pitch;           // Absolute portamento pitch
 
 	unsigned _env_smp_count;           // Number of samples since note on or off
 	unsigned _smp_count;               // Number of samples since note on
 
 	// Ring Mod
-	unsigned _ringmod_smp_count;       // Number of samples since last
+	double _ringmod_smp_count;         // Number of samples since last
                                        // ring modulation sample
                                        // change
 	unsigned _ringmod_waveform_index;  // Current waveform index
+	double x;
 
-	float _actual_sustain_level;
+	double _actual_sustain_level;
 
-	float linear_interpolate(float x1, float y1,
-	                         float x2, float y2, float x) const;
+	double linear_interpolate(double x1, double y1,
+	                          double x2, double y2, double x) const;
 	void update_env_level();
 	void update_arp();
 	void update_lfo();

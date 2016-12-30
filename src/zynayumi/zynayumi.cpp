@@ -49,12 +49,12 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.lfo.delay = 4;
 	// patch.lfo.depth = 1;
 	// Portamento
-	patch.port = 0.005;
+	patch.port = 0.0;
 	// Ring modulation
-	patch.ringmod.waveform[0] = 0.0;
-	patch.ringmod.waveform[1] = 1.0;
-	patch.ringmod.waveform[2] = 1.0;
-	patch.ringmod.waveform[3] = 1.0;
+	patch.ringmod.waveform[0] = 1.0;
+	patch.ringmod.waveform[1] = 0.9;
+	patch.ringmod.waveform[2] = 0.8;
+	patch.ringmod.waveform[3] = 0.7;
 	patch.ringmod.detune = 0.0;
 }
 

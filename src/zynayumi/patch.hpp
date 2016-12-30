@@ -38,16 +38,16 @@ class Tone {
 public:
 	Tone();
 
-	float time;                 // Tone duration in second, inf if negative
-	float detune;               // Detune in semitone
+	double time;                 // Tone duration in second, inf if negative
+	double detune;               // Detune in semitone
 };
 
 class Noise {
 public:
 	Noise();
 
-	float time;                 // Noise duration in second, inf if negative
-	float freq;                 // Noise frequency
+	double time;                 // Noise duration in second, inf if negative
+	double freq;                 // Noise frequency
 };
 
 /**
@@ -58,25 +58,25 @@ class Env {
 public:
 	Env();
 
-	float attack_level;         // Attack level
-	float time1;                // Duration between attack and hold-1
-	float level1;               // Hold-1 level
-	float time2;                // Duration between hold-1 and hold-2
-	float level2;               // Hold-2 level
-	float time3;                // Duration between hold-2 and sustain
-	float sustain_level;        // Sustain level
-	float release;              // Release
+	double attack_level;         // Attack level
+	double time1;                // Duration between attack and hold-1
+	double level1;               // Hold-1 level
+	double time2;                // Duration between hold-1 and hold-2
+	double level2;               // Hold-2 level
+	double time3;                // Duration between hold-2 and sustain
+	double sustain_level;        // Sustain level
+	double release;              // Release
 };
 
 class Arp {
 public:
 	Arp();
 
-	float pitch1;               // First pitch in semitone
-	float pitch2;               // Second pitch in semitone
-	float pitch3;               // Third pitch in semitone
-	float freq;                 // Pitch change frequency
-	int repeat;                 // Repeat point
+	double pitch1;               // First pitch in semitone
+	double pitch2;               // Second pitch in semitone
+	double pitch3;               // Third pitch in semitone
+	double freq;                 // Pitch change frequency
+	int repeat;                  // Repeat point
 };
 
 /**
@@ -92,9 +92,9 @@ class RingMod {
 public:
 	RingMod();
 
-	float waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
-	float detune;                           // Relative detune in semitone
-                                            // compared to the tone
+	double waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
+	double detune;                           // Relative detune in semitone
+                                             // compared to the tone
 };
 
 /**
@@ -104,9 +104,9 @@ class LFO {
 public:
 	LFO();
 
-	float freq;                 // LFO frequency
-	float delay;                // LFO progressive delay in second
-	float depth;                // LFO depth in semitone
+	double freq;                 // LFO frequency
+	double delay;                // LFO progressive delay in second
+	double depth;                // LFO depth in semitone
 };
 
 /**
@@ -123,7 +123,7 @@ public:
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
-	float port;                 // Portamento time in second
+	double port;                // Portamento time in second
 };
 
 } // ~namespace zynayumi

@@ -69,11 +69,11 @@ public:
 
 	// Keep track of the previous pitch for portamento. Negative means
 	// none.
-	float previous_pitch;
-	float last_pitch;
+	double previous_pitch;
+	double last_pitch;
 
-	const float lower_note_freq;
-	const float lower_note_freq_ym;
+	const double lower_note_freq;
+	const double lower_note_freq_ym;
 	const int sample_rate; // TODO: should be provided by the host
 	const int clock_rate;
 
@@ -103,11 +103,11 @@ public:
 
 	void print(int m) const;
 
-	float pitch2period(float pitch);
+	double pitch2period(double pitch);
 	// Same as pitch2period but for YM2149. The reason it is different
 	// has to do with ayumi emulation, don't understand it.
-	float pitch2period_ym(float pitch);
-	float smp2sec(unsigned long long smp_count);
+	double pitch2period_ym(double pitch);
+	double smp2sec(unsigned long long smp_count);
 
 private:
 
