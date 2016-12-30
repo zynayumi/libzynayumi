@@ -22,8 +22,8 @@ enum {
     Holds all data related to tone channel perameters
 */
 struct tone_channel {
-  int tone_period;
-  int tone_counter;
+  double tone_period;
+  double tone_counter;
   int tone;
   int t_off;
   int n_off;
@@ -100,7 +100,7 @@ void ayumi_set_pan(struct ayumi* ay, int index, double pan, int is_eqp);
     @param index index of the sound channel
     @param period tone period value [0...4095]
 */
-void ayumi_set_tone(struct ayumi* ay, int index, int period);
+void ayumi_set_tone(struct ayumi* ay, int index, double period);
 
 /** @brief
     @param ay pointer to the ayumi structure

@@ -48,7 +48,7 @@ static int update_tone(struct ayumi* ay, int index) {
   struct tone_channel* ch = &ay->channels[index];
   ch->tone_counter += 1;
   if (ch->tone_counter >= ch->tone_period) {
-    ch->tone_counter = 0;
+    ch->tone_counter -= ch->tone_period;
     ch->tone ^= 1;
   }
   return ch->tone;
@@ -163,9 +163,8 @@ void ayumi_set_pan(struct ayumi* ay, int index, double pan, int is_eqp) {
   }
 }
 
-void ayumi_set_tone(struct ayumi* ay, int index, int period) {
-  /* period &= 0xfff; */
-  ay->channels[index].tone_period = (period == 0) | period;
+void ayumi_set_tone(struct ayumi* ay, int index, double period) {
+  ay->channels[index].tone_period = period;
 }
 
 void ayumi_set_noise(struct ayumi* ay, int period) {
