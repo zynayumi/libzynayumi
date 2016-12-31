@@ -47,7 +47,6 @@ Engine::Engine(const Zynayumi& ref)
 	  _max_voices(1) {
 	ayumi_configure(&ay, 1, clock_rate, sample_rate);
 	ayumi_set_pan(&ay, 0, 0.5, 0);
-	ayumi_set_mixer(&ay, 0, 0, 1, 0);
 }
 
 void Engine::audio_process(float* left_out, float* right_out,
@@ -57,12 +56,18 @@ void Engine::audio_process(float* left_out, float* right_out,
 		for (Pitch2Voice::value_type& v : _voices)
 			v.second.update();
 
-		if (_voices.empty())
-			continue;
+		// Remove off voices
+		for (Pitch2Voice::iterator it = _voices.begin(); it != _voices.end();) {
+			if (not it->second.note_on and it->second.env_level == 0.0)
+				it = _voices.erase(it);
+			else ++it;
+		}
 
-		// Update ayumi state
-		ayumi_process(&ay);
-		ayumi_remove_dc(&ay);
+		if (not _voices.empty()) {
+			// Update ayumi state
+			ayumi_process(&ay);
+			ayumi_remove_dc(&ay);
+		}
 
 		// Update outputs
 		left_out[i] = (float) ay.left;
