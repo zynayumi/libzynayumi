@@ -86,7 +86,6 @@ private:
                                        // ring modulation sample
                                        // change
 	unsigned _ringmod_waveform_index;  // Current waveform index
-	double x;
 
 	double _actual_sustain_level;
 

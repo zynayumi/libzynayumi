@@ -34,7 +34,7 @@ Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
 	_pitch(pi), _fine_pitch(pi), _env_smp_count(0), _smp_count(0),
-	_ringmod_smp_count(0), _ringmod_waveform_index(0), x(0) {
+	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
 
 	// Tone
 	// TODO: support positive time
@@ -198,14 +198,17 @@ void Voice::update_ring() {
 
 	// Update _ringmod_smp_count and _ringmod_waveform_index
 	double ringmod_fine_pitch = _patch.ringmod.detune + _fine_pitch;
-	double waveform_period = _engine.pitch2period_ym(ringmod_fine_pitch);
+	double waveform_period = 2 * _engine.pitch2period_ym(ringmod_fine_pitch);
 
 	_ringmod_smp_count += _engine.ay.step * DECIMATE_FACTOR;
-	if (waveform_period <= _ringmod_smp_count)
+	// If it goes from very low pitch to very high pitch we migh need
+	// to remove waveform_period from _ringmod_smp_count more than
+	// once.
+	while (waveform_period <= _ringmod_smp_count)
 		_ringmod_smp_count -= waveform_period;
 	_ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
-		/ (/*0.5 * */ waveform_period);
-	// if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
-	// 	_ringmod_waveform_index =
-	// 		(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index;
+		/ (0.5 * waveform_period);
+	if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
+		_ringmod_waveform_index =
+			(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index;
 }
