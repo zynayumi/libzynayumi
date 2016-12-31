@@ -54,9 +54,9 @@ public:
  * Amplitude envelope. Durations are in second and levels are between
  * 0.0 and 1.0.
  */
-class Env {
+class AmpEnv {
 public:
-	Env();
+	AmpEnv();
 
 	double attack_level;         // Attack level
 	double time1;                // Duration between attack and hold-1
@@ -66,6 +66,20 @@ public:
 	double time3;                // Duration between hold-2 and sustain
 	double sustain_level;        // Sustain level
 	double release;              // Release
+};
+
+
+/**
+ * Pitch envelope. Durations are in second and pitches are in
+ * semitones.
+ */
+class PitchEnv {
+public:
+	PitchEnv();
+
+	double attack_pitch;         // Relative pitch of the attack
+	double time;                 // Duration to go from attack pitch
+                                 // and tone pitch
 };
 
 class Arp {
@@ -119,7 +133,8 @@ public:
 	PlayMode playmode;          // Legato or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
-	Env env;                    // Amplitude envelope
+	AmpEnv ampenv;              // Amplitude envelope
+	PitchEnv pitchenv;          // Pitch envelope
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO

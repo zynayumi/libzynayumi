@@ -66,7 +66,7 @@ void Voice::update() {
 }
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
-                                double x) const {
+                                 double x) const {
 	// assert(x1 <= x and x <= x2);
 	double a = (y2 - y1) / (x2 - x1);
 	double b = y1;
@@ -78,38 +78,38 @@ void Voice::update_env_level() {
 	double env_time = _engine.smp2sec(_env_smp_count);
 	double x1, y1, x2, y2;
 	if (note_on) {
-		double t1 = _patch.env.time1;
-		double t12 = t1 + _patch.env.time2;
-		double t123 = t12 + _patch.env.time3;
+		double t1 = _patch.ampenv.time1;
+		double t12 = t1 + _patch.ampenv.time2;
+		double t123 = t12 + _patch.ampenv.time3;
 		if (env_time <= t1) {
 			x1 = 0;
-			y1 = _patch.env.attack_level;
+			y1 = _patch.ampenv.attack_level;
 			x2 = t1;
-			y2 = _patch.env.level1;
+			y2 = _patch.ampenv.level1;
 		} else if (env_time <= t12) {
 			x1 = t1;
-			y1 = _patch.env.level1;
+			y1 = _patch.ampenv.level1;
 			x2 = t12;
-			y2 = _patch.env.level2;
+			y2 = _patch.ampenv.level2;
 		} else if (env_time <= t123) {
 			x1 = t12;
-			y1 = _patch.env.level2;
+			y1 = _patch.ampenv.level2;
 			x2 = t123;
-			y2 = _patch.env.sustain_level;
+			y2 = _patch.ampenv.sustain_level;
 		} else {
 			x1 = t123;
-			y1 = _patch.env.sustain_level;
+			y1 = _patch.ampenv.sustain_level;
 			x2 = x1 + 1;
 			y2 = y1;
 		}
 	} else {                    // Note off
-		if (env_time <= _patch.env.release) {
+		if (env_time <= _patch.ampenv.release) {
 			x1 = 0;
 			y1 = _actual_sustain_level;
-			x2 = _patch.env.release;
+			x2 = _patch.ampenv.release;
 			y2 = 0;
 		} else {
-			x1 = _patch.env.release;
+			x1 = _patch.ampenv.release;
 			y1 = 0;
 			x2 = x1 + 1;
 			y2 = 0;

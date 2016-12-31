@@ -34,14 +34,14 @@ Zynayumi::Zynayumi() : engine(*this) {
 	// Noise
 	patch.noise.time = 0;
 	// Env
-	patch.env.attack_level = 1;
-	// patch.env.time1 = 1;
-	// patch.env.level1 = 0;
-	// patch.env.time2 = 1;
-	// patch.env.level2 = 0.5;
-	// patch.env.time3 = 1;
-	// patch.env.sustain_level = 0.25;
-	patch.env.release = 5;
+	patch.ampenv.attack_level = 1;
+	// patch.ampenv.time1 = 1;
+	// patch.ampenv.level1 = 0;
+	// patch.ampenv.time2 = 1;
+	// patch.ampenv.level2 = 0.5;
+	// patch.ampenv.time3 = 1;
+	// patch.ampenv.sustain_level = 0.25;
+	patch.ampenv.release = 5;
 	// Arp
 	patch.arp.freq = 20;
 	// LFO

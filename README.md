@@ -11,7 +11,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - Pitch Envelope (not implemented)
 - Portamento
 - Arpeggio (only chord mode for now)
-- Ring Modulation (SID and more) (not implemented)
+- Ring Modulation (SID and more)
 - No GUI
 
 ## Install

@@ -61,8 +61,8 @@ public:
 	unsigned char pitch;
 	unsigned char velocity;
 	bool note_on;
-	double env_level;           // Current envelope level, taking into
-	                            // account velocity
+	double env_level;           // Current amplitude envelope level,
+	                            // taking into account velocity
 	double level;               // Current level, taking into account
                                 // envelope, velocity and ring
                                 // modulation
