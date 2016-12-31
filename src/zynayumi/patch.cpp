@@ -28,7 +28,7 @@ namespace zynayumi {
 
 Tone::Tone() : time(-1), detune(0) {}
 	
-Noise::Noise() : time(0), freq(1000) {}
+Noise::Noise() : time(0), period(1) {}
 
 AmpEnv::AmpEnv() : attack_level(1),
                    time1(0), level1(1),

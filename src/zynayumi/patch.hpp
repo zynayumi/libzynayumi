@@ -47,7 +47,7 @@ public:
 	Noise();
 
 	double time;                 // Noise duration in second, inf if negative
-	double freq;                 // Noise frequency
+	int period;                  // Noise period [0..31]
 };
 
 /**

@@ -71,6 +71,9 @@ private:
 	double _note_pitch;                // Initial note pitch
 	double _final_pitch;               // Final pitch after all pitch updates
 
+	bool _t_off;                       // True iff the tone is off
+	bool _n_off;                       // True iff the noise is off
+
 	// Pitch envelope
 	double _relative_pitchenv_pitch;   // Relative pitch envelope pitch
 
@@ -84,7 +87,8 @@ private:
 	double _relative_arp_pitch;        // Relative Arpeggio pitch
 
 	unsigned _env_smp_count;           // Number of samples since note on or off
-	unsigned _smp_count;               // Number of samples since note on
+	unsigned _smp_count;               // Number of samples since voice on
+	double _time;                      // Time in second since voice on
 
 	// Final level
 	double _final_level;               // Current level, taking into account
@@ -101,6 +105,8 @@ private:
 
 	double linear_interpolate(double x1, double y1,
 	                          double x2, double y2, double x) const;
+	void update_tone();
+	void update_noise();
 	void update_ampenv();
 	void update_pitchenv();
 	void update_arp();

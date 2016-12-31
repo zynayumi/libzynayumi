@@ -8,7 +8,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - DSSI, VST
 - Vibrato
 - Amplitude Envelope
-- Pitch Envelope (not implemented)
+- Pitch Envelope
 - Portamento
 - Arpeggio (only chord mode for now)
 - Ring Modulation (SID and more)

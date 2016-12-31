@@ -35,15 +35,6 @@ Voice::Voice(Engine& engine,
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
 	_note_pitch(pi), _env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
-
-	// Tone
-	bool t_off = _patch.tone.time == 0;
-
-	// Noise
-	bool n_off = _patch.noise.time == 0;
-
-	// Ayumi mixer
-	ayumi_set_mixer(&_engine.ay, 0, t_off, n_off, 0);
 }
 
 void Voice::set_note_off() {
@@ -53,6 +44,14 @@ void Voice::set_note_off() {
 }
 
 void Voice::update() {
+	// Update _time
+	_time = _engine.smp2sec(_smp_count);
+
+	// Update tone and noise
+	update_tone();
+	update_noise();
+	ayumi_set_mixer(&_engine.ay, 0, _t_off, _n_off, 0);
+
 	// Update pitch
 	update_pitchenv();
 	update_port();
@@ -66,7 +65,7 @@ void Voice::update() {
 	update_ring();
 	ayumi_set_volume(&_engine.ay, 0, (int)(_final_level * 15));
 
-	// Increment sample count
+	// Increment sample count since voice on
 	_smp_count++;
 }
 
@@ -78,26 +77,33 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 	return a * (x - x1) + b;
 }
 
+void Voice::update_tone() {
+	_t_off = 0 <= _patch.tone.time ? _patch.tone.time < _time : false;
+}
+
+void Voice::update_noise() {
+	_n_off = 0 <= _patch.noise.time ? _patch.noise.time < _time : false;
+}
+
 void Voice::update_pitchenv() {
-	double time = _engine.smp2sec(_smp_count);
 	double apitch = _patch.pitchenv.attack_pitch;
 	double ptime = _patch.pitchenv.time;
-	_relative_pitchenv_pitch = _patch.pitchenv.time < time ? 0.0
-		: linear_interpolate(0, apitch, ptime, 0.0, time);
+	_relative_pitchenv_pitch = _patch.pitchenv.time < _time ? 0.0
+		: linear_interpolate(0, apitch, ptime, 0.0, _time);
 }
 
 void Voice::update_port() {
-	double time = _engine.smp2sec(_smp_count);
 	_relative_port_pitch =
-		(0 <= _engine.previous_pitch and time < _patch.port ?
+		(0 <= _engine.previous_pitch and _time < _patch.port ?
 		 linear_interpolate(0, _engine.previous_pitch - _note_pitch,
-		                    _patch.port, 0, time)
+		                    _patch.port, 0, _time)
 		 : 0.0);
 	_engine.last_pitch = _relative_port_pitch + _note_pitch;
 }
 
 void Voice::calculate_final_pitch() {
 	_final_pitch = _note_pitch
+		+ _patch.tone.detune
 		+ _relative_pitchenv_pitch
 		+ _relative_port_pitch
 		+ _relative_lfo_pitch
@@ -105,10 +111,9 @@ void Voice::calculate_final_pitch() {
 }
 
 void Voice::update_lfo() {
-	double time = _engine.smp2sec(_smp_count);
-	double depth = _patch.lfo.delay < time ? _patch.lfo.depth
-		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, time);
-	_relative_lfo_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
+	double depth = _patch.lfo.delay < _time ? _patch.lfo.depth
+		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, _time);
+	_relative_lfo_pitch = depth * sin(2*M_PI*_time*_patch.lfo.freq);
 }
 
 void Voice::update_arp()
