@@ -58,28 +58,38 @@ public:
 	// Attributes    //
 	///////////////////
 
-	unsigned char pitch;
-	unsigned char velocity;
+	unsigned char pitch;        // Note pitch
+	unsigned char velocity;     // Note velocity
 	bool note_on;
-	double env_level;           // Current amplitude envelope level,
-	                            // taking into account velocity
-	double level;               // Current level, taking into account
-                                // envelope, velocity and ring
-                                // modulation
+	double env_level;           // Current level, taking into account
+	                            // amplitude envelope and velocity
 
 private:
 	Engine& _engine;
 	const Patch& _patch;
 
-	unsigned char _pitch;              // Pitch possibly modulated by arp
-	double _fine_pitch;                // Like _pitch but continuous
+	double _note_pitch;                // Initial note pitch
+	double _final_pitch;               // Final pitch after all pitch updates
+
+	// Pitch envelope
+	double _relative_pitchenv_pitch;   // Relative pitch envelope pitch
 
 	// Portamento
-	double _port_relative_pitch;       // Relative portamento relative pitch
-	double _port_fine_pitch;           // Absolute portamento pitch
+	double _relative_port_pitch;       // Relative portamento pitch
+
+	// LFO
+	double _relative_lfo_pitch;        // Relative LFO pitch
+
+	// Arpeggio
+	double _relative_arp_pitch;        // Relative Arpeggio pitch
 
 	unsigned _env_smp_count;           // Number of samples since note on or off
 	unsigned _smp_count;               // Number of samples since note on
+
+	// Final level
+	double _final_level;               // Current level, taking into account
+                                       // amplitude envelope, velocity and
+                                       // ring modulation
 
 	// Ring Mod
 	double _ringmod_smp_count;         // Number of samples since last
@@ -91,10 +101,12 @@ private:
 
 	double linear_interpolate(double x1, double y1,
 	                          double x2, double y2, double x) const;
-	void update_env_level();
+	void update_ampenv();
+	void update_pitchenv();
 	void update_arp();
 	void update_lfo();
 	void update_port();
+	void calculate_final_pitch();
 	void update_ring();
 };
 

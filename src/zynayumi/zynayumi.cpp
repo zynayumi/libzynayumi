@@ -56,6 +56,9 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.ringmod.waveform[2] = 0.8;
 	patch.ringmod.waveform[3] = 0.7;
 	patch.ringmod.detune = 0.0;
+	// Pitch envelope
+	patch.pitchenv.attack_pitch = 24;
+	patch.pitchenv.time = 2;
 }
 
 Zynayumi::~Zynayumi() {}

@@ -33,13 +33,11 @@ using namespace zynayumi;
 Voice::Voice(Engine& engine,
              const Patch& pa, unsigned char pi, unsigned char vel) :
 	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
-	_pitch(pi), _fine_pitch(pi), _env_smp_count(0), _smp_count(0),
+	_note_pitch(pi), _env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
 
 	// Tone
-	// TODO: support positive time
 	bool t_off = _patch.tone.time == 0;
-	ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_fine_pitch));
 
 	// Noise
 	bool n_off = _patch.noise.time == 0;
@@ -55,11 +53,18 @@ void Voice::set_note_off() {
 }
 
 void Voice::update() {
-	update_env_level();
-	update_arp();
-	update_lfo();
+	// Update pitch
+	update_pitchenv();
 	update_port();
+	update_lfo();
+	update_arp();
+	calculate_final_pitch();
+	ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_final_pitch));
+
+	// Update level
+	update_ampenv();
 	update_ring();
+	ayumi_set_volume(&_engine.ay, 0, (int)(_final_level * 15));
 
 	// Increment sample count
 	_smp_count++;
@@ -73,7 +78,72 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 	return a * (x - x1) + b;
 }
 
-void Voice::update_env_level() {
+void Voice::update_pitchenv() {
+	double time = _engine.smp2sec(_smp_count);
+	double apitch = _patch.pitchenv.attack_pitch;
+	double ptime = _patch.pitchenv.time;
+	_relative_pitchenv_pitch = _patch.pitchenv.time < time ? 0.0
+		: linear_interpolate(0, apitch, ptime, 0.0, time);
+}
+
+void Voice::update_port() {
+	double time = _engine.smp2sec(_smp_count);
+	_relative_port_pitch =
+		(0 <= _engine.previous_pitch and time < _patch.port ?
+		 linear_interpolate(0, _engine.previous_pitch - _note_pitch,
+		                    _patch.port, 0, time)
+		 : 0.0);
+	_engine.last_pitch = _relative_port_pitch + _note_pitch;
+}
+
+void Voice::calculate_final_pitch() {
+	_final_pitch = _note_pitch
+		+ _relative_pitchenv_pitch
+		+ _relative_port_pitch
+		+ _relative_lfo_pitch
+		+ _relative_arp_pitch;
+}
+
+void Voice::update_lfo() {
+	double time = _engine.smp2sec(_smp_count);
+	double depth = _patch.lfo.delay < time ? _patch.lfo.depth
+		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, time);
+	_relative_lfo_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
+}
+
+void Voice::update_arp()
+{
+	// Find the pitch index
+	auto count2index = [&]() -> size_t {
+		size_t index = _smp_count * _patch.arp.freq / _engine.sample_rate;
+		index %= _engine.pitches.size();
+		return index;
+	};
+	// Find the pitch
+	auto count2pitch = [&](bool down) -> unsigned char {
+		size_t index = count2index();
+		if (down)
+			index = (_engine.pitches.size() - 1) - index;
+		return *std::next(_engine.pitches.begin(), index);
+	};
+
+	switch (_patch.playmode) {
+	case PlayMode::Legato:
+		break;
+	case PlayMode::UpArp:
+		_relative_arp_pitch =
+			1 < _engine.pitches.size() ? count2pitch(false) - _note_pitch : 0.0;
+		break;
+	case PlayMode::DownArp:
+		_relative_arp_pitch =
+			1 < _engine.pitches.size() ? count2pitch(true) - _note_pitch : 0.0;
+		break;
+	default:
+		std::cerr << "Not implemented" << std::endl;
+	}
+}
+
+void Voice::update_ampenv() {
 	// Determine portion of the envelope to interpolate
 	double env_time = _engine.smp2sec(_env_smp_count);
 	double x1, y1, x2, y2;
@@ -122,83 +192,18 @@ void Voice::update_env_level() {
 	// Adjust according to key velocity
 	env_level *= (double)velocity / 127.0;
 
-	// Update the ayumi volume
-	ayumi_set_volume(&_engine.ay, 0, (int)(env_level * 15));
-
 	// Increment the envelope sample count
 	_env_smp_count++;
-}
-
-void Voice::update_arp()
-{
-	// Find the pitch index
-	auto count2index = [&]() -> size_t {
-		size_t index = _smp_count / (_engine.sample_rate / _patch.arp.freq);
-		index %= _engine.pitches.size();
-		return index;
-	};
-	// Find the pitch
-	auto count2pitch = [&](bool down) -> unsigned char {
-		size_t index = count2index();
-		if (down)
-			index = (_engine.pitches.size() - 1) - index;
-		return *std::next(_engine.pitches.begin(), index);
-	};
-
-	switch (_patch.playmode) {
-	case PlayMode::Legato:
-		break;
-	case PlayMode::UpArp:
-		if (1 < _engine.pitches.size()) {
-			_pitch = count2pitch(false);
-			ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_pitch));
-		}
-		break;
-	case PlayMode::DownArp:
-		if (1 < _engine.pitches.size()) {
-			_pitch = count2pitch(true);
-			ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_pitch));
-		}
-		break;
-	default:
-		std::cerr << "Not implemented" << std::endl;
-	}
-}
-
-void Voice::update_lfo() {
-	double time = _engine.smp2sec(_smp_count);
-	double depth = _patch.lfo.delay < time ? _patch.lfo.depth
-		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, time);
-	double relative_fine_pitch = depth * sin(2*M_PI*time*_patch.lfo.freq);
-	_fine_pitch = _pitch + relative_fine_pitch;
-	ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_fine_pitch));
-}
-
-void Voice::update_port() {
-	double time = _engine.smp2sec(_smp_count);
-	if (0 <= _engine.previous_pitch and time < _patch.port) {
-		_port_relative_pitch =
-			linear_interpolate(0, _engine.previous_pitch - pitch,
-			                   _patch.port, 0, time);
-		double _port_fine_pitch = _fine_pitch + _port_relative_pitch;
-		ayumi_set_tone(&_engine.ay, 0,
-		               _engine.pitch2period_ym(_port_fine_pitch));
-
-		_engine.last_pitch = _port_relative_pitch + pitch;
-	}
 }
 
 void Voice::update_ring() {
 	// Get the waveform value
 	double waveform_val = _patch.ringmod.waveform[_ringmod_waveform_index];
-	level = waveform_val * env_level;
-
-	// Update the ayumi volume
-	ayumi_set_volume(&_engine.ay, 0, (int)(level * 15));
+	_final_level = waveform_val * env_level;
 
 	// Update _ringmod_smp_count and _ringmod_waveform_index
-	double ringmod_fine_pitch = _patch.ringmod.detune + _fine_pitch;
-	double waveform_period = 2 * _engine.pitch2period_ym(ringmod_fine_pitch);
+	double ringmod_pitch = _patch.ringmod.detune + _final_pitch;
+	double waveform_period = 2 * _engine.pitch2period_ym(ringmod_pitch);
 
 	_ringmod_smp_count += _engine.ay.step * DECIMATE_FACTOR;
 	// If it goes from very low pitch to very high pitch we migh need
