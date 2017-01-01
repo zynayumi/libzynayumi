@@ -20,26 +20,43 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [ ] Support the 3 voices of the YM2149 and map midi channel to them
 - [ ] LV2
 
+## Requirements
+
+- Boost (version 1.54 minimum) http://www.boost.org/
+- DSSI SDK http://dssi.sourceforge.net/ (optional)
+- VST SDK http://www.steinberg.net/en/company/developers.html (optional)
+
 ## Install
 
-1. Fetch ayumi-lib
-```bash
-$ git submodule init
-$ git submodule update
-```
-2. Create build directory and run cmake
+1. Create build directory and run cmake
 ```bash
 $ mkdir build
 $ cd build
 $ cmake ..
 ```
-3. Compile
+2. Compile
 ```bash
 $ make
 ```
-4. Install
+3. Install
 ```bash
 $ sudo make install
+```
+
+For VST support, download the VST SDK
+(https://www.steinberg.net/en/company/developers.html) and unzip it
+directly under the project root directory.
+
+Under GNU/Linux 64-bit, you may also need to comment out a bit of code
+in
+
+```
+pluginterfaces/vst2.x/aeffect.h
+```
+
+like all definitions of VSTCALLBACK except
+```
+#define VSTCALLBACK
 ```
 
 ## Author
