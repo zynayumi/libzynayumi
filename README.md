@@ -5,14 +5,20 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 
 ## Features
 
-- DSSI, VST
-- Vibrato
 - Amplitude Envelope
 - Pitch Envelope
 - Portamento
+- Vibrato
 - Arpeggio (only chord mode for now)
 - Ring Modulation (SID and more)
+- VST, DSSI
 - No GUI
+
+## TODO
+
+- [ ] Expose parameters to the host
+- [ ] Support the 3 voices of the YM2149 and map midi channel to them
+- [ ] LV2
 
 ## Install
 
