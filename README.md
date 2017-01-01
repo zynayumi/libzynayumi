@@ -5,14 +5,14 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 
 ## Features
 
-- Amplitude Envelope
-- Pitch Envelope
-- Portamento
-- Vibrato
-- Arpeggio (only chord mode for now)
-- Ring Modulation (SID and more)
-- VST, DSSI
-- No GUI
+- [X] Amplitude Envelope
+- [X] Pitch Envelope
+- [X] Portamento
+- [X] Vibrato
+- [X] Arpeggio (only chord mode for now)
+- [X] Ring Modulation (SID and more)
+- [X] VST, DSSI
+- [ ] GUI (please help if you want one, I am no GUI guy)
 
 ## TODO
 
