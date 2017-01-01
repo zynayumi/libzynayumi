@@ -40,10 +40,10 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.ampenv.attack_level = 1;
 	patch.ampenv.time1 = 2;
 	patch.ampenv.level1 = 0;
-	patch.ampenv.time2 = 1;
-	patch.ampenv.level2 = 0.2;
+	// patch.ampenv.time2 = 1;
+	// patch.ampenv.level2 = 0.2;
 	// patch.ampenv.time3 = 1;
-	// patch.ampenv.sustain_level = 0.25;
+	patch.ampenv.sustain_level = 0;
 	patch.ampenv.release = 5;
 	// Arp
 	patch.arp.freq = 20;
@@ -52,7 +52,7 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.lfo.delay = 4;
 	// patch.lfo.depth = 1;
 	// Portamento
-	patch.port = 0.0;
+	patch.port = 0.5;
 	// Ring modulation
 	patch.ringmod.waveform[0] = 0.7;
 	patch.ringmod.waveform[1] = 0.8;

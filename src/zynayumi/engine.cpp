@@ -23,6 +23,7 @@
 ****************************************************************************/
 
 #include <iostream>
+#include <assert.h>
 
 #include <boost/range/algorithm/min_element.hpp>
 
@@ -83,17 +84,30 @@ void Engine::noteOn_process(unsigned char channel,
 
 	pitches.insert(pitch);
 
-	// If all voices are used then free one
-	if ((size_t)_max_voices <= _voices.size()) {
-		// Select voice with the lowest velocity
-		Pitch2Voice::const_iterator it =
-			boost::min_element(_voices, [](const Pitch2Voice::value_type& v1,
-			                               const Pitch2Voice::value_type& v2)
-			                   { return v1.second.env_level < v2.second.env_level; });
-		_voices.erase(it);
+	// If no voice
+	if (_voices.empty()) {
+		_voices.emplace(pitch, Voice(*this, _zynayumi.patch, pitch, velocity));
+		return;
 	}
 
-	_voices.emplace(pitch, Voice(*this, _zynayumi.patch, pitch, velocity));
+	// If we're here there is at least a voice on
+	switch(_zynayumi.patch.playmode) {
+	case PlayMode::Legato:
+		if ((size_t)_max_voices <= _voices.size())
+			free_voice();
+		add_voice(_zynayumi.patch, pitch, velocity);
+		break;
+	case PlayMode::UpArp:
+	case PlayMode::DownArp:
+		if (pitches.size() == 1) {
+			if ((size_t)_max_voices <= _voices.size())
+				free_voice();
+			add_voice(_zynayumi.patch, pitch, velocity);
+		};
+		break;
+	default:
+		break;
+	}
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
@@ -103,6 +117,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		          << std::endl;
 	};
 
+	// Remove the corresponding pitch
 	auto pit = pitches.find(pitch);
 	if (pit != pitches.end()) {
 		pitches.erase(pit);
@@ -111,12 +126,27 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		return;
 	}
 
-	auto vit = _voices.find(pitch);
-	if (vit != _voices.end())
-		vit->second.set_note_off();
-	else {
-		print_err();
-		return;
+	// If we're here there is at least a voice on
+	switch(_zynayumi.patch.playmode) {
+	case PlayMode::Legato: {
+		// Set the corresponding voice off, if it hasn't been removed
+		// by a new voice.
+		auto vit = _voices.find(pitch);
+		if (vit != _voices.end())
+			vit->second.set_note_off();
+		break;
+	}
+	case PlayMode::UpArp:
+	case PlayMode::DownArp:
+		if (pitches.empty()) {
+			assert(_voices.size() == 1);
+			_voices.begin()->second.set_note_off();
+		} else if (pitches.size() == 1) {
+			_voices.begin()->second.pitch = pitch;
+		}
+		break;
+	default:
+		break;
 	}
 }
 
@@ -139,6 +169,20 @@ double Engine::pitch2period_ym(double pitch)  {
 
 double Engine::smp2sec(unsigned long long smp_count) {
 	return (double)smp_count / (double)sample_rate;
+}
+
+void Engine::add_voice(const Patch& patch,
+                       unsigned char pitch, unsigned char velocity) {
+	_voices.emplace(pitch, Voice(*this, _zynayumi.patch, pitch, velocity));
+}
+	
+void Engine::free_voice() {
+	// Select voice with the lowest velocity
+	Pitch2Voice::const_iterator it =
+		boost::min_element(_voices, [](const Pitch2Voice::value_type& v1,
+		                               const Pitch2Voice::value_type& v2)
+		                   { return v1.second.env_level < v2.second.env_level; });
+	_voices.erase(it);
 }
 
 } // ~namespace zynayumi

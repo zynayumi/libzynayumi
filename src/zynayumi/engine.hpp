@@ -111,6 +111,10 @@ public:
 
 private:
 
+	void add_voice(const Patch& patch,
+	               unsigned char pitch, unsigned char velocity);
+	void free_voice();
+
 	const Zynayumi& _zynayumi;
 
 	// Map pitch (possibly several times the same) to a voice
