@@ -30,7 +30,7 @@ using namespace zynayumi;
 Zynayumi::Zynayumi() : engine(*this) {
 	// Tweak patch for testing
 	// PlayMode
-	patch.playmode = PlayMode::DownArp;
+	patch.playmode = PlayMode::Legato;
 	// Tone
 	patch.tone.time = -1;
 	// Noise
@@ -46,7 +46,11 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.ampenv.sustain_level = 0;
 	patch.ampenv.release = 5;
 	// Arp
-	patch.arp.freq = 20;
+	patch.arp.pitch1 = 0;
+	patch.arp.pitch2 = 7;
+	patch.arp.pitch3 = 12;
+	patch.arp.freq = 10;
+	patch.arp.repeat = 2;
 	// LFO
 	patch.lfo.freq = 8;
 	patch.lfo.delay = 4;

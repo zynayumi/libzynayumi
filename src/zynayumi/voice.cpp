@@ -119,14 +119,15 @@ void Voice::update_lfo() {
 void Voice::update_arp()
 {
 	// Find the pitch index
-	auto count2index = [&]() -> size_t {
+	auto count2index = [&](size_t repeat, size_t size) -> size_t {
 		size_t index = _smp_count * _patch.arp.freq / _engine.sample_rate;
-		index %= _engine.pitches.size();
+		if (size <= index)
+			index = repeat + (index % (size - repeat));
 		return index;
 	};
 	// Find the pitch
 	auto count2pitch = [&](bool down) -> unsigned char {
-		size_t index = count2index();
+		size_t index = count2index(0, _engine.pitches.size());
 		if (down)
 			index = (_engine.pitches.size() - 1) - index;
 		return *std::next(_engine.pitches.begin(), index);
@@ -134,6 +135,11 @@ void Voice::update_arp()
 
 	switch (_patch.playmode) {
 	case PlayMode::Legato:
+		switch(count2index(_patch.arp.repeat, 3)) {
+		case 0: _relative_arp_pitch = _patch.arp.pitch1; break;
+		case 1: _relative_arp_pitch = _patch.arp.pitch2; break;
+		case 2: _relative_arp_pitch = _patch.arp.pitch3; break;
+		}
 		break;
 	case PlayMode::UpArp:
 		_relative_arp_pitch =
