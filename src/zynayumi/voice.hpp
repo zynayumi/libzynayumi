@@ -53,13 +53,14 @@ public:
 	// Modifiers
 	void set_note_off();
 	void update();              // Update the voice state
+	void set_note_pitch(unsigned char pitch);
 
 	///////////////////
 	// Attributes    //
 	///////////////////
 
 	int channel;                // YM2149 channel
-	unsigned char pitch;        // Note pitch
+	// unsigned char pitch;        // Note pitch
 	unsigned char velocity;     // Note velocity
 	bool note_on;
 	double env_level;           // Current level, taking into account
@@ -85,6 +86,8 @@ private:
 	double _relative_lfo_pitch;        // Relative LFO pitch
 
 	// Arpeggio
+	unsigned _arp_step;                // Every time it increases the
+	                                   // arp pitch changes
 	double _relative_arp_pitch;        // Relative Arpeggio pitch
 
 	unsigned _env_smp_count;           // Number of samples since note on or off

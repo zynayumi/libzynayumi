@@ -24,6 +24,7 @@
 
 #include <iostream>
 #include <cmath>
+#include <random>
 
 #include "voice.hpp"
 #include "engine.hpp"
@@ -32,11 +33,11 @@ using namespace zynayumi;
 
 Voice::Voice(Engine& engine, const Patch& pa,
              unsigned char ch, unsigned char pi, unsigned char vel) :
-	channel(ch), pitch(pi), velocity(vel), note_on(true),
+	channel(ch), velocity(vel), note_on(true),
 	_engine(engine), _patch(pa),
-	_note_pitch(pi), _env_smp_count(0), _smp_count(0),
-	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
-}
+	_note_pitch(pi), _relative_arp_pitch(0),
+	_env_smp_count(0), _smp_count(0),
+	_ringmod_smp_count(0), _ringmod_waveform_index(0) {}
 
 void Voice::set_note_off() {
 	note_on = false;
@@ -68,6 +69,10 @@ void Voice::update() {
 
 	// Increment sample count since voice on
 	_smp_count++;
+}
+
+void Voice::set_note_pitch(unsigned char pitch) {
+	_note_pitch = pitch;
 }
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
@@ -119,18 +124,37 @@ void Voice::update_lfo() {
 
 void Voice::update_arp()
 {
-	// Find the pitch index
-	auto count2index = [&](size_t repeat, size_t size) -> size_t {
-		size_t index = _smp_count * _patch.arp.freq / _engine.sample_rate;
+	unsigned step = _smp_count * _patch.arp.freq / _engine.sample_rate;
+	// bool step_change = step != _arp_step;
+	_arp_step = step;
+
+	auto count2index = [&](size_t repeat, size_t size) -> unsigned {
+		unsigned index = _arp_step;
 		if (size <= index)
 			index = repeat + (index % (size - repeat));
 		return index;
 	};
 	// Find the pitch
 	auto count2pitch = [&](bool down) -> unsigned char {
-		size_t index = count2index(0, _engine.pitches.size());
+		unsigned index = count2index(0, _engine.pitches.size());
 		if (down)
 			index = (_engine.pitches.size() - 1) - index;
+		return *std::next(_engine.pitches.begin(), index);
+	};
+	// Like the above but return a random index and pitch
+	auto indexhash = [&](unsigned a) -> unsigned {
+		a = (a ^ 61) ^ (a >> 16);
+		a = a + (a << 3);
+		a = a ^ (a >> 4);
+		a = a * 0x27d4eb2d;
+		a = a ^ (a >> 15);
+		return a;
+	};
+	auto count2rndindex = [&](size_t size) -> unsigned {
+		return indexhash(_arp_step) % size;
+	};
+	auto count2rndpitch = [&]() -> unsigned char {
+		unsigned index = count2rndindex(_engine.pitches.size());
 		return *std::next(_engine.pitches.begin(), index);
 	};
 
@@ -144,14 +168,17 @@ void Voice::update_arp()
 		}
 		break;
 	case PlayMode::UpArp:
-		_relative_arp_pitch =
-			1 < _engine.pitches.size() ? count2pitch(false) - _note_pitch : 0.0;
+		_relative_arp_pitch = 1 < _engine.pitches.size() ?
+			count2pitch(false) - _note_pitch : 0.0;
 		break;
 	case PlayMode::DownArp:
-		_relative_arp_pitch =
-			1 < _engine.pitches.size() ? count2pitch(true) - _note_pitch : 0.0;
+		_relative_arp_pitch = 1 < _engine.pitches.size() ?
+			count2pitch(true) - _note_pitch : 0.0;
 		break;
 	case PlayMode::RndArp:
+		_relative_arp_pitch = 1 < _engine.pitches.size() ?
+			count2rndpitch() - _note_pitch : 0.0;
+		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;
 	}

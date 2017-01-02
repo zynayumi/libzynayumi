@@ -107,8 +107,7 @@ void Engine::noteOn_process(unsigned char channel,
 	case PlayMode::DownArp:
 	case PlayMode::RndArp:
 		if (pitches.size() == 1) {
-			if ((size_t)_max_voices <= _voices.size())
-				free_voice();
+			free_voice();
 			add_voice(pitch, velocity);
 		};
 		break;
@@ -147,11 +146,12 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	}
 	case PlayMode::UpArp:
 	case PlayMode::DownArp:
+	case PlayMode::RndArp:
 		if (pitches.empty()) {
 			assert(_voices.size() == 1);
 			_voices.begin()->second.set_note_off();
 		} else if (pitches.size() == 1) {
-			_voices.begin()->second.pitch = pitch;
+			_voices.begin()->second.set_note_pitch(*pitches.begin());
 		}
 		break;
 	default:
