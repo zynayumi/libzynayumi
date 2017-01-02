@@ -17,6 +17,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 ## TODO
 
 - [ ] Expose parameters to the host
+- [ ] Define MIDI control for each parameter
 - [ ] LV2
 
 ## Requirements
