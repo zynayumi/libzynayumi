@@ -44,6 +44,6 @@ RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0}, detune(0) {}
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
-Patch::Patch() : playmode(PlayMode::Legato), port(0) {}
+Patch::Patch() : playmode(PlayMode::Mono), port(0) {}
 
 } // ~namespace zynayumi

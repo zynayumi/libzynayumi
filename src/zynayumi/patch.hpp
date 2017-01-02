@@ -28,7 +28,8 @@
 namespace zynayumi {
 
 enum class PlayMode {
-	Legato,
+	Mono,
+	Poly,
 	UpArp,
 	DownArp,
 	RndArp                      // Not implemented
@@ -130,7 +131,7 @@ class Patch {
 public:
 	Patch();
 
-	PlayMode playmode;          // Legato or arp
+	PlayMode playmode;          // Polyphonic, monophonic or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	AmpEnv ampenv;              // Amplitude envelope

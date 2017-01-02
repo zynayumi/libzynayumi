@@ -28,6 +28,7 @@
 #include <cmath>
 #include <map>
 #include <set>
+#include <cstdlib>
 
 #include "voice.hpp"
 
@@ -111,8 +112,8 @@ public:
 
 private:
 
-	void add_voice(const Patch& patch,
-	               unsigned char pitch, unsigned char velocity);
+	int select_ym_channel() const;
+	void add_voice(unsigned char pitch, unsigned char velocity);
 	void free_voice();
 
 	const Zynayumi& _zynayumi;

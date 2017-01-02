@@ -30,9 +30,10 @@
 
 using namespace zynayumi;
 
-Voice::Voice(Engine& engine,
-             const Patch& pa, unsigned char pi, unsigned char vel) :
-	pitch(pi), velocity(vel), note_on(true), _engine(engine), _patch(pa),
+Voice::Voice(Engine& engine, const Patch& pa,
+             unsigned char ch, unsigned char pi, unsigned char vel) :
+	channel(ch), pitch(pi), velocity(vel), note_on(true),
+	_engine(engine), _patch(pa),
 	_note_pitch(pi), _env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(0), _ringmod_waveform_index(0) {
 }
@@ -50,7 +51,7 @@ void Voice::update() {
 	// Update tone and noise
 	update_tone();
 	update_noise();
-	ayumi_set_mixer(&_engine.ay, 0, _t_off, _n_off, 0);
+	ayumi_set_mixer(&_engine.ay, channel, _t_off, _n_off, 0);
 
 	// Update pitch
 	update_pitchenv();
@@ -58,12 +59,12 @@ void Voice::update() {
 	update_lfo();
 	update_arp();
 	calculate_final_pitch();
-	ayumi_set_tone(&_engine.ay, 0, _engine.pitch2period_ym(_final_pitch));
+	ayumi_set_tone(&_engine.ay, channel, _engine.pitch2period_ym(_final_pitch));
 
 	// Update level
 	update_ampenv();
 	update_ring();
-	ayumi_set_volume(&_engine.ay, 0, (int)(_final_level * 15));
+	ayumi_set_volume(&_engine.ay, channel, (int)(_final_level * 15));
 
 	// Increment sample count since voice on
 	_smp_count++;
@@ -134,7 +135,8 @@ void Voice::update_arp()
 	};
 
 	switch (_patch.playmode) {
-	case PlayMode::Legato:
+	case PlayMode::Mono:
+	case PlayMode::Poly:
 		switch(count2index(_patch.arp.repeat, 3)) {
 		case 0: _relative_arp_pitch = _patch.arp.pitch1; break;
 		case 1: _relative_arp_pitch = _patch.arp.pitch2; break;
@@ -149,6 +151,7 @@ void Voice::update_arp()
 		_relative_arp_pitch =
 			1 < _engine.pitches.size() ? count2pitch(true) - _note_pitch : 0.0;
 		break;
+	case PlayMode::RndArp:
 	default:
 		std::cerr << "Not implemented" << std::endl;
 	}

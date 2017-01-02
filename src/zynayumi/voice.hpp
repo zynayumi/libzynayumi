@@ -43,8 +43,8 @@ public:
 	// Constructors/descructors    //
 	/////////////////////////////////
 
-	Voice(Engine& engine,
-	      const Patch& patch, unsigned char pitch, unsigned char velocity);
+	Voice(Engine& engine, const Patch& patch,
+	      unsigned char channel, unsigned char pitch, unsigned char velocity);
 
 	////////////////
 	// Methods    //
@@ -58,6 +58,7 @@ public:
 	// Attributes    //
 	///////////////////
 
+	int channel;                // YM2149 channel
 	unsigned char pitch;        // Note pitch
 	unsigned char velocity;     // Note velocity
 	bool note_on;

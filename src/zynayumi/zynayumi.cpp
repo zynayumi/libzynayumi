@@ -30,11 +30,11 @@ using namespace zynayumi;
 Zynayumi::Zynayumi() : engine(*this) {
 	// Tweak patch for testing
 	// PlayMode
-	patch.playmode = PlayMode::Legato;
+	patch.playmode = PlayMode::Poly;
 	// Tone
 	patch.tone.time = -1;
 	// Noise
-	patch.noise.time = 0.02;
+	patch.noise.time = 0.1;
 	patch.noise.period = 16;
 	// Env
 	patch.ampenv.attack_level = 1;
@@ -49,14 +49,14 @@ Zynayumi::Zynayumi() : engine(*this) {
 	patch.arp.pitch1 = 0;
 	patch.arp.pitch2 = 7;
 	patch.arp.pitch3 = 12;
-	patch.arp.freq = 10;
+	patch.arp.freq = 50;
 	patch.arp.repeat = 2;
 	// LFO
-	patch.lfo.freq = 8;
-	patch.lfo.delay = 4;
-	// patch.lfo.depth = 1;
+	patch.lfo.freq = 10;
+	patch.lfo.delay = 1;
+	patch.lfo.depth = 0.1;
 	// Portamento
-	patch.port = 0.5;
+	patch.port = 0.01;
 	// Ring modulation
 	patch.ringmod.waveform[0] = 0.7;
 	patch.ringmod.waveform[1] = 0.8;

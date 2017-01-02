@@ -17,7 +17,6 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 ## TODO
 
 - [ ] Expose parameters to the host
-- [ ] Support the 3 voices of the YM2149 and map midi channel to them
 - [ ] LV2
 
 ## Requirements
