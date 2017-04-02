@@ -106,17 +106,30 @@ void initialise_2() {
 	DSSIPortList ports;
   
 	// control ports
-	LADSPA_PortDescriptor c_desc = LADSPA_PORT_CONTROL | LADSPA_PORT_INPUT;
-	LADSPA_PortRangeHintDescriptor r_desc = LADSPA_HINT_BOUNDED_BELOW |
+	const LADSPA_PortDescriptor c_desc = LADSPA_PORT_CONTROL | LADSPA_PORT_INPUT;
+	const LADSPA_PortRangeHintDescriptor r_desc = LADSPA_HINT_BOUNDED_BELOW |
 		LADSPA_HINT_BOUNDED_ABOVE;
-	LADSPA_PortRangeHintDescriptor i_desc = LADSPA_HINT_BOUNDED_BELOW |
+	const LADSPA_PortRangeHintDescriptor i_desc = LADSPA_HINT_BOUNDED_BELOW |
 		LADSPA_HINT_BOUNDED_ABOVE | LADSPA_HINT_INTEGER;
-	LADSPA_PortRangeHintDescriptor t_desc = LADSPA_HINT_TOGGLED;
-	LADSPA_PortRangeHintDescriptor d_middle = LADSPA_HINT_DEFAULT_MIDDLE;
-	LADSPA_PortRangeHintDescriptor d_low = LADSPA_HINT_DEFAULT_MIDDLE;
-	LADSPA_PortRangeHintDescriptor d_high = LADSPA_HINT_DEFAULT_MIDDLE;
-	LADSPA_PortRangeHintDescriptor d_0 = LADSPA_HINT_DEFAULT_0;
-  
+	const LADSPA_PortRangeHintDescriptor t_desc = LADSPA_HINT_TOGGLED;
+	const LADSPA_PortRangeHintDescriptor d_min = LADSPA_HINT_DEFAULT_MINIMUM;
+	const LADSPA_PortRangeHintDescriptor d_max = LADSPA_HINT_DEFAULT_MAXIMUM;
+	const LADSPA_PortRangeHintDescriptor d_middle = LADSPA_HINT_DEFAULT_MIDDLE;
+	const LADSPA_PortRangeHintDescriptor d_low = LADSPA_HINT_DEFAULT_LOW;
+	const LADSPA_PortRangeHintDescriptor d_high = LADSPA_HINT_DEFAULT_HIGH;
+	const LADSPA_PortRangeHintDescriptor d_0 = LADSPA_HINT_DEFAULT_0;
+
+	// PlayMode
+	ports.add_port(c_desc, "Play mode", i_desc | d_0, -0.1, 4.1);
+
+	// Tone
+	ports.add_port(c_desc, "Tone time", r_desc | d_min, -1.0, 10.0);
+	ports.add_port(c_desc, "Tone detune", r_desc | d_0, -24.0, 24.0);
+
+	// Noise
+	ports.add_port(c_desc, "Noise time", r_desc | d_min, -1.0, 10.0);
+	ports.add_port(c_desc, "Noise period", r_desc | d_middle, -0.1, 31.1);
+
 	// audio output
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Left output");
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Right output");
