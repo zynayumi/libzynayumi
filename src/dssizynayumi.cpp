@@ -29,12 +29,6 @@
 using namespace zynayumi;
 using namespace std;
 
-static enum {
-	LEFT_OUTPUT,
-	RIGHT_OUTPUT
-} enum_ports;
-
-
 DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate) {
 }
 
@@ -122,7 +116,7 @@ void initialise_2() {
 	const LADSPA_PortRangeHintDescriptor d_0 = LADSPA_HINT_DEFAULT_0;
 	const LADSPA_PortRangeHintDescriptor d_1 = LADSPA_HINT_DEFAULT_1;
 
-	// PlayMode
+	// Play mode
 	ports.add_port(c_desc, "Play mode", i_desc | d_0, -0.1, 4.1);
 
 	// Tone
