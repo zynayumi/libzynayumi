@@ -180,7 +180,7 @@ void initialise_2() {
 	ports.add_port(c_desc, "Tone detune", r_desc | d_0, -24.0, 24.0);
 
 	// Noise
-	ports.add_port(c_desc, "Noise time", r_desc | d_min, -1.0, 10.0);
+	ports.add_port(c_desc, "Noise time", r_desc | d_0, -1.0, 10.0);
 	ports.add_port(c_desc, "Noise period", r_desc | d_middle, -0.1, 31.1);
 
 	// Amplitude envelope
@@ -201,7 +201,7 @@ void initialise_2() {
 	ports.add_port(c_desc, "Arp pitch1", r_desc | d_0, -48.0, 48.0);
 	ports.add_port(c_desc, "Arp pitch2", r_desc | d_0, -48.0, 48.0);
 	ports.add_port(c_desc, "Arp pitch3", r_desc | d_0, -48.0, 48.0);
-	ports.add_port(c_desc, "Arp freq", r_desc | d_1, 0.0, 1000.0);
+	ports.add_port(c_desc, "Arp freq", r_desc | d_1, 0.0, 100.0);
 	ports.add_port(c_desc, "Arp repeat", i_desc | d_0, -0.1, 2.1);
 
 	// Ring modulation
@@ -217,7 +217,7 @@ void initialise_2() {
 	ports.add_port(c_desc, "RingMod minor", t_desc | d_1, -0.1, 1.1);
 
 	// Pitch LFO
-	ports.add_port(c_desc, "LFO freq", r_desc | d_1, 0.0, 1000.0);
+	ports.add_port(c_desc, "LFO freq", r_desc | d_1, 0.0, 100.0);
 	ports.add_port(c_desc, "LFO delay", r_desc | d_0, 0.0, 10.0);
 	ports.add_port(c_desc, "LFO depth", r_desc | d_0, 0.0, 12.0);
 
