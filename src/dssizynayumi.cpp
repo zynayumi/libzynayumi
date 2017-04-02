@@ -105,7 +105,9 @@ void initialise_2() __attribute__((constructor));
 void initialise_2() {
 	DSSIPortList ports;
   
-	// control ports
+	//////////////////////
+	// Control ports    //
+	//////////////////////
 	const LADSPA_PortDescriptor c_desc = LADSPA_PORT_CONTROL | LADSPA_PORT_INPUT;
 	const LADSPA_PortRangeHintDescriptor r_desc = LADSPA_HINT_BOUNDED_BELOW |
 		LADSPA_HINT_BOUNDED_ABOVE;
@@ -118,6 +120,7 @@ void initialise_2() {
 	const LADSPA_PortRangeHintDescriptor d_low = LADSPA_HINT_DEFAULT_LOW;
 	const LADSPA_PortRangeHintDescriptor d_high = LADSPA_HINT_DEFAULT_HIGH;
 	const LADSPA_PortRangeHintDescriptor d_0 = LADSPA_HINT_DEFAULT_0;
+	const LADSPA_PortRangeHintDescriptor d_1 = LADSPA_HINT_DEFAULT_1;
 
 	// PlayMode
 	ports.add_port(c_desc, "Play mode", i_desc | d_0, -0.1, 4.1);
@@ -130,7 +133,50 @@ void initialise_2() {
 	ports.add_port(c_desc, "Noise time", r_desc | d_min, -1.0, 10.0);
 	ports.add_port(c_desc, "Noise period", r_desc | d_middle, -0.1, 31.1);
 
-	// audio output
+	// Amplitude envelope
+	ports.add_port(c_desc, "AmpEnv attack_level", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "AmpEnv time1", r_desc | d_0, 0.0, 10.0);
+	ports.add_port(c_desc, "AmpEnv level1", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "AmpEnv time2", r_desc | d_0, 0.0, 10.0);
+	ports.add_port(c_desc, "AmpEnv level2", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "AmpEnv time3", r_desc | d_0, 0.0, 10.0);
+	ports.add_port(c_desc, "AmpEnv sustain_level", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "AmpEnv release", r_desc | d_0, 0.0, 10.0);
+
+	// Pitch envelope
+	ports.add_port(c_desc, "PitchEnv attack_pitch", r_desc | d_0, -96.0, 96.0);
+	ports.add_port(c_desc, "PitchEnv time", r_desc | d_0, 0.0, 10.0);
+
+	// Arpegio
+	ports.add_port(c_desc, "Arp pitch1", r_desc | d_0, -48.0, 48.0);
+	ports.add_port(c_desc, "Arp pitch2", r_desc | d_0, -48.0, 48.0);
+	ports.add_port(c_desc, "Arp pitch3", r_desc | d_0, -48.0, 48.0);
+	ports.add_port(c_desc, "Arp freq", r_desc | d_1, 0.0, 1000.0);
+	ports.add_port(c_desc, "Arp repeat", i_desc | d_0, -0.1, 2.1);
+
+	// Ring modulation
+	ports.add_port(c_desc, "RingMod waveform_level1", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level2", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level3", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level4", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level5", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level6", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level7", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform_level8", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod detune", r_desc | d_0, -24.0, 24);
+	ports.add_port(c_desc, "RingMod minor", t_desc | d_1, -0.1, 1.1);
+
+	// Pitch LFO
+	ports.add_port(c_desc, "LFO freq", r_desc | d_1, 0.0, 1000.0);
+	ports.add_port(c_desc, "LFO delay", r_desc | d_0, 0.0, 10.0);
+	ports.add_port(c_desc, "LFO depth", r_desc | d_0, 0.0, 12.0);
+
+	// Portamento
+	ports.add_port(c_desc, "Portamento", r_desc | d_0, 0.0, 10.0);
+
+	//////////////////
+	// Audio output //
+	//////////////////
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Left output");
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Right output");
   
