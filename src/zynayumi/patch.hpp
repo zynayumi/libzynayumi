@@ -32,7 +32,7 @@ enum class PlayMode {
 	Poly,
 	UpArp,
 	DownArp,
-	RndArp                      // Not implemented
+	RndArp
 };
 
 class Tone {

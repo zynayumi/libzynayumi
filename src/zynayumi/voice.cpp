@@ -154,6 +154,8 @@ void Voice::update_arp()
 		return indexhash(_arp_step) % size;
 	};
 	auto count2rndpitch = [&]() -> unsigned char {
+		// TODO: make sure that a different pitch than the previous
+		// one is selected
 		unsigned index = count2rndindex(_engine.pitches.size());
 		return *std::next(_engine.pitches.begin(), index);
 	};
