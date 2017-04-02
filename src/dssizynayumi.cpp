@@ -36,7 +36,8 @@ DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate) {
 void DSSIZynayumi::run_synth(unsigned long sample_count,
                              snd_seq_event_t* events,
                              unsigned long event_count) {
-  
+	update_patch();
+
 	LADSPA_Data* left_out = m_ports[LEFT_OUTPUT];
 	LADSPA_Data* right_out = m_ports[RIGHT_OUTPUT];
 
@@ -91,6 +92,61 @@ void DSSIZynayumi::select_program(unsigned long bank, unsigned long program) {
 
 char* DSSIZynayumi::configure(const char* key, const char* value) {
 	return NULL;
+}
+
+void DSSIZynayumi::update_patch()
+{
+	// Play mode
+	zynayumi.patch.playmode = (PlayMode)std::round(*m_ports[PLAY_MODE]);
+
+	// Tone
+	zynayumi.patch.tone.time = *m_ports[TONE_TIME];
+	zynayumi.patch.tone.detune = *m_ports[TONE_DETUNE];
+
+	// Noise
+	zynayumi.patch.noise.time = *m_ports[NOISE_TIME];
+	zynayumi.patch.noise.period = (int)std::round(*m_ports[NOISE_PERIOD]);
+
+	// Amplitude envelope
+	zynayumi.patch.ampenv.attack_level = *m_ports[AMP_ENV_ATTACK_LEVEL];
+	zynayumi.patch.ampenv.time1 = *m_ports[AMP_ENV_TIME1];
+	zynayumi.patch.ampenv.level1 = *m_ports[AMP_ENV_LEVEL1];
+	zynayumi.patch.ampenv.time2 = *m_ports[AMP_ENV_TIME2];
+	zynayumi.patch.ampenv.level2 = *m_ports[AMP_ENV_LEVEL2];
+	zynayumi.patch.ampenv.time3 = *m_ports[AMP_ENV_TIME3];
+	zynayumi.patch.ampenv.sustain_level = *m_ports[AMP_ENV_SUSTAIN_LEVEL];
+	zynayumi.patch.ampenv.release = *m_ports[AMP_ENV_RELEASE];
+
+	// Pitch envelope
+	zynayumi.patch.pitchenv.attack_pitch = *m_ports[PITCH_ENV_ATTACK_PITCH];
+	zynayumi.patch.pitchenv.time = *m_ports[PITCH_ENV_TIME];
+
+	// Arpegio
+	zynayumi.patch.arp.pitch1 = *m_ports[ARP_PITCH1];
+	zynayumi.patch.arp.pitch2 = *m_ports[ARP_PITCH2];
+	zynayumi.patch.arp.pitch3 = *m_ports[ARP_PITCH3];
+	zynayumi.patch.arp.freq = *m_ports[ARP_FREQ];
+	zynayumi.patch.arp.repeat = (int)std::round(*m_ports[ARP_REPEAT]);
+
+	// Ring modulation
+	zynayumi.patch.ringmod.waveform[0] = *m_ports[RING_MOD_WAVEFORM_LEVEL1];
+	zynayumi.patch.ringmod.waveform[1] = *m_ports[RING_MOD_WAVEFORM_LEVEL2];
+	zynayumi.patch.ringmod.waveform[2] = *m_ports[RING_MOD_WAVEFORM_LEVEL3];
+	zynayumi.patch.ringmod.waveform[3] = *m_ports[RING_MOD_WAVEFORM_LEVEL4];
+	zynayumi.patch.ringmod.waveform[4] = *m_ports[RING_MOD_WAVEFORM_LEVEL5];
+	zynayumi.patch.ringmod.waveform[5] = *m_ports[RING_MOD_WAVEFORM_LEVEL6];
+	zynayumi.patch.ringmod.waveform[6] = *m_ports[RING_MOD_WAVEFORM_LEVEL7];
+	zynayumi.patch.ringmod.waveform[7] = *m_ports[RING_MOD_WAVEFORM_LEVEL8];
+	zynayumi.patch.ringmod.detune = *m_ports[RING_MOD_DETUNE];
+	zynayumi.patch.ringmod.minor = (bool)std::round(*m_ports[RING_MOD_MINOR]);
+
+	// Pitch LFO
+	zynayumi.patch.lfo.freq = *m_ports[LFO_FREQ];
+	zynayumi.patch.lfo.delay = *m_ports[LFO_DELAY];
+	zynayumi.patch.lfo.depth = *m_ports[LFO_DEPTH];
+
+	// Portamento
+	zynayumi.patch.port = *m_ports[PORTAMENTO];
 }
 
 void initialise_2() __attribute__((constructor));

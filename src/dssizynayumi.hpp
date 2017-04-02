@@ -117,6 +117,9 @@ protected:
 	DSSI_Program_Descriptor m_prog;
 
 	LADSPA_Data m_pitchbend;
+
+	// Read the control ports and update the patch accordingly
+	void update_patch();
 };
 
 } // ~namespace zynayumi
