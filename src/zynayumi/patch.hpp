@@ -80,7 +80,7 @@ public:
 
 	double attack_pitch;         // Relative pitch of the attack
 	double time;                 // Duration to go from attack pitch
-                                 // and tone pitch
+	                             // to tone pitch
 };
 
 class Arp {
@@ -96,13 +96,13 @@ public:
 
 /**
  * Ring modulation to allow the YM2149 to play other waveforms. The
- * waveform is represented by 4 samples, i.e. volume levels from 0.0
- * to 1.0. The modulating waveform is actually 8 samples long with the
- * last 4 samples mirroring the first 4. We want that to have a smooth
- * dephasing effect and that way only 4 values are required to define
- * a waveform.
+ * waveform is represented by 8 samples, i.e. volume levels from 0.0
+ * to 1.0. If the minor flag is set to true, then the modulating
+ * waveform length doubles, so is 16 samples long with the last 8
+ * samples mirroring the first 8. That is to obtain a smooth dephasing
+ * effect when the tone is enabled.
  */
-#define RING_MOD_WAVEFORM_SIZE 4
+#define RING_MOD_WAVEFORM_SIZE 8
 class RingMod {
 public:
 	RingMod();
@@ -110,6 +110,7 @@ public:
 	double waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
 	double detune;                           // Relative detune in semitone
                                              // compared to the tone
+	bool minor;                              // Add 8 minoring samples
 };
 
 /**
@@ -139,7 +140,7 @@ public:
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
-	double port;                // Portamento time in second
+	double port;                // Portamento time in second per semintone
 };
 
 } // ~namespace zynayumi
