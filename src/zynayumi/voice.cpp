@@ -36,6 +36,7 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	channel(ch), velocity(vel), note_on(true),
 	_engine(engine), _patch(pa),
 	_note_pitch(pi), _relative_arp_pitch(0),
+	_arp_rnd_offset_step(rand()), _index(-1),
 	_env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(0), _ringmod_waveform_index(0) {}
 
@@ -125,7 +126,7 @@ void Voice::update_lfo() {
 void Voice::update_arp()
 {
 	unsigned step = _smp_count * _patch.arp.freq / _engine.sample_rate;
-	// bool step_change = step != _arp_step;
+	bool step_change = _arp_step != step;
 	_arp_step = step;
 
 	auto count2index = [&](size_t repeat, size_t size) -> unsigned {
@@ -151,11 +152,25 @@ void Voice::update_arp()
 		return a;
 	};
 	auto count2rndindex = [&](size_t size) -> unsigned {
-		return indexhash(_arp_step) % size;
+		if (step_change) {
+			bool same_index;
+			unsigned new_index;
+			do {                    // Try the next random index if the
+				                    // note wouldn't changed.
+				new_index = indexhash(_arp_rnd_offset_step + _arp_step) % size;
+				same_index = new_index == _index;
+				if (same_index)
+					++_arp_rnd_offset_step;
+			} while	(same_index);
+			_index = new_index;
+			return _index;
+		}
+		else {
+			_index = indexhash(_arp_rnd_offset_step + _arp_step) % size;
+			return _index;
+		}
 	};
 	auto count2rndpitch = [&]() -> unsigned char {
-		// TODO: make sure that a different pitch than the previous
-		// one is selected
 		unsigned index = count2rndindex(_engine.pitches.size());
 		return *std::next(_engine.pitches.begin(), index);
 	};

@@ -89,6 +89,12 @@ private:
 	unsigned _arp_step;                // Every time it increases the
 	                                   // arp pitch changes
 	double _relative_arp_pitch;        // Relative Arpeggio pitch
+	unsigned _arp_rnd_offset_step;     // Random offset of the
+	                                   // arp_step to allow different
+	                                   // randomness cross voices
+	unsigned _index;                   // Store the current random
+	                                   // index to avoid repetition of
+	                                   // 2 consecutive notes
 
 	unsigned _env_smp_count;           // Number of samples since note on or off
 	unsigned _smp_count;               // Number of samples since voice on
@@ -96,13 +102,13 @@ private:
 
 	// Final level
 	double _final_level;               // Current level, taking into account
-                                       // amplitude envelope, velocity and
-                                       // ring modulation
+	                                   // amplitude envelope, velocity and
+	                                   // ring modulation
 
 	// Ring Mod
 	double _ringmod_smp_count;         // Number of samples since last
-                                       // ring modulation sample
-                                       // change
+	                                   // ring modulation sample
+	                                   // change
 	unsigned _ringmod_waveform_index;  // Current waveform index
 
 	double _actual_sustain_level;
