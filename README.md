@@ -12,11 +12,11 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
 - [X] VST, DSSI
+- [X] Expose parameters to the host (DSSI only for now)
 - [ ] GUI (please help if you want one, I am no GUI guy)
 
 ## TODO
 
-- [ ] Expose parameters to the host
 - [ ] Define MIDI control for each parameter
 - [ ] LV2
 
