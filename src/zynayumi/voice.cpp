@@ -261,7 +261,8 @@ void Voice::update_ring() {
 
 	// Update _ringmod_smp_count and _ringmod_waveform_index
 	double ringmod_pitch = _patch.ringmod.detune + _final_pitch;
-	double waveform_period = 2 * _engine.pitch2period_ym(ringmod_pitch);
+	double waveform_period = (_patch.ringmod.mirror ? 2 : 1)
+		* _engine.pitch2period_ym(ringmod_pitch);
 
 	_ringmod_smp_count += _engine.ay.step * DECIMATE_FACTOR;
 	// If it goes from very low pitch to very high pitch we migh need
@@ -272,6 +273,6 @@ void Voice::update_ring() {
 	_ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
 		/ (0.5 * waveform_period);
 	if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
-		_ringmod_waveform_index =
-			(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index;
+		_ringmod_waveform_index = _patch.ringmod.mirror ?
+			(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index : 0;
 }

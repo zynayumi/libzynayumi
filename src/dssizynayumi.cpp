@@ -138,7 +138,7 @@ void DSSIZynayumi::update_patch()
 	zynayumi.patch.ringmod.waveform[6] = *m_ports[RING_MOD_WAVEFORM_LEVEL7];
 	zynayumi.patch.ringmod.waveform[7] = *m_ports[RING_MOD_WAVEFORM_LEVEL8];
 	zynayumi.patch.ringmod.detune = *m_ports[RING_MOD_DETUNE];
-	zynayumi.patch.ringmod.minor = (bool)std::round(*m_ports[RING_MOD_MINOR]);
+	zynayumi.patch.ringmod.mirror = (bool)std::round(*m_ports[RING_MOD_MINOR]);
 
 	// Pitch LFO
 	zynayumi.patch.lfo.freq = *m_ports[LFO_FREQ];
@@ -214,7 +214,7 @@ void initialise_2() {
 	ports.add_port(c_desc, "RingMod waveform_level7", r_desc | d_1, 0.0, 1.0);
 	ports.add_port(c_desc, "RingMod waveform_level8", r_desc | d_1, 0.0, 1.0);
 	ports.add_port(c_desc, "RingMod detune", r_desc | d_0, -24.0, 24);
-	ports.add_port(c_desc, "RingMod minor", t_desc | d_1, -0.1, 1.1);
+	ports.add_port(c_desc, "RingMod mirror", t_desc | d_1, -0.1, 1.1);
 
 	// Pitch LFO
 	ports.add_port(c_desc, "LFO freq", r_desc | d_1, 0.0, 100.0);

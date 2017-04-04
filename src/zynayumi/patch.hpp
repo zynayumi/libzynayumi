@@ -110,7 +110,7 @@ public:
 	double waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
 	double detune;                           // Relative detune in semitone
                                              // compared to the tone
-	bool minor;                              // Add 8 minoring samples
+	bool mirror;                             // Add 8 mirroring samples
 };
 
 /**
