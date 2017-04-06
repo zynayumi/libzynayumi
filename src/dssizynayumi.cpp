@@ -183,7 +183,7 @@ void initialise_2() {
 
 	// Noise
 	ports.add_port(c_desc, "Noise time", r_desc | d_0, -1.0, 10.0);
-	ports.add_port(c_desc, "Noise period", r_desc | d_middle, -0.1, 31.1);
+	ports.add_port(c_desc, "Noise period", i_desc | d_middle, -0.1, 31.1);
 
 	// Amplitude envelope
 	ports.add_port(c_desc, "AmpEnv attack_level", r_desc | d_1, 0.0, 1.0);
@@ -225,7 +225,7 @@ void initialise_2() {
 	ports.add_port(c_desc, "LFO depth", r_desc | d_0, 0.0, 12.0);
 
 	// Portamento
-	ports.add_port(c_desc, "Portamento", r_desc | d_0, 0.0, 10.0);
+	ports.add_port(c_desc, "Portamento", r_desc | d_0, 0.0, 2.0);
 
 	//////////////////
 	// Audio output //
