@@ -100,10 +100,11 @@ void Voice::update_pitchenv() {
 }
 
 void Voice::update_port() {
+	double pitch_diff = _engine.previous_pitch - _note_pitch;
+	double end_time = _patch.port * std::abs(pitch_diff);
 	_relative_port_pitch =
-		(0 <= _engine.previous_pitch and _time < _patch.port ?
-		 linear_interpolate(0, _engine.previous_pitch - _note_pitch,
-		                    _patch.port, 0, _time)
+		(0 != pitch_diff and _time < end_time ?
+		 linear_interpolate(0, pitch_diff, end_time, 0, _time)
 		 : 0.0);
 	_engine.last_pitch = _relative_port_pitch + _note_pitch;
 }
