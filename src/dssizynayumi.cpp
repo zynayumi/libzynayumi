@@ -101,7 +101,7 @@ void DSSIZynayumi::update_patch()
 
 	// Tone
 	zynayumi.patch.tone.time = *m_ports[TONE_TIME];
-	zynayumi.patch.tone.detune = *m_ports[TONE_DETUNE];
+	zynayumi.patch.tone.detune = *m_ports[TONE_DETUNE] + *m_ports[TONE_TRANSPOSE];
 
 	// Noise
 	zynayumi.patch.noise.time = *m_ports[NOISE_TIME];
@@ -137,7 +137,8 @@ void DSSIZynayumi::update_patch()
 	zynayumi.patch.ringmod.waveform[5] = *m_ports[RING_MOD_WAVEFORM_LEVEL6];
 	zynayumi.patch.ringmod.waveform[6] = *m_ports[RING_MOD_WAVEFORM_LEVEL7];
 	zynayumi.patch.ringmod.waveform[7] = *m_ports[RING_MOD_WAVEFORM_LEVEL8];
-	zynayumi.patch.ringmod.detune = *m_ports[RING_MOD_DETUNE];
+	zynayumi.patch.ringmod.detune =
+		*m_ports[RING_MOD_DETUNE] + *m_ports[RING_MOD_TRANSPOSE];
 	zynayumi.patch.ringmod.mirror = (bool)std::round(*m_ports[RING_MOD_MINOR]);
 
 	// Pitch LFO
@@ -177,7 +178,8 @@ void initialise_2() {
 
 	// Tone
 	ports.add_port(c_desc, "Tone time", r_desc | d_min, -1.0, 10.0);
-	ports.add_port(c_desc, "Tone detune", r_desc | d_0, -24.0, 24.0);
+	ports.add_port(c_desc, "Tone detune", r_desc | d_0, -1.0, 1.0);
+	ports.add_port(c_desc, "Tone transpose", i_desc | d_0, -24.1, 24.1);
 
 	// Noise
 	ports.add_port(c_desc, "Noise time", r_desc | d_0, -1.0, 10.0);
@@ -213,7 +215,8 @@ void initialise_2() {
 	ports.add_port(c_desc, "RingMod waveform_level6", r_desc | d_1, 0.0, 1.0);
 	ports.add_port(c_desc, "RingMod waveform_level7", r_desc | d_1, 0.0, 1.0);
 	ports.add_port(c_desc, "RingMod waveform_level8", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod detune", r_desc | d_0, -24.0, 24);
+	ports.add_port(c_desc, "RingMod detune", r_desc | d_0, -1.0, 1.0);
+	ports.add_port(c_desc, "RingMod transpose", i_desc | d_0, -24.1, 24.1);
 	ports.add_port(c_desc, "RingMod mirror", t_desc | d_1, -0.1, 1.1);
 
 	// Pitch LFO
