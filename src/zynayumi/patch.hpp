@@ -112,10 +112,10 @@ public:
 	double waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
 	bool mirror;                             // Add 8 mirroring samples
 	bool sync;                               // Whether ring
-                                             // modulation is in sync
-                                             // with YM2149 oscilator
+	                                         // modulation is in sync
+	                                         // with YM2149 oscilator
 	double detune;                           // Relative detune in semitone
-                                             // compared to the tone
+	                                         // compared to the tone
 };
 
 /**
