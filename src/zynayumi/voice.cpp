@@ -38,7 +38,8 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	_note_pitch(pi), _relative_arp_pitch(0),
 	_arp_rnd_offset_step(rand()), _index(-1),
 	_env_smp_count(0), _smp_count(0),
-	_ringmod_smp_count(0), _ringmod_waveform_index(0) {}
+	_ringmod_smp_count(_engine.ringmod_smp_count[channel]),
+	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel]) {}
 
 void Voice::set_note_off() {
 	note_on = false;
@@ -266,9 +267,8 @@ void Voice::update_ring() {
 		* _engine.pitch2period_ym(ringmod_pitch);
 
 	_ringmod_smp_count += _engine.ay.step * DECIMATE_FACTOR;
-	// If it goes from very low pitch to very high pitch we migh need
-	// to remove waveform_period from _ringmod_smp_count more than
-	// once.
+	// If it goes from very low pitch to very high pitch we need to
+	// remove waveform_period from _ringmod_smp_count more than once.
 	while (waveform_period <= _ringmod_smp_count)
 		_ringmod_smp_count -= waveform_period;
 	_ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)

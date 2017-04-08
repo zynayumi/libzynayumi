@@ -106,10 +106,10 @@ private:
 	                                   // ring modulation
 
 	// Ring Mod
-	double _ringmod_smp_count;         // Number of samples since last
-	                                   // ring modulation sample
-	                                   // change
-	unsigned _ringmod_waveform_index;  // Current waveform index
+	double& _ringmod_smp_count;        // Number of samples since last
+	                                   // ring modulation waveform
+	                                   // cycle reset
+	unsigned& _ringmod_waveform_index; // Current waveform index
 
 	double _actual_sustain_level;
 
