@@ -59,7 +59,6 @@ like all definitions of VSTCALLBACK except
 ## TODO
 
 - [ ] Have volume go back to zero when no release time
-- [ ] Implement ring modulation sync
 - [ ] Define presets
 
 ## Author
