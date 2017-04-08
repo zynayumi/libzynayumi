@@ -72,11 +72,15 @@ void Engine::audio_process(float* left_out, float* right_out,
 			// Update ayumi state
 			ayumi_process(&ay);
 			ayumi_remove_dc(&ay);
-		}
 
-		// Update outputs
-		left_out[i] = (float) ay.left;
-		right_out[i] = (float) ay.right;
+			// Update outputs
+			left_out[i] = (float) ay.left;
+			right_out[i] = (float) ay.right;
+		}
+		else {
+			left_out[i] = 0.0f;
+			right_out[i] = 0.0f;
+		}
 	}
 }
 
