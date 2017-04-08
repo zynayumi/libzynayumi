@@ -39,7 +39,13 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	_arp_rnd_offset_step(rand()), _index(-1),
 	_env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(_engine.ringmod_smp_count[channel]),
-	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel]) {}
+	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel])
+{
+	if (not pa.ringmod.sync) {
+		_ringmod_smp_count = 0.0;
+		_ringmod_waveform_index = 0;
+	}
+}
 
 void Voice::set_note_off() {
 	note_on = false;
