@@ -11,11 +11,9 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Vibrato
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
-- [X] VST, DSSI
-- [X] Expose parameters to the host (DSSI only for now)
-- [ ] GUI (please help if you want one, I am no GUI guy)
-- [ ] Define MIDI control for each parameter
-- [ ] LV2
+- [X] VST, DSSI, (LV2 comming soon)
+- [ ] MIDI controls assigned to parameters
+- [ ] GUI. Pease help if you want one, I am no GUI guy.
 
 ## Requirements
 
@@ -58,6 +56,7 @@ like all definitions of VSTCALLBACK except
 
 ## TODO
 
+- [ ] Expose parameters to VST host
 - [ ] Define presets
 
 ## Author
