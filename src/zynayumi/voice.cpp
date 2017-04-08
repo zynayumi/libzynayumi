@@ -57,6 +57,9 @@ void Voice::update() {
 	// Update _time
 	_time = _engine.smp2sec(_smp_count);
 
+	// Update pan
+	update_pan();
+
 	// Update tone and noise
 	update_tone();
 	update_noise();
@@ -89,6 +92,10 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 	double a = (y2 - y1) / (x2 - x1);
 	double b = y1;
 	return a * (x - x1) + b;
+}
+
+void Voice::update_pan() {
+	ayumi_set_pan(&_engine.ay, channel, _patch.pan.channel[channel], 0);
 }
 
 void Voice::update_tone() {

@@ -29,6 +29,13 @@
 
 namespace zynayumi {
 
+class Pan {
+public:
+	Pan();
+
+	float channel[3];
+};
+
 enum class PlayMode {
 	Mono,
 	Poly,
@@ -148,6 +155,7 @@ public:
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
 	double port;                // Portamento time in second per semintone
+	Pan pan;                    // YM2149 channels panning
 };
 
 } // ~namespace zynayumi

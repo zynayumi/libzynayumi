@@ -86,6 +86,11 @@ static enum {
 	// Portamento
 	PORTAMENTO,
 
+	// Pan
+	PAN_CHANNEL0,
+	PAN_CHANNEL1,
+	PAN_CHANNEL2,
+
 	// Audio outputs
 	LEFT_OUTPUT,
 	RIGHT_OUTPUT

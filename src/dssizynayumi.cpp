@@ -150,6 +150,11 @@ void DSSIZynayumi::update_patch()
 
 	// Portamento
 	zynayumi.patch.port = *m_ports[PORTAMENTO];
+
+	// Pan
+	zynayumi.patch.pan.channel[0] = *m_ports[PAN_CHANNEL0];
+	zynayumi.patch.pan.channel[1] = *m_ports[PAN_CHANNEL1];
+	zynayumi.patch.pan.channel[2] = *m_ports[PAN_CHANNEL2];
 }
 
 void initialise_2() __attribute__((constructor));
@@ -208,14 +213,14 @@ void initialise_2() {
 	ports.add_port(c_desc, "Arp repeat", i_desc | d_0, -0.1, 2.1);
 
 	// Ring modulation
-	ports.add_port(c_desc, "RingMod waveform_level1", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level2", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level3", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level4", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level5", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level6", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level7", r_desc | d_1, 0.0, 1.0);
-	ports.add_port(c_desc, "RingMod waveform_level8", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level1", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level2", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level3", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level4", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level5", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level6", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level7", r_desc | d_1, 0.0, 1.0);
+	ports.add_port(c_desc, "RingMod waveform level8", r_desc | d_1, 0.0, 1.0);
 	ports.add_port(c_desc, "RingMod mirror", t_desc | d_1, -0.1, 1.1);
 	ports.add_port(c_desc, "RingMod sync", t_desc | d_1, -0.1, 1.1);
 	ports.add_port(c_desc, "RingMod detune", r_desc | d_0, -1.0, 1.0);
@@ -228,6 +233,11 @@ void initialise_2() {
 
 	// Portamento
 	ports.add_port(c_desc, "Portamento", r_desc | d_0, 0.0, 2.0);
+
+	// Pan
+	ports.add_port(c_desc, "Pan channel0", r_desc | d_middle, 0.0, 1.0);
+	ports.add_port(c_desc, "Pan channel1", r_desc | d_low, 0.0, 1.0);
+	ports.add_port(c_desc, "Pan channel2", r_desc | d_high, 0.0, 1.0);
 
 	//////////////////
 	// Audio output //

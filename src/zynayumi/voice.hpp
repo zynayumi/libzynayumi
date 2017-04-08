@@ -115,6 +115,7 @@ private:
 
 	double linear_interpolate(double x1, double y1,
 	                          double x2, double y2, double x) const;
+	void update_pan();
 	void update_tone();
 	void update_noise();
 	void update_ampenv();

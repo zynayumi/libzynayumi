@@ -49,9 +49,6 @@ Engine::Engine(const Zynayumi& ref)
 	  clock_rate(2000000),
 	  _max_voices(3) {
 	ayumi_configure(&ay, 1, clock_rate, sample_rate);
-	ayumi_set_pan(&ay, 0, 0.25, 0);
-	ayumi_set_pan(&ay, 1, 0.5, 0);
-	ayumi_set_pan(&ay, 2, 0.25, 0);
 }
 
 void Engine::audio_process(float* left_out, float* right_out,
@@ -196,7 +193,7 @@ int Engine::select_ym_channel() const {
 
 void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
 	int channel = _zynayumi.patch.playmode == PlayMode::Poly ?
-		select_ym_channel() : 1;
+		select_ym_channel() : 0;
 	Voice voice(*this, _zynayumi.patch, channel, pitch, velocity);
 	_voices.emplace(pitch, voice);
 }
