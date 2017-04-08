@@ -117,6 +117,7 @@ protected:
 	bool m_note_is_on;
 
 	DSSI_Program_Descriptor m_prog;
+	std::vector<DSSI_Program_Descriptor> m_progs;
 
 	LADSPA_Data m_pitchbend;
 

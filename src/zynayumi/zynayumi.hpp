@@ -27,6 +27,7 @@
 
 #include "patch.hpp"
 #include "engine.hpp"
+#include "presets.hpp"
 
 // Set 1 if you want to print debug messages, 0 otherwise
 #define ENABLE_PRINT_DEBUG 0
@@ -46,6 +47,9 @@ class Zynayumi {
 	///////////////////
 
 public:
+
+	// Presets
+	Presets presets;
 
 	// Current patch
 	Patch patch;

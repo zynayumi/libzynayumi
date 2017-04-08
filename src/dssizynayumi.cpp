@@ -32,7 +32,6 @@ using namespace std;
 DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate) {
 }
 
-
 void DSSIZynayumi::run_synth(unsigned long sample_count,
                              snd_seq_event_t* events,
                              unsigned long event_count) {
@@ -77,17 +76,19 @@ void DSSIZynayumi::run_synth(unsigned long sample_count,
 	zynayumi.audio_process(&left_out[net], &right_out[net], sample_count - net);
 }
 
-
 int DSSIZynayumi::get_midi_controller_for_port(unsigned long port) {
 	return DSSI_NONE;
 }
 
-
 const DSSI_Program_Descriptor* DSSIZynayumi::get_program(unsigned long index) {
+	if (index < m_progs.size()) {
+		return &m_progs[index];
+	}
 	return NULL;
 }
 
 void DSSIZynayumi::select_program(unsigned long bank, unsigned long program) {
+	// For now bank is ignored and program corresponds to the index
 }
 
 char* DSSIZynayumi::configure(const char* key, const char* value) {
@@ -151,7 +152,6 @@ void DSSIZynayumi::update_patch()
 }
 
 void initialise_2() __attribute__((constructor));
-
 
 void initialise_2() {
 	DSSIPortList ports;

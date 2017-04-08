@@ -25,6 +25,8 @@
 #ifndef __ZYNAYUMI_PATCH_HPP
 #define __ZYNAYUMI_PATCH_HPP
 
+#include <string>
+
 namespace zynayumi {
 
 enum class PlayMode {
@@ -132,7 +134,9 @@ class Patch {
 public:
 	Patch();
 
-	PlayMode playmode;          // Polyphonic, monophonic or arp
+	std::string name;           // Name
+
+	PlayMode playmode;          // Monophonic, polyphonic or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	AmpEnv ampenv;              // Amplitude envelope

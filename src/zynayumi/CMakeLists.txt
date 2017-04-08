@@ -3,4 +3,5 @@ add_library(zynayumi SHARED
   patch
   voice
   engine
+  presets
   ../../ayumi-lib/ayumi)
