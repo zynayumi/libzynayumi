@@ -21,7 +21,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - DSSI SDK http://dssi.sourceforge.net/ (optional)
 - VST SDK http://www.steinberg.net/en/company/developers.html (optional)
 
-## Install
+## Installation
 
 1. Create build directory and run cmake
 ```bash
@@ -54,8 +54,14 @@ like all definitions of VSTCALLBACK except
 #define VSTCALLBACK
 ```
 
+## Parameters Description
+
+TODO
+
 ## TODO
 
+- [ ] Fix release bug in Poly mode
+- [ ] Fix noise period parameter
 - [ ] Expose parameters to VST host
 - [ ] Define presets
 
