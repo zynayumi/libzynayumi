@@ -1,12 +1,15 @@
-cmake_minimum_required (VERSION 0.1)
+cmake_minimum_required (VERSION 3.0)
 project (Zynayumi)
 
 # Print pretty summary
 include(Summary.cmake)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake-modules/")
+
 find_package (Boost 1.54 REQUIRED)
 find_package (PkgConfig 0.16 REQUIRED)
 pkg_check_modules(DSSI dssi>=1.0)
+find_package(LVTK)
 
 # uncomment to be in Release mode [default]
 # set(CMAKE_BUILD_TYPE Release)
@@ -31,6 +34,10 @@ if(HAVE_ZYNAYUMI AND DSSI_FOUND)
   set(HAVE_DSSI 1)
 endif(HAVE_ZYNAYUMI AND DSSI_FOUND)
 
+if(HAVE_ZYNAYUMI AND LVTK_FOUND)
+  set(HAVE_LVTK 1)
+endif(HAVE_ZYNAYUMI AND LVTK_FOUND)
+
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/VST3 SDK/public.sdk/source/vst2.x/audioeffectx.h")
   set(HAVE_VST 1)
 endif()
@@ -39,5 +46,6 @@ add_subdirectory(src)
 
 summary_add("Zynayumi" "Library of Zynayumi" HAVE_ZYNAYUMI)
 summary_add("Zynayumi-DSSI" "DSSI plugin of Zynayumi" HAVE_DSSI)
+summary_add("Zynayumi-LVTK" "LVTK plugin of Zynayumi" HAVE_LVTK)
 summary_add("Zynayumi-VST" "VST plugin of Zynayumi" HAVE_VST)
 summary_show()
