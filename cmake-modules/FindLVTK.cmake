@@ -9,6 +9,7 @@ include(FindPackageHandleStandardArgs)
 
 find_library(LVTK_LIBRARY
   NAMES
+    liblvtk_plugin1.a
     liblvtk_plugin2.a
   PATHS
     ${_LVTK_LIBDIR}
@@ -16,6 +17,7 @@ find_library(LVTK_LIBRARY
 
 find_path(LVTK_INCLUDE_DIR
   NAMES
+    lvtk-1/lvtk/lvtk.hpp
     lvtk-2/lvtk/lvtk.hpp
   PATHS
     ${_LVTK_INCLUDEDIR}
