@@ -14,7 +14,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] VST, DSSI
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] MIDI controls assigned to parameters
-- [ ] GUI. Pease help if you want one, I am no GUI guy.
+- [ ] GUI. Pease help if you want one, I am no GUI guy
 
 ## Requirements
 
@@ -74,12 +74,12 @@ works like a charm!
   - 4: RndArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
 
-- Tone time: time a square voice is played in second. Ranges from -1.0
-  to 10.0, negative means +inf.
+- Tone time: time in second the square voice is played. Ranges from
+  -1.0 to 10.0, negative means +inf.
 
-- Tone detune: global detune in semi-tone. Ranges from -1.0 to +1.0.
+- Tone detune: global detune in semitone. Ranges from -1.0 to +1.0.
 
-- Tone transpose: global transpose in semi-tone. Ranges from -24 to
+- Tone transpose: global transpose in semitone. Ranges from -24 to
   +24.
 
 - Noise time: time the noise generator is played in second. Ranges
@@ -113,7 +113,7 @@ works like a charm!
   the amplitude envelope. Ranges from 0.0 to 10.0.
 
 - PitchEnv attack_pitch: attack pitch of the pitch envelope in
-  semi-tone. Ranges from -96 to +96.
+  semitone. Ranges from -96 to +96.
 
 - PitchEnv time: time in second to go from attack_pitch to 0 of the
   pitch envelope. Ranges from 0.0 to 10.0.
@@ -172,12 +172,12 @@ null release of the amplitude envelope. See AmpEnv release in the
 section above.
 
 Also, the amplitude envelope itself can create clicks as it is using
-the YM2149 to control the amplitude in staircase fashion. This is a
+the YM2149 to control the amplitude in a staircase fashion. This is a
 feature, not a bug.
 
 ## Where is the buzzer?
 
-There are none. Well it is actually properly emulated by ayumi but
+There is none. Well it is actually properly emulated by ayumi but
 zynayumi does not make any use of it. Personally, because the buzzer
 takes over the amplitude envelope I find it cumbersome. Besides the
 ring modulator is much more powerful in my opinion, though admittedly
