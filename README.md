@@ -57,8 +57,8 @@ like all definitions of VSTCALLBACK except
 
 ## LV2 Support
 
-LV2 is not supported yet. Meawhile if your host does not support DSSI,
-such as [Ardour](https://ardour.org/), you can use
+LV2 is not supported yet. Meanwhile if your host does not support
+DSSI, such as [Ardour](https://ardour.org/), you can use
 [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges)
 which will expose Zynayumi as if it were an LV2 plugin. Try it, it
 works like a charm!
