@@ -11,7 +11,8 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Vibrato
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
-- [X] VST, DSSI, (LV2 comming soon)
+- [X] VST, DSSI
+- [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] MIDI controls assigned to parameters
 - [ ] GUI. Pease help if you want one, I am no GUI guy.
 
@@ -54,16 +55,149 @@ like all definitions of VSTCALLBACK except
 #define VSTCALLBACK
 ```
 
+## LV2 Support
+
+LV2 is not supported yet. Meawhile if your host does not support DSSI,
+such as [Ardour](https://ardour.org/), you can use
+[NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges)
+which will expose Zynayumi as if it were an LV2 plugin. Try it, it
+works like a charm!
+
 ## Parameters Description
 
-TODO
+- Play mode:
+  - 0: Mono, always use the first voice of the YM2149.
+  - 1: Poly, alternate between the three voices of the YM2149.
+  - 2: UpArp, create arpegio with all pressed keys, going from lowest
+       to highest pitch.
+  - 3: DownArp, like UpArp but goes from higest to lowest pitch.
+  - 4: RndArp, like UpArp or DownArp but the pitch is randomly
+       selected amongst the pressed keys.
+
+- Tone time: time a square voice is played in second. Ranges from -1.0
+  to 10.0, negative means +inf.
+
+- Tone detune: global detune in semi-tone. Ranges from -1.0 to +1.0.
+
+- Tone transpose: global transpose in semi-tone. Ranges from -24 to
+  +24.
+
+- Noise time: time the noise generator is played in second. Ranges
+  from -1.0 to 10.0, negative means +inf.
+
+- Noise period: supposedly affect the frequency of the noise (buggy
+  apparently).
+
+- AmpEnv attack_level: attack level of the amplitude envelope. Ranges
+  from 0.0 to 1.0.
+
+- AmpEnv time1: time in second to go from attack_level to level1 of
+  the amplitude envelope. Ranges from 0.0 to 10.0.
+
+- AmpEnv level1: first intermediary level of the amplitude
+  envelope. Ranges from 0.0 to 1.0.
+
+- AmpEnv time2: time in second to go from level1 to level2 of the
+  amplitude envelope. Ranges from 0.0 to 10.0.
+
+- AmpEnv level2: second intermediary level of the amplitude
+  envelope. Ranges from 0.0 to 1.0.
+
+- AmpEnv time3: time in second to go from level2 to sustain_level of
+  the amplitude envelope. Range from 0.0 to 1.0.
+
+- AmpEnv sustain_level: sustain level of the amplitude
+  envelope. Ranges from 0.0 to 1.0.
+  
+- AmpEnv release: time in second to go from sustain_level to 0.0 of
+  the amplitude envelope. Ranges from 0.0 to 10.0.
+
+- PitchEnv attack_pitch: attack pitch of the pitch envelope in
+  semi-tone. Ranges from -96 to +96.
+
+- PitchEnv time: time in second to go from attack_pitch to 0 of the
+  pitch envelope. Ranges from 0.0 to 10.0.
+
+- Arp pitch1: pitch in semitone of the first arpegio note. Only active
+  for play mode 0 (Mono) and 1 (Poly). Ranges from -48 to +48.
+
+- Arp pitch2: pitch in semitone of the second arpegio note. Only
+  active for play mode 0 (Mono) and 1 (Poly). Ranges from -48 to +48.
+
+- Arp pitch3: pitch in semitone of the third arpegio note. Only active
+  for play mode 0 (Mono) and 1 (Poly). Ranges from -48 to +48.
+
+- Arp freq: frequency of the arpegio pitch change. For instance if its
+  value is 1.0, the arpegio will change the pitch every second. Ranges
+  from 0.0 to 100.0.
+
+- Arp repeat: select which pitch to repeat the arpegio.
+  - 0: from pitch1, thus cycle through pitch1 to pitch3.
+  - 1: from pitch2, thus cycle through pitch2 to pitch3.
+  - 2: from pitch3, thus cycle through pitch3, that is no arpegio
+    expect for the first cycle.
+
+- RingMod waveform level1 to level8: can define an 8 points
+  waveform. That waveform is multipled with the YN2149 square
+  waveform, thus creating a ring modulation. Ranges from 0.0 to 1.0.
+
+- RingMod detune: detune in semitone of the ring modulation waveform
+  relative to the square waveform. The famous SID phaser effect can be
+  obtained by setting a value difference than, though close to,
+  zero. Ranges from -1.0 to +1.0.
+
+- RingMod transpose: transposition in semitone of the ring modulation
+  waveform relative the square waveform. Ranges from -24 to +24.
+
+- LFO freq: frequency of the low frequency oscillation to create a
+  vibrato effect. Ranges from 0.0 to 20.0.
+
+- LFO delay: time in second to progressively reach full LFO
+  depth. Ranges from 0.0 to 10.0.
+
+- LFO depth: LFO depth in semitone. Ranges from 0.0 to 12.0.
+
+- Portamento: time in second of the portamento effect to go from 1
+  semitone to the next. Ranges from 0.0 to 10.0.
+
+- Pan channel0 to channel2: panning level of the 3 voices of the
+  YM2149. Ranges from 0.0 to 1.0. Can be to set to hard left, 0.0,
+  hard right, 1.0, or any value in between.
+
+## Clicks and other glitches
+
+It's easy to generate undesired clicks, especially in the attack. This
+may not be a bug of Zynayumi though. To avoid such clicks set a non
+null release of the amplitude envelope. See AmpEnv release in the
+section above.
+
+Also, the amplitude envelope itself can create clicks as it is using
+the YM2149 to control the amplitude in staircase fashion. This is a
+feature, not a bug.
+
+## Where is the buzzer?
+
+There are none. Well it is actually properly emulated by ayumi but
+zynayumi does not make any use of it. Personally, because the buzzer
+takes over the amplitude envelope I find it cumbersome. Besides the
+ring modulator is much more powerful in my opinion, though admittedly
+not the same. If you wish to add it, your contribution is welcome.
+
+## Wait, that tuning is too perfect to come from the YM2149! 
+
+Yes, I've modified ayumi so that tuning is perfect, even in high
+pitch. I prefer it that way. A parameter could be added that lets the
+user choose between legacy and perfect tuning. I have no motivation to
+add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
 - [ ] Fix release bug in Poly mode
 - [ ] Fix noise period parameter
 - [ ] Expose parameters to VST host
+- [ ] Add LV2 support
 - [ ] Define presets
+- [ ] Map parameters to MIDI CC
 
 ## Author
 
