@@ -41,7 +41,7 @@ enum class PlayMode {
 	Poly,
 	UpArp,
 	DownArp,
-	RndArp
+	RndArp,
 };
 
 class Tone {

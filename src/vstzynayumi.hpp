@@ -81,11 +81,19 @@ public:
 	*/
 
 private:
-	// Midi status codes
+	// Midi status codes (see /usr/include/alsa/asoundef.h for a list
+	// of all midi events)
 	static const unsigned char NOTE_ON = 0x90;
 	static const unsigned char NOTE_OFF = 0x80;
+	static const unsigned char ALL_NOTES_OFF = 0x7b;
 
 	void processEvent(VstEvent* event);
+
+	// Intermediary representations between user parameters and patch
+	float _tone_detune;
+	int _tone_transpose;
+	float _ringmode_detune;
+	int _ringmode_transpose;
 };
 
 } // ~namespace zynayumi

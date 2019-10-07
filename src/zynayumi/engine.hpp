@@ -113,6 +113,8 @@ public:
 
 	void noteOff_process(unsigned char channel, unsigned char pitch);
 
+	void allNotesOff_process();
+
 	void print(int m) const;
 
 	double pitch2period(double pitch);

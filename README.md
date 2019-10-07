@@ -39,29 +39,40 @@ $ make
 $ sudo make install
 ```
 
-For VST support, download the VST SDK
-(https://www.steinberg.net/en/company/developers.html) and unzip it
-directly under the project root directory.
+## DSSI Support
 
-Under GNU/Linux 64-bit, you may also need to comment out a bit of code
-in
+Just install the DSSI SDK. You likely have a package in your
+distribution, otherwise, have a look at http://dssi.sourceforge.net/.
+
+## VST Support
+
+For VST support, you need an old DSK as recent ones no longer support
+VST2. You may find one
+[here](https://www.steinberg.net/sdk_downloads/vstsdk366_27_06_2016_build_61.zip). If
+the link no longer works let me know. In the works case I should still
+have a copy of it.
+
+Under GNU/Linux 64-bit, you may need to comment out some code in
 
 ```
 pluginterfaces/vst2.x/aeffect.h
 ```
 
-like all definitions of VSTCALLBACK except
+specifically all definitions of `VSTCALLBACK` except the last one
+
 ```
 #define VSTCALLBACK
 ```
 
 ## LV2 Support
 
-LV2 is not supported yet. Meanwhile if your host does not support
-DSSI, such as [Ardour](https://ardour.org/), you can use
+LV2 is not supported yet. If for some reason you can only compile the
+DSSI version and your host does not support DSSI, such as
+[Ardour](https://ardour.org/), you can use
 [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges)
-which will expose Zynayumi as if it were an LV2 plugin. Try it, it
-works like a charm!
+which will expose Zynayumi as if it were an LV2 plugin. It is not
+completely stable however, it can crash the DAW during initialization,
+however if it does start then it seems to run flawlessly.
 
 ## Parameters Description
 
@@ -86,7 +97,7 @@ works like a charm!
   from -1.0 to 10.0, negative means +inf.
 
 - Noise period: supposedly affect the frequency of the noise (buggy
-  apparently).
+  apparently). TODO: give the range.
 
 - AmpEnv attack_level: attack level of the amplitude envelope. Ranges
   from 0.0 to 1.0.
@@ -104,7 +115,7 @@ works like a charm!
   envelope. Ranges from 0.0 to 1.0.
 
 - AmpEnv time3: time in second to go from level2 to sustain_level of
-  the amplitude envelope. Range from 0.0 to 1.0.
+  the amplitude envelope. Range from 0.0 to 10.0.
 
 - AmpEnv sustain_level: sustain level of the amplitude
   envelope. Ranges from 0.0 to 1.0.

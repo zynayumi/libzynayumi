@@ -52,6 +52,12 @@ void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch) {
 	engine.noteOff_process(channel, pitch);
 }
 
+void Zynayumi::allNotesOff_process() {
+	dbg_printf("ALL NOTES OFF\n");
+
+	engine.allNotesOff_process();
+}
+
 void Zynayumi::sysex_process(unsigned length, unsigned char* data) {
 	unsigned char command_ID;
 	dbg_printf("SYSEX\n");

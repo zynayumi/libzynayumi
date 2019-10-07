@@ -121,8 +121,8 @@ void Engine::noteOn_process(unsigned char channel,
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	auto print_err = [&]() {
-		std::cerr << "NoteOff (channel=" << channel
-		          << ", pitch=" << pitch << ") has no corresponding NoteOn"
+		std::cerr << "NoteOff (channel=" << (int)channel
+		          << ", pitch=" << (int)pitch << ") has no corresponding NoteOn"
 		          << std::endl;
 	};
 
@@ -160,6 +160,11 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	default:
 		break;
 	}
+}
+
+void Engine::allNotesOff_process() {
+	for (auto& voice : _voices)
+		voice.second.set_note_off();
 }
 
 // Print method

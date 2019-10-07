@@ -22,10 +22,14 @@
 
 ****************************************************************************/
 
-#include "vstzynayumi.hpp"
+#include <iostream>
+
 #include "pluginterfaces/vst2.x/aeffectx.h"
 
-#include <iostream>
+#include "zynayumi/patch.hpp"
+
+#include "vstzynayumi.hpp"
+#include "parameters.hpp"
 
 using namespace zynayumi;
 
@@ -53,10 +57,10 @@ AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 // Plugin implementation
 
 VSTZynayumi::VSTZynayumi(audioMasterCallback audioMaster)
-	: AudioEffectX(audioMaster, 1, 1), events(nullptr)
+	: AudioEffectX(audioMaster, 1, PARAMETERS_COUNT), events(nullptr)
 {
 	// Plugin id
-	setUniqueID(CCONST('D', 'S', 'y', 'n'));
+	setUniqueID(CCONST('Z', 'y', 'N', 'a'));
 
 	// stereo output
 	setNumInputs(0);	
@@ -94,17 +98,23 @@ VstInt32 VSTZynayumi::processEvents(VstEvents* ev) {
 void VSTZynayumi::midi(unsigned char status,
                        unsigned char byte1, unsigned char byte2)
 {
-	if (status == NOTE_ON or status == NOTE_OFF)
-	{
+	switch (status) {
+	case NOTE_ON:
+	case NOTE_OFF:	{
 		unsigned char pitch = byte1, velocity = byte2;
 		if (status == NOTE_ON and velocity > 0)
 			zynayumi.noteOn_process(0, pitch, velocity);
 		else if (status == NOTE_OFF or (status == NOTE_ON and velocity == 0))
 			zynayumi.noteOff_process(0, pitch);
-	} else {
-		std::cerr << "Midi event (status=" << status
-		          << ", byte1=" << byte1
-		          << ", byte2=" << byte2
+		break;
+	}
+	case ALL_NOTES_OFF:
+		zynayumi.allNotesOff_process();
+		break;
+	default:
+		std::cerr << "Midi event (status=" << (int)status
+		          << ", byte1=" << (int)byte1
+		          << ", byte2=" << (int)byte2
 		          << ") not implemented" << std::endl;
 	}
 }
@@ -178,33 +188,583 @@ VstIntPtr VSTZynayumi::dispatcher(VstInt32 opCode, VstInt32 index, VstIntPtr val
 
 void VSTZynayumi::setParameter(VstInt32 index, float value)
 {
-	std::cout << "setParameter(" << index << ", " << value << ")"
-	          << std::endl;
+	switch(index) {
+		// Play mode
+	case PLAY_MODE:
+		zynayumi.patch.playmode =
+			(PlayMode)std::round(value * (float)PlayMode::RndArp);
+		break;
+
+		// Tone
+	case TONE_TIME:
+		zynayumi.patch.tone.time = affine(0.0f, 1.0f, -1.0f, 10.0f, value);
+		break;
+	case TONE_DETUNE:
+		_tone_detune = affine(0.0f, 1.0f, -1.0f, 1.0f, value);
+		zynayumi.patch.tone.detune = _tone_detune + _tone_transpose;
+		break;
+	case TONE_TRANSPOSE:
+		_tone_transpose = (int)std::round(affine(0.0f, 1.0f, -24.0f, 24.0f, value));
+		zynayumi.patch.tone.detune = _tone_detune + _tone_transpose;
+		break;
+
+		// Noise
+	case NOISE_TIME:
+		zynayumi.patch.noise.time = affine(0.0f, 1.0f, -1.0f, 10.0f, value);
+		break;
+	case NOISE_PERIOD:
+		zynayumi.patch.noise.period = value; // TODO
+		break;
+
+		// Amplitude envelope
+	case AMP_ENV_ATTACK_LEVEL:
+		zynayumi.patch.ampenv.attack_level = value;
+		break;
+	case AMP_ENV_TIME1:
+		zynayumi.patch.ampenv.time1 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+	case AMP_ENV_LEVEL1:
+		zynayumi.patch.ampenv.level1 = value;
+		break;
+	case AMP_ENV_TIME2:
+		zynayumi.patch.ampenv.time2 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+	case AMP_ENV_LEVEL2:
+		zynayumi.patch.ampenv.level2 = value;
+		break;
+	case AMP_ENV_TIME3:
+		zynayumi.patch.ampenv.time3 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+	case AMP_ENV_SUSTAIN_LEVEL:
+		zynayumi.patch.ampenv.sustain_level = value;
+		break;
+	case AMP_ENV_RELEASE:
+		zynayumi.patch.ampenv.release = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+
+		// Pitch envelope
+	case PITCH_ENV_ATTACK_PITCH:
+		zynayumi.patch.pitchenv.attack_pitch =
+			affine(0.0f, 1.0f, -96.0f, 96.0f, value);
+		break;
+	case PITCH_ENV_TIME:
+		zynayumi.patch.pitchenv.time = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+
+		// Arpegio
+	case ARP_PITCH1:
+		zynayumi.patch.arp.pitch1 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		break;
+	case ARP_PITCH2:
+		zynayumi.patch.arp.pitch2 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		break;
+	case ARP_PITCH3:
+		zynayumi.patch.arp.pitch3 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		break;
+	case ARP_FREQ:
+		zynayumi.patch.arp.freq = affine(0.0f, 1.0f, 0.0f, 100.0f, value);
+		break;
+	case ARP_REPEAT:
+		zynayumi.patch.arp.repeat = (int)std::round(affine(0.0f, 1.0f, 0.0f, 2.0f, value));
+		break;
+
+		// Ring modulation
+	case RING_MOD_WAVEFORM_LEVEL1:
+		zynayumi.patch.ringmod.waveform[0] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL2:
+		zynayumi.patch.ringmod.waveform[1] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL3:
+		zynayumi.patch.ringmod.waveform[2] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL4:
+		zynayumi.patch.ringmod.waveform[3] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL5:
+		zynayumi.patch.ringmod.waveform[4] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL6:
+		zynayumi.patch.ringmod.waveform[5] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL7:
+		zynayumi.patch.ringmod.waveform[6] = value;
+		break;
+	case RING_MOD_WAVEFORM_LEVEL8:
+		zynayumi.patch.ringmod.waveform[7] = value;
+		break;
+	case RING_MOD_MIRROR:
+		zynayumi.patch.ringmod.mirror = (bool)std::round(value);
+		break;
+	case RING_MOD_SYNC:
+		zynayumi.patch.ringmod.sync = (bool)std::round(value);
+		break;
+	case RING_MOD_DETUNE:
+		_ringmode_detune = affine(0.0f, 1.0f, -1.0f, 1.0f, value);
+		zynayumi.patch.ringmod.detune = _ringmode_detune + _ringmode_transpose;
+		break;
+	case RING_MOD_TRANSPOSE:
+		_ringmode_transpose = (int)std::round(affine(0.0f, 1.0f, -24.0f, 24.0f, value));
+		zynayumi.patch.ringmod.detune = _ringmode_detune + _ringmode_transpose;
+		break;
+
+		// Pitch LFO
+	case LFO_FREQ:
+		zynayumi.patch.lfo.freq = affine(0.0f, 1.0f, 0.0f, 20.0f, value);
+		break;
+	case LFO_DELAY:
+		zynayumi.patch.lfo.delay = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+	case LFO_DEPTH:
+		zynayumi.patch.lfo.depth = affine(0.0f, 1.0f, 0.0f, 12.0f, value);
+		break;
+
+		// Portamento
+	case PORTAMENTO:
+		zynayumi.patch.port = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		break;
+
+		// Pan
+	case PAN_CHANNEL0:
+		zynayumi.patch.pan.channel[0] = value;
+		break;
+	case PAN_CHANNEL1:
+		zynayumi.patch.pan.channel[1] = value;
+		break;
+	case PAN_CHANNEL2:
+		zynayumi.patch.pan.channel[2] = value;
+		break;
+
+	default:
+		std::cout << "setParameter(" << index << ", " << value << ")"
+		          << std::endl;
+	}
 }
 
 float VSTZynayumi::getParameter(VstInt32 index)
 {
-	return 0.0f;
+	switch(index) {
+		// Play mode
+	case PLAY_MODE:
+		return (float)zynayumi.patch.playmode / (float)PlayMode::RndArp;
+
+		// Tone
+	case TONE_TIME:
+		return affine(-1.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.tone.time);
+	case TONE_DETUNE:
+		return affine(-1.0f, 1.0f, 0.0f, 1.0f, _tone_detune);
+	case TONE_TRANSPOSE:
+		return affine(-24.0f, 24.0f, 0.0f, 1.0f, (float)_tone_transpose);
+
+		// Noise
+	case NOISE_TIME:
+		return affine(-1.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.noise.time);
+	case NOISE_PERIOD:
+		return zynayumi.patch.noise.period; // TODO
+
+		// Amplitude envelope
+	case AMP_ENV_ATTACK_LEVEL:
+		return zynayumi.patch.ampenv.attack_level;
+	case AMP_ENV_TIME1:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time1);
+	case AMP_ENV_LEVEL1:
+		return zynayumi.patch.ampenv.level1;
+	case AMP_ENV_TIME2:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time2);
+	case AMP_ENV_LEVEL2:
+		return zynayumi.patch.ampenv.level2;
+	case AMP_ENV_TIME3:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time3);
+	case AMP_ENV_SUSTAIN_LEVEL:
+		return zynayumi.patch.ampenv.sustain_level;
+	case AMP_ENV_RELEASE:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.release);
+
+		// Pitch envelope
+	case PITCH_ENV_ATTACK_PITCH:
+		return affine(-96.0f, 96.0f, 0.0f, 1.0f, zynayumi.patch.pitchenv.attack_pitch);
+	case PITCH_ENV_TIME:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.pitchenv.time);
+
+		// Arpegio
+	case ARP_PITCH1:
+		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch1);
+	case ARP_PITCH2:
+		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch2);
+	case ARP_PITCH3:
+		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch3);
+	case ARP_FREQ:
+		return affine(0.0f, 100.0f, 0.0f, 1.0f, zynayumi.patch.arp.freq);
+	case ARP_REPEAT:
+		return affine(0.0f, 2.0f, 0.0f, 1.0f, (float)zynayumi.patch.arp.repeat);
+
+		// Ring modulation
+	case RING_MOD_WAVEFORM_LEVEL1:
+		return zynayumi.patch.ringmod.waveform[0];
+	case RING_MOD_WAVEFORM_LEVEL2:
+		return zynayumi.patch.ringmod.waveform[1];
+	case RING_MOD_WAVEFORM_LEVEL3:
+		return zynayumi.patch.ringmod.waveform[2];
+	case RING_MOD_WAVEFORM_LEVEL4:
+		return zynayumi.patch.ringmod.waveform[3];
+	case RING_MOD_WAVEFORM_LEVEL5:
+		return zynayumi.patch.ringmod.waveform[4];
+	case RING_MOD_WAVEFORM_LEVEL6:
+		return zynayumi.patch.ringmod.waveform[5];
+	case RING_MOD_WAVEFORM_LEVEL7:
+		return zynayumi.patch.ringmod.waveform[6];
+	case RING_MOD_WAVEFORM_LEVEL8:
+		return zynayumi.patch.ringmod.waveform[7];
+	case RING_MOD_MIRROR:
+		return (float)zynayumi.patch.ringmod.mirror;
+	case RING_MOD_SYNC:
+		return (float)zynayumi.patch.ringmod.sync;
+	case RING_MOD_DETUNE:
+		return affine(-1.0f, 1.0f, 0.0f, 1.0f, _ringmode_detune);
+	case RING_MOD_TRANSPOSE:
+		return affine(-24.0f, 24.0f, 0.0f, 1.0f, (float)_ringmode_transpose);
+
+		// Pitch LFO
+	case LFO_FREQ:
+		return affine(0.0f, 20.0f, 0.0f, 1.0f, zynayumi.patch.lfo.freq);
+	case LFO_DELAY:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.lfo.delay);
+	case LFO_DEPTH:
+		return affine(0.0f, 12.0f, 0.0f, 1.0f, zynayumi.patch.lfo.depth);
+
+		// Portamento
+	case PORTAMENTO:
+		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.port);
+
+		// Pan
+	case PAN_CHANNEL0:
+		return zynayumi.patch.pan.channel[0];
+	case PAN_CHANNEL1:
+		return zynayumi.patch.pan.channel[1];
+	case PAN_CHANNEL2:
+		return zynayumi.patch.pan.channel[2];
+
+	default:
+		return 0.0f;
+	}
 }
 
 void VSTZynayumi::getParameterLabel(VstInt32 index, char *text)
 {
-	strcpy(text, "Dummy parameter label");
+	strcpy(text, "unit");
 }
 
 void VSTZynayumi::getParameterName(VstInt32 index, char *text)
 {
-	strcpy(text, "Dummy parameter name");
+	switch(index) {
+		// Play mode
+	case PLAY_MODE:
+		strcpy(text, PLAY_MODE_STR);
+		break;
+
+		// Tone
+	case TONE_TIME:
+		strcpy(text, TONE_TIME_STR);
+		break;
+	case TONE_DETUNE:
+		strcpy(text, TONE_DETUNE_STR);
+		break;
+	case TONE_TRANSPOSE:
+		strcpy(text, TONE_TRANSPOSE_STR);
+		break;
+
+		// Noise
+	case NOISE_TIME:
+		strcpy(text, NOISE_TIME_STR);
+		break;
+	case NOISE_PERIOD:
+		strcpy(text, NOISE_PERIOD_STR);
+		break;
+
+		// Amplitude envelope
+	case AMP_ENV_ATTACK_LEVEL:
+		strcpy(text, AMP_ENV_ATTACK_LEVEL_STR);
+		break;
+	case AMP_ENV_TIME1:
+		strcpy(text, AMP_ENV_TIME1_STR);
+		break;
+	case AMP_ENV_LEVEL1:
+		strcpy(text, AMP_ENV_LEVEL1_STR);
+		break;
+	case AMP_ENV_TIME2:
+		strcpy(text, AMP_ENV_TIME2_STR);
+		break;
+	case AMP_ENV_LEVEL2:
+		strcpy(text, AMP_ENV_LEVEL2_STR);
+		break;
+	case AMP_ENV_TIME3:
+		strcpy(text, AMP_ENV_TIME3_STR);
+		break;
+	case AMP_ENV_SUSTAIN_LEVEL:
+		strcpy(text, AMP_ENV_SUSTAIN_LEVEL_STR);
+		break;
+	case AMP_ENV_RELEASE:
+		strcpy(text, AMP_ENV_RELEASE_STR);
+		break;
+
+		// Pitch envelope
+	case PITCH_ENV_ATTACK_PITCH:
+		strcpy(text, PITCH_ENV_ATTACK_PITCH_STR);
+		break;
+	case PITCH_ENV_TIME:
+		strcpy(text, PITCH_ENV_TIME_STR);
+		break;
+
+		// Arpegio
+	case ARP_PITCH1:
+		strcpy(text, ARP_PITCH1_STR);
+		break;
+	case ARP_PITCH2:
+		strcpy(text, ARP_PITCH2_STR);
+		break;
+	case ARP_PITCH3:
+		strcpy(text, ARP_PITCH3_STR);
+		break;
+	case ARP_FREQ:
+		strcpy(text, ARP_FREQ_STR);
+		break;
+	case ARP_REPEAT:
+		strcpy(text, ARP_REPEAT_STR);
+		break;
+
+		// Ring modulation
+	case RING_MOD_WAVEFORM_LEVEL1:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL1_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL2:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL2_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL3:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL3_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL4:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL4_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL5:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL5_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL6:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL6_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL7:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL7_STR);
+		break;
+	case RING_MOD_WAVEFORM_LEVEL8:
+		strcpy(text, RING_MOD_WAVEFORM_LEVEL8_STR);
+		break;
+	case RING_MOD_MIRROR:
+		strcpy(text, RING_MOD_MIRROR_STR);
+		break;
+	case RING_MOD_SYNC:
+		strcpy(text, RING_MOD_SYNC_STR);
+		break;
+	case RING_MOD_DETUNE:
+		strcpy(text, RING_MOD_DETUNE_STR);
+		break;
+	case RING_MOD_TRANSPOSE:
+		strcpy(text, RING_MOD_TRANSPOSE_STR);
+		break;
+
+		// Pitch LFO
+	case LFO_FREQ:
+		strcpy(text, LFO_FREQ_STR);
+		break;
+	case LFO_DELAY:
+		strcpy(text, LFO_DELAY_STR);
+		break;
+	case LFO_DEPTH:
+		strcpy(text, LFO_DEPTH_STR);
+		break;
+
+		// Portamento
+	case PORTAMENTO:
+		strcpy(text, PORTAMENTO_STR);
+		break;
+
+		// Pan
+	case PAN_CHANNEL0:
+		strcpy(text, PAN_CHANNEL0_STR);
+		break;
+	case PAN_CHANNEL1:
+		strcpy(text, PAN_CHANNEL1_STR);
+		break;
+	case PAN_CHANNEL2:
+		strcpy(text, PAN_CHANNEL2_STR);
+		break;
+
+	default:
+		strcpy(text, "no parameter");
+	}
 }
 
 void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)
 {
-	strcpy(text, "Dummy parameter display");
+	switch(index) {
+		// Play mode
+	case PLAY_MODE:
+		switch(zynayumi.patch.playmode) {
+		case PlayMode::Mono: strcpy(text, "Mono");
+			break;
+		case PlayMode::Poly: strcpy(text, "Poly");
+			break;
+		case PlayMode::UpArp: strcpy(text, "UpArp");
+			break;
+		case PlayMode::DownArp: strcpy(text, "DownArp");
+			break;
+		case PlayMode::RndArp: strcpy(text, "RndArp");
+			break;
+		default: strcpy(text, "no display");
+		}
+		break;
+
+		// Tone
+	case TONE_TIME:
+		strcpy(text, std::to_string(zynayumi.patch.tone.time).c_str());
+		break;
+	case TONE_DETUNE:
+		strcpy(text, std::to_string(_tone_detune).c_str());
+		break;
+	case TONE_TRANSPOSE:
+		strcpy(text, std::to_string(_tone_transpose).c_str());
+		break;
+
+		// Noise
+	case NOISE_TIME:
+		strcpy(text, std::to_string(zynayumi.patch.noise.time).c_str());
+		break;
+	case NOISE_PERIOD:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.time1).c_str());
+		break;
+
+		// Amplitude envelope
+	case AMP_ENV_ATTACK_LEVEL:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.attack_level).c_str());
+		break;
+	case AMP_ENV_TIME1:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.time1).c_str());
+		break;
+	case AMP_ENV_LEVEL1:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.level1).c_str());
+		break;
+	case AMP_ENV_TIME2:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.time2).c_str());
+		break;
+	case AMP_ENV_LEVEL2:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.level2).c_str());
+		break;
+	case AMP_ENV_TIME3:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.time3).c_str());
+		break;
+	case AMP_ENV_SUSTAIN_LEVEL:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.sustain_level).c_str());
+		break;
+	case AMP_ENV_RELEASE:
+		strcpy(text, std::to_string(zynayumi.patch.ampenv.release).c_str());
+		break;
+
+		// Pitch envelope
+	case PITCH_ENV_ATTACK_PITCH:
+		strcpy(text, std::to_string(zynayumi.patch.pitchenv.attack_pitch).c_str());
+		break;
+	case PITCH_ENV_TIME:
+		strcpy(text, std::to_string(zynayumi.patch.pitchenv.time).c_str());
+		break;
+
+		// Arpegio
+	case ARP_PITCH1:
+		strcpy(text, std::to_string(zynayumi.patch.arp.pitch1).c_str());
+		break;
+	case ARP_PITCH2:
+		strcpy(text, std::to_string(zynayumi.patch.arp.pitch2).c_str());
+		break;
+	case ARP_PITCH3:
+		strcpy(text, std::to_string(zynayumi.patch.arp.pitch3).c_str());
+		break;
+	case ARP_FREQ:
+		strcpy(text, std::to_string(zynayumi.patch.arp.freq).c_str());
+		break;
+	case ARP_REPEAT:
+		strcpy(text, std::to_string(zynayumi.patch.arp.repeat).c_str());
+		break;
+
+		// Ring modulation
+	case RING_MOD_WAVEFORM_LEVEL1:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[0]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL2:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[1]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL3:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[2]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL4:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[3]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL5:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[4]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL6:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[5]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL7:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[6]).c_str());
+		break;
+	case RING_MOD_WAVEFORM_LEVEL8:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.waveform[7]).c_str());
+		break;
+	case RING_MOD_MIRROR:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.mirror).c_str());
+		break;
+	case RING_MOD_SYNC:
+		strcpy(text, std::to_string(zynayumi.patch.ringmod.sync).c_str());
+		break;
+	case RING_MOD_DETUNE:
+		strcpy(text, std::to_string(_ringmode_detune).c_str());
+		break;
+	case RING_MOD_TRANSPOSE:
+		strcpy(text, std::to_string(_ringmode_transpose).c_str());
+		break;
+
+		// Pitch LFO
+	case LFO_FREQ:
+		strcpy(text, std::to_string(zynayumi.patch.lfo.freq).c_str());
+		break;
+	case LFO_DELAY:
+		strcpy(text, std::to_string(zynayumi.patch.lfo.delay).c_str());
+		break;
+	case LFO_DEPTH:
+		strcpy(text, std::to_string(zynayumi.patch.lfo.depth).c_str());
+		break;
+
+		// Portamento
+	case PORTAMENTO:
+		strcpy(text, std::to_string(zynayumi.patch.port).c_str());
+		break;
+
+		// Pan
+	case PAN_CHANNEL0:
+		strcpy(text, std::to_string(zynayumi.patch.pan.channel[0]).c_str());
+		break;
+	case PAN_CHANNEL1:
+		strcpy(text, std::to_string(zynayumi.patch.pan.channel[1]).c_str());
+		break;
+	case PAN_CHANNEL2:
+		strcpy(text, std::to_string(zynayumi.patch.pan.channel[2]).c_str());
+		break;
+
+	default:
+		strcpy(text, "no display");
+	}
 }
 
 bool VSTZynayumi::getEffectName(char* name)
 {
-	strcpy(name, "Zynayumi");
+	strcpy(name, "Zynayumi (VST)");
 	return true;
 }
 

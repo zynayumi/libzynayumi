@@ -33,4 +33,10 @@ if (HAVE_VST)
   target_link_libraries(zynayumi-vst
     zynayumi)
 
+  add_custom_command(TARGET zynayumi-vst POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+    $<TARGET_FILE:zynayumi-vst>
+    ../zynayumi-vst.so)
+
+  install(FILES ${CMAKE_BINARY_DIR}/zynayumi-vst.so DESTINATION lib/vst)
 endif (HAVE_VST)

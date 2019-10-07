@@ -4,7 +4,7 @@
 
     dssizynayumi.hpp
 
-    Copyleft (c) 2016 Nil Geisweiller
+    Copyleft (c) 2016-2019 Nil Geisweiller <ngeiswei@gmail.com>
  
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,72 +27,13 @@
 
 #include "dssi/dssiplugin.hpp"
 #include "zynayumi/zynayumi.hpp"
+#include "parameters.hpp"
 
 namespace zynayumi {
 
 static enum {
-	// Play mode
-	PLAY_MODE,
-
-	// Tone
-	TONE_TIME,
-	TONE_DETUNE,
-	TONE_TRANSPOSE,
-
-	// Noise
-	NOISE_TIME,
-	NOISE_PERIOD,
-
-	// Amplitude envelope
-	AMP_ENV_ATTACK_LEVEL,
-	AMP_ENV_TIME1,
-	AMP_ENV_LEVEL1,
-	AMP_ENV_TIME2,
-	AMP_ENV_LEVEL2,
-	AMP_ENV_TIME3,
-	AMP_ENV_SUSTAIN_LEVEL,
-	AMP_ENV_RELEASE,
-
-	// Pitch envelope
-	PITCH_ENV_ATTACK_PITCH,
-	PITCH_ENV_TIME,
-
-	// Arpegio
-	ARP_PITCH1,
-	ARP_PITCH2,
-	ARP_PITCH3,
-	ARP_FREQ,
-	ARP_REPEAT,
-
-	// Ring modulation
-	RING_MOD_WAVEFORM_LEVEL1,
-	RING_MOD_WAVEFORM_LEVEL2,
-	RING_MOD_WAVEFORM_LEVEL3,
-	RING_MOD_WAVEFORM_LEVEL4,
-	RING_MOD_WAVEFORM_LEVEL5,
-	RING_MOD_WAVEFORM_LEVEL6,
-	RING_MOD_WAVEFORM_LEVEL7,
-	RING_MOD_WAVEFORM_LEVEL8,
-	RING_MOD_MINOR,
-	RING_MOD_SYNC,
-	RING_MOD_DETUNE,
-	RING_MOD_TRANSPOSE,
-
-	// Pitch LFO
-	LFO_FREQ,
-	LFO_DELAY,
-	LFO_DEPTH,
-
-	// Portamento
-	PORTAMENTO,
-
-	// Pan
-	PAN_CHANNEL0,
-	PAN_CHANNEL1,
-	PAN_CHANNEL2,
-
 	// Audio outputs
-	LEFT_OUTPUT,
+	LEFT_OUTPUT=PARAMETERS_COUNT,
 	RIGHT_OUTPUT
 } enum_ports;
 

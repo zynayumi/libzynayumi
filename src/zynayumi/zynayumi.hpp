@@ -75,10 +75,15 @@ public:
 	// 2. All processing is added to the buffers
 	void audio_process(float* left_out, float* right_out,
 	                   unsigned long sample_count);
+
 	void noteOn_process(unsigned char channel,
 	                    unsigned char pitch,
 	                    unsigned char velocity);
+
 	void noteOff_process(unsigned char channel, unsigned char pitch);
+
+	void allNotesOff_process();
+
 	void sysex_process(unsigned length, unsigned char* data);
 
 	// print method
