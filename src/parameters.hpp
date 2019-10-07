@@ -141,7 +141,7 @@ static enum {
 static float affine(float minx, float maxx, float miny, float maxy, float x) {
 	return ((x - minx) / (maxx - minx)) * (maxy - miny) + miny;
 }
-	
+
 } // ~namespace zynayumi
-	
+
 #endif
