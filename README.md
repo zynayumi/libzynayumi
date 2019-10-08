@@ -204,8 +204,9 @@ add such parameter, but if you do your contribution is welcome.
 ## TODO
 
 - [ ] Fix noise period parameter
-- [ ] Map parameters to MIDI CC
 - [ ] Add parameter to select YM2149 or AY-3-8910
+- [ ] Improce parameter ranges
+- [ ] Map parameters to MIDI CC
 - [ ] Define presets
 - [ ] Add LV2 support
 
