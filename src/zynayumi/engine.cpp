@@ -120,8 +120,6 @@ void Engine::noteOn_process(unsigned char channel,
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
-	std::cout << "Engine::noteOff_process channel=" << channel << ", pitch=" << pitch << std::endl;
-
 	auto print_err = [&]() {
 		std::cerr << "NoteOff (channel=" << (int)channel << ", pitch="
 		          << (int)pitch << ") has no corresponding NoteOn"
@@ -131,7 +129,6 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	// Remove the corresponding pitch
 	auto pit = pitches.find(pitch);
 	if (pit != pitches.end()) {
-		std::cout << "Engine::noteOff_process erase *pit = " << *pit << std::endl;
 		pitches.erase(pit);
 	} else {
 		print_err();
@@ -145,10 +142,14 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	{
 		// Set the corresponding voice off, if it hasn't been removed
 		// by a new voice.
-		auto vit = _voices.find(pitch);
-		if (vit != _voices.end()) {
-			std::cout << "Engine::noteOff_process set_note_off with pitch " << vit->first << std::endl;
-			vit->second.set_note_off();
+		if (_voices.find(pitch) != _voices.end()) {
+			auto vitr = _voices.equal_range(pitch);
+			for (auto vit = vitr.first; vit != vitr.second; ++vit) {
+				if (vit->second.note_on) {
+					vit->second.set_note_off();
+					break;
+				}
+			}
 		}
 		break;
 	}

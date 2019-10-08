@@ -203,12 +203,11 @@ add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
-- [ ] Fix release bug in Poly mode
 - [ ] Fix noise period parameter
-- [ ] Expose parameters to VST host
-- [ ] Add LV2 support
-- [ ] Define presets
 - [ ] Map parameters to MIDI CC
+- [ ] Add parameter to select YM2149 or AY-3-8910
+- [ ] Define presets
+- [ ] Add LV2 support
 
 ## Author
 
