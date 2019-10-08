@@ -146,8 +146,10 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		// Set the corresponding voice off, if it hasn't been removed
 		// by a new voice.
 		auto vit = _voices.find(pitch);
-		if (vit != _voices.end())
+		if (vit != _voices.end()) {
+			std::cout << "Engine::noteOff_process set_note_off with pitch " << vit->first << std::endl;
 			vit->second.set_note_off();
+		}
 		break;
 	}
 	case PlayMode::UpArp:

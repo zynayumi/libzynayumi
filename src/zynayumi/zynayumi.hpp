@@ -30,7 +30,7 @@
 #include "presets.hpp"
 
 // Set 1 if you want to print debug messages, 0 otherwise
-#define ENABLE_PRINT_DEBUG 0
+#define ENABLE_PRINT_DEBUG 1
 
 #if ENABLE_PRINT_DEBUG
 #define dbg_printf(f, varargs...) printf(f, ##varargs)
