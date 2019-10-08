@@ -58,6 +58,10 @@ AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 
 VSTZynayumi::VSTZynayumi(audioMasterCallback audioMaster)
 	: AudioEffectX(audioMaster, 1, PARAMETERS_COUNT), events(nullptr)
+	, _tone_detune(0)
+	, _tone_transpose(0)
+	, _ringmode_detune(0)
+	, _ringmode_transpose(0)
 {
 	// Plugin id
 	setUniqueID(CCONST('Z', 'y', 'N', 'a'));
