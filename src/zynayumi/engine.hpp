@@ -135,7 +135,7 @@ private:
 	typedef std::multimap<unsigned char, Voice> Pitch2Voice;
 	Pitch2Voice _voices;
 
-	unsigned char _max_voices;
+	const unsigned char _max_voices;
 };
 
 } // ~namespace zynayumi

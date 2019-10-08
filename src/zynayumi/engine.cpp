@@ -120,15 +120,18 @@ void Engine::noteOn_process(unsigned char channel,
 }
 
 void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
+	std::cout << "Engine::noteOff_process channel=" << channel << ", pitch=" << pitch << std::endl;
+
 	auto print_err = [&]() {
-		std::cerr << "NoteOff (channel=" << (int)channel
-		          << ", pitch=" << (int)pitch << ") has no corresponding NoteOn"
+		std::cerr << "NoteOff (channel=" << (int)channel << ", pitch="
+		          << (int)pitch << ") has no corresponding NoteOn"
 		          << std::endl;
 	};
 
 	// Remove the corresponding pitch
 	auto pit = pitches.find(pitch);
 	if (pit != pitches.end()) {
+		std::cout << "Engine::noteOff_process erase *pit = " << *pit << std::endl;
 		pitches.erase(pit);
 	} else {
 		print_err();

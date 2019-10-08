@@ -22,7 +22,9 @@
 
 ****************************************************************************/
 
-#include <stdio.h>
+#include <cstdio>
+#include <iostream>
+
 #include "zynayumi.hpp"
 
 using namespace zynayumi;
@@ -39,29 +41,35 @@ void Zynayumi::audio_process(float* left_out, float* right_out,
 void Zynayumi::noteOn_process(unsigned char channel,
                               unsigned char pitch,
                               unsigned char velocity) {
-	dbg_printf("NOTE_ON: channel = %d, pitch = %d, velocity = %d\n",
+	dbg_printf("Zynayumi::noteOn_process(channel=%d, pitch=%d, velocity=%d)\n",
 	           channel, pitch, velocity);
 
 	engine.noteOn_process(channel, pitch, velocity);
 }
 
 void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch) {
-	dbg_printf("NOTE OFF: channel = %d, pitch = %d\n",
+	dbg_printf("Zynayumi::noteOff_process(channel=%d, pitch=%d)\n",
 	           channel, pitch);
 
 	engine.noteOff_process(channel, pitch);
 }
 
-void Zynayumi::allNotesOff_process() {
-	dbg_printf("ALL NOTES OFF\n");
+void Zynayumi::control_process(unsigned char cc, unsigned char value) {
+	dbg_printf("Zynayumi::control_process(cc=%x, value=%d)\n", cc, value);
 
-	engine.allNotesOff_process();
+	switch (cc) {
+	case CTL_ALL_NOTES_OFF:
+		engine.allNotesOff_process();
+		break;
+	default:
+		std::cerr << "Control change " << (int)cc << " unsupported" << std::endl;
+	}
 }
 
 void Zynayumi::sysex_process(unsigned length, unsigned char* data) {
 	unsigned char command_ID;
-	dbg_printf("SYSEX\n");
-	for(unsigned i = 0; i < length; i++) dbg_printf("%X ", data[i]);
+	dbg_printf("Zynayumi::sysex_process\n");
+	for(unsigned i = 0; i < length; i++) dbg_printf("%x ", data[i]);
 	dbg_printf("\n");
 }
 

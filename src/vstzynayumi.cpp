@@ -114,8 +114,8 @@ void VSTZynayumi::midi(unsigned char status,
 			zynayumi.noteOff_process(0, pitch);
 		break;
 	}
-	case ALL_NOTES_OFF:
-		zynayumi.allNotesOff_process();
+	case CONTROL:
+		zynayumi.control_process(byte1, byte2);
 		break;
 	default:
 		std::cerr << "Midi event (status=" << (int)status
@@ -128,7 +128,6 @@ void VSTZynayumi::midi(unsigned char status,
 void VSTZynayumi::process(float **inputs, float **outputs,
                           VstInt32 sampleFrames)
 {
-	
 	int i, cue, block;
 	
 	// Outputs buffers

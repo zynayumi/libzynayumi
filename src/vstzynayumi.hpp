@@ -81,11 +81,10 @@ public:
 	*/
 
 private:
-	// Midi status codes (see /usr/include/alsa/asoundef.h for a list
-	// of all midi events)
+	// Midi status codes
 	static const unsigned char NOTE_ON = 0x90;
 	static const unsigned char NOTE_OFF = 0x80;
-	static const unsigned char ALL_NOTES_OFF = 0x7b;
+	static const unsigned char CONTROL = 0xb0;
 
 	void processEvent(VstEvent* event);
 
