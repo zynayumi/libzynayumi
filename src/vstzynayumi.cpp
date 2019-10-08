@@ -102,6 +102,8 @@ VstInt32 VSTZynayumi::processEvents(VstEvents* ev) {
 void VSTZynayumi::midi(unsigned char status,
                        unsigned char byte1, unsigned char byte2)
 {
+	// Ignore midi channel
+	status &= 0xf0;
 	switch (status) {
 	case NOTE_ON:
 	case NOTE_OFF:	{
