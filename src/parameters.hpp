@@ -165,7 +165,7 @@ static enum {
 #define LFO_DEPTH_MIN 0.0f
 #define LFO_DEPTH_MAX 12.0f
 #define PORTAMENTO_MIN 0.0f
-#define PORTAMENTO_MAX 2.0f
+#define PORTAMENTO_MAX 1.0f
 #define PAN_CHANNEL0_MIN 0.0f
 #define PAN_CHANNEL0_MAX 1.0f
 #define PAN_CHANNEL1_MIN 0.0f
