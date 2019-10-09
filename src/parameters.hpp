@@ -131,7 +131,7 @@ static enum {
 #define ARP_PITCH3_MIN -48.0f
 #define ARP_PITCH3_MAX 48.0f
 #define ARP_FREQ_MIN 0.0f
-#define ARP_FREQ_MAX 50.0f
+#define ARP_FREQ_MAX 60.0f
 #define ARP_REPEAT_MIN 0.0f
 #define ARP_REPEAT_MAX 2.0f
 #define RING_MOD_WAVEFORM_LEVEL1_MIN 0.0f
@@ -165,7 +165,7 @@ static enum {
 #define LFO_DEPTH_MIN 0.0f
 #define LFO_DEPTH_MAX 12.0f
 #define PORTAMENTO_MIN 0.0f
-#define PORTAMENTO_MAX 5.0f
+#define PORTAMENTO_MAX 2.0f
 #define PAN_CHANNEL0_MIN 0.0f
 #define PAN_CHANNEL0_MAX 1.0f
 #define PAN_CHANNEL1_MIN 0.0f
