@@ -114,9 +114,23 @@ void VSTZynayumi::midi(unsigned char status,
 			zynayumi.noteOff_process(0, pitch);
 		break;
 	}
-	case CONTROL:
-		zynayumi.control_process(byte1, byte2);
+	case CONTROL: {
+		unsigned char cc = byte1;
+		unsigned char value = byte2;
+		switch (cc) {
+		case CTL_PORTAMENTO_TIME: {
+			float valuef = affine(0, 127, 0.0f, 1.0f, value);
+			setParameterAutomated(PORTAMENTO, valuef);
+			break;
+		}
+		case CTL_ALL_NOTES_OFF:
+			zynayumi.allNotesOff_process();
+			break;
+		default:
+			std::cerr << "Control change " << (int)cc << " unsupported" << std::endl;
+		}
 		break;
+	}
 	default:
 		std::cerr << "Midi event (status=" << (int)status
 		          << ", byte1=" << (int)byte1

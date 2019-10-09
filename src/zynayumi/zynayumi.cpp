@@ -54,16 +54,10 @@ void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch) {
 	engine.noteOff_process(channel, pitch);
 }
 
-void Zynayumi::control_process(unsigned char cc, unsigned char value) {
-	dbg_printf("Zynayumi::control_process(cc=%x, value=%d)\n", cc, value);
+void Zynayumi::allNotesOff_process() {
+	dbg_printf("Zynayumi::allNotesOff_process()\n");
 
-	switch (cc) {
-	case CTL_ALL_NOTES_OFF:
-		engine.allNotesOff_process();
-		break;
-	default:
-		std::cerr << "Control change " << (int)cc << " unsupported" << std::endl;
-	}
+	engine.allNotesOff_process();
 }
 
 void Zynayumi::sysex_process(unsigned length, unsigned char* data) {

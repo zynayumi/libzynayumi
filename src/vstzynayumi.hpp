@@ -86,7 +86,11 @@ private:
 	static const unsigned char NOTE_OFF = 0x80;
 	static const unsigned char CONTROL = 0xb0;
 
-	void processEvent(VstEvent* event);
+	// Control change codes
+	static const unsigned char CTL_PORTAMENTO_TIME = 0x05;
+	static const unsigned char CTL_ALL_NOTES_OFF = 0x7b;
+
+   void processEvent(VstEvent* event);
 
 	// Intermediary representations between user parameters and patch
 	float _tone_detune;

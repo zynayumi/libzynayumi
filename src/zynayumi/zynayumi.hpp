@@ -48,9 +48,6 @@ class Zynayumi {
 
 public:
 
-	// Control change codes
-	static const unsigned char CTL_ALL_NOTES_OFF = 0x7b;
-
 	// Presets
 	Presets presets;
 
@@ -87,8 +84,8 @@ public:
 	// Process off note
 	void noteOff_process(unsigned char channel, unsigned char pitch);
 
-	// Process control change
-	void control_process(unsigned char cc, unsigned char value);
+	// Process all notes off
+	void allNotesOff_process();
 
 	// Process sysex
 	void sysex_process(unsigned length, unsigned char* data);
