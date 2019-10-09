@@ -202,23 +202,32 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 
 		// Tone
 	case TONE_TIME:
-		zynayumi.patch.tone.time = affine(0.0f, 1.0f, -1.0f, 10.0f, value);
+		zynayumi.patch.tone.time =
+			affine(0.0f, 1.0f, TONE_TIME_MIN, TONE_TIME_MAX, value);
 		break;
 	case TONE_DETUNE:
-		_tone_detune = affine(0.0f, 1.0f, -1.0f, 1.0f, value);
+		_tone_detune =
+			affine(0.0f, 1.0f, TONE_DETUNE_MIN, TONE_DETUNE_MAX, value);
 		zynayumi.patch.tone.detune = _tone_detune + _tone_transpose;
 		break;
 	case TONE_TRANSPOSE:
-		_tone_transpose = (int)std::round(affine(0.0f, 1.0f, -24.0f, 24.0f, value));
+		_tone_transpose =
+			(int)std::round(affine(0.0f, 1.0f,
+			                       TONE_TRANSPOSE_MIN, TONE_TRANSPOSE_MAX,
+			                       value));
 		zynayumi.patch.tone.detune = _tone_detune + _tone_transpose;
 		break;
 
 		// Noise
 	case NOISE_TIME:
-		zynayumi.patch.noise.time = affine(0.0f, 1.0f, -1.0f, 10.0f, value);
+		zynayumi.patch.noise.time =
+			affine(0.0f, 1.0f, NOISE_TIME_MIN, NOISE_TIME_MAX, value);
 		break;
 	case NOISE_PERIOD:
-		zynayumi.patch.noise.period = value; // TODO
+		zynayumi.patch.noise.period =
+			(int)std::round(affine(0.0f, 1.0f,
+			                       NOISE_PERIOD_MIN, NOISE_PERIOD_MAX,
+			                       value));
 		break;
 
 		// Amplitude envelope
@@ -226,51 +235,63 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 		zynayumi.patch.ampenv.attack_level = value;
 		break;
 	case AMP_ENV_TIME1:
-		zynayumi.patch.ampenv.time1 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.ampenv.time1 =
+			affine(0.0f, 1.0f, AMP_ENV_TIME1_MIN, AMP_ENV_TIME1_MAX, value);
 		break;
 	case AMP_ENV_LEVEL1:
 		zynayumi.patch.ampenv.level1 = value;
 		break;
 	case AMP_ENV_TIME2:
-		zynayumi.patch.ampenv.time2 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.ampenv.time2 =
+			affine(0.0f, 1.0f, AMP_ENV_TIME2_MIN, AMP_ENV_TIME2_MAX, value);
 		break;
 	case AMP_ENV_LEVEL2:
 		zynayumi.patch.ampenv.level2 = value;
 		break;
 	case AMP_ENV_TIME3:
-		zynayumi.patch.ampenv.time3 = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.ampenv.time3 =
+			affine(0.0f, 1.0f, AMP_ENV_TIME3_MIN, AMP_ENV_TIME3_MAX, value);
 		break;
 	case AMP_ENV_SUSTAIN_LEVEL:
 		zynayumi.patch.ampenv.sustain_level = value;
 		break;
 	case AMP_ENV_RELEASE:
-		zynayumi.patch.ampenv.release = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.ampenv.release =
+			affine(0.0f, 1.0f, AMP_ENV_RELEASE_MIN, AMP_ENV_RELEASE_MAX, value);
 		break;
 
 		// Pitch envelope
 	case PITCH_ENV_ATTACK_PITCH:
 		zynayumi.patch.pitchenv.attack_pitch =
-			affine(0.0f, 1.0f, -96.0f, 96.0f, value);
+			affine(0.0f, 1.0f,
+			       PITCH_ENV_ATTACK_PITCH_MIN, PITCH_ENV_ATTACK_PITCH_MAX, value);
 		break;
 	case PITCH_ENV_TIME:
-		zynayumi.patch.pitchenv.time = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.pitchenv.time =
+			affine(0.0f, 1.0f, PITCH_ENV_TIME_MIN, PITCH_ENV_TIME_MAX, value);
 		break;
 
 		// Arpegio
 	case ARP_PITCH1:
-		zynayumi.patch.arp.pitch1 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		zynayumi.patch.arp.pitch1 =
+			affine(0.0f, 1.0f, ARP_PITCH1_MIN, ARP_PITCH1_MAX, value);
 		break;
 	case ARP_PITCH2:
-		zynayumi.patch.arp.pitch2 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		zynayumi.patch.arp.pitch2 =
+			affine(0.0f, 1.0f, ARP_PITCH2_MIN, ARP_PITCH2_MAX, value);
 		break;
 	case ARP_PITCH3:
-		zynayumi.patch.arp.pitch3 = affine(0.0f, 1.0f, -48.0f, 48.0f, value);
+		zynayumi.patch.arp.pitch3 =
+			affine(0.0f, 1.0f, ARP_PITCH3_MIN, ARP_PITCH3_MAX, value);
 		break;
 	case ARP_FREQ:
-		zynayumi.patch.arp.freq = affine(0.0f, 1.0f, 0.0f, 100.0f, value);
+		zynayumi.patch.arp.freq =
+			affine(0.0f, 1.0f, ARP_FREQ_MIN, ARP_FREQ_MAX, value);
 		break;
 	case ARP_REPEAT:
-		zynayumi.patch.arp.repeat = (int)std::round(affine(0.0f, 1.0f, 0.0f, 2.0f, value));
+		zynayumi.patch.arp.repeat =
+			(int)std::round(affine(0.0f, 1.0f,
+			                       ARP_REPEAT_MIN, ARP_REPEAT_MAX, value));
 		break;
 
 		// Ring modulation
@@ -305,28 +326,36 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 		zynayumi.patch.ringmod.sync = (bool)std::round(value);
 		break;
 	case RING_MOD_DETUNE:
-		_ringmode_detune = affine(0.0f, 1.0f, -1.0f, 1.0f, value);
+		_ringmode_detune =
+			affine(0.0f, 1.0f, RING_MOD_DETUNE_MIN, RING_MOD_DETUNE_MAX, value);
 		zynayumi.patch.ringmod.detune = _ringmode_detune + _ringmode_transpose;
 		break;
 	case RING_MOD_TRANSPOSE:
-		_ringmode_transpose = (int)std::round(affine(0.0f, 1.0f, -24.0f, 24.0f, value));
+		_ringmode_transpose =
+			(int)std::round(affine(0.0f, 1.0f,
+			                       RING_MOD_TRANSPOSE_MIN, RING_MOD_TRANSPOSE_MAX,
+			                       value));
 		zynayumi.patch.ringmod.detune = _ringmode_detune + _ringmode_transpose;
 		break;
 
 		// Pitch LFO
 	case LFO_FREQ:
-		zynayumi.patch.lfo.freq = affine(0.0f, 1.0f, 0.0f, 20.0f, value);
+		zynayumi.patch.lfo.freq =
+			affine(0.0f, 1.0f, LFO_FREQ_MIN, LFO_FREQ_MAX, value);
 		break;
 	case LFO_DELAY:
-		zynayumi.patch.lfo.delay = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.lfo.delay =
+			affine(0.0f, 1.0f, LFO_DELAY_MIN, LFO_DELAY_MAX, value);
 		break;
 	case LFO_DEPTH:
-		zynayumi.patch.lfo.depth = affine(0.0f, 1.0f, 0.0f, 12.0f, value);
+		zynayumi.patch.lfo.depth =
+			affine(0.0f, 1.0f, LFO_DEPTH_MIN, LFO_DEPTH_MAX, value);
 		break;
 
 		// Portamento
 	case PORTAMENTO:
-		zynayumi.patch.port = affine(0.0f, 1.0f, 0.0f, 10.0f, value);
+		zynayumi.patch.port =
+			affine(0.0f, 1.0f, PORTAMENTO_MIN, PORTAMENTO_MAX, value);
 		break;
 
 		// Pan
@@ -355,53 +384,69 @@ float VSTZynayumi::getParameter(VstInt32 index)
 
 		// Tone
 	case TONE_TIME:
-		return affine(-1.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.tone.time);
+		return affine(TONE_TIME_MIN, TONE_TIME_MAX,
+		              0.0f, 1.0f, zynayumi.patch.tone.time);
 	case TONE_DETUNE:
-		return affine(-1.0f, 1.0f, 0.0f, 1.0f, _tone_detune);
+		return affine(TONE_DETUNE_MIN, TONE_DETUNE_MAX,
+		              0.0f, 1.0f, _tone_detune);
 	case TONE_TRANSPOSE:
-		return affine(-24.0f, 24.0f, 0.0f, 1.0f, (float)_tone_transpose);
+		return affine(TONE_TRANSPOSE_MIN, TONE_TRANSPOSE_MAX,
+		              0.0f, 1.0f, (float)_tone_transpose);
 
 		// Noise
 	case NOISE_TIME:
-		return affine(-1.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.noise.time);
+		return affine(NOISE_TIME_MIN, NOISE_TIME_MAX,
+		              0.0f, 1.0f, zynayumi.patch.noise.time);
 	case NOISE_PERIOD:
-		return zynayumi.patch.noise.period; // TODO
+		return affine(NOISE_PERIOD_MIN, NOISE_PERIOD_MAX,
+		              0.0f, 1.0f, zynayumi.patch.noise.period);
 
 		// Amplitude envelope
 	case AMP_ENV_ATTACK_LEVEL:
 		return zynayumi.patch.ampenv.attack_level;
 	case AMP_ENV_TIME1:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time1);
+		return affine(AMP_ENV_TIME1_MIN, AMP_ENV_TIME1_MAX,
+		              0.0f, 1.0f, zynayumi.patch.ampenv.time1);
 	case AMP_ENV_LEVEL1:
 		return zynayumi.patch.ampenv.level1;
 	case AMP_ENV_TIME2:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time2);
+		return affine(AMP_ENV_TIME2_MIN, AMP_ENV_TIME2_MAX,
+		              0.0f, 1.0f, zynayumi.patch.ampenv.time2);
 	case AMP_ENV_LEVEL2:
 		return zynayumi.patch.ampenv.level2;
 	case AMP_ENV_TIME3:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.time3);
+		return affine(AMP_ENV_TIME3_MIN, AMP_ENV_TIME3_MAX,
+		              0.0f, 1.0f, zynayumi.patch.ampenv.time3);
 	case AMP_ENV_SUSTAIN_LEVEL:
 		return zynayumi.patch.ampenv.sustain_level;
 	case AMP_ENV_RELEASE:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.ampenv.release);
+		return affine(AMP_ENV_RELEASE_MIN, AMP_ENV_RELEASE_MAX,
+		              0.0f, 1.0f, zynayumi.patch.ampenv.release);
 
 		// Pitch envelope
 	case PITCH_ENV_ATTACK_PITCH:
-		return affine(-96.0f, 96.0f, 0.0f, 1.0f, zynayumi.patch.pitchenv.attack_pitch);
+		return affine(PITCH_ENV_ATTACK_PITCH_MIN, PITCH_ENV_ATTACK_PITCH_MAX,
+		              0.0f, 1.0f, zynayumi.patch.pitchenv.attack_pitch);
 	case PITCH_ENV_TIME:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.pitchenv.time);
+		return affine(PITCH_ENV_TIME_MIN, PITCH_ENV_TIME_MAX,
+		              0.0f, 1.0f, zynayumi.patch.pitchenv.time);
 
 		// Arpegio
 	case ARP_PITCH1:
-		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch1);
+		return affine(ARP_PITCH1_MIN, ARP_PITCH1_MAX,
+		              0.0f, 1.0f, zynayumi.patch.arp.pitch1);
 	case ARP_PITCH2:
-		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch2);
+		return affine(ARP_PITCH2_MIN, ARP_PITCH2_MAX,
+		              0.0f, 1.0f, zynayumi.patch.arp.pitch2);
 	case ARP_PITCH3:
-		return affine(-48.0f, 48.0f, 0.0f, 1.0f, zynayumi.patch.arp.pitch3);
+		return affine(ARP_PITCH3_MIN, ARP_PITCH3_MAX,
+		              0.0f, 1.0f, zynayumi.patch.arp.pitch3);
 	case ARP_FREQ:
-		return affine(0.0f, 100.0f, 0.0f, 1.0f, zynayumi.patch.arp.freq);
+		return affine(ARP_FREQ_MIN, ARP_FREQ_MAX,
+		              0.0f, 1.0f, zynayumi.patch.arp.freq);
 	case ARP_REPEAT:
-		return affine(0.0f, 2.0f, 0.0f, 1.0f, (float)zynayumi.patch.arp.repeat);
+		return affine(ARP_REPEAT_MIN, ARP_REPEAT_MAX,
+		              0.0f, 1.0f, (float)zynayumi.patch.arp.repeat);
 
 		// Ring modulation
 	case RING_MOD_WAVEFORM_LEVEL1:
@@ -425,21 +470,27 @@ float VSTZynayumi::getParameter(VstInt32 index)
 	case RING_MOD_SYNC:
 		return (float)zynayumi.patch.ringmod.sync;
 	case RING_MOD_DETUNE:
-		return affine(-1.0f, 1.0f, 0.0f, 1.0f, _ringmode_detune);
+		return affine(RING_MOD_DETUNE_MIN, RING_MOD_DETUNE_MAX,
+		              0.0f, 1.0f, _ringmode_detune);
 	case RING_MOD_TRANSPOSE:
-		return affine(-24.0f, 24.0f, 0.0f, 1.0f, (float)_ringmode_transpose);
+		return affine(RING_MOD_TRANSPOSE_MIN, RING_MOD_TRANSPOSE_MAX,
+		              0.0f, 1.0f, (float)_ringmode_transpose);
 
 		// Pitch LFO
 	case LFO_FREQ:
-		return affine(0.0f, 20.0f, 0.0f, 1.0f, zynayumi.patch.lfo.freq);
+		return affine(LFO_FREQ_MIN, LFO_FREQ_MAX,
+		              0.0f, 1.0f, zynayumi.patch.lfo.freq);
 	case LFO_DELAY:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.lfo.delay);
+		return affine(LFO_DELAY_MIN, LFO_DELAY_MAX,
+		              0.0f, 1.0f, zynayumi.patch.lfo.delay);
 	case LFO_DEPTH:
-		return affine(0.0f, 12.0f, 0.0f, 1.0f, zynayumi.patch.lfo.depth);
+		return affine(LFO_DEPTH_MIN, LFO_DEPTH_MAX,
+		              0.0f, 1.0f, zynayumi.patch.lfo.depth);
 
 		// Portamento
 	case PORTAMENTO:
-		return affine(0.0f, 10.0f, 0.0f, 1.0f, zynayumi.patch.port);
+		return affine(PORTAMENTO_MIN, PORTAMENTO_MAX,
+		              0.0f, 1.0f, zynayumi.patch.port);
 
 		// Pan
 	case PAN_CHANNEL0:
