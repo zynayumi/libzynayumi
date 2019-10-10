@@ -178,19 +178,19 @@ void Engine::print(int m) const {
 	// TODO
 }
 
-double Engine::pitch2period(double pitch)  {
+double Engine::pitch2period(double pitch) const {
 	static double coef1 = sample_rate / lower_note_freq;
 	static double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }
 
-double Engine::pitch2period_ym(double pitch)  {
+double Engine::pitch2period_ym(double pitch) const {
 	static double coef1 = sample_rate / lower_note_freq_ym;
 	static double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }
 
-double Engine::smp2sec(unsigned long long smp_count) {
+double Engine::smp2sec(unsigned long long smp_count) const {
 	return (double)smp_count / (double)sample_rate;
 }
 
