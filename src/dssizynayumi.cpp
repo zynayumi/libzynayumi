@@ -282,6 +282,6 @@ void initialise_2() {
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Left output");
 	ports.add_port(LADSPA_PORT_AUDIO | LADSPA_PORT_OUTPUT, "Right output");
   
-	register_dssi<DSSIZynayumi>(1259, "Zynayumi-DSSI", 0, "Zynayumi (DSSI)",
+	register_dssi<DSSIZynayumi>(1259, "Zynayumi-DSSI", 0, "Zynayumi",
 	                            "Nil Geisweiller", "GPL", ports);
 }

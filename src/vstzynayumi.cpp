@@ -834,7 +834,7 @@ void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)
 
 bool VSTZynayumi::getEffectName(char* name)
 {
-	strcpy(name, "Zynayumi (VST)");
+	strcpy(name, "Zynayumi");
 	return true;
 }
 
