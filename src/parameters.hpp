@@ -102,7 +102,7 @@ static enum {
 #define TONE_TRANSPOSE_MAX 24.0f
 #define NOISE_TIME_MIN -1.0f
 #define NOISE_TIME_MAX 5.0f
-#define NOISE_PERIOD_MIN -1.0f
+#define NOISE_PERIOD_MIN 1.0f
 #define NOISE_PERIOD_MAX 31.0f
 #define AMP_ENV_ATTACK_LEVEL_MIN 0.0f
 #define AMP_ENV_ATTACK_LEVEL_MAX 1.0f
@@ -131,7 +131,7 @@ static enum {
 #define ARP_PITCH3_MIN -48.0f
 #define ARP_PITCH3_MAX 48.0f
 #define ARP_FREQ_MIN 0.0f
-#define ARP_FREQ_MAX 60.0f
+#define ARP_FREQ_MAX 50.0f
 #define ARP_REPEAT_MIN 0.0f
 #define ARP_REPEAT_MAX 2.0f
 #define RING_MOD_WAVEFORM_LEVEL1_MIN 0.0f

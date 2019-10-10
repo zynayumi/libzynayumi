@@ -86,7 +86,7 @@ however if it does start then it seems to run flawlessly.
        selected amongst the pressed keys.
 
 - Tone time: time in second the square voice is played. Ranges from
-  -1.0 to 10.0, negative means +inf.
+  -1.0 to 5.0, negative means +inf.
 
 - Tone detune: global detune in semitone. Ranges from -1.0 to +1.0.
 
@@ -94,40 +94,40 @@ however if it does start then it seems to run flawlessly.
   +24.
 
 - Noise time: time the noise generator is played in second. Ranges
-  from -1.0 to 10.0, negative means +inf.
+  from -1.0 to 5.0, negative means +inf.
 
-- Noise period: supposedly affect the frequency of the noise (buggy
-  apparently). TODO: give the range.
+- Noise period: affect the frequency of the noise. Ranges from 1 to
+  31.
 
 - AmpEnv attack_level: attack level of the amplitude envelope. Ranges
   from 0.0 to 1.0.
 
 - AmpEnv time1: time in second to go from attack_level to level1 of
-  the amplitude envelope. Ranges from 0.0 to 10.0.
+  the amplitude envelope. Ranges from 0.0 to 5.0.
 
 - AmpEnv level1: first intermediary level of the amplitude
   envelope. Ranges from 0.0 to 1.0.
 
 - AmpEnv time2: time in second to go from level1 to level2 of the
-  amplitude envelope. Ranges from 0.0 to 10.0.
+  amplitude envelope. Ranges from 0.0 to 5.0.
 
 - AmpEnv level2: second intermediary level of the amplitude
   envelope. Ranges from 0.0 to 1.0.
 
 - AmpEnv time3: time in second to go from level2 to sustain_level of
-  the amplitude envelope. Range from 0.0 to 10.0.
+  the amplitude envelope. Range from 0.0 to 5.0.
 
 - AmpEnv sustain_level: sustain level of the amplitude
   envelope. Ranges from 0.0 to 1.0.
   
 - AmpEnv release: time in second to go from sustain_level to 0.0 of
-  the amplitude envelope. Ranges from 0.0 to 10.0.
+  the amplitude envelope. Ranges from 0.0 to 5.0.
 
 - PitchEnv attack_pitch: attack pitch of the pitch envelope in
   semitone. Ranges from -96 to +96.
 
 - PitchEnv time: time in second to go from attack_pitch to 0 of the
-  pitch envelope. Ranges from 0.0 to 10.0.
+  pitch envelope. Ranges from 0.0 to 5.0.
 
 - Arp pitch1: pitch in semitone of the first arpegio note. Only active
   for play mode 0 (Mono) and 1 (Poly). Ranges from -48 to +48.
@@ -140,7 +140,7 @@ however if it does start then it seems to run flawlessly.
 
 - Arp freq: frequency of the arpegio pitch change. For instance if its
   value is 1.0, the arpegio will change the pitch every second. Ranges
-  from 0.0 to 100.0.
+  from 0.0 to 50.0.
 
 - Arp repeat: select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
@@ -151,6 +151,13 @@ however if it does start then it seems to run flawlessly.
 - RingMod waveform level1 to level8: can define an 8 points
   waveform. That waveform is multipled with the YN2149 square
   waveform, thus creating a ring modulation. Ranges from 0.0 to 1.0.
+
+- RingMod mirror: whether the ring modulation waveform is
+  mirrored. This can soften the ring modulation.
+
+- RingMod sync: whether the phase of the ring modulation is
+  synchronized with the phase of the square tone when a new on note is
+  created.
 
 - RingMod detune: detune in semitone of the ring modulation waveform
   relative to the square waveform. The famous SID phaser effect can be
@@ -169,7 +176,7 @@ however if it does start then it seems to run flawlessly.
 - LFO depth: LFO depth in semitone. Ranges from 0.0 to 12.0.
 
 - Portamento: time in second of the portamento effect to go from 1
-  semitone to the next. Ranges from 0.0 to 10.0.
+  semitone to the next. Ranges from 0.0 to 1.0.
 
 - Pan channel0 to channel2: panning level of the 3 voices of the
   YM2149. Ranges from 0.0 to 1.0. Can be to set to hard left, 0.0,
@@ -177,10 +184,10 @@ however if it does start then it seems to run flawlessly.
 
 ## Clicks and other glitches
 
-It's easy to generate undesired clicks, especially in the attack. This
-may not be a bug of Zynayumi though. To avoid such clicks set a non
-null release of the amplitude envelope. See AmpEnv release in the
-section above.
+It's easy to generate undesired clicks, especially in the attack and
+release. This may not be a bug of Zynayumi though. To avoid such
+clicks set a non null release of the amplitude envelope. See AmpEnv
+release in the section above.
 
 Also, the amplitude envelope itself can create clicks as it is using
 the YM2149 to control the amplitude in a staircase fashion. This is a
@@ -203,8 +210,7 @@ add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
-- [ ] Fix ringmod sync
-- [ ] Fix noise period parameter
+- [ ] Fix click in release
 - [ ] Add parameter to select YM2149 or AY-3-8910
 - [ ] Map parameters to MIDI CC
 - [ ] Define presets

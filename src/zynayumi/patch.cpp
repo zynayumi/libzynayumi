@@ -33,12 +33,12 @@ Noise::Noise() : time(0), period(1) {}
 AmpEnv::AmpEnv() : attack_level(1),
                    time1(0), level1(1),
                    time2(0), level2(1),
-                   time3(0), sustain_level(1), release(0) {}
+                   time3(0), sustain_level(1), release(0.0) {}
 
 PitchEnv::PitchEnv() : attack_pitch(0),
                        time(0) {}
 
-Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(1), repeat(0) {}
+Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(12.5), repeat(0) {}
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
                      mirror(true), sync(true), detune(0) {}

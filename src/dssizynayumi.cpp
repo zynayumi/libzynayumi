@@ -183,7 +183,8 @@ void initialise_2() {
 	ports.add_port(c_desc, PLAY_MODE_STR, i_desc | d_0, -0.1, 4.1);
 
 	// Tone
-	ports.add_port(c_desc, TONE_TIME_STR, r_desc | d_min, -1.0, 10.0);
+	ports.add_port(c_desc, TONE_TIME_STR, r_desc | d_min,
+	               TONE_TIME_MIN, TONE_TIME_MAX);
 	ports.add_port(c_desc, TONE_DETUNE_STR, r_desc | d_0,
 	               TONE_DETUNE_MIN, TONE_DETUNE_MAX);
 	ports.add_port(c_desc, TONE_TRANSPOSE_STR, i_desc | d_0,
@@ -226,7 +227,7 @@ void initialise_2() {
 	               ARP_PITCH2_MIN, ARP_PITCH2_MAX);
 	ports.add_port(c_desc, ARP_PITCH3_STR, r_desc | d_0,
 	               ARP_PITCH3_MIN, ARP_PITCH3_MAX);
-	ports.add_port(c_desc, ARP_FREQ_STR, r_desc | d_1,
+	ports.add_port(c_desc, ARP_FREQ_STR, r_desc | d_low,
 	               ARP_FREQ_MIN, ARP_FREQ_MAX);
 	ports.add_port(c_desc, ARP_REPEAT_STR, i_desc | d_0,
 	               ARP_REPEAT_MIN - 0.1, ARP_REPEAT_MAX + 0.1);
