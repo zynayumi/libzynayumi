@@ -39,12 +39,9 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	_arp_rnd_offset_step(rand()), _index(-1),
 	_env_smp_count(0), _smp_count(0),
 	_ringmod_smp_count(_engine.ringmod_smp_count[channel]),
-	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel])
+	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel]),
+	_first_update(true)
 {
-	if (not pa.ringmod.sync) {
-		_ringmod_smp_count = 0.0;
-		_ringmod_waveform_index = 0;
-	}
 }
 
 void Voice::set_note_off() {
@@ -70,12 +67,19 @@ void Voice::update() {
 	update_port();
 	update_lfo();
 	update_arp();
-	calculate_final_pitch();
-	ayumi_set_tone(&_engine.ay, channel, _engine.pitch2period_ym(_final_pitch));
+	update_final_pitch();
+	double p2p_ym = _engine.pitch2period_ym(_final_pitch);
+	ayumi_set_tone(&_engine.ay, channel, p2p_ym);
 
-	// Update level
+	// Update level, including ring modulation
 	update_ampenv();
-	update_ring();
+	if (_first_update and _patch.ringmod.sync) {
+		// If sync is enabled, synchronize the phase of the ringmod
+		// waveform to the phase of the square tone
+		sync_ringmod();
+		_first_update = false;
+	}
+	update_ringmod();
 	ayumi_set_volume(&_engine.ay, channel, (int)(_final_level * 15));
 
 	// Increment sample count since voice on
@@ -88,10 +92,13 @@ void Voice::set_note_pitch(unsigned char pitch) {
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
                                  double x) const {
-	// assert(x1 <= x and x <= x2);
-	double a = (y2 - y1) / (x2 - x1);
-	double b = y1;
-	return a * (x - x1) + b;
+	if (0 != (x2 - x1)) {
+		double a = (y2 - y1) / (x2 - x1);
+		double b = y1;
+		return a * (x - x1) + b;
+	} else {
+		return (y2 - y1) / 2.0;
+	}
 }
 
 void Voice::update_pan() {
@@ -123,7 +130,7 @@ void Voice::update_port() {
 	_engine.last_pitch = _relative_port_pitch + _note_pitch;
 }
 
-void Voice::calculate_final_pitch() {
+void Voice::update_final_pitch() {
 	_final_pitch = _note_pitch
 		+ _patch.tone.detune
 		+ _relative_pitchenv_pitch
@@ -269,24 +276,57 @@ void Voice::update_ampenv() {
 	_env_smp_count++;
 }
 
-void Voice::update_ring() {
+void Voice::update_ringmod() {
 	// Get the waveform value
 	double waveform_val = _patch.ringmod.waveform[_ringmod_waveform_index];
 	_final_level = waveform_val * env_level;
 
-	// Update _ringmod_smp_count and _ringmod_waveform_index
-	double ringmod_pitch = _patch.ringmod.detune + _final_pitch;
-	double waveform_period = (_patch.ringmod.mirror ? 2 : 1)
-		* _engine.pitch2period_ym(ringmod_pitch);
+	// Update ringmod pitch and period
+	update_ringmod_pitch();
+	update_ringmod_waveform_period();
 
+	// Update ringmod sample count. If it goes from very low pitch to
+	// very high pitch we need to remove waveform_period from
+	// _ringmod_smp_count more than once.
 	_ringmod_smp_count += _engine.ay.step * DECIMATE_FACTOR;
-	// If it goes from very low pitch to very high pitch we need to
-	// remove waveform_period from _ringmod_smp_count more than once.
-	while (waveform_period <= _ringmod_smp_count)
-		_ringmod_smp_count -= waveform_period;
+	while (_ringmod_waveform_period <= _ringmod_smp_count)
+		_ringmod_smp_count -= _ringmod_waveform_period;
+
+	// Update ringmod waveform index for the next call of update_ring()
+	update_ringmod_waveform_index();
+}
+
+void Voice::update_ringmod_pitch() {
+	_ringmod_pitch = _patch.ringmod.detune + _final_pitch;
+}
+
+void Voice::update_ringmod_waveform_period() {
+	_ringmod_waveform_period = (_patch.ringmod.mirror ? 2 : 1) *
+		_engine.pitch2period_ym(_ringmod_pitch);
+}
+
+void Voice::update_ringmod_waveform_index() {
 	_ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
-		/ (0.5 * waveform_period);
+		/ (0.5 * _ringmod_waveform_period);
 	if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
 		_ringmod_waveform_index = _patch.ringmod.mirror ?
 			(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index : 0;
+}
+
+void Voice::sync_ringmod() {
+	update_ringmod_pitch();
+	update_ringmod_waveform_period();
+	struct tone_channel& ch = _engine.ay.channels[channel];
+	double tc = ch.tone_counter;
+	double tp = ch.tone_period;
+	double wtc = tc + ch.tone * tp; // Whole tone counter
+	double wtp = 2 * tp;            // Whole tone period
+
+	// If the tone counter is passed the period, then it will be reset
+	// at the next ayumi update
+	if (wtp <= wtc)
+		wtc -= wtp;
+	double ratio = wtc / wtp;
+	_ringmod_smp_count = ratio * _ringmod_waveform_period;
+	update_ringmod_waveform_index();
 }

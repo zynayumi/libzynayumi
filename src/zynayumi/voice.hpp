@@ -110,8 +110,13 @@ private:
 	                                   // ring modulation waveform
 	                                   // cycle reset
 	unsigned& _ringmod_waveform_index; // Current waveform index
+	double _ringmod_pitch;             // Pitch of ringmod
+	double _ringmod_waveform_period;   // Number of samples to make an
+                                      // entire cycle
 
 	double _actual_sustain_level;
+
+	bool _first_update;
 
 	double linear_interpolate(double x1, double y1,
 	                          double x2, double y2, double x) const;
@@ -123,8 +128,12 @@ private:
 	void update_arp();
 	void update_lfo();
 	void update_port();
-	void calculate_final_pitch();
-	void update_ring();
+	void update_final_pitch();
+	void update_ringmod();
+	void update_ringmod_pitch();
+	void update_ringmod_waveform_period();
+	void update_ringmod_waveform_index();
+	void sync_ringmod();
 };
 
 } // ~namespace zynayumi
