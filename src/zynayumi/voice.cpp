@@ -60,6 +60,7 @@ void Voice::update() {
 	// Update tone and noise
 	update_tone();
 	update_noise();
+	ayumi_set_noise(&_engine.ay, _patch.noise.period);
 	ayumi_set_mixer(&_engine.ay, channel, _t_off, _n_off, 0);
 
 	// Update pitch
