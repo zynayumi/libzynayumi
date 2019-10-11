@@ -105,16 +105,20 @@ void VSTZynayumi::midi(unsigned char status,
 	// Ignore midi channel
 	status &= 0xf0;
 	switch (status) {
-	case NOTE_ON:
-	case NOTE_OFF:	{
+	case MSC_NOTE_ON:
+	case MSC_NOTE_OFF: {
 		unsigned char pitch = byte1, velocity = byte2;
-		if (status == NOTE_ON and velocity > 0)
+		if (status == MSC_NOTE_ON and velocity > 0)
 			zynayumi.noteOn_process(0, pitch, velocity);
-		else if (status == NOTE_OFF or (status == NOTE_ON and velocity == 0))
+		else if (status == MSC_NOTE_OFF or
+		         (status == MSC_NOTE_ON and velocity == 0))
 			zynayumi.noteOff_process(0, pitch);
 		break;
 	}
-	case CONTROL: {
+	case MSC_PITCH_WHEEL:
+		zynayumi.pitchWheel_process(0, ((short)byte2 << 7) + (short)byte1);
+		break;
+	case MSC_CONTROL: {
 		unsigned char cc = byte1;
 		unsigned char value = byte2;
 		switch (cc) {
@@ -383,6 +387,12 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 		zynayumi.patch.pan.channel[2] = value;
 		break;
 
+		// Pitch wheel range
+	case PITCH_WHEEL:
+		zynayumi.patch.pitchwheel =
+			affine(0.0f, 1.0f, PITCH_WHEEL_MIN, PITCH_WHEEL_MAX, value);
+		break;
+
 	default:
 		std::cout << "setParameter(" << index << ", " << value << ")"
 		          << std::endl;
@@ -513,6 +523,11 @@ float VSTZynayumi::getParameter(VstInt32 index)
 		return zynayumi.patch.pan.channel[1];
 	case PAN_CHANNEL2:
 		return zynayumi.patch.pan.channel[2];
+
+		// Pitch wheel range
+	case PITCH_WHEEL:
+		return affine(PITCH_WHEEL_MIN, PITCH_WHEEL_MAX,
+		              0.0f, 1.0f, (double)zynayumi.patch.pitchwheel);
 
 	default:
 		return 0.0f;
@@ -665,6 +680,11 @@ void VSTZynayumi::getParameterName(VstInt32 index, char *text)
 		break;
 	case PAN_CHANNEL2:
 		strcpy(text, PAN_CHANNEL2_STR);
+		break;
+
+		// Pitch wheel range
+	case PITCH_WHEEL:
+		strcpy(text, PITCH_WHEEL_STR);
 		break;
 
 	default:
@@ -825,6 +845,11 @@ void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)
 		break;
 	case PAN_CHANNEL2:
 		strcpy(text, std::to_string(zynayumi.patch.pan.channel[2]).c_str());
+		break;
+
+		// Pitch wheel range
+	case PITCH_WHEEL:
+		strcpy(text, std::to_string(zynayumi.patch.pitchwheel).c_str());
 		break;
 
 	default:

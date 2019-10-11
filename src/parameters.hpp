@@ -89,6 +89,9 @@ static enum {
 	PAN_CHANNEL1,
 	PAN_CHANNEL2,
 
+	// Pitch wheel range
+	PITCH_WHEEL,
+
 	// Number of Parameters
 	PARAMETERS_COUNT
 } parameters;
@@ -172,6 +175,8 @@ static enum {
 #define PAN_CHANNEL1_MAX 1.0f
 #define PAN_CHANNEL2_MIN 0.0f
 #define PAN_CHANNEL2_MAX 1.0f
+#define PITCH_WHEEL_MIN 1
+#define PITCH_WHEEL_MAX 12
 
 // Parameter names
 #define PLAY_MODE_STR "Play mode"
@@ -214,6 +219,7 @@ static enum {
 #define PAN_CHANNEL0_STR "Pan channel0"
 #define PAN_CHANNEL1_STR "Pan channel1"
 #define PAN_CHANNEL2_STR "Pan channel2"
+#define PITCH_WHEEL_STR "Pitch wheel"
 
 // Affine transformation, based on the equality
 //

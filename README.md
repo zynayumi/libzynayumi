@@ -13,7 +13,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Ring Modulation (SID and more)
 - [X] VST, DSSI
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
-- [ ] MIDI controls assigned to parameters
+- [ ] MIDI controls assigned to parameters (only portamento for now)
 - [ ] GUI. Pease help if you want one, I am no GUI guy
 
 ## Requirements
@@ -49,8 +49,7 @@ distribution, otherwise, have a look at http://dssi.sourceforge.net/.
 For VST support, you need an old DSK as recent ones no longer support
 VST2. You may find one
 [here](https://www.steinberg.net/sdk_downloads/vstsdk366_27_06_2016_build_61.zip). If
-the link no longer works let me know. In the works case I should still
-have a copy of it.
+the link no longer works let me know, hopefully I have a copy of it.
 
 Under GNU/Linux 64-bit, you may need to comment out some code in
 
@@ -72,7 +71,7 @@ DSSI version and your host does not support DSSI, such as
 [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges)
 which will expose Zynayumi as if it were an LV2 plugin. It is not
 completely stable however, it can crash the DAW during initialization,
-however if it does start then it seems to run flawlessly.
+but if it starts then it should run flawlessly.
 
 ## Parameters Description
 
@@ -182,6 +181,9 @@ however if it does start then it seems to run flawlessly.
   YM2149. Ranges from 0.0 to 1.0. Can be to set to hard left, 0.0,
   hard right, 1.0, or any value in between.
 
+- Pitch wheel range: Range, [-pw, +pw], of the pitch wheel in
+  semitones. Ranges from 1 to 12.
+
 ## Clicks and other glitches
 
 It's easy to generate undesired clicks, especially in the attack and
@@ -211,7 +213,7 @@ add such parameter, but if you do your contribution is welcome.
 ## TODO
 
 - [ ] Fix click in release
-- [ ] Add parameter to select YM2149 or AY-3-8910
+- [ ] Add parameter to select between YM2149 and AY-3-8910
 - [ ] Map parameters to MIDI CC
 - [ ] Define presets
 - [ ] Add LV2 support

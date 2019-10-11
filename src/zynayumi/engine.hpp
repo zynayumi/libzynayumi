@@ -89,6 +89,9 @@ public:
 	const int sample_rate; // TODO: should be provided by the host
 	const int clock_rate;
 
+	// Pitch wheel pitch
+	double pw_pitch;
+
 	/////////////////////////////////
 	// Constructors/descructors    //
 	/////////////////////////////////
@@ -114,6 +117,8 @@ public:
 	void noteOff_process(unsigned char channel, unsigned char pitch);
 
 	void allNotesOff_process();
+
+	void pitchWheel_process(unsigned char channel, short value);
 
 	void print(int m) const;
 

@@ -87,6 +87,9 @@ public:
 	// Process all notes off
 	void allNotesOff_process();
 
+	// Process pitch wheel
+	void pitchWheel_process(unsigned char channel, short value);
+
 	// Process sysex
 	void sysex_process(unsigned length, unsigned char* data);
 

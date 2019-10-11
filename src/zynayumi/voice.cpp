@@ -92,7 +92,7 @@ void Voice::set_note_pitch(unsigned char pitch) {
 }
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
-                                 double x) const {
+                                 double x) {
 	if (0 != (x2 - x1)) {
 		double a = (y2 - y1) / (x2 - x1);
 		double b = y1;
@@ -137,6 +137,7 @@ void Voice::update_final_pitch() {
 		+ _relative_pitchenv_pitch
 		+ _relative_port_pitch
 		+ _relative_lfo_pitch
+		+ _engine.pw_pitch
 		+ _relative_arp_pitch;
 }
 

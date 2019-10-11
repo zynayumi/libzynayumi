@@ -60,6 +60,13 @@ void Zynayumi::allNotesOff_process() {
 	engine.allNotesOff_process();
 }
 
+void Zynayumi::pitchWheel_process(unsigned char channel, short value) {
+	dbg_printf("Zynayumi::pitchWheel_process(channel=%d, value=%d)\n",
+	           channel, value);
+
+	engine.pitchWheel_process(channel, value);
+}
+
 void Zynayumi::sysex_process(unsigned length, unsigned char* data) {
 	unsigned char command_ID;
 	dbg_printf("Zynayumi::sysex_process\n");

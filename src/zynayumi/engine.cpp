@@ -47,6 +47,7 @@ Engine::Engine(const Zynayumi& ref)
 	  lower_note_freq_ym(2.88310682560),
 	  sample_rate(44100),
 	  clock_rate(2000000),
+	  pw_pitch(0),
 	  _max_voices(3) {
 	ayumi_configure(&ay, 1, clock_rate, sample_rate);
 }
@@ -165,6 +166,15 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 void Engine::allNotesOff_process() {
 	for (auto& voice : _voices)
 		voice.second.set_note_off();
+}
+
+void Engine::pitchWheel_process(unsigned char channel, short value) {
+	static double max_value = std::pow(2.0, 14.0);
+	double min_pitch = -(double)_zynayumi.patch.pitchwheel;
+	double max_pitch = (double)_zynayumi.patch.pitchwheel;
+	pw_pitch = Voice::linear_interpolate(0.0, min_pitch,
+	                                     max_value, max_pitch,
+	                                     (double)value);
 }
 
 // Print method

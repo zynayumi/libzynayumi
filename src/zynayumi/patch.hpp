@@ -156,6 +156,7 @@ public:
 	LFO lfo;                    // LFO
 	double port;                // Portamento time in second per semintone
 	Pan pan;                    // YM2149 channels panning
+	int pitchwheel;             // Range in semitone of the pitch wheel
 };
 
 } // ~namespace zynayumi

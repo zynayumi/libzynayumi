@@ -66,6 +66,9 @@ public:
 	double env_level;           // Current level, taking into account
 	                            // amplitude envelope and velocity
 
+	static double linear_interpolate(double x1, double y1,
+	                                 double x2, double y2, double x);
+
 private:
 	Engine& _engine;
 	const Patch& _patch;
@@ -84,6 +87,9 @@ private:
 
 	// LFO
 	double _relative_lfo_pitch;        // Relative LFO pitch
+
+	// Pitch wheel
+	double _pitchwheel_pitch;          // Relative pitch wheel pitch
 
 	// Arpeggio
 	unsigned _arp_step;                // Every time it increases the
@@ -118,8 +124,6 @@ private:
 
 	bool _first_update;
 
-	double linear_interpolate(double x1, double y1,
-	                          double x2, double y2, double x) const;
 	void update_pan();
 	void update_tone();
 	void update_noise();
