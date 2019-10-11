@@ -213,6 +213,7 @@ add such parameter, but if you do your contribution is welcome.
 ## TODO
 
 - [ ] Fix click in release
+- [ ] Add noise pitch envelope
 - [ ] Add parameter to select between YM2149 and AY-3-8910
 - [ ] Map parameters to MIDI CC
 - [ ] Define presets
