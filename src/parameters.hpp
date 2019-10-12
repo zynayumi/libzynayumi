@@ -41,6 +41,10 @@ static enum {
 	NOISE_TIME,
 	NOISE_PERIOD,
 
+	// Noise Period Envelope
+	NOISE_PERIOD_ENV_ATTACK,
+	NOISE_PERIOD_ENV_TIME,
+
 	// Amplitude envelope
 	AMP_ENV_ATTACK_LEVEL,
 	AMP_ENV_TIME1,
@@ -101,12 +105,16 @@ static enum {
 #define TONE_TIME_MAX 5.0f
 #define TONE_DETUNE_MIN -1.0f
 #define TONE_DETUNE_MAX 1.0f
-#define TONE_TRANSPOSE_MIN -24.0f
-#define TONE_TRANSPOSE_MAX 24.0f
+#define TONE_TRANSPOSE_MIN -24
+#define TONE_TRANSPOSE_MAX 24
 #define NOISE_TIME_MIN -1.0f
 #define NOISE_TIME_MAX 5.0f
-#define NOISE_PERIOD_MIN 1.0f
-#define NOISE_PERIOD_MAX 31.0f
+#define NOISE_PERIOD_MIN 1
+#define NOISE_PERIOD_MAX 31
+#define NOISE_PERIOD_ENV_ATTACK_MIN 1
+#define NOISE_PERIOD_ENV_ATTACK_MAX 31
+#define NOISE_PERIOD_ENV_TIME_MIN 0.0f
+#define NOISE_PERIOD_ENV_TIME_MAX 5.0f
 #define AMP_ENV_ATTACK_LEVEL_MIN 0.0f
 #define AMP_ENV_ATTACK_LEVEL_MAX 1.0f
 #define AMP_ENV_TIME1_MIN 0.0f
@@ -159,8 +167,8 @@ static enum {
 #define RING_MOD_SYNC_MAX 1.0f
 #define RING_MOD_DETUNE_MIN -1.0f
 #define RING_MOD_DETUNE_MAX 1.0f
-#define RING_MOD_TRANSPOSE_MIN -24.0f
-#define RING_MOD_TRANSPOSE_MAX 24.0f
+#define RING_MOD_TRANSPOSE_MIN -24
+#define RING_MOD_TRANSPOSE_MAX 24
 #define LFO_FREQ_MIN 0.0f
 #define LFO_FREQ_MAX 20.0f
 #define LFO_DELAY_MIN 0.0f
@@ -185,15 +193,17 @@ static enum {
 #define TONE_TRANSPOSE_STR "Tone transpose"
 #define NOISE_TIME_STR "Noise time"
 #define NOISE_PERIOD_STR "Noise period"
-#define AMP_ENV_ATTACK_LEVEL_STR "AmpEnv attack_level"
+#define NOISE_PERIOD_ENV_ATTACK_STR "NoisePeriodEnv attack"
+#define NOISE_PERIOD_ENV_TIME_STR "NoisePeriodEnv time"
+#define AMP_ENV_ATTACK_LEVEL_STR "AmpEnv attack level"
 #define AMP_ENV_TIME1_STR "AmpEnv time1"
 #define AMP_ENV_LEVEL1_STR "AmpEnv level1"
 #define AMP_ENV_TIME2_STR "AmpEnv time2"
 #define AMP_ENV_LEVEL2_STR "AmpEnv level2"
 #define AMP_ENV_TIME3_STR "AmpEnv time3"
-#define AMP_ENV_SUSTAIN_LEVEL_STR "AmpEnv sustain_level"
+#define AMP_ENV_SUSTAIN_LEVEL_STR "AmpEnv sustain level"
 #define AMP_ENV_RELEASE_STR "AmpEnv release"
-#define PITCH_ENV_ATTACK_PITCH_STR "PitchEnv attack_pitch"
+#define PITCH_ENV_ATTACK_PITCH_STR "PitchEnv attack pitch"
 #define PITCH_ENV_TIME_STR "PitchEnv time"
 #define ARP_PITCH1_STR "Arp pitch1"
 #define ARP_PITCH2_STR "Arp pitch2"

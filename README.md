@@ -6,7 +6,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 ## Features
 
 - [X] Amplitude Envelope
-- [X] Pitch Envelope
+- [X] Tone and Noise Pitch Envelope
 - [X] Portamento
 - [X] Vibrato
 - [X] Arpeggio
@@ -98,10 +98,16 @@ but if it starts then it should run flawlessly.
 - Noise period: affect the frequency of the noise. Ranges from 1 to
   31.
 
-- AmpEnv attack_level: attack level of the amplitude envelope. Ranges
+- NoisePeriodEnv attack: attack period of the noise. Ranges from 1 to
+  31.
+
+- NoisePeriodEnv time: time in second to go from noise period attack
+  to noise attack. Ranges from 0.0 to 5.0.
+
+- AmpEnv attack level: attack level of the amplitude envelope. Ranges
   from 0.0 to 1.0.
 
-- AmpEnv time1: time in second to go from attack_level to level1 of
+- AmpEnv time1: time in second to go from attack level to level1 of
   the amplitude envelope. Ranges from 0.0 to 5.0.
 
 - AmpEnv level1: first intermediary level of the amplitude
@@ -213,7 +219,6 @@ add such parameter, but if you do your contribution is welcome.
 ## TODO
 
 - [ ] Fix click in release
-- [ ] Add noise pitch envelope
 - [ ] Add parameter to select between YM2149 and AY-3-8910
 - [ ] Map parameters to MIDI CC
 - [ ] Define presets

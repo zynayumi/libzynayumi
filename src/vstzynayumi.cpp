@@ -248,6 +248,21 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 			                       value));
 		break;
 
+		// Noise period envelope
+	case NOISE_PERIOD_ENV_ATTACK:
+		zynayumi.patch.noise_period_env.attack =
+			(int)std::round(affine(0.0f, 1.0f,
+			                       NOISE_PERIOD_ENV_ATTACK_MIN,
+			                       NOISE_PERIOD_ENV_ATTACK_MAX,
+			                       value));;
+		break;
+	case NOISE_PERIOD_ENV_TIME:
+		zynayumi.patch.noise_period_env.time =
+			affine(0.0f, 1.0f,
+			       NOISE_PERIOD_ENV_TIME_MIN,
+			       NOISE_PERIOD_ENV_TIME_MAX, value);
+		break;
+
 		// Amplitude envelope
 	case AMP_ENV_ATTACK_LEVEL:
 		zynayumi.patch.ampenv.attack_level = value;
@@ -425,6 +440,20 @@ float VSTZynayumi::getParameter(VstInt32 index)
 		return affine(NOISE_PERIOD_MIN, NOISE_PERIOD_MAX,
 		              0.0f, 1.0f, zynayumi.patch.noise.period);
 
+		// Noise period envelope
+	case NOISE_PERIOD_ENV_ATTACK:
+		return affine(NOISE_PERIOD_ENV_ATTACK_MIN,
+		              NOISE_PERIOD_ENV_ATTACK_MAX,
+		              0.0f, 1.0f,
+		              zynayumi.patch.noise_period_env.attack);
+		break;
+	case NOISE_PERIOD_ENV_TIME:
+		return affine(NOISE_PERIOD_ENV_TIME_MIN,
+		              NOISE_PERIOD_ENV_TIME_MAX,
+		              0.0f, 1.0f,
+		              zynayumi.patch.noise_period_env.time);
+		break;
+
 		// Amplitude envelope
 	case AMP_ENV_ATTACK_LEVEL:
 		return zynayumi.patch.ampenv.attack_level;
@@ -564,6 +593,14 @@ void VSTZynayumi::getParameterName(VstInt32 index, char *text)
 		break;
 	case NOISE_PERIOD:
 		strcpy(text, NOISE_PERIOD_STR);
+		break;
+
+		// Noise period envelope
+	case NOISE_PERIOD_ENV_ATTACK:
+		strcpy(text, NOISE_PERIOD_ENV_ATTACK_STR);
+		break;
+	case NOISE_PERIOD_ENV_TIME:
+		strcpy(text, NOISE_PERIOD_ENV_TIME_STR);
 		break;
 
 		// Amplitude envelope
@@ -728,7 +765,15 @@ void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)
 		strcpy(text, std::to_string(zynayumi.patch.noise.time).c_str());
 		break;
 	case NOISE_PERIOD:
-		strcpy(text, std::to_string(zynayumi.patch.ampenv.time1).c_str());
+		strcpy(text, std::to_string(zynayumi.patch.noise.period).c_str());
+		break;
+
+		// Noise period envelope
+	case NOISE_PERIOD_ENV_ATTACK:
+		strcpy(text, std::to_string(zynayumi.patch.noise_period_env.attack).c_str());
+		break;
+	case NOISE_PERIOD_ENV_TIME:
+		strcpy(text, std::to_string(zynayumi.patch.noise_period_env.time).c_str());
 		break;
 
 		// Amplitude envelope

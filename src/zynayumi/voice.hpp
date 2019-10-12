@@ -55,19 +55,18 @@ public:
 	void update();              // Update the voice state
 	void set_note_pitch(unsigned char pitch);
 
+	static double linear_interpolate(double x1, double y1,
+	                                 double x2, double y2, double x);
+
 	///////////////////
 	// Attributes    //
 	///////////////////
 
 	int channel;                // YM2149 channel
-	// unsigned char pitch;        // Note pitch
 	unsigned char velocity;     // Note velocity
 	bool note_on;
 	double env_level;           // Current level, taking into account
 	                            // amplitude envelope and velocity
-
-	static double linear_interpolate(double x1, double y1,
-	                                 double x2, double y2, double x);
 
 private:
 	Engine& _engine;
@@ -76,8 +75,12 @@ private:
 	double _note_pitch;                // Initial note pitch
 	double _final_pitch;               // Final pitch after all pitch updates
 
-	bool _t_off;                       // True iff the tone is off
-	bool _n_off;                       // True iff the noise is off
+	bool _tone_off;                    // True iff the tone is off
+	bool _noise_off;                   // True iff the noise is off
+
+	int _noise_period;                 // Final noise period, after
+	                                   // account for noise period
+	                                   // envelope
 
 	// Pitch envelope
 	double _relative_pitchenv_pitch;   // Relative pitch envelope pitch

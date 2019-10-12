@@ -30,6 +30,8 @@ Tone::Tone() : time(-1), detune(0) {}
 	
 Noise::Noise() : time(0), period(1) {}
 
+NoisePeriodEnv::NoisePeriodEnv() : attack(1), time(0) {}
+
 AmpEnv::AmpEnv() : attack_level(1),
                    time1(0), level1(1),
                    time2(0), level2(1),

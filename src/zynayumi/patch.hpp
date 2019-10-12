@@ -48,7 +48,8 @@ class Tone {
 public:
 	Tone();
 
-	double time;                 // Tone duration in second, inf if negative
+	double time;                 // Tone duration in second, inf if
+                                // negative.
 	double detune;               // Detune in semitone
 };
 
@@ -56,8 +57,18 @@ class Noise {
 public:
 	Noise();
 
-	double time;                 // Noise duration in second, inf if negative
+	double time;                 // Noise duration in second, inf if
+                                // negative.
 	int period;                  // Noise period [0..31]
+};
+
+class NoisePeriodEnv {
+public:
+	NoisePeriodEnv();
+
+	int attack;                  // Absolute period of the attack.
+	double time;                 // Duration to go from attack period
+                                // to regular noise period.
 };
 
 /**
@@ -78,7 +89,6 @@ public:
 	double release;              // Release
 };
 
-
 /**
  * Pitch envelope. Durations are in second and pitches are in
  * semitones.
@@ -88,8 +98,8 @@ public:
 	PitchEnv();
 
 	double attack_pitch;         // Relative pitch of the attack
-	double time;                 // Duration to go from attack pitch
-	                             // to tone pitch
+	double time;                 // Duration to go from attack pitch to
+	                             // tone pitch.
 };
 
 class Arp {
@@ -149,6 +159,7 @@ public:
 	PlayMode playmode;          // Monophonic, polyphonic or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
+	NoisePeriodEnv noise_period_env; // Noise period envelope
 	AmpEnv ampenv;              // Amplitude envelope
 	PitchEnv pitchenv;          // Pitch envelope
 	Arp arp;                    // Arpeggio

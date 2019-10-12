@@ -60,8 +60,8 @@ void Voice::update() {
 	// Update tone and noise
 	update_tone();
 	update_noise();
-	ayumi_set_noise(&_engine.ay, _patch.noise.period);
-	ayumi_set_mixer(&_engine.ay, channel, _t_off, _n_off, 0);
+	ayumi_set_noise(&_engine.ay, _noise_period);
+	ayumi_set_mixer(&_engine.ay, channel, _tone_off, _noise_off, 0);
 
 	// Update pitch
 	update_pitchenv();
@@ -107,18 +107,23 @@ void Voice::update_pan() {
 }
 
 void Voice::update_tone() {
-	_t_off = 0 <= _patch.tone.time ? _patch.tone.time < _time : false;
+	_tone_off = 0 <= _patch.tone.time ? _patch.tone.time < _time : false;
 }
 
 void Voice::update_noise() {
-	_n_off = 0 <= _patch.noise.time ? _patch.noise.time < _time : false;
+	_noise_off = 0 <= _patch.noise.time ? _patch.noise.time < _time : false;
+	double aperiod = _patch.noise_period_env.attack;
+	double envtime = _patch.noise_period_env.time;
+	double fperiod = _patch.noise.period;
+	_noise_period = envtime < _time ? fperiod
+		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, _time));
 }
 
 void Voice::update_pitchenv() {
 	double apitch = _patch.pitchenv.attack_pitch;
 	double ptime = _patch.pitchenv.time;
 	_relative_pitchenv_pitch = _patch.pitchenv.time < _time ? 0.0
-		: linear_interpolate(0, apitch, ptime, 0.0, _time);
+		: linear_interpolate(0.0, apitch, ptime, 0.0, _time);
 }
 
 void Voice::update_port() {
