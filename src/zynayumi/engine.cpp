@@ -1,6 +1,7 @@
 /****************************************************************************
     
-    Zynayumi Synth based on ayumi, a highly precise emulation of the YM2149
+    Zynayumi Synth based on ayumi, a highly precise emulation of the
+    YM2149 and AY-3-8910
 
     engine.cpp
 
@@ -35,6 +36,7 @@ namespace zynayumi {
 // Constructor destructor
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
+	  emulmode(EmulMode::YM2149),
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  ringmod_smp_count{0.0, 0.0, 0.0},
@@ -54,6 +56,13 @@ Engine::Engine(const Zynayumi& ref)
 
 void Engine::audio_process(float* left_out, float* right_out,
                            unsigned long sample_count) {
+	// Switch to the correct emulation mode (YM2149 or YM8910)
+	if (_zynayumi.patch.emulmode != emulmode) {
+		ayumi_configure(&ay, emulmode == EmulMode::YM2149,
+		                clock_rate, sample_rate);
+		emulmode = _zynayumi.patch.emulmode;
+	}
+
 	for (unsigned long i = 0; i < sample_count; i++) {
 		// Update voice states (which modulates the ayumi state)
 		for (Pitch2Voice::value_type& v : _voices)

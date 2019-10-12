@@ -61,7 +61,11 @@ public:
 	// Attributes    //
 	///////////////////
 
-	ayumi ay;                  // current ayumi state
+	// Current ayumi state
+	ayumi ay;
+
+	// Current emulation mode (YM2149 or AY8910)
+	EmulMode emulmode;
 
 	// Current pitches. Useful for handling chord based arp.
 	//

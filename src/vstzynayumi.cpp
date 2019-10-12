@@ -408,6 +408,12 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 			affine(0.0f, 1.0f, PITCH_WHEEL_MIN, PITCH_WHEEL_MAX, value);
 		break;
 
+		// Emulation mode
+	case EMUL_MODE:
+		zynayumi.patch.emulmode =
+			(EmulMode)std::round(value * (float)EmulMode::AY8910);
+		break;
+
 	default:
 		std::cout << "setParameter(" << index << ", " << value << ")"
 		          << std::endl;
@@ -557,6 +563,10 @@ float VSTZynayumi::getParameter(VstInt32 index)
 	case PITCH_WHEEL:
 		return affine(PITCH_WHEEL_MIN, PITCH_WHEEL_MAX,
 		              0.0f, 1.0f, (double)zynayumi.patch.pitchwheel);
+
+		// Emulation mode
+	case EMUL_MODE:
+		return (float)zynayumi.patch.emulmode / (float)EmulMode::AY8910;
 
 	default:
 		return 0.0f;
@@ -722,6 +732,11 @@ void VSTZynayumi::getParameterName(VstInt32 index, char *text)
 		// Pitch wheel range
 	case PITCH_WHEEL:
 		strcpy(text, PITCH_WHEEL_STR);
+		break;
+
+		// Emulation mode
+	case EMUL_MODE:
+		strcpy(text, EMUL_MODE_STR);
 		break;
 
 	default:
@@ -895,6 +910,18 @@ void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)
 		// Pitch wheel range
 	case PITCH_WHEEL:
 		strcpy(text, std::to_string(zynayumi.patch.pitchwheel).c_str());
+		break;
+
+		// Emulation mode
+	case EMUL_MODE:
+		switch(zynayumi.patch.emulmode) {
+		case EmulMode::YM2149: strcpy(text, "YM2149");
+			break;
+		case EmulMode::AY8910: strcpy(text, "AY-3-8910");
+			break;
+		default: strcpy(text, "no display");
+			break;
+		}
 		break;
 
 	default:

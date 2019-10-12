@@ -96,6 +96,9 @@ static enum {
 	// Pitch wheel range
 	PITCH_WHEEL,
 
+	// Emulation mode (YM2149 vs AY-3-8910)
+	EMUL_MODE,
+
 	// Number of Parameters
 	PARAMETERS_COUNT
 } parameters;
@@ -230,6 +233,7 @@ static enum {
 #define PAN_CHANNEL1_STR "Pan channel1"
 #define PAN_CHANNEL2_STR "Pan channel2"
 #define PITCH_WHEEL_STR "Pitch wheel"
+#define EMUL_MODE_STR "Emulation mode"
 
 // Affine transformation, based on the equality
 //

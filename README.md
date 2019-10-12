@@ -190,6 +190,10 @@ but if it starts then it should run flawlessly.
 - Pitch wheel range: Range, [-pw, +pw], of the pitch wheel in
   semitones. Ranges from 1 to 12.
 
+- Emulation mode:
+  - 0: YM2149 (Atari ST)
+  - 1: AY-3-8910 (Amdstrad CPC, ZX Spectrum)
+
 ## Clicks and other glitches
 
 It's easy to generate undesired clicks, especially in the attack and
@@ -219,7 +223,8 @@ add such parameter, but if you do your contribution is welcome.
 ## TODO
 
 - [ ] Fix click in release
-- [ ] Add parameter to select between YM2149 and AY-3-8910
+- [ ] Improve YM2149 vs AY-3-8910 emulation (set clock rate)
+- [ ] Support any sample rate (not just 44100) 
 - [ ] Map parameters to MIDI CC
 - [ ] Define presets
 - [ ] Add LV2 support

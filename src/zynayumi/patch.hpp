@@ -147,6 +147,11 @@ public:
 	double depth;                // LFO depth in semitone
 };
 
+enum class EmulMode {
+	YM2149,
+	AY8910
+};
+
 /**
  * Complete patch
  */
@@ -166,8 +171,9 @@ public:
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
 	double port;                // Portamento time in second per semintone
-	Pan pan;                    // YM2149 channels panning
+	Pan pan;                    // Channels panning
 	int pitchwheel;             // Range in semitone of the pitch wheel
+	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
 };
 
 } // ~namespace zynayumi

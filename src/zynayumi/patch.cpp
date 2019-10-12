@@ -49,6 +49,9 @@ LFO::LFO() : freq(1), delay(0), depth(0) {}
 
 Pan::Pan() : channel{0.5, 0.25, 0.75} {}
 
-Patch::Patch() : playmode(PlayMode::Mono), port(0), pitchwheel(2) {}
+Patch::Patch() : playmode(PlayMode::Mono),
+                 port(0),
+                 pitchwheel(2),
+                 emulmode(EmulMode::YM2149) {}
 
 } // ~namespace zynayumi
