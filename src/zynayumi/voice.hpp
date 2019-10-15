@@ -119,28 +119,33 @@ private:
 	                                   // ring modulation waveform
 	                                   // cycle reset
 	unsigned& _ringmod_waveform_index; // Current waveform index
+	double _ringmod_waveform_level;    // Current waveform level
 	double _ringmod_pitch;             // Pitch of ringmod
-	double _ringmod_waveform_period;   // Number of samples to make an
-                                      // entire cycle
+	double _ringmod_smp_period;        // Number of samples to make an
+	                                   // entire cycle
 
 	double _actual_sustain_level;
 
 	bool _first_update;
 
 	void update_pan();
-	void update_tone();
-	void update_noise();
-	void update_ampenv();
+	void update_tone_off();
+	void update_noise_off();
+	void update_noise_period();
 	void update_pitchenv();
-	void update_arp();
 	void update_lfo();
+	void update_arp();
 	void update_port();
 	void update_final_pitch();
+	void update_ampenv();
 	void update_ringmod();
 	void update_ringmod_pitch();
-	void update_ringmod_waveform_period();
+	void update_ringmod_smp_period();
+	void update_ringmod_smp_count();
 	void update_ringmod_waveform_index();
+	void update_ringmod_waveform_level();
 	void sync_ringmod();
+	void update_final_level();
 };
 
 } // ~namespace zynayumi
