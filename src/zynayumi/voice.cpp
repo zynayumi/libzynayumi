@@ -32,15 +32,21 @@
 using namespace zynayumi;
 
 Voice::Voice(Engine& engine, const Patch& pa,
-             unsigned char ch, unsigned char pi, unsigned char vel) :
-	channel(ch), velocity(vel), note_on(true),
-	_engine(engine), _patch(pa),
-	_note_pitch(pi), _relative_arp_pitch(0),
-	_arp_rnd_offset_step(rand()), _index(-1),
-	_env_smp_count(0), _smp_count(0),
-	_ringmod_smp_count(_engine.ringmod_smp_count[channel]),
-	_ringmod_waveform_index(_engine.ringmod_waveform_index[channel]),
-	_first_update(true)
+             unsigned char ch, unsigned char pi, unsigned char vel)
+	: channel(ch)
+	, velocity(vel)
+	, note_on(true)
+	, _engine(engine)
+	, _patch(pa)
+	, _note_pitch(pi)
+	, _relative_arp_pitch(0)
+	, _arp_rnd_offset_step(rand())
+	, _index(-1)
+	, _env_smp_count(0)
+	, _smp_count(0)
+	, _ringmod_smp_count(0)
+	, _ringmod_waveform_index(0)
+	, _first_update(true)
 {
 }
 

@@ -115,10 +115,10 @@ private:
 	                                   // ring modulation
 
 	// Ring Mod
-	double& _ringmod_smp_count;        // Number of samples since last
+	double _ringmod_smp_count;         // Number of samples since last
 	                                   // ring modulation waveform
 	                                   // cycle reset
-	unsigned& _ringmod_waveform_index; // Current waveform index
+	unsigned _ringmod_waveform_index;  // Current waveform index
 	double _ringmod_waveform_level;    // Current waveform level
 	double _ringmod_pitch;             // Pitch of ringmod
 	double _ringmod_smp_period;        // Number of samples to make an

@@ -77,17 +77,6 @@ public:
 	double previous_pitch;
 	double last_pitch;
 
-	// Keep track of the ring modulation smp count, the number of
-	// samples since last ring modulation waveform cycle start, to
-	// control synchronization with the YM2149 oscillators. Map each
-	// YM2149 channel to the ringmod smp count.
-	double ringmod_smp_count[3];
-
-	// Keep track of the ring modulation waveform index as well. This
-	// may affect just one sample, but it produces an occasional click
-	// if not taken care of.
-	unsigned ringmod_waveform_index[3];
-
 	const double lower_note_freq;
 	const double lower_note_freq_ym;
 	const int sample_rate; // TODO: should be provided by the host

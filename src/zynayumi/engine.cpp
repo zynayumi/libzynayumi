@@ -39,8 +39,6 @@ Engine::Engine(const Zynayumi& ref)
 	  emulmode(EmulMode::YM2149),
 	  previous_pitch(-1),
 	  last_pitch(-1),
-	  ringmod_smp_count{0.0, 0.0, 0.0},
-	  ringmod_waveform_index{0, 0, 0},
 	  lower_note_freq(8.1757989156),
 	  // In principle it should be 8.1757989156 as in
 	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
