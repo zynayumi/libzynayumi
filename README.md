@@ -188,7 +188,7 @@ but if it starts then it should run flawlessly.
   YM2149. Ranges from 0.0 to 1.0. Can be to set to hard left, 0.0,
   hard right, 1.0, or any value in between.
 
-- **Pitch wheel range:** Range, [-pw, +pw], of the pitch wheel in
+- **Pitch wheel range:** range [-pw, +pw] of the pitch wheel in
   semitones. Ranges from 1 to 12.
 
 - **Emulation mode:**
