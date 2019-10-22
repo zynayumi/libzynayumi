@@ -12,6 +12,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
 - [X] VST, DSSI
+- [ ] Buzzer
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] MIDI controls assigned to parameters (only portamento for now)
 - [ ] GUI. Pease help if you want one, I am no GUI guy
@@ -205,14 +206,6 @@ Also, the amplitude envelope itself can create clicks as it is using
 the YM2149 to control the amplitude in a staircase fashion. This is a
 feature, not a bug.
 
-## Where is the buzzer?
-
-There is none. Well it is actually properly emulated by ayumi but
-zynayumi does not make any use of it. Personally, because the buzzer
-takes over the amplitude envelope I find it cumbersome. Besides the
-ring modulator is much more powerful in my opinion, though admittedly
-not the same. If you wish to add it, your contribution is welcome.
-
 ## Wait, that tuning is too perfect to come from the YM2149! 
 
 Yes, I've modified ayumi so that tuning is perfect, even in high
@@ -222,6 +215,9 @@ add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
+- [ ] Support Buzzer (envelope)
+- [ ] Add parameter to choose between perfect and legacy tuning
+- [ ] Add velocity sensitivity parameter
 - [ ] Improve parameter mapping (use quadratic scale or such when needed)
 - [ ] Fix click in release
 - [ ] Improve YM2149 vs AY-3-8910 emulation (set clock rate)
