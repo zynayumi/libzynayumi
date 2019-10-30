@@ -27,9 +27,9 @@
 #include "pluginterfaces/vst2.x/aeffectx.h"
 
 #include "zynayumi/patch.hpp"
+#include "zynayumi/parameters.hpp"
 
 #include "vstzynayumi.hpp"
-#include "parameters.hpp"
 
 using namespace zynayumi;
 

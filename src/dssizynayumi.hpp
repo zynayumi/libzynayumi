@@ -27,7 +27,7 @@
 
 #include "dssi/dssiplugin.hpp"
 #include "zynayumi/zynayumi.hpp"
-#include "parameters.hpp"
+#include "zynayumi/parameters.hpp"
 
 namespace zynayumi {
 
