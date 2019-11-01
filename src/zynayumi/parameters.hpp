@@ -25,10 +25,185 @@
 #ifndef __ZYNAYUMI_PARAMETERS_HPP
 #define __ZYNAYUMI_PARAMETERS_HPP
 
+#include <string>
+#include <cmath>
+#include <vector>
+
+#include "patch.hpp"
+
 namespace zynayumi {
 
+/**
+ * Affine transformation, based on the equality
+ *
+ * (y - miny) / (maxy - miny) = (x - minx) / (maxx - minx)
+ * y = ((x - minx) / (maxx - minx)) * (maxy - miny) + miny
+ */
+static float affine(float minx, float maxx, float miny, float maxy, float x) {
+	return ((x - minx) / (maxx - minx)) * (maxy - miny) + miny;
+}
+
+/**
+ * Class to hold user parameter, name, value and other features
+ * depending on the parameter type.
+ */
+class Parameter {
+public:
+	// Ctor
+	Parameter(const std::string& name);
+
+	// Convert parameter (name and value) into string
+	std::string to_string(std::string indent=std::string()) const;
+
+	// Convert value parameter into string
+	virtual std::string value_to_string() const = 0;
+
+	// Convert value into float
+	virtual float float_value() const = 0;
+
+	// Set value given a float
+	virtual void set_value(float f) = 0;
+
+	// Convert value to normalized [0, 1] float
+	virtual float norm_float_value() const = 0;
+
+	// Set value given normalized float within [0, 1]
+	virtual void set_norm_value(float nf) = 0;
+
+	// Name exposed to the user
+	std::string name;
+};
+
+class BoolParameter : public Parameter {
+public:
+	// Ctor
+	BoolParameter(const std::string& name,
+	              bool* value_ptr, bool value_dflt);
+
+	// Convert value parameter into string
+	std::string value_to_string() const override;
+
+	// Get/set methods
+	float float_value() const override;
+	void set_value(float f) override;
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+
+	// Current value
+	bool* value_ptr;
+};
+
+class IntParameter : public Parameter {
+public:
+	// Ctor
+	IntParameter(const std::string& name,
+	             int* value_ptr, int value_dflt, int low, int up);
+
+	// Convert value parameter into string
+	std::string value_to_string() const override;
+
+	// Get/set methods
+	float float_value() const override;
+	void set_value(float f) override;
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+
+	// Current value
+	int* value_ptr;
+
+	// Range [low, up]
+	int low;
+	int up;
+};
+
+class FloatParameter : public Parameter {
+public:
+	// Ctor
+	FloatParameter(const std::string& name,
+	               float* value_ptr, float value_dflt, float low, float up);
+
+	// Convert value parameter into string
+	std::string value_to_string() const override;
+
+	// Current value
+	float* value_ptr;
+
+	// Range [low, up]
+	float low;
+	float up;
+};
+
+class LinearFloatParameter : public FloatParameter {
+public:
+	// Ctor
+	LinearFloatParameter(const std::string& name,
+	                     float* value_ptr, float value_dflt, float low, float up);
+
+	// Get/set methods
+	float float_value() const override;
+	void set_value(float f) override;
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+};
+
+template<typename E>
+class EnumParameter : public Parameter {
+public:
+	// Ctor
+	EnumParameter(const std::string& name, E* value_ptr, E value_dflt);
+
+	// Convert value parameter into string
+	std::string value_to_string() const override;
+
+	// Get/set methods
+	float float_value() const override;
+	void set_value(float f) override;
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+
+	// Current value
+	E* value_ptr;
+};
+
+template<typename E>
+EnumParameter<E>::EnumParameter(const std::string& nm, E* vl_ptr, E vl_dflt)
+	: Parameter(nm), value_ptr(vl_ptr)
+{
+	*value_ptr = vl_dflt;
+}
+
+template<typename E>
+std::string EnumParameter<E>::value_to_string() const
+{
+	return zynayumi::to_string(*value_ptr);
+}
+
+template<typename E>
+float EnumParameter<E>::float_value() const
+{
+	return (float)*value_ptr;
+}
+
+template<typename E>
+void EnumParameter<E>::set_value(float nf)
+{
+	*value_ptr = (E)std::round(nf);
+}
+
+template<typename E>
+float EnumParameter<E>::norm_float_value() const
+{
+	return (float)*value_ptr / (float)((int)E::Count - 1);
+}
+
+template<typename E>
+void EnumParameter<E>::set_norm_value(float nf)
+{
+	*value_ptr = (E)std::round(nf * (float)((int)E::Count - 1));
+}
+
 // Parameter indices
-static enum {
+enum ParameterIndex {
 	// Play mode
 	PLAY_MODE,
 
@@ -101,93 +276,7 @@ static enum {
 
 	// Number of Parameters
 	PARAMETERS_COUNT
-} parameters;
-
-// Parameter ranges
-#define TONE_TIME_MIN -1.0f
-#define TONE_TIME_MAX 5.0f
-#define TONE_DETUNE_MIN -1.0f
-#define TONE_DETUNE_MAX 1.0f
-#define TONE_TRANSPOSE_MIN -24
-#define TONE_TRANSPOSE_MAX 24
-#define NOISE_TIME_MIN -1.0f
-#define NOISE_TIME_MAX 5.0f
-#define NOISE_PERIOD_MIN 1
-#define NOISE_PERIOD_MAX 31
-#define NOISE_PERIOD_ENV_ATTACK_MIN 1
-#define NOISE_PERIOD_ENV_ATTACK_MAX 31
-#define NOISE_PERIOD_ENV_TIME_MIN 0.0f
-#define NOISE_PERIOD_ENV_TIME_MAX 5.0f
-#define AMP_ENV_ATTACK_LEVEL_MIN 0.0f
-#define AMP_ENV_ATTACK_LEVEL_MAX 1.0f
-#define AMP_ENV_TIME1_MIN 0.0f
-#define AMP_ENV_TIME1_MAX 5.0f
-#define AMP_ENV_LEVEL1_MIN 0.0f
-#define AMP_ENV_LEVEL1_MAX 1.0f
-#define AMP_ENV_TIME2_MIN 0.0f
-#define AMP_ENV_TIME2_MAX 5.0f
-#define AMP_ENV_LEVEL2_MIN 0.0f
-#define AMP_ENV_LEVEL2_MAX 1.0f
-#define AMP_ENV_TIME3_MIN 0.0f
-#define AMP_ENV_TIME3_MAX 5.0f
-#define AMP_ENV_SUSTAIN_LEVEL_MIN 0.0f
-#define AMP_ENV_SUSTAIN_LEVEL_MAX 1.0f
-#define AMP_ENV_RELEASE_MIN 0.0f
-#define AMP_ENV_RELEASE_MAX 5.0f
-#define PITCH_ENV_ATTACK_PITCH_MIN -96.0f
-#define PITCH_ENV_ATTACK_PITCH_MAX 96.0f
-#define PITCH_ENV_TIME_MIN 0.0f
-#define PITCH_ENV_TIME_MAX 5.0f
-#define ARP_PITCH1_MIN -48.0f
-#define ARP_PITCH1_MAX 48.0f
-#define ARP_PITCH2_MIN -48.0f
-#define ARP_PITCH2_MAX 48.0f
-#define ARP_PITCH3_MIN -48.0f
-#define ARP_PITCH3_MAX 48.0f
-#define ARP_FREQ_MIN 0.0f
-#define ARP_FREQ_MAX 50.0f
-#define ARP_REPEAT_MIN 0.0f
-#define ARP_REPEAT_MAX 2.0f
-#define RING_MOD_WAVEFORM_LEVEL1_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL1_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL2_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL2_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL3_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL3_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL4_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL4_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL5_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL5_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL6_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL6_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL7_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL7_MAX 1.0f
-#define RING_MOD_WAVEFORM_LEVEL8_MIN 0.0f
-#define RING_MOD_WAVEFORM_LEVEL8_MAX 1.0f
-#define RING_MOD_MIRROR_MIN 0.0f
-#define RING_MOD_MIRROR_MAX 1.0f
-#define RING_MOD_SYNC_MIN 0.0f
-#define RING_MOD_SYNC_MAX 1.0f
-#define RING_MOD_DETUNE_MIN -1.0f
-#define RING_MOD_DETUNE_MAX 1.0f
-#define RING_MOD_TRANSPOSE_MIN -24
-#define RING_MOD_TRANSPOSE_MAX 24
-#define LFO_FREQ_MIN 0.0f
-#define LFO_FREQ_MAX 20.0f
-#define LFO_DELAY_MIN 0.0f
-#define LFO_DELAY_MAX 10.0f
-#define LFO_DEPTH_MIN 0.0f
-#define LFO_DEPTH_MAX 12.0f
-#define PORTAMENTO_MIN 0.0f
-#define PORTAMENTO_MAX 1.0f
-#define PAN_CHANNEL0_MIN 0.0f
-#define PAN_CHANNEL0_MAX 1.0f
-#define PAN_CHANNEL1_MIN 0.0f
-#define PAN_CHANNEL1_MAX 1.0f
-#define PAN_CHANNEL2_MIN 0.0f
-#define PAN_CHANNEL2_MAX 1.0f
-#define PITCH_WHEEL_MIN 1
-#define PITCH_WHEEL_MAX 12
+};
 
 // Parameter names
 #define PLAY_MODE_STR "Play mode"
@@ -235,13 +324,172 @@ static enum {
 #define PITCH_WHEEL_STR "Pitch wheel"
 #define EMUL_MODE_STR "Emulation mode"
 
-// Affine transformation, based on the equality
-//
-// (y - miny) / (maxy - miny) = (x - minx) / (maxx - minx)
-// y = ((x - minx) / (maxx - minx)) * (maxy - miny) + miny
-static float affine(float minx, float maxx, float miny, float maxy, float x) {
-	return ((x - minx) / (maxx - minx)) * (maxy - miny) + miny;
-}
+// Parameter defaults
+#define PLAY_MODE_DFLT PlayMode::Mono
+#define TONE_TIME_DFLT -1.0
+#define TONE_DETUNE_DFLT 0.0
+#define TONE_TRANSPOSE_DFLT 0
+#define NOISE_TIME_DFLT 0.0
+#define NOISE_PERIOD_DFLT 1
+#define NOISE_PERIOD_ENV_ATTACK_DFLT 1
+#define NOISE_PERIOD_ENV_TIME_DFLT 0.0
+#define AMP_ENV_ATTACK_LEVEL_DFLT 1.0
+#define AMP_ENV_TIME1_DFLT 0.0
+#define AMP_ENV_LEVEL1_DFLT 1.0
+#define AMP_ENV_TIME2_DFLT 0.0
+#define AMP_ENV_LEVEL2_DFLT 1.0
+#define AMP_ENV_TIME3_DFLT 0.0
+#define AMP_ENV_SUSTAIN_LEVEL_DFLT 1.0
+#define AMP_ENV_RELEASE_DFLT 0.0
+#define PITCH_ENV_ATTACK_PITCH_DFLT 0.0
+#define PITCH_ENV_TIME_DFLT 0.0
+#define ARP_PITCH1_DFLT 0.0
+#define ARP_PITCH2_DFLT 0.0
+#define ARP_PITCH3_DFLT 0.0
+#define ARP_FREQ_DFLT 12.5
+#define ARP_REPEAT_DFLT 0
+#define RING_MOD_WAVEFORM_LEVEL1_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL2_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL3_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL4_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL5_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL6_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL7_DFLT 1.0
+#define RING_MOD_WAVEFORM_LEVEL8_DFLT 1.0
+#define RING_MOD_MIRROR_DFLT true
+#define RING_MOD_SYNC_DFLT true
+#define RING_MOD_DETUNE_DFLT 0.0
+#define RING_MOD_TRANSPOSE_DFLT 0
+#define LFO_FREQ_DFLT 1.0
+#define LFO_DELAY_DFLT 0.0
+#define LFO_DEPTH_DFLT 0.0
+#define PORTAMENTO_DFLT 0.0
+#define PAN_CHANNEL0_DFLT 0.5
+#define PAN_CHANNEL1_DFLT 0.25
+#define PAN_CHANNEL2_DFLT 0.75
+#define PITCH_WHEEL_DFLT 2
+#define EMUL_MODE_DFLT EmulMode::YM2149
+
+// Parameter ranges
+#define TONE_TIME_L -1.0f
+#define TONE_TIME_U 5.0f
+#define TONE_DETUNE_L -0.5f
+#define TONE_DETUNE_U 0.5f
+#define TONE_TRANSPOSE_L -24
+#define TONE_TRANSPOSE_U 24
+#define NOISE_TIME_L -1.0f
+#define NOISE_TIME_U 5.0f
+#define NOISE_PERIOD_L 1
+#define NOISE_PERIOD_U 31
+#define NOISE_PERIOD_ENV_ATTACK_L 1
+#define NOISE_PERIOD_ENV_ATTACK_U 31
+#define NOISE_PERIOD_ENV_TIME_L 0.0f
+#define NOISE_PERIOD_ENV_TIME_U 5.0f
+#define AMP_ENV_ATTACK_LEVEL_L 0.0f
+#define AMP_ENV_ATTACK_LEVEL_U 1.0f
+#define AMP_ENV_TIME1_L 0.0f
+#define AMP_ENV_TIME1_U 5.0f
+#define AMP_ENV_LEVEL1_L 0.0f
+#define AMP_ENV_LEVEL1_U 1.0f
+#define AMP_ENV_TIME2_L 0.0f
+#define AMP_ENV_TIME2_U 5.0f
+#define AMP_ENV_LEVEL2_L 0.0f
+#define AMP_ENV_LEVEL2_U 1.0f
+#define AMP_ENV_TIME3_L 0.0f
+#define AMP_ENV_TIME3_U 5.0f
+#define AMP_ENV_SUSTAIN_LEVEL_L 0.0f
+#define AMP_ENV_SUSTAIN_LEVEL_U 1.0f
+#define AMP_ENV_RELEASE_L 0.0f
+#define AMP_ENV_RELEASE_U 5.0f
+#define PITCH_ENV_ATTACK_PITCH_L -96.0f
+#define PITCH_ENV_ATTACK_PITCH_U 96.0f
+#define PITCH_ENV_TIME_L 0.0f
+#define PITCH_ENV_TIME_U 5.0f
+#define ARP_PITCH1_L -48.0f
+#define ARP_PITCH1_U 48.0f
+#define ARP_PITCH2_L -48.0f
+#define ARP_PITCH2_U 48.0f
+#define ARP_PITCH3_L -48.0f
+#define ARP_PITCH3_U 48.0f
+#define ARP_FREQ_L 0.0f
+#define ARP_FREQ_U 50.0f
+#define ARP_REPEAT_L 0.0f
+#define ARP_REPEAT_U 2.0f
+#define RING_MOD_WAVEFORM_LEVEL1_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL1_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL2_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL2_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL3_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL3_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL4_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL4_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL5_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL5_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL6_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL6_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL7_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL7_U 1.0f
+#define RING_MOD_WAVEFORM_LEVEL8_L 0.0f
+#define RING_MOD_WAVEFORM_LEVEL8_U 1.0f
+#define RING_MOD_MIRROR_L 0.0f
+#define RING_MOD_MIRROR_U 1.0f
+#define RING_MOD_SYNC_L 0.0f
+#define RING_MOD_SYNC_U 1.0f
+#define RING_MOD_DETUNE_L -0.5f
+#define RING_MOD_DETUNE_U 0.5f
+#define RING_MOD_TRANSPOSE_L -24
+#define RING_MOD_TRANSPOSE_U 24
+#define LFO_FREQ_L 0.0f
+#define LFO_FREQ_U 20.0f
+#define LFO_DELAY_L 0.0f
+#define LFO_DELAY_U 10.0f
+#define LFO_DEPTH_L 0.0f
+#define LFO_DEPTH_U 12.0f
+#define PORTAMENTO_L 0.0f
+#define PORTAMENTO_U 1.0f
+#define PAN_CHANNEL0_L 0.0f
+#define PAN_CHANNEL0_U 1.0f
+#define PAN_CHANNEL1_L 0.0f
+#define PAN_CHANNEL1_U 1.0f
+#define PAN_CHANNEL2_L 0.0f
+#define PAN_CHANNEL2_U 1.0f
+#define PITCH_WHEEL_L 1
+#define PITCH_WHEEL_U 12
+
+class Zynayumi;
+
+class Parameters {
+public:
+	// CTor, DTor
+	Parameters(Zynayumi& zynayumi);
+	~Parameters();
+
+	// Get the parameter name at index pi
+	std::string get_name(ParameterIndex pi) const;
+
+	// Get the parameter value string at index pi
+	std::string get_value_str(ParameterIndex pi) const;
+
+	// Get (resp. set) non normalized value at parameter index pi
+	float float_value(ParameterIndex pi) const;
+	void set_value(ParameterIndex pi, float nf);
+
+	// Get (resp. set) normalized [0, 1] value at parameter index pi
+	float norm_float_value(ParameterIndex pi) const;
+	void set_norm_value(ParameterIndex pi, float nf);
+
+	Zynayumi& zynayumi;
+
+	// Map parameter indices to Parameter
+	std::vector<Parameter*> parameters;
+
+	// Add parameters that are missing in Patch but need to be exposed
+	// to the user
+	float tone_detune;
+	int tone_transpose;
+	float ringmod_detune;
+	int ringmod_transpose;
+};
 
 } // ~namespace zynayumi
 

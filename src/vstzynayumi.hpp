@@ -94,10 +94,7 @@ private:
    void processEvent(VstEvent* event);
 
 	// Intermediary representations between user parameters and patch
-	float _tone_detune;
-	int _tone_transpose;
-	float _ringmode_detune;
-	int _ringmode_transpose;
+	Parameters _parameters;
 };
 
 } // ~namespace zynayumi

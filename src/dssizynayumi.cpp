@@ -29,7 +29,9 @@
 using namespace zynayumi;
 using namespace std;
 
-DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate) {
+DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate)
+	: parameters(zynayumi)
+{
 }
 
 void DSSIZynayumi::run_synth(unsigned long sample_count,
@@ -97,64 +99,11 @@ char* DSSIZynayumi::configure(const char* key, const char* value) {
 
 void DSSIZynayumi::update_patch()
 {
-	// Play mode
-	zynayumi.patch.playmode = (PlayMode)std::round(*m_ports[PLAY_MODE]);
+	for (std::size_t pi = 0; pi < (std::size_t)PARAMETERS_COUNT; pi++)
+		parameters.parameters[pi]->set_value(*m_ports[pi]);
 
-	// Tone
-	zynayumi.patch.tone.time = *m_ports[TONE_TIME];
-	zynayumi.patch.tone.detune = *m_ports[TONE_DETUNE] + *m_ports[TONE_TRANSPOSE];
-
-	// Noise
-	zynayumi.patch.noise.time = *m_ports[NOISE_TIME];
-	zynayumi.patch.noise.period = (int)std::round(*m_ports[NOISE_PERIOD]);
-
-	// Amplitude envelope
-	zynayumi.patch.ampenv.attack_level = *m_ports[AMP_ENV_ATTACK_LEVEL];
-	zynayumi.patch.ampenv.time1 = *m_ports[AMP_ENV_TIME1];
-	zynayumi.patch.ampenv.level1 = *m_ports[AMP_ENV_LEVEL1];
-	zynayumi.patch.ampenv.time2 = *m_ports[AMP_ENV_TIME2];
-	zynayumi.patch.ampenv.level2 = *m_ports[AMP_ENV_LEVEL2];
-	zynayumi.patch.ampenv.time3 = *m_ports[AMP_ENV_TIME3];
-	zynayumi.patch.ampenv.sustain_level = *m_ports[AMP_ENV_SUSTAIN_LEVEL];
-	zynayumi.patch.ampenv.release = *m_ports[AMP_ENV_RELEASE];
-
-	// Pitch envelope
-	zynayumi.patch.pitchenv.attack_pitch = *m_ports[PITCH_ENV_ATTACK_PITCH];
-	zynayumi.patch.pitchenv.time = *m_ports[PITCH_ENV_TIME];
-
-	// Arpegio
-	zynayumi.patch.arp.pitch1 = *m_ports[ARP_PITCH1];
-	zynayumi.patch.arp.pitch2 = *m_ports[ARP_PITCH2];
-	zynayumi.patch.arp.pitch3 = *m_ports[ARP_PITCH3];
-	zynayumi.patch.arp.freq = *m_ports[ARP_FREQ];
-	zynayumi.patch.arp.repeat = (int)std::round(*m_ports[ARP_REPEAT]);
-
-	// Ring modulation
-	zynayumi.patch.ringmod.waveform[0] = *m_ports[RING_MOD_WAVEFORM_LEVEL1];
-	zynayumi.patch.ringmod.waveform[1] = *m_ports[RING_MOD_WAVEFORM_LEVEL2];
-	zynayumi.patch.ringmod.waveform[2] = *m_ports[RING_MOD_WAVEFORM_LEVEL3];
-	zynayumi.patch.ringmod.waveform[3] = *m_ports[RING_MOD_WAVEFORM_LEVEL4];
-	zynayumi.patch.ringmod.waveform[4] = *m_ports[RING_MOD_WAVEFORM_LEVEL5];
-	zynayumi.patch.ringmod.waveform[5] = *m_ports[RING_MOD_WAVEFORM_LEVEL6];
-	zynayumi.patch.ringmod.waveform[6] = *m_ports[RING_MOD_WAVEFORM_LEVEL7];
-	zynayumi.patch.ringmod.waveform[7] = *m_ports[RING_MOD_WAVEFORM_LEVEL8];
-	zynayumi.patch.ringmod.mirror = (bool)std::round(*m_ports[RING_MOD_MIRROR]);
-	zynayumi.patch.ringmod.sync = (bool)std::round(*m_ports[RING_MOD_SYNC]);
-	zynayumi.patch.ringmod.detune =
-		*m_ports[RING_MOD_DETUNE] + *m_ports[RING_MOD_TRANSPOSE];
-
-	// Pitch LFO
-	zynayumi.patch.lfo.freq = *m_ports[LFO_FREQ];
-	zynayumi.patch.lfo.delay = *m_ports[LFO_DELAY];
-	zynayumi.patch.lfo.depth = *m_ports[LFO_DEPTH];
-
-	// Portamento
-	zynayumi.patch.port = *m_ports[PORTAMENTO];
-
-	// Pan
-	zynayumi.patch.pan.channel[0] = *m_ports[PAN_CHANNEL0];
-	zynayumi.patch.pan.channel[1] = *m_ports[PAN_CHANNEL1];
-	zynayumi.patch.pan.channel[2] = *m_ports[PAN_CHANNEL2];
+	zynayumi.patch.tone.detune = parameters.tone_detune + parameters.tone_transpose;
+	zynayumi.patch.ringmod.detune = parameters.ringmod_detune + parameters.ringmod_transpose;
 }
 
 void initialise_2() __attribute__((constructor));
@@ -184,98 +133,111 @@ void initialise_2() {
 
 	// Tone
 	ports.add_port(c_desc, TONE_TIME_STR, r_desc | d_min,
-	               TONE_TIME_MIN, TONE_TIME_MAX);
+	               TONE_TIME_L, TONE_TIME_U);
 	ports.add_port(c_desc, TONE_DETUNE_STR, r_desc | d_0,
-	               TONE_DETUNE_MIN, TONE_DETUNE_MAX);
+	               TONE_DETUNE_L, TONE_DETUNE_U);
 	ports.add_port(c_desc, TONE_TRANSPOSE_STR, i_desc | d_0,
-	               TONE_TRANSPOSE_MIN - 0.1f, TONE_TRANSPOSE_MAX + 0.1);
+	               TONE_TRANSPOSE_L - 0.1f, TONE_TRANSPOSE_U + 0.1);
 
 	// Noise
 	ports.add_port(c_desc, NOISE_TIME_STR, r_desc | d_0,
-	               NOISE_TIME_MIN, NOISE_TIME_MAX);
+	               NOISE_TIME_L, NOISE_TIME_U);
 	ports.add_port(c_desc, NOISE_PERIOD_STR, i_desc | d_middle,
-	               NOISE_PERIOD_MIN - 0.1, NOISE_PERIOD_MAX + 0.1);
+	               NOISE_PERIOD_L - 0.1, NOISE_PERIOD_U + 0.1);
+
+	// Noise Period Envelope
+	ports.add_port(c_desc, NOISE_PERIOD_ENV_ATTACK_STR, r_desc | d_0,
+	               NOISE_PERIOD_ENV_ATTACK_L, NOISE_PERIOD_ENV_ATTACK_U);
+	ports.add_port(c_desc, NOISE_PERIOD_ENV_TIME_STR, i_desc | d_middle,
+	               NOISE_PERIOD_ENV_TIME_L, NOISE_PERIOD_ENV_TIME_U);
 
 	// Amplitude envelope
 	ports.add_port(c_desc, AMP_ENV_ATTACK_LEVEL_STR, r_desc | d_1,
-	               AMP_ENV_ATTACK_LEVEL_MIN, AMP_ENV_ATTACK_LEVEL_MAX);
+	               AMP_ENV_ATTACK_LEVEL_L, AMP_ENV_ATTACK_LEVEL_U);
 	ports.add_port(c_desc, AMP_ENV_TIME1_STR, r_desc | d_0,
-	               AMP_ENV_TIME1_MIN, AMP_ENV_TIME1_MAX);
+	               AMP_ENV_TIME1_L, AMP_ENV_TIME1_U);
 	ports.add_port(c_desc, AMP_ENV_LEVEL1_STR, r_desc | d_1,
-	               AMP_ENV_LEVEL1_MIN, AMP_ENV_LEVEL1_MAX);
+	               AMP_ENV_LEVEL1_L, AMP_ENV_LEVEL1_U);
 	ports.add_port(c_desc, AMP_ENV_TIME2_STR, r_desc | d_0,
-	               AMP_ENV_TIME2_MIN, AMP_ENV_TIME2_MAX);
+	               AMP_ENV_TIME2_L, AMP_ENV_TIME2_U);
 	ports.add_port(c_desc, AMP_ENV_LEVEL2_STR, r_desc | d_1,
-	               AMP_ENV_LEVEL2_MIN, AMP_ENV_LEVEL2_MAX);
+	               AMP_ENV_LEVEL2_L, AMP_ENV_LEVEL2_U);
 	ports.add_port(c_desc, AMP_ENV_TIME3_STR, r_desc | d_0,
-	               AMP_ENV_TIME3_MIN, AMP_ENV_TIME3_MAX);
+	               AMP_ENV_TIME3_L, AMP_ENV_TIME3_U);
 	ports.add_port(c_desc, AMP_ENV_SUSTAIN_LEVEL_STR, r_desc | d_1,
-	               AMP_ENV_SUSTAIN_LEVEL_MIN, AMP_ENV_SUSTAIN_LEVEL_MAX);
+	               AMP_ENV_SUSTAIN_LEVEL_L, AMP_ENV_SUSTAIN_LEVEL_U);
 	ports.add_port(c_desc, AMP_ENV_RELEASE_STR, r_desc | d_0,
-	               AMP_ENV_RELEASE_MIN, AMP_ENV_RELEASE_MAX);
+	               AMP_ENV_RELEASE_L, AMP_ENV_RELEASE_U);
 
 	// Pitch envelope
 	ports.add_port(c_desc, PITCH_ENV_ATTACK_PITCH_STR, r_desc | d_0,
-	               PITCH_ENV_ATTACK_PITCH_MIN, PITCH_ENV_ATTACK_PITCH_MAX);
+	               PITCH_ENV_ATTACK_PITCH_L, PITCH_ENV_ATTACK_PITCH_U);
 	ports.add_port(c_desc, PITCH_ENV_TIME_STR, r_desc | d_0,
-	               PITCH_ENV_TIME_MIN, PITCH_ENV_TIME_MAX);
+	               PITCH_ENV_TIME_L, PITCH_ENV_TIME_U);
 
 	// Arpegio
 	ports.add_port(c_desc, ARP_PITCH1_STR, r_desc | d_0,
-	               ARP_PITCH1_MIN, ARP_PITCH1_MAX);
+	               ARP_PITCH1_L, ARP_PITCH1_U);
 	ports.add_port(c_desc, ARP_PITCH2_STR, r_desc | d_0,
-	               ARP_PITCH2_MIN, ARP_PITCH2_MAX);
+	               ARP_PITCH2_L, ARP_PITCH2_U);
 	ports.add_port(c_desc, ARP_PITCH3_STR, r_desc | d_0,
-	               ARP_PITCH3_MIN, ARP_PITCH3_MAX);
+	               ARP_PITCH3_L, ARP_PITCH3_U);
 	ports.add_port(c_desc, ARP_FREQ_STR, r_desc | d_low,
-	               ARP_FREQ_MIN, ARP_FREQ_MAX);
+	               ARP_FREQ_L, ARP_FREQ_U);
 	ports.add_port(c_desc, ARP_REPEAT_STR, i_desc | d_0,
-	               ARP_REPEAT_MIN - 0.1, ARP_REPEAT_MAX + 0.1);
+	               ARP_REPEAT_L - 0.1, ARP_REPEAT_U + 0.1);
 
 	// Ring modulation
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL1_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL1_MIN, RING_MOD_WAVEFORM_LEVEL1_MAX);
+	               RING_MOD_WAVEFORM_LEVEL1_L, RING_MOD_WAVEFORM_LEVEL1_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL2_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL2_MIN, RING_MOD_WAVEFORM_LEVEL2_MAX);
+	               RING_MOD_WAVEFORM_LEVEL2_L, RING_MOD_WAVEFORM_LEVEL2_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL3_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL3_MIN, RING_MOD_WAVEFORM_LEVEL3_MAX);
+	               RING_MOD_WAVEFORM_LEVEL3_L, RING_MOD_WAVEFORM_LEVEL3_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL4_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL4_MIN, RING_MOD_WAVEFORM_LEVEL4_MAX);
+	               RING_MOD_WAVEFORM_LEVEL4_L, RING_MOD_WAVEFORM_LEVEL4_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL5_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL5_MIN, RING_MOD_WAVEFORM_LEVEL5_MAX);
+	               RING_MOD_WAVEFORM_LEVEL5_L, RING_MOD_WAVEFORM_LEVEL5_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL6_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL6_MIN, RING_MOD_WAVEFORM_LEVEL6_MAX);
+	               RING_MOD_WAVEFORM_LEVEL6_L, RING_MOD_WAVEFORM_LEVEL6_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL7_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL7_MIN, RING_MOD_WAVEFORM_LEVEL7_MAX);
+	               RING_MOD_WAVEFORM_LEVEL7_L, RING_MOD_WAVEFORM_LEVEL7_U);
 	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL8_STR, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL8_MIN, RING_MOD_WAVEFORM_LEVEL8_MAX);
+	               RING_MOD_WAVEFORM_LEVEL8_L, RING_MOD_WAVEFORM_LEVEL8_U);
 	ports.add_port(c_desc, RING_MOD_MIRROR_STR, t_desc | d_1,
-	               RING_MOD_MIRROR_MIN - 0.1, RING_MOD_MIRROR_MAX + 0.1);
+	               RING_MOD_MIRROR_L - 0.1, RING_MOD_MIRROR_U + 0.1);
 	ports.add_port(c_desc, RING_MOD_SYNC_STR, t_desc | d_1,
-	               RING_MOD_SYNC_MIN - 0.1, RING_MOD_SYNC_MAX + 0.1);
+	               RING_MOD_SYNC_L - 0.1, RING_MOD_SYNC_U + 0.1);
 	ports.add_port(c_desc, RING_MOD_DETUNE_STR, r_desc | d_0,
-	               RING_MOD_DETUNE_MIN, RING_MOD_DETUNE_MAX);
+	               RING_MOD_DETUNE_L, RING_MOD_DETUNE_U);
 	ports.add_port(c_desc, RING_MOD_TRANSPOSE_STR, i_desc | d_0,
-	               RING_MOD_TRANSPOSE_MIN - 0.1, RING_MOD_TRANSPOSE_MAX + 0.1);
+	               RING_MOD_TRANSPOSE_L - 0.1, RING_MOD_TRANSPOSE_U + 0.1);
 
 	// Pitch LFO
 	ports.add_port(c_desc, LFO_FREQ_STR, r_desc | d_1,
-	               LFO_FREQ_MIN, LFO_FREQ_MAX);
+	               LFO_FREQ_L, LFO_FREQ_U);
 	ports.add_port(c_desc, LFO_DELAY_STR, r_desc | d_0,
-	               LFO_DELAY_MIN, LFO_DELAY_MAX);
+	               LFO_DELAY_L, LFO_DELAY_U);
 	ports.add_port(c_desc, LFO_DEPTH_STR, r_desc | d_0,
-	               LFO_DEPTH_MIN, LFO_DEPTH_MAX);
+	               LFO_DEPTH_L, LFO_DEPTH_U);
 
 	// Portamento
 	ports.add_port(c_desc, PORTAMENTO_STR, r_desc | d_0, 0.0, 2.0);
 
 	// Pan
 	ports.add_port(c_desc, PAN_CHANNEL0_STR, r_desc | d_middle,
-	               PAN_CHANNEL0_MIN, PAN_CHANNEL0_MAX);
+	               PAN_CHANNEL0_L, PAN_CHANNEL0_U);
 	ports.add_port(c_desc, PAN_CHANNEL1_STR, r_desc | d_low,
-	               PAN_CHANNEL1_MIN, PAN_CHANNEL1_MAX);
+	               PAN_CHANNEL1_L, PAN_CHANNEL1_U);
 	ports.add_port(c_desc, PAN_CHANNEL2_STR, r_desc | d_high,
-	               PAN_CHANNEL2_MIN, PAN_CHANNEL2_MAX);
+	               PAN_CHANNEL2_L, PAN_CHANNEL2_U);
+
+	// Pitch wheel range
+	ports.add_port(c_desc, PITCH_WHEEL_STR, i_desc | d_0,
+	               PITCH_WHEEL_L - 0.1, PITCH_WHEEL_U + 0.1);
+
+	// Emulation mode
+	ports.add_port(c_desc, EMUL_MODE_STR, i_desc | d_0, -0.1, 1.1);
 
 	//////////////////
 	// Audio output //

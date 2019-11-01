@@ -54,4 +54,34 @@ Patch::Patch() : playmode(PlayMode::Mono),
                  pitchwheel(2),
                  emulmode(EmulMode::YM2149) {}
 
+std::string to_string(PlayMode pm)
+{
+	switch(pm) {
+	case PlayMode::Mono:
+		return "Mono";
+	case PlayMode::Poly:
+		return "Poly";
+	case PlayMode::UpArp:
+		return "UpArp";
+	case PlayMode::DownArp:
+		return "DownArp";
+	case PlayMode::RndArp:
+		return "RndArp";
+	default:
+		return "";
+	}
+}
+
+std::string to_string(EmulMode em)
+{
+	switch(em) {
+	case EmulMode::YM2149:
+		return "YM2149";
+	case EmulMode::AY8910:
+		return "AY-3-8910";
+	default:
+		return "";
+	}
+}
+
 } // ~namespace zynayumi

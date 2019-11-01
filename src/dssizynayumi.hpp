@@ -41,6 +41,7 @@ class DSSIZynayumi : public DSSIPlugin {
 public:
 
 	Zynayumi zynayumi;
+	Parameters parameters;
 
 	DSSIZynayumi(unsigned long frame_rate);
 

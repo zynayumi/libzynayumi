@@ -42,22 +42,24 @@ enum class PlayMode {
 	UpArp,
 	DownArp,
 	RndArp,
+
+	Count
 };
 
 class Tone {
 public:
 	Tone();
 
-	double time;                 // Tone duration in second, inf if
+	float time;                  // Tone duration in second, inf if
                                 // negative.
-	double detune;               // Detune in semitone
+	float detune;                // Detune in semitone
 };
 
 class Noise {
 public:
 	Noise();
 
-	double time;                 // Noise duration in second, inf if
+	float time;                  // Noise duration in second, inf if
                                 // negative.
 	int period;                  // Noise period [0..31]
 };
@@ -67,7 +69,7 @@ public:
 	NoisePeriodEnv();
 
 	int attack;                  // Absolute period of the attack.
-	double time;                 // Duration to go from attack period
+	float time;                  // Duration to go from attack period
                                 // to regular noise period.
 };
 
@@ -79,14 +81,14 @@ class AmpEnv {
 public:
 	AmpEnv();
 
-	double attack_level;         // Attack level
-	double time1;                // Duration between attack and hold-1
-	double level1;               // Hold-1 level
-	double time2;                // Duration between hold-1 and hold-2
-	double level2;               // Hold-2 level
-	double time3;                // Duration between hold-2 and sustain
-	double sustain_level;        // Sustain level
-	double release;              // Release
+	float attack_level;          // Attack level
+	float time1;                 // Duration between attack and hold-1
+	float level1;                // Hold-1 level
+	float time2;                 // Duration between hold-1 and hold-2
+	float level2;                // Hold-2 level
+	float time3;                 // Duration between hold-2 and sustain
+	float sustain_level;         // Sustain level
+	float release;               // Release
 };
 
 /**
@@ -97,8 +99,8 @@ class PitchEnv {
 public:
 	PitchEnv();
 
-	double attack_pitch;         // Relative pitch of the attack
-	double time;                 // Duration to go from attack pitch to
+	float attack_pitch;          // Relative pitch of the attack
+	float time;                  // Duration to go from attack pitch to
 	                             // tone pitch.
 };
 
@@ -106,10 +108,10 @@ class Arp {
 public:
 	Arp();
 
-	double pitch1;               // First pitch in semitone
-	double pitch2;               // Second pitch in semitone
-	double pitch3;               // Third pitch in semitone
-	double freq;                 // Pitch change frequency
+	float pitch1;                // First pitch in semitone
+	float pitch2;                // Second pitch in semitone
+	float pitch3;                // Third pitch in semitone
+	float freq;                  // Pitch change frequency
 	int repeat;                  // Repeat point
 };
 
@@ -126,12 +128,12 @@ class RingMod {
 public:
 	RingMod();
 
-	double waveform[RING_MOD_WAVEFORM_SIZE]; // Sample volume levels
+	float waveform[RING_MOD_WAVEFORM_SIZE];  // Sample volume levels
 	bool mirror;                             // Add 8 mirroring samples
 	bool sync;                               // Whether ring
 	                                         // modulation is in sync
 	                                         // with YM2149 oscilator
-	double detune;                           // Relative detune in semitone
+	float detune;                            // Relative detune in semitone
 	                                         // compared to the tone
 };
 
@@ -142,14 +144,16 @@ class LFO {
 public:
 	LFO();
 
-	double freq;                 // LFO frequency
-	double delay;                // LFO progressive delay in second
-	double depth;                // LFO depth in semitone
+	float freq;                 // LFO frequency
+	float delay;                // LFO progressive delay in second
+	float depth;                // LFO depth in semitone
 };
 
 enum class EmulMode {
 	YM2149,
-	AY8910
+	AY8910,
+
+	Count
 };
 
 /**
@@ -170,11 +174,14 @@ public:
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
-	double port;                // Portamento time in second per semintone
+	float port;                 // Portamento time in second per semintone
 	Pan pan;                    // Channels panning
 	int pitchwheel;             // Range in semitone of the pitch wheel
 	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
 };
+
+std::string to_string(PlayMode pm);
+std::string to_string(EmulMode em);
 
 } // ~namespace zynayumi
 
