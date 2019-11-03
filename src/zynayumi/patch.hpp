@@ -174,7 +174,7 @@ public:
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
-	float port;                 // Portamento time in second per semintone
+	float port;                 // Portamento time in second per semitone
 	Pan pan;                    // Channels panning
 	int pitchwheel;             // Range in semitone of the pitch wheel
 	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910

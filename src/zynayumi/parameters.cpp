@@ -25,6 +25,7 @@
 #include "parameters.hpp"
 
 #include <cmath>
+#include <sstream>
 
 #include "patch.hpp"
 #include "zynayumi.hpp"
@@ -478,6 +479,17 @@ void Parameters::set_norm_value(ParameterIndex pi, float nf)
 	default:
 		break;
 	}
+}
+
+std::string Parameters::to_string(std::string indent) const
+{
+	std::stringstream ss;
+	for (std::size_t i = 0; i < parameters.size(); i++) {
+		if (i != 0)
+			ss << std::endl;
+		ss << parameters[i]->to_string(indent);
+	}
+	return ss.str();
 }
 
 } // ~namespace zynayumi

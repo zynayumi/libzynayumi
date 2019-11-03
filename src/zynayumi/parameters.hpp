@@ -478,6 +478,9 @@ public:
 	float norm_float_value(ParameterIndex pi) const;
 	void set_norm_value(ParameterIndex pi, float nf);
 
+	// Convert parameters into string (useful for creating presets)
+	std::string to_string(std::string indent=std::string()) const;
+
 	Zynayumi& zynayumi;
 
 	// Map parameter indices to Parameter

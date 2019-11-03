@@ -214,7 +214,9 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 
 float VSTZynayumi::getParameter(VstInt32 index)
 {
-	return _parameters.norm_float_value((ParameterIndex)index);
+	float res = _parameters.norm_float_value((ParameterIndex)index);
+	std::cout << _parameters.to_string() << std::endl;
+	return res;
 }
 
 void VSTZynayumi::getParameterLabel(VstInt32 index, char *text)

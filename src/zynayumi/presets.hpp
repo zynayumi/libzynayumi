@@ -26,15 +26,23 @@
 #define __ZYNAYUMI_PRESETS_HPP
 
 #include "patch.hpp"
+// #include "parameters.hpp"
 #include <vector>
 
 namespace zynayumi {
 
+/**
+ * Class holding collection of patches (or user parameters ???).
+ *
+ * TODO: not clear this is redundant with Factory.
+ */
 class Presets {
 public:
 	Presets();
 
 	std::vector<Patch> patches;
+	// TODO: or vector of Parameters ???
+	// std::vector<Parameters> presets;
 };
 
 } // ~namespace zynayumi
