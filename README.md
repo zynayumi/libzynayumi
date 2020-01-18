@@ -215,15 +215,14 @@ add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
-- [ ] Support Buzzer (envelope)
-- [ ] Add parameter to choose between perfect and legacy tuning
 - [ ] Add velocity sensitivity parameter
 - [ ] Improve parameter mapping (use quadratic scale or such when needed)
-- [ ] Fix click in release
 - [ ] Improve YM2149 vs AY-3-8910 emulation (set clock rate)
-- [ ] Support any sample rate (not just 44100) 
-- [ ] Map parameters to MIDI CC
+- [ ] Fix click in release
 - [ ] Define presets
+- [ ] Map parameters to MIDI CC
+- [ ] Support Buzzer (envelope)
+- [ ] Add parameter to choose between perfect and legacy tuning
 - [ ] Add LV2 support
 
 ## Author
