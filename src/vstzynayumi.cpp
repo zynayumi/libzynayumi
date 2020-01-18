@@ -194,7 +194,7 @@ VstIntPtr VSTZynayumi::dispatcher(VstInt32 opCode, VstInt32 index, VstIntPtr val
 	{
 
 	case effSetSampleRate:  // Set sample rate
-		std::cerr << "effSetSampleRate not implemented" << std::endl;
+		zynayumi.set_sample_rate((int)opt);
 		break;
 	case effProcessEvents:	// Process events
 		events = (VstEvents*)ptr;
@@ -214,9 +214,7 @@ void VSTZynayumi::setParameter(VstInt32 index, float value)
 
 float VSTZynayumi::getParameter(VstInt32 index)
 {
-	float res = _parameters.norm_float_value((ParameterIndex)index);
-	std::cout << _parameters.to_string() << std::endl;
-	return res;
+	return _parameters.norm_float_value((ParameterIndex)index);
 }
 
 void VSTZynayumi::getParameterLabel(VstInt32 index, char *text)

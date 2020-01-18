@@ -33,6 +33,16 @@ Zynayumi::Zynayumi() : engine(*this) {}
 
 Zynayumi::~Zynayumi() {}
 
+void Zynayumi::set_sample_rate(int sr)
+{
+	engine.set_sample_rate(sr);
+}
+
+unsigned Zynayumi::get_sample_rate() const
+{
+	return engine.sample_rate;
+}
+
 void Zynayumi::audio_process(float* left_out, float* right_out,
                              unsigned long sample_count) {
 	engine.audio_process(left_out, right_out, sample_count);

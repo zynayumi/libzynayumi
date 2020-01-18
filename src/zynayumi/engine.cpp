@@ -48,8 +48,18 @@ Engine::Engine(const Zynayumi& ref)
 	  sample_rate(44100),
 	  clock_rate(2000000),
 	  pw_pitch(0),
-	  _max_voices(3) {
+	  _max_voices(3)
+{
+	// TODO: probably unnecessary, as configured when setting the patch
+	// or the sample rate.
 	ayumi_configure(&ay, 1, clock_rate, sample_rate);
+}
+
+void Engine::set_sample_rate(int sr)
+{
+	sample_rate = sr;
+	ayumi_configure(&ay, emulmode == EmulMode::YM2149,
+	                clock_rate, sample_rate);
 }
 
 void Engine::audio_process(float* left_out, float* right_out,

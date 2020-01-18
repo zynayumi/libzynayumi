@@ -77,10 +77,10 @@ public:
 	double previous_pitch;
 	double last_pitch;
 
-	const double lower_note_freq;
-	const double lower_note_freq_ym;
-	const int sample_rate; // TODO: should be provided by the host
-	const int clock_rate;
+	double lower_note_freq;
+	double lower_note_freq_ym;
+	int clock_rate;
+	int sample_rate;
 
 	// Pitch wheel pitch
 	double pw_pitch;
@@ -94,6 +94,9 @@ public:
 	////////////////
 	// Methods    //
 	////////////////
+
+	// Set sample rate
+	void set_sample_rate(int sr);
 
 	// Assumptions:
 	//

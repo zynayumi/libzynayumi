@@ -68,6 +68,10 @@ public:
 	// Methods    //
 	////////////////
 
+	// Set/get sample rate
+	void set_sample_rate(int sr);
+	unsigned get_sample_rate() const;
+
 	// Assumptions:
 	//
 	// 1. The parameters do not change during audio processing
