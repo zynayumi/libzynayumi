@@ -85,16 +85,17 @@ but if it starts then it should run flawlessly.
   - 4: RndArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
 
-- **Tone time:** time in second the square voice is played. Ranges from
-  -1.0 to 5.0, negative means +inf.
+- **Tone time:** time in second the square voice is played. Ranges
+  from 0.0 to +inf.
 
-- **Tone detune:** global detune in semitone. Ranges from -1.0 to +1.0.
+- **Tone detune:** global detune in semitone. Ranges from -0.5 to
+  +0.5.
 
 - **Tone transpose:** global transpose in semitone. Ranges from -24 to
   +24.
 
 - **Noise time:** time the noise generator is played in second. Ranges
-  from -1.0 to 5.0, negative means +inf.
+  from 0.0 to +inf.
 
 - **Noise period:** affect the frequency of the noise. Ranges from 1 to
   31.
@@ -168,7 +169,7 @@ but if it starts then it should run flawlessly.
 - **RingMod detune:** detune in semitone of the ring modulation waveform
   relative to the square waveform. The famous SID phaser effect can be
   obtained by setting a value difference than, though close to,
-  zero. Ranges from -1.0 to +1.0.
+  zero. Ranges from -0.5 to +0.5.
 
 - **RingMod transpose:** transposition in semitone of the ring modulation
   waveform relative the square waveform. Ranges from -24 to +24.
@@ -181,8 +182,8 @@ but if it starts then it should run flawlessly.
 
 - **LFO depth:** LFO depth in semitone. Ranges from 0.0 to 12.0.
 
-- **Portamento:** time in second of the portamento effect to go from 1
-  semitone to the next. Ranges from 0.0 to 1.0.
+- **Portamento time:** time in second of the portamento effect to go from 1
+  semitone to the next. Ranges from 0.0 to 0.5.
 
 - **Pan channel0 to channel2:** panning level of the 3 voices of the
   YM2149. Ranges from 0.0 to 1.0. Can be to set to hard left, 0.0,
@@ -210,17 +211,14 @@ feature, not a bug.
 
 Yes, I've modified ayumi so that tuning is perfect, even in high
 pitch. I prefer it that way. A parameter could be added that lets the
-user choose between legacy and perfect tuning. I have no motivation to
-add such parameter, but if you do your contribution is welcome.
+user choose between legacy and perfect tuning. I may not add it soon,
+but if you do your contribution is welcome.
 
 ## TODO
 
-- [ ] Improve parameter mapping
-  - [ ] Use tan function
-  - [ ] Use 1/4 tone for detune
-  - [ ] And more
 - [ ] Add velocity sensitivity parameter
-- [ ] Fix click in release
+- [ ] Add modulation (LFO) sensitivity parameter
+- [ ] Fix click in release (maybe?)
 - [ ] Define presets
 - [ ] Map parameters to MIDI CC
 - [ ] Support Buzzer (envelope)

@@ -222,7 +222,8 @@ void initialise_2() {
 	               LFO_DEPTH_L, LFO_DEPTH_U);
 
 	// Portamento
-	ports.add_port(c_desc, PORTAMENTO_STR, r_desc | d_0, 0.0, 2.0);
+	ports.add_port(c_desc, PORTAMENTO_TIME_STR, r_desc | d_0,
+	               PORTAMENTO_TIME_L, PORTAMENTO_TIME_U);
 
 	// Pan
 	ports.add_port(c_desc, PAN_CHANNEL0_STR, r_desc | d_middle,

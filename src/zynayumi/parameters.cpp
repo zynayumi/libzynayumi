@@ -110,24 +110,25 @@ FloatParameter::FloatParameter(const std::string& n, float* v_ptr, float v_dflt,
 	*value_ptr = v_dflt;
 }
 
+float FloatParameter::float_value() const
+{
+	return *value_ptr;
+}
+
+void FloatParameter::set_value(float f)
+{
+	*value_ptr = f;
+}
+
 std::string FloatParameter::value_to_string() const
 {
 	return std::to_string(*value_ptr);
 }
 
-LinearFloatParameter::LinearFloatParameter(const std::string& n, float* v_ptr, float v_dflt, float l, float u)
+LinearFloatParameter::LinearFloatParameter(const std::string& n, float* v_ptr,
+                                           float v_dflt, float l, float u)
 	: FloatParameter(n, v_ptr, v_dflt, l, u)
 {
-}
-
-float LinearFloatParameter::float_value() const
-{
-	return *value_ptr;
-}
-
-void LinearFloatParameter::set_value(float f)
-{
-	*value_ptr = f;
 }
 
 float LinearFloatParameter::norm_float_value() const
@@ -140,6 +141,33 @@ void LinearFloatParameter::set_norm_value(float nf)
 	*value_ptr = affine(0.0f, 1.0f, low, up, nf);
 }
 
+TanFloatParameter::TanFloatParameter(const std::string& n, float* v_ptr,
+                                     float v_dflt, float l, float u)
+	: FloatParameter(n, v_ptr, v_dflt, l, u)
+	, atan_low(atanf(l))
+	, atan_up(atanf(u))
+{
+}
+
+float TanFloatParameter::norm_float_value() const
+{
+	if (*value_ptr == low)
+		return 0.0;
+	if (*value_ptr == up)
+		return 1.0;
+	return affine(atan_low, atan_up, 0.0f, 1.0f, atanf(*value_ptr));
+}
+
+void TanFloatParameter::set_norm_value(float nf)
+{
+	if (nf == 0.0)
+		*value_ptr = low;
+	else if (nf == 1.0)
+		*value_ptr = up;
+	else
+		*value_ptr = tanf(affine(0.0f, 1.0f, atan_low, atan_up, nf));
+}
+
 Parameters::Parameters(Zynayumi& zyn)
 	: zynayumi(zyn), parameters(PARAMETERS_COUNT)
 {
@@ -149,17 +177,17 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                    PLAY_MODE_DFLT);
 
 	// Tone
-	parameters[TONE_TIME] = new LinearFloatParameter(TONE_TIME_STR,
-	                                                 &zynayumi.patch.tone.time,
-	                                                 TONE_TIME_DFLT,
-	                                                 TONE_TIME_L,
-	                                                 TONE_TIME_U);
+	parameters[TONE_TIME] = new TanFloatParameter(TONE_TIME_STR,
+	                                              &zynayumi.patch.tone.time,
+	                                              TONE_TIME_DFLT,
+	                                              TONE_TIME_L,
+	                                              TONE_TIME_U);
 
-	parameters[TONE_DETUNE] = new LinearFloatParameter(TONE_DETUNE_STR,
-	                                                   &tone_detune,
-	                                                   TONE_DETUNE_DFLT,
-	                                                   TONE_DETUNE_L,
-	                                                   TONE_DETUNE_U);
+	parameters[TONE_DETUNE] = new TanFloatParameter(TONE_DETUNE_STR,
+	                                                &tone_detune,
+	                                                TONE_DETUNE_DFLT,
+	                                                TONE_DETUNE_L,
+	                                                TONE_DETUNE_U);
 
 	parameters[TONE_TRANSPOSE] = new IntParameter(TONE_TRANSPOSE_STR,
 	                                              &tone_transpose,
@@ -168,11 +196,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                              TONE_TRANSPOSE_U);
 
 	// Noise
-	parameters[NOISE_TIME] = new LinearFloatParameter(NOISE_TIME_STR,
-	                                                  &zynayumi.patch.noise.time,
-	                                                  NOISE_TIME_DFLT,
-	                                                  NOISE_TIME_L,
-	                                                  NOISE_TIME_U);
+	parameters[NOISE_TIME] = new TanFloatParameter(NOISE_TIME_STR,
+	                                               &zynayumi.patch.noise.time,
+	                                               NOISE_TIME_DFLT,
+	                                               NOISE_TIME_L,
+	                                               NOISE_TIME_U);
 
 	parameters[NOISE_PERIOD] = new IntParameter(NOISE_PERIOD_STR,
 	                                            &zynayumi.patch.noise.period,
@@ -187,11 +215,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                       NOISE_PERIOD_ENV_ATTACK_L,
 	                                                       NOISE_PERIOD_ENV_ATTACK_U);
 
-	parameters[NOISE_PERIOD_ENV_TIME] = new LinearFloatParameter(NOISE_PERIOD_ENV_TIME_STR,
-	                                                             &zynayumi.patch.noise_period_env.time,
-	                                                             NOISE_PERIOD_ENV_TIME_DFLT,
-	                                                             NOISE_PERIOD_ENV_TIME_L,
-	                                                             NOISE_PERIOD_ENV_TIME_U);
+	parameters[NOISE_PERIOD_ENV_TIME] = new TanFloatParameter(NOISE_PERIOD_ENV_TIME_STR,
+	                                                          &zynayumi.patch.noise_period_env.time,
+	                                                          NOISE_PERIOD_ENV_TIME_DFLT,
+	                                                          NOISE_PERIOD_ENV_TIME_L,
+	                                                          NOISE_PERIOD_ENV_TIME_U);
 
 	// Amplitude envelope
 	parameters[AMP_ENV_ATTACK_LEVEL] = new LinearFloatParameter(AMP_ENV_ATTACK_LEVEL_STR,
@@ -200,11 +228,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                            AMP_ENV_ATTACK_LEVEL_L,
 	                                                            AMP_ENV_ATTACK_LEVEL_U);
 
-	parameters[AMP_ENV_TIME1] = new LinearFloatParameter(AMP_ENV_TIME1_STR,
-	                                                     &zynayumi.patch.ampenv.time1,
-	                                                     AMP_ENV_TIME1_DFLT,
-	                                                     AMP_ENV_TIME1_L,
-	                                                     AMP_ENV_TIME1_U);
+	parameters[AMP_ENV_TIME1] = new TanFloatParameter(AMP_ENV_TIME1_STR,
+	                                                  &zynayumi.patch.ampenv.time1,
+	                                                  AMP_ENV_TIME1_DFLT,
+	                                                  AMP_ENV_TIME1_L,
+	                                                  AMP_ENV_TIME1_U);
 
 	parameters[AMP_ENV_LEVEL1] = new LinearFloatParameter(AMP_ENV_LEVEL1_STR,
 	                                                      &zynayumi.patch.ampenv.level1,
@@ -212,11 +240,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                      AMP_ENV_LEVEL1_L,
 	                                                      AMP_ENV_LEVEL1_U);
 
-	parameters[AMP_ENV_TIME2] = new LinearFloatParameter(AMP_ENV_TIME2_STR,
-	                                                     &zynayumi.patch.ampenv.time2,
-	                                                     AMP_ENV_TIME2_DFLT,
-	                                                     AMP_ENV_TIME2_L,
-	                                                     AMP_ENV_TIME2_U);
+	parameters[AMP_ENV_TIME2] = new TanFloatParameter(AMP_ENV_TIME2_STR,
+	                                                  &zynayumi.patch.ampenv.time2,
+	                                                  AMP_ENV_TIME2_DFLT,
+	                                                  AMP_ENV_TIME2_L,
+	                                                  AMP_ENV_TIME2_U);
 
 	parameters[AMP_ENV_LEVEL2] = new LinearFloatParameter(AMP_ENV_LEVEL2_STR,
 	                                                      &zynayumi.patch.ampenv.level2,
@@ -224,11 +252,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                      AMP_ENV_LEVEL2_L,
 	                                                      AMP_ENV_LEVEL2_U);
 
-	parameters[AMP_ENV_TIME3] = new LinearFloatParameter(AMP_ENV_TIME3_STR,
-	                                                     &zynayumi.patch.ampenv.time3,
-	                                                     AMP_ENV_TIME3_DFLT,
-	                                                     AMP_ENV_TIME3_L,
-	                                                     AMP_ENV_TIME3_U);
+	parameters[AMP_ENV_TIME3] = new TanFloatParameter(AMP_ENV_TIME3_STR,
+	                                                  &zynayumi.patch.ampenv.time3,
+	                                                  AMP_ENV_TIME3_DFLT,
+	                                                  AMP_ENV_TIME3_L,
+	                                                  AMP_ENV_TIME3_U);
 
 	parameters[AMP_ENV_SUSTAIN_LEVEL] = new LinearFloatParameter(AMP_ENV_SUSTAIN_LEVEL_STR,
 	                                                             &zynayumi.patch.ampenv.sustain_level,
@@ -236,11 +264,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                             AMP_ENV_SUSTAIN_LEVEL_L,
 	                                                             AMP_ENV_SUSTAIN_LEVEL_U);
 
-	parameters[AMP_ENV_RELEASE] = new LinearFloatParameter(AMP_ENV_RELEASE_STR,
-	                                                       &zynayumi.patch.ampenv.release,
-	                                                       AMP_ENV_RELEASE_DFLT,
-	                                                       AMP_ENV_RELEASE_L,
-	                                                       AMP_ENV_RELEASE_U);
+	parameters[AMP_ENV_RELEASE] = new TanFloatParameter(AMP_ENV_RELEASE_STR,
+	                                                    &zynayumi.patch.ampenv.release,
+	                                                    AMP_ENV_RELEASE_DFLT,
+	                                                    AMP_ENV_RELEASE_L,
+	                                                    AMP_ENV_RELEASE_U);
 
 	// Pitch envelope
 	parameters[PITCH_ENV_ATTACK_PITCH] = new LinearFloatParameter(PITCH_ENV_ATTACK_PITCH_STR,
@@ -249,30 +277,30 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                              PITCH_ENV_ATTACK_PITCH_L,
 	                                                              PITCH_ENV_ATTACK_PITCH_U);
 
-	parameters[PITCH_ENV_TIME] = new LinearFloatParameter(PITCH_ENV_TIME_STR,
-	                                                      &zynayumi.patch.pitchenv.time,
-	                                                      PITCH_ENV_TIME_DFLT,
-	                                                      PITCH_ENV_TIME_L,
-	                                                      PITCH_ENV_TIME_U);
+	parameters[PITCH_ENV_TIME] = new TanFloatParameter(PITCH_ENV_TIME_STR,
+	                                                   &zynayumi.patch.pitchenv.time,
+	                                                   PITCH_ENV_TIME_DFLT,
+	                                                   PITCH_ENV_TIME_L,
+	                                                   PITCH_ENV_TIME_U);
 
 	// Arpegio
-	parameters[ARP_PITCH1] = new LinearFloatParameter(ARP_PITCH1_STR,
-	                                                  &zynayumi.patch.arp.pitch1,
-	                                                  ARP_PITCH1_DFLT,
-	                                                  ARP_PITCH1_L,
-	                                                  ARP_PITCH1_U);
+	parameters[ARP_PITCH1] = new IntParameter(ARP_PITCH1_STR,
+	                                          &zynayumi.patch.arp.pitch1,
+	                                          ARP_PITCH1_DFLT,
+	                                          ARP_PITCH1_L,
+	                                          ARP_PITCH1_U);
 
-	parameters[ARP_PITCH2] = new LinearFloatParameter(ARP_PITCH2_STR,
-	                                                  &zynayumi.patch.arp.pitch2,
-	                                                  ARP_PITCH2_DFLT,
-	                                                  ARP_PITCH2_L,
-	                                                  ARP_PITCH2_U);
+	parameters[ARP_PITCH2] = new IntParameter(ARP_PITCH2_STR,
+	                                          &zynayumi.patch.arp.pitch2,
+	                                          ARP_PITCH2_DFLT,
+	                                          ARP_PITCH2_L,
+	                                          ARP_PITCH2_U);
 
-	parameters[ARP_PITCH3] = new LinearFloatParameter(ARP_PITCH3_STR,
-	                                                  &zynayumi.patch.arp.pitch3,
-	                                                  ARP_PITCH3_DFLT,
-	                                                  ARP_PITCH3_L,
-	                                                  ARP_PITCH3_U);
+	parameters[ARP_PITCH3] = new IntParameter(ARP_PITCH3_STR,
+	                                          &zynayumi.patch.arp.pitch3,
+	                                          ARP_PITCH3_DFLT,
+	                                          ARP_PITCH3_L,
+	                                          ARP_PITCH3_U);
 
 	parameters[ARP_FREQ] = new LinearFloatParameter(ARP_FREQ_STR,
 	                                                &zynayumi.patch.arp.freq,
@@ -343,11 +371,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                              &zynayumi.patch.ringmod.sync,
 	                                              RING_MOD_SYNC_DFLT);
 
-	parameters[RING_MOD_DETUNE] = new LinearFloatParameter(RING_MOD_DETUNE_STR,
-	                                                       &ringmod_detune,
-	                                                       RING_MOD_DETUNE_DFLT,
-	                                                       RING_MOD_DETUNE_L,
-	                                                       RING_MOD_DETUNE_U);
+	parameters[RING_MOD_DETUNE] = new TanFloatParameter(RING_MOD_DETUNE_STR,
+	                                                    &ringmod_detune,
+	                                                    RING_MOD_DETUNE_DFLT,
+	                                                    RING_MOD_DETUNE_L,
+	                                                    RING_MOD_DETUNE_U);
 
 	parameters[RING_MOD_TRANSPOSE] = new IntParameter(RING_MOD_TRANSPOSE_STR,
 	                                                  &ringmod_transpose,
@@ -362,24 +390,24 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                LFO_FREQ_L,
 	                                                LFO_FREQ_U);
 
-	parameters[LFO_DELAY] = new LinearFloatParameter(LFO_DELAY_STR,
-	                                                 &zynayumi.patch.lfo.delay,
-	                                                 LFO_DELAY_DFLT,
-	                                                 LFO_DELAY_L,
-	                                                 LFO_DELAY_U);
+	parameters[LFO_DELAY] = new TanFloatParameter(LFO_DELAY_STR,
+	                                              &zynayumi.patch.lfo.delay,
+	                                              LFO_DELAY_DFLT,
+	                                              LFO_DELAY_L,
+	                                              LFO_DELAY_U);
 
-	parameters[LFO_DEPTH] = new LinearFloatParameter(LFO_DEPTH_STR,
-	                                                 &zynayumi.patch.lfo.depth,
-	                                                 LFO_DEPTH_DFLT,
-	                                                 LFO_DEPTH_L,
-	                                                 LFO_DEPTH_U);
+	parameters[LFO_DEPTH] = new TanFloatParameter(LFO_DEPTH_STR,
+	                                              &zynayumi.patch.lfo.depth,
+	                                              LFO_DEPTH_DFLT,
+	                                              LFO_DEPTH_L,
+	                                              LFO_DEPTH_U);
 
 	// Portamento
-	parameters[PORTAMENTO] = new LinearFloatParameter(PORTAMENTO_STR,
-	                                                  &zynayumi.patch.port,
-	                                                  PORTAMENTO_DFLT,
-	                                                  PORTAMENTO_L,
-	                                                  PORTAMENTO_U);
+	parameters[PORTAMENTO_TIME] = new TanFloatParameter(PORTAMENTO_TIME_STR,
+	                                                    &zynayumi.patch.port,
+	                                                    PORTAMENTO_TIME_DFLT,
+	                                                    PORTAMENTO_TIME_L,
+	                                                    PORTAMENTO_TIME_U);
 
 	// Pan
 	parameters[PAN_CHANNEL0] = new LinearFloatParameter(PAN_CHANNEL0_STR,

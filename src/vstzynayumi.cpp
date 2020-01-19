@@ -122,7 +122,7 @@ void VSTZynayumi::midi(unsigned char status,
 		switch (cc) {
 		case CTL_PORTAMENTO_TIME: {
 			float valuef = affine(0, 127, 0.0f, 1.0f, value);
-			setParameterAutomated(PORTAMENTO, valuef);
+			setParameterAutomated(PORTAMENTO_TIME, valuef);
 			break;
 		}
 		case CTL_ALL_NOTES_OFF:

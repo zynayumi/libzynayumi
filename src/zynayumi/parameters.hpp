@@ -27,6 +27,7 @@
 
 #include <string>
 #include <cmath>
+#include <limits>
 #include <vector>
 
 #include "patch.hpp"
@@ -77,8 +78,7 @@ public:
 class BoolParameter : public Parameter {
 public:
 	// Ctor
-	BoolParameter(const std::string& name,
-	              bool* value_ptr, bool value_dflt);
+	BoolParameter(const std::string& name, bool* value_ptr, bool value_dflt);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -96,8 +96,8 @@ public:
 class IntParameter : public Parameter {
 public:
 	// Ctor
-	IntParameter(const std::string& name,
-	             int* value_ptr, int value_dflt, int low, int up);
+	IntParameter(const std::string& name, int* value_ptr,
+	             int value_dflt, int low, int up);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -119,11 +119,15 @@ public:
 class FloatParameter : public Parameter {
 public:
 	// Ctor
-	FloatParameter(const std::string& name,
-	               float* value_ptr, float value_dflt, float low, float up);
+	FloatParameter(const std::string& name, float* value_ptr,
+	               float value_dflt, float low, float up);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
+
+	// Get/set methods
+	float float_value() const override;
+	void set_value(float f) override;
 
 	// Current value
 	float* value_ptr;
@@ -136,14 +140,27 @@ public:
 class LinearFloatParameter : public FloatParameter {
 public:
 	// Ctor
-	LinearFloatParameter(const std::string& name,
-	                     float* value_ptr, float value_dflt, float low, float up);
+	LinearFloatParameter(const std::string& name, float* value_ptr,
+	                     float value_dflt, float low, float up);
 
 	// Get/set methods
-	float float_value() const override;
-	void set_value(float f) override;
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
+};
+
+class TanFloatParameter : public FloatParameter {
+public:
+	// Ctor
+	TanFloatParameter(const std::string& name, float* value_ptr,
+	                  float value_dflt, float low, float up);
+
+	// Get/set methods
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+
+	// Arc tangent range [atan_low, atan_up]
+	float atan_low;
+	float atan_up;
 };
 
 template<typename E>
@@ -260,8 +277,8 @@ enum ParameterIndex {
 	LFO_DELAY,
 	LFO_DEPTH,
 
-	// Portamento
-	PORTAMENTO,
+	// Portamento time
+	PORTAMENTO_TIME,
 
 	// Pan
 	PAN_CHANNEL0,
@@ -317,7 +334,7 @@ enum ParameterIndex {
 #define LFO_FREQ_STR "LFO freq"
 #define LFO_DELAY_STR "LFO delay"
 #define LFO_DEPTH_STR "LFO depth"
-#define PORTAMENTO_STR "Portamento"
+#define PORTAMENTO_TIME_STR "Portamento time"
 #define PAN_CHANNEL0_STR "Pan channel0"
 #define PAN_CHANNEL1_STR "Pan channel1"
 #define PAN_CHANNEL2_STR "Pan channel2"
@@ -326,7 +343,7 @@ enum ParameterIndex {
 
 // Parameter defaults
 #define PLAY_MODE_DFLT PlayMode::Mono
-#define TONE_TIME_DFLT -1.0
+#define TONE_TIME_DFLT std::numeric_limits<float>::infinity()
 #define TONE_DETUNE_DFLT 0.0
 #define TONE_TRANSPOSE_DFLT 0
 #define NOISE_TIME_DFLT 0.0
@@ -343,9 +360,9 @@ enum ParameterIndex {
 #define AMP_ENV_RELEASE_DFLT 0.0
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0
 #define PITCH_ENV_TIME_DFLT 0.0
-#define ARP_PITCH1_DFLT 0.0
-#define ARP_PITCH2_DFLT 0.0
-#define ARP_PITCH3_DFLT 0.0
+#define ARP_PITCH1_DFLT 0
+#define ARP_PITCH2_DFLT 0
+#define ARP_PITCH3_DFLT 0
 #define ARP_FREQ_DFLT 12.5
 #define ARP_REPEAT_DFLT 0
 #define RING_MOD_WAVEFORM_LEVEL1_DFLT 1.0
@@ -363,7 +380,7 @@ enum ParameterIndex {
 #define LFO_FREQ_DFLT 1.0
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
-#define PORTAMENTO_DFLT 0.0
+#define PORTAMENTO_TIME_DFLT 0.0
 #define PAN_CHANNEL0_DFLT 0.5
 #define PAN_CHANNEL1_DFLT 0.25
 #define PAN_CHANNEL2_DFLT 0.75
@@ -371,14 +388,14 @@ enum ParameterIndex {
 #define EMUL_MODE_DFLT EmulMode::YM2149
 
 // Parameter ranges
-#define TONE_TIME_L -1.0f
-#define TONE_TIME_U 5.0f
+#define TONE_TIME_L 0.0f
+#define TONE_TIME_U std::numeric_limits<float>::infinity()
 #define TONE_DETUNE_L -0.5f
 #define TONE_DETUNE_U 0.5f
 #define TONE_TRANSPOSE_L -24
 #define TONE_TRANSPOSE_U 24
-#define NOISE_TIME_L -1.0f
-#define NOISE_TIME_U 5.0f
+#define NOISE_TIME_L 0.0f
+#define NOISE_TIME_U std::numeric_limits<float>::infinity()
 #define NOISE_PERIOD_L 1
 #define NOISE_PERIOD_U 31
 #define NOISE_PERIOD_ENV_ATTACK_L 1
@@ -405,12 +422,12 @@ enum ParameterIndex {
 #define PITCH_ENV_ATTACK_PITCH_U 96.0f
 #define PITCH_ENV_TIME_L 0.0f
 #define PITCH_ENV_TIME_U 5.0f
-#define ARP_PITCH1_L -48.0f
-#define ARP_PITCH1_U 48.0f
-#define ARP_PITCH2_L -48.0f
-#define ARP_PITCH2_U 48.0f
-#define ARP_PITCH3_L -48.0f
-#define ARP_PITCH3_U 48.0f
+#define ARP_PITCH1_L -48
+#define ARP_PITCH1_U 48
+#define ARP_PITCH2_L -48
+#define ARP_PITCH2_U 48
+#define ARP_PITCH3_L -48
+#define ARP_PITCH3_U 48
 #define ARP_FREQ_L 0.0f
 #define ARP_FREQ_U 50.0f
 #define ARP_REPEAT_L 0.0f
@@ -445,8 +462,8 @@ enum ParameterIndex {
 #define LFO_DELAY_U 10.0f
 #define LFO_DEPTH_L 0.0f
 #define LFO_DEPTH_U 12.0f
-#define PORTAMENTO_L 0.0f
-#define PORTAMENTO_U 1.0f
+#define PORTAMENTO_TIME_L 0.0f
+#define PORTAMENTO_TIME_U 0.5f
 #define PAN_CHANNEL0_L 0.0f
 #define PAN_CHANNEL0_U 1.0f
 #define PAN_CHANNEL1_L 0.0f

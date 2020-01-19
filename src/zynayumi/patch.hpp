@@ -108,9 +108,9 @@ class Arp {
 public:
 	Arp();
 
-	float pitch1;                // First pitch in semitone
-	float pitch2;                // Second pitch in semitone
-	float pitch3;                // Third pitch in semitone
+	int pitch1;                  // First pitch in semitone
+	int pitch2;                  // Second pitch in semitone
+	int pitch3;                  // Third pitch in semitone
 	float freq;                  // Pitch change frequency
 	int repeat;                  // Repeat point
 };
