@@ -118,9 +118,6 @@ public:
 
 	void print(int m) const;
 
-	double pitch2period(double pitch) const;
-	// Same as pitch2period but for YM2149. The reason it is different
-	// has to do with ayumi emulation, don't understand it.
 	double pitch2period_ym(double pitch) const;
 	double smp2sec(unsigned long long smp_count) const;
 

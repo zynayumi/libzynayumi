@@ -45,7 +45,15 @@ Engine::Engine(const Zynayumi& ref)
 	  // some reason it's out of tune so we found this value by
 	  // bisective search using xsynth.
 	  lower_note_freq_ym(2.88310682560),
-	  sample_rate(44100),
+	  sample_rate(44100),        // This is redefined by the host anyway
+	  // According to wikipedia
+	  // https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 the
+	  // clock rate should be 4MHz for the AY-3-8910 and 8MHz for the
+	  // YM2149. However, it seems that ayumi only supports up to 2MHz,
+	  // and in http://sovietov.com/app/ayumi/ayumi.html the possible
+	  // clock rates are 1.75MHz to 2MHz. Using higher clock rates make
+	  // ayumi generate terrible noise, so 2MHz is set and fixed for
+	  // now.
 	  clock_rate(2000000),
 	  pw_pitch(0),
 	  _max_voices(3)
@@ -199,14 +207,10 @@ void Engine::print(int m) const {
 	// TODO
 }
 
-double Engine::pitch2period(double pitch) const {
-	static double coef1 = sample_rate / lower_note_freq;
-	static double coef2 = log(2.0) / 12.0;
-	return coef1 * exp(-pitch * coef2);
-}
-
 double Engine::pitch2period_ym(double pitch) const {
-	static double coef1 = sample_rate / lower_note_freq_ym;
+	// We need to divide coef1 by 16.0. I have no explanation for it,
+	// but it works this way.
+	static double coef1 = (clock_rate / lower_note_freq) / 16.0;
 	static double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
 }

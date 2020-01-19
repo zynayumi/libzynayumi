@@ -215,9 +215,11 @@ add such parameter, but if you do your contribution is welcome.
 
 ## TODO
 
+- [ ] Improve parameter mapping
+  - [ ] Use tan function
+  - [ ] Use 1/4 tone for detune
+  - [ ] And more
 - [ ] Add velocity sensitivity parameter
-- [ ] Improve parameter mapping (use quadratic scale or such when needed)
-- [ ] Improve YM2149 vs AY-3-8910 emulation (set clock rate)
 - [ ] Fix click in release
 - [ ] Define presets
 - [ ] Map parameters to MIDI CC
