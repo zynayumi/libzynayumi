@@ -150,6 +150,7 @@ void Voice::update_port() {
 void Voice::update_lfo() {
 	double depth = _patch.lfo.delay < _time ? _patch.lfo.depth
 		: linear_interpolate(0, 0, _patch.lfo.delay, _patch.lfo.depth, _time);
+	depth += _engine.mw_depth;
 	_relative_lfo_pitch = depth * sin(2*M_PI*_time*_patch.lfo.freq);
 }
 
@@ -288,7 +289,8 @@ void Voice::update_ampenv() {
 	env_level = linear_interpolate(x1, y1, x2, y2, env_time);
 
 	// Adjust according to key velocity
-	env_level *= (double)velocity / 127.0;
+	env_level *= linear_interpolate(0.0, 1.0 - _patch.control.velocity_sensitivity,
+	                                127.0, 1.0, (double)velocity);
 
 	// Increment the envelope sample count
 	_env_smp_count++;

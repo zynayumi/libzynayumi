@@ -82,6 +82,9 @@ public:
 	int clock_rate;
 	int sample_rate;
 
+	// Modulation wheel depth (in semitone)
+	double mw_depth;
+	
 	// Pitch wheel pitch
 	double pw_pitch;
 
@@ -113,6 +116,8 @@ public:
 	void noteOff_process(unsigned char channel, unsigned char pitch);
 
 	void allNotesOff_process();
+
+	void modulation_process(unsigned char channel, unsigned char value);
 
 	void pitchWheel_process(unsigned char channel, short value);
 

@@ -55,6 +55,7 @@ Engine::Engine(const Zynayumi& ref)
 	  // ayumi generate terrible noise, so 2MHz is set and fixed for
 	  // now.
 	  clock_rate(2000000),
+	  mw_depth(0),
 	  pw_pitch(0),
 	  _max_voices(3)
 {
@@ -193,10 +194,15 @@ void Engine::allNotesOff_process() {
 		voice.second.set_note_off();
 }
 
+void Engine::modulation_process(unsigned char channel, unsigned char value) {
+	double ms = _zynayumi.patch.control.modulation_sensitivity;
+	mw_depth = Voice::linear_interpolate(0.0, 127.0, 0.0, ms, (double)value);
+}
+
 void Engine::pitchWheel_process(unsigned char channel, short value) {
 	static double max_value = std::pow(2.0, 14.0);
-	double min_pitch = -(double)_zynayumi.patch.pitchwheel;
-	double max_pitch = (double)_zynayumi.patch.pitchwheel;
+	double min_pitch = -(double)_zynayumi.patch.control.pitchwheel;
+	double max_pitch = (double)_zynayumi.patch.control.pitchwheel;
 	pw_pitch = Voice::linear_interpolate(0.0, min_pitch,
 	                                     max_value, max_pitch,
 	                                     (double)value);

@@ -120,6 +120,10 @@ void VSTZynayumi::midi(unsigned char status,
 		unsigned char cc = byte1;
 		unsigned char value = byte2;
 		switch (cc) {
+		case CTL_MODWHEEL: {
+			zynayumi.modulation_process(0, value);
+			break;
+		}
 		case CTL_PORTAMENTO_TIME: {
 			float valuef = affine(0, 127, 0.0f, 1.0f, value);
 			setParameterAutomated(PORTAMENTO_TIME, valuef);

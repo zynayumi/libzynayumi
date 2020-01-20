@@ -91,9 +91,6 @@ private:
 	// LFO
 	double _relative_lfo_pitch;        // Relative LFO pitch
 
-	// Pitch wheel
-	double _pitchwheel_pitch;          // Relative pitch wheel pitch
-
 	// Arpeggio
 	unsigned _arp_step;                // Every time it increases the
 	                                   // arp pitch changes

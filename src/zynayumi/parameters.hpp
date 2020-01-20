@@ -221,6 +221,9 @@ void EnumParameter<E>::set_norm_value(float nf)
 
 // Parameter indices
 enum ParameterIndex {
+	// Emulation mode (YM2149 vs AY-3-8910)
+	EMUL_MODE,
+
 	// Play mode
 	PLAY_MODE,
 
@@ -285,17 +288,17 @@ enum ParameterIndex {
 	PAN_CHANNEL1,
 	PAN_CHANNEL2,
 
-	// Pitch wheel range
+	// Control
 	PITCH_WHEEL,
-
-	// Emulation mode (YM2149 vs AY-3-8910)
-	EMUL_MODE,
+	VELOCITY_SENSITIVITY,
+	MODULATION_SENSITIVITY,
 
 	// Number of Parameters
 	PARAMETERS_COUNT
 };
 
 // Parameter names
+#define EMUL_MODE_STR "Emulation mode"
 #define PLAY_MODE_STR "Play mode"
 #define TONE_TIME_STR "Tone time"
 #define TONE_DETUNE_STR "Tone detune"
@@ -339,9 +342,11 @@ enum ParameterIndex {
 #define PAN_CHANNEL1_STR "Pan channel1"
 #define PAN_CHANNEL2_STR "Pan channel2"
 #define PITCH_WHEEL_STR "Pitch wheel"
-#define EMUL_MODE_STR "Emulation mode"
+#define VELOCITY_SENSITIVITY_STR "Velocity sensitivity"
+#define MODULATION_SENSITIVITY_STR "Modulation sensitivity"
 
 // Parameter defaults
+#define EMUL_MODE_DFLT EmulMode::YM2149
 #define PLAY_MODE_DFLT PlayMode::Mono
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()
 #define TONE_DETUNE_DFLT 0.0
@@ -385,7 +390,8 @@ enum ParameterIndex {
 #define PAN_CHANNEL1_DFLT 0.25
 #define PAN_CHANNEL2_DFLT 0.75
 #define PITCH_WHEEL_DFLT 2
-#define EMUL_MODE_DFLT EmulMode::YM2149
+#define VELOCITY_SENSITIVITY_DFLT 0.5
+#define MODULATION_SENSITIVITY_DFLT 0.5f
 
 // Parameter ranges
 #define TONE_TIME_L 0.0f
@@ -472,6 +478,10 @@ enum ParameterIndex {
 #define PAN_CHANNEL2_U 1.0f
 #define PITCH_WHEEL_L 1
 #define PITCH_WHEEL_U 12
+#define VELOCITY_SENSITIVITY_L 0.0f
+#define VELOCITY_SENSITIVITY_U 1.0f
+#define MODULATION_SENSITIVITY_L 0.0f
+#define MODULATION_SENSITIVITY_U 12.0f
 
 class Zynayumi;
 

@@ -88,6 +88,7 @@ private:
 	static const unsigned char MSC_PITCH_WHEEL = 0xe0;
 
 	// Control change codes
+	static const unsigned char CTL_MODWHEEL = 0x01;
 	static const unsigned char CTL_PORTAMENTO_TIME = 0x05;
 	static const unsigned char CTL_ALL_NOTES_OFF = 0x7b;
 

@@ -70,6 +70,13 @@ void Zynayumi::allNotesOff_process() {
 	engine.allNotesOff_process();
 }
 
+void Zynayumi::modulation_process(unsigned char channel, unsigned char value) {
+	dbg_printf("Zynayumi::modulation_process(channel=%d, value=%d)\n",
+	           channel, value);
+
+	engine.modulation_process(channel, value);
+}
+
 void Zynayumi::pitchWheel_process(unsigned char channel, short value) {
 	dbg_printf("Zynayumi::pitchWheel_process(channel=%d, value=%d)\n",
 	           channel, value);

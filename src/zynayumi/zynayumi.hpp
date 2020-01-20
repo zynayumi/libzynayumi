@@ -91,6 +91,9 @@ public:
 	// Process all notes off
 	void allNotesOff_process();
 
+	// Process modulation
+	void modulation_process(unsigned char channel, unsigned char value);
+
 	// Process pitch wheel
 	void pitchWheel_process(unsigned char channel, short value);
 

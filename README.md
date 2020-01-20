@@ -76,6 +76,10 @@ but if it starts then it should run flawlessly.
 
 ## Parameters Description
 
+- **Emulation mode:**
+  - 0: YM2149 (Atari ST)
+  - 1: AY-3-8910 (Amdstrad CPC, ZX Spectrum)
+
 - **Play mode:**
   - 0: Mono, always use the first voice of the YM2149.
   - 1: Poly, alternate between the three voices of the YM2149.
@@ -191,10 +195,14 @@ but if it starts then it should run flawlessly.
 
 - **Pitch wheel range:** range [-pw, +pw] of the pitch wheel in
   semitones. Ranges from 1 to 12.
+  
+- **Velocity sensitivity:** ranges from 0.0, no key velocity is taken
+  into account, all notes are played at maximum volume, to 1.0,
+  velocity is fully taken into account.
 
-- **Emulation mode:**
-  - 0: YM2149 (Atari ST)
-  - 1: AY-3-8910 (Amdstrad CPC, ZX Spectrum)
+- **Modulation sensitivity:** ranges from 0.0, modulation wheel is
+  ignored, to 12.0 modulation wheel is fully taken into account for
+  pitch LFO up to 12 semitones.
 
 ## Clicks and other glitches
 
@@ -211,19 +219,23 @@ feature, not a bug.
 
 Yes, I've modified ayumi so that tuning is perfect, even in high
 pitch. I prefer it that way. A parameter could be added that lets the
-user choose between legacy and perfect tuning. I may not add it soon,
-but if you do your contribution is welcome.
+user choose between legacy and perfect tuning. I may not add this
+parameter soon but your contribution is welcome.
+
+## Where's the buzzer?
+
+The buzzer is not implemented yet, I tend to prefer ring modulation
+which is more versatile so I may not add it soon but your contribution
+is welcome.
 
 ## TODO
 
-- [ ] Add velocity sensitivity parameter
-- [ ] Add modulation (LFO) sensitivity parameter
 - [ ] Fix click in release (maybe?)
 - [ ] Define presets
-- [ ] Map parameters to MIDI CC
-- [ ] Support Buzzer (envelope)
-- [ ] Add parameter to choose between perfect and legacy tuning
+- [ ] Map more parameters to MIDI CC
 - [ ] Add LV2 support
+- [ ] Add parameter to choose between perfect and legacy tuning
+- [ ] Add Buzzer
 
 ## Author
 

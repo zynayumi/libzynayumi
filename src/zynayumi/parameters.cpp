@@ -171,6 +171,11 @@ void TanFloatParameter::set_norm_value(float nf)
 Parameters::Parameters(Zynayumi& zyn)
 	: zynayumi(zyn), parameters(PARAMETERS_COUNT)
 {
+	// Emulation mode (YM2149 vs AY-3-8910)
+	parameters[EMUL_MODE] = new EnumParameter<EmulMode>(EMUL_MODE_STR,
+	                                                    &zynayumi.patch.emulmode,
+	                                                    EMUL_MODE_DFLT);
+
 	// Play mode
 	parameters[PLAY_MODE] = new EnumParameter<PlayMode>(PLAY_MODE_STR,
 	                                                    &zynayumi.patch.playmode,
@@ -428,17 +433,24 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                    PAN_CHANNEL2_L,
 	                                                    PAN_CHANNEL2_U);
 
-	// Pitch wheel range
+	// Control
 	parameters[PITCH_WHEEL] = new IntParameter(PITCH_WHEEL_STR,
-	                                           &zynayumi.patch.pitchwheel,
+	                                           &zynayumi.patch.control.pitchwheel,
 	                                           PITCH_WHEEL_DFLT,
 	                                           PITCH_WHEEL_L,
 	                                           PITCH_WHEEL_U);
 
-	// Emulation mode (YM2149 vs AY-3-8910)
-	parameters[EMUL_MODE] = new EnumParameter<EmulMode>(EMUL_MODE_STR,
-	                                                    &zynayumi.patch.emulmode,
-	                                                    EMUL_MODE_DFLT);
+	parameters[VELOCITY_SENSITIVITY] = new LinearFloatParameter(VELOCITY_SENSITIVITY_STR,
+	                                                            &zynayumi.patch.control.velocity_sensitivity,
+	                                                            VELOCITY_SENSITIVITY_DFLT,
+	                                                            VELOCITY_SENSITIVITY_L,
+	                                                            VELOCITY_SENSITIVITY_U);
+
+	parameters[MODULATION_SENSITIVITY] = new TanFloatParameter(MODULATION_SENSITIVITY_STR,
+	                                                           &zynayumi.patch.control.modulation_sensitivity,
+	                                                           MODULATION_SENSITIVITY_DFLT,
+	                                                           MODULATION_SENSITIVITY_L,
+	                                                           MODULATION_SENSITIVITY_U);
 }
 
 Parameters::~Parameters()

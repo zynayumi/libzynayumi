@@ -29,11 +29,11 @@
 
 namespace zynayumi {
 
-class Pan {
-public:
-	Pan();
+enum class EmulMode {
+	YM2149,
+	AY8910,
 
-	float channel[3];
+	Count
 };
 
 enum class PlayMode {
@@ -149,13 +149,30 @@ public:
 	float depth;                // LFO depth in semitone
 };
 
-enum class EmulMode {
-	YM2149,
-	AY8910,
+class Pan {
+public:
+	Pan();
 
-	Count
+	float channel[3];
 };
 
+/**
+ * Pitchwheel, velocity and modulation sensitivity
+ */
+class Control {
+public:
+	Control();
+
+	// Range in semitone of the pitch wheel
+	int pitchwheel;
+
+	// Key press velocity sensitivity, ranges in [0, 1]
+	float velocity_sensitivity;
+
+	// How the LFO is sensitive to modulation, in semitone, ranges in [0, 12]
+	float modulation_sensitivity;
+};
+	
 /**
  * Complete patch
  */
@@ -165,6 +182,7 @@ public:
 
 	std::string name;           // Name
 
+	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
 	PlayMode playmode;          // Monophonic, polyphonic or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
@@ -176,8 +194,7 @@ public:
 	LFO lfo;                    // LFO
 	float port;                 // Portamento time in second per semitone
 	Pan pan;                    // Channels panning
-	int pitchwheel;             // Range in semitone of the pitch wheel
-	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
+	Control control;            // Pitchwheel, velocity sensitivity, etc
 };
 
 std::string to_string(PlayMode pm);
