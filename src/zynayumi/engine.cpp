@@ -196,7 +196,7 @@ void Engine::allNotesOff_process() {
 
 void Engine::modulation_process(unsigned char channel, unsigned char value) {
 	double ms = _zynayumi.patch.control.modulation_sensitivity;
-	mw_depth = Voice::linear_interpolate(0.0, 127.0, 0.0, ms, (double)value);
+	mw_depth = Voice::linear_interpolate(0.0, 0.0, 127.0, ms, (double)value);
 }
 
 void Engine::pitchWheel_process(unsigned char channel, short value) {
