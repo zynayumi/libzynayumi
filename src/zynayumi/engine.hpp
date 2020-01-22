@@ -28,6 +28,7 @@
 #include <cmath>
 #include <map>
 #include <set>
+#include <vector>
 #include <cstdlib>
 
 #include "voice.hpp"
@@ -71,6 +72,9 @@ public:
 	//
 	// TODO: have a map from channel to this multiset
 	std::multiset<unsigned char> pitches;
+
+	// Stack of pitches, for mono mode
+	std::vector<unsigned char> pitch_stack;
 
 	// Keep track of the previous pitch for portamento. Negative means
 	// none.
@@ -135,8 +139,8 @@ private:
 	const Zynayumi& _zynayumi;
 
 	// Map pitch (possibly several times the same) to a voice
-	typedef std::multimap<unsigned char, Voice> Pitch2Voice;
-	Pitch2Voice _voices;
+	typedef std::vector<Voice> Voices;
+	Voices _voices;
 
 	const unsigned char _max_voices;
 };

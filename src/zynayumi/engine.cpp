@@ -26,6 +26,7 @@
 #include <iostream>
 #include <assert.h>
 
+#include <boost/range/algorithm/find.hpp>
 #include <boost/range/algorithm/min_element.hpp>
 
 #include "engine.hpp"
@@ -82,12 +83,12 @@ void Engine::audio_process(float* left_out, float* right_out,
 
 	for (unsigned long i = 0; i < sample_count; i++) {
 		// Update voice states (which modulates the ayumi state)
-		for (Pitch2Voice::value_type& v : _voices)
-			v.second.update();
+		for (auto& v : _voices)
+			v.update();
 
 		// Remove off voices
-		for (Pitch2Voice::iterator it = _voices.begin(); it != _voices.end();) {
-			if (not it->second.note_on and it->second.env_level == 0.0)
+		for (auto it = _voices.begin(); it != _voices.end();) {
+			if (not it->note_on and it->env_level == 0.0)
 				it = _voices.erase(it);
 			else ++it;
 		}
@@ -109,6 +110,7 @@ void Engine::noteOn_process(unsigned char channel,
 	last_pitch = pitch;
 
 	pitches.insert(pitch);
+	pitch_stack.push_back(pitch);
 
 	// If no voice
 	if (_voices.empty()) {
@@ -151,6 +153,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	auto pit = pitches.find(pitch);
 	if (pit != pitches.end()) {
 		pitches.erase(pit);
+		pitch_stack.erase(boost::find(pitch_stack, pitch));
 	} else {
 		print_err();
 		return;
@@ -159,17 +162,24 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
+	{
+		// If the pitch stack is not empty, get the previous pitch and
+		// the set the voice with it.
+		if (not pitch_stack.empty()) {
+			unsigned char prev_pitch = pitch_stack.back();
+			assert(_voices.size() == 1);
+			_voices.front().set_note_pitch(prev_pitch);
+			break;
+		}
+	}
 	case PlayMode::Poly:
 	{
 		// Set the corresponding voice off, if it hasn't been removed
 		// by a new voice.
-		if (_voices.find(pitch) != _voices.end()) {
-			auto vitr = _voices.equal_range(pitch);
-			for (auto vit = vitr.first; vit != vitr.second; ++vit) {
-				if (vit->second.note_on) {
-					vit->second.set_note_off();
-					break;
-				}
+		for (Voice& v : _voices) {
+			if (v.pitch == pitch and v.note_on) {
+				v.set_note_off();
+				break;
 			}
 		}
 		break;
@@ -179,9 +189,9 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	case PlayMode::RndArp:
 		if (pitches.empty()) {
 			assert(_voices.size() == 1);
-			_voices.begin()->second.set_note_off();
+			_voices.front().set_note_off();
 		} else if (pitches.size() == 1) {
-			_voices.begin()->second.set_note_pitch(*pitches.begin());
+			_voices.front().set_note_pitch(*pitches.begin());
 		}
 		break;
 	default:
@@ -191,7 +201,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 
 void Engine::allNotesOff_process() {
 	for (auto& voice : _voices)
-		voice.second.set_note_off();
+		voice.set_note_off();
 }
 
 void Engine::modulation_process(unsigned char channel, unsigned char value) {
@@ -227,8 +237,8 @@ double Engine::smp2sec(unsigned long long smp_count) const {
 
 int Engine::select_ym_channel() const {
 	std::set<int> free_channels{0, 1, 2};
-	for (const Pitch2Voice::value_type& pv : _voices)
-		free_channels.erase(pv.second.channel);
+	for (const auto& v : _voices)
+		free_channels.erase(v.channel);
 	int chi = rand() % free_channels.size();
 	return *std::next(free_channels.begin(), chi);
 }
@@ -236,16 +246,13 @@ int Engine::select_ym_channel() const {
 void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
 	int channel = _zynayumi.patch.playmode == PlayMode::Poly ?
 		select_ym_channel() : 0;
-	Voice voice(*this, _zynayumi.patch, channel, pitch, velocity);
-	_voices.emplace(pitch, voice);
+	_voices.emplace_back(*this, _zynayumi.patch, channel, pitch, velocity);
 }
 
 void Engine::free_voice() {
-	// Select voice with the lowest velocity
-	Pitch2Voice::const_iterator it =
-		boost::min_element(_voices, [](const Pitch2Voice::value_type& v1,
-		                               const Pitch2Voice::value_type& v2)
-		                   { return v1.second.env_level < v2.second.env_level; });
+	auto it = boost::min_element(_voices,
+	                             [](const Voice& v1, const Voice& v2)
+		                             { return v1.env_level < v2.env_level; });
 	_voices.erase(it);
 }
 

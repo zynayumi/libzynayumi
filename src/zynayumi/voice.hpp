@@ -64,15 +64,17 @@ public:
 
 	int channel;                // YM2149 channel
 	unsigned char velocity;     // Note velocity
+	unsigned char pitch;        // Note pitch
 	bool note_on;
 	double env_level;           // Current level, taking into account
 	                            // amplitude envelope and velocity
 
 private:
-	Engine& _engine;
-	const Patch& _patch;
+	// References are passed by pointer to please move assign operator
+	Engine* _engine;
+	const Patch* _patch;
 
-	double _note_pitch;                // Initial note pitch
+	double _initial_pitch;             // Initial note pitch
 	double _final_pitch;               // Final pitch after all pitch updates
 
 	bool _tone_off;                    // True iff the tone is off
