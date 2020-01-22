@@ -186,23 +186,22 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	}
 	case PlayMode::Poly:
 	{
-		// Set the corresponding voice off, if it hasn't been removed
-		// by a new voice.
-		for (Voice& v : _voices) {
-			if (v.pitch == pitch and v.note_on) {
-				v.set_note_off();
-				break;
-			}
-		}
+		set_note_off_with_pitch(pitch);
 		break;
 	}
 	case PlayMode::UpArp:
 	case PlayMode::DownArp:
 	case PlayMode::RndArp:
 		if (pitches.empty()) {
-			_voices.front().set_note_off();
+			set_note_off_with_pitch(pitch);
 		} else if (pitches.size() == 1) {
-			_voices.front().set_note_pitch(*pitches.begin());
+			unsigned char last_pitch = *pitches.begin();
+			for (Voice& v : _voices) {
+				if (v.note_on) {
+					v.set_note_pitch(last_pitch);
+					break;
+				}
+			}
 		}
 		break;
 	default:
@@ -266,6 +265,15 @@ void Engine::free_voice() {
 	                             [](const Voice& v1, const Voice& v2)
 		                             { return v1.env_level < v2.env_level; });
 	_voices.erase(it);
+}
+
+void Engine::set_note_off_with_pitch(unsigned char pitch) {
+	for (Voice& v : _voices) {
+		if (v.pitch == pitch and v.note_on) {
+			v.set_note_off();
+			break;
+		}
+	}
 }
 
 } // ~namespace zynayumi

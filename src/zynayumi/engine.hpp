@@ -136,6 +136,7 @@ private:
 	int select_ym_channel() const;
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void free_voice();
+	void set_note_off_with_pitch(unsigned char pitch);
 
 	const Zynayumi& _zynayumi;
 
