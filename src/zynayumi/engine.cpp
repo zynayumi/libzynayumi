@@ -38,6 +38,7 @@ namespace zynayumi {
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
 	  emulmode(EmulMode::YM2149),
+	  playmode(PlayMode::Mono),
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  lower_note_freq(8.1757989156),
@@ -79,6 +80,18 @@ void Engine::audio_process(float* left_out, float* right_out,
 		ayumi_configure(&ay, emulmode == EmulMode::YM2149,
 		                clock_rate, sample_rate);
 		emulmode = _zynayumi.patch.emulmode;
+	}
+
+	// Send off notes in case playmode went from poly to mono
+	if (_zynayumi.patch.playmode != playmode) {
+		if (playmode == PlayMode::Poly) {
+			for (Voice& v : _voices) {
+				if (0 < v.ym_channel and v.note_on) {
+					v.set_note_off();
+				}
+			}
+		}
+		playmode = _zynayumi.patch.playmode;
 	}
 
 	for (unsigned long i = 0; i < sample_count; i++) {
@@ -167,7 +180,6 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		// the set the voice with it.
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
-			assert(_voices.size() == 1);
 			_voices.front().set_note_pitch(prev_pitch);
 			break;
 		}
@@ -188,7 +200,6 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	case PlayMode::DownArp:
 	case PlayMode::RndArp:
 		if (pitches.empty()) {
-			assert(_voices.size() == 1);
 			_voices.front().set_note_off();
 		} else if (pitches.size() == 1) {
 			_voices.front().set_note_pitch(*pitches.begin());
@@ -200,8 +211,9 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 }
 
 void Engine::allNotesOff_process() {
-	for (auto& voice : _voices)
-		voice.set_note_off();
+	for (auto& v : _voices)
+		if (v.note_on)
+			v.set_note_off();
 }
 
 void Engine::modulation_process(unsigned char channel, unsigned char value) {
@@ -238,15 +250,15 @@ double Engine::smp2sec(unsigned long long smp_count) const {
 int Engine::select_ym_channel() const {
 	std::set<int> free_channels{0, 1, 2};
 	for (const auto& v : _voices)
-		free_channels.erase(v.channel);
+		free_channels.erase(v.ym_channel);
 	int chi = rand() % free_channels.size();
 	return *std::next(free_channels.begin(), chi);
 }
 
 void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
-	int channel = _zynayumi.patch.playmode == PlayMode::Poly ?
+	int ym_channel = _zynayumi.patch.playmode == PlayMode::Poly ?
 		select_ym_channel() : 0;
-	_voices.emplace_back(*this, _zynayumi.patch, channel, pitch, velocity);
+	_voices.emplace_back(*this, _zynayumi.patch, ym_channel, pitch, velocity);
 }
 
 void Engine::free_voice() {

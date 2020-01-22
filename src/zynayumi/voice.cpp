@@ -32,8 +32,8 @@
 using namespace zynayumi;
 
 Voice::Voice(Engine& engine, const Patch& pa,
-             unsigned char ch, unsigned char pi, unsigned char vel)
-	: channel(ch)
+             unsigned char ych, unsigned char pi, unsigned char vel)
+	: ym_channel(ych)
 	, pitch(pi)
 	, velocity(vel)
 	, note_on(true)
@@ -69,7 +69,7 @@ void Voice::update() {
 	update_noise_off();
 	update_noise_period();
 	ayumi_set_noise(&_engine->ay, _noise_period);
-	ayumi_set_mixer(&_engine->ay, channel, _tone_off, _noise_off, 0);
+	ayumi_set_mixer(&_engine->ay, ym_channel, _tone_off, _noise_off, 0);
 
 	// Update pitch
 	update_pitchenv();
@@ -78,7 +78,7 @@ void Voice::update() {
 	update_arp();
 	update_final_pitch();
 	double p2p_ym = _engine->pitch2period_ym(_final_pitch);
-	ayumi_set_tone(&_engine->ay, channel, p2p_ym);
+	ayumi_set_tone(&_engine->ay, ym_channel, p2p_ym);
 
 	// Update level, including ring modulation
 	update_ampenv();
@@ -90,7 +90,7 @@ void Voice::update() {
 	}
 	update_ringmod();
 	update_final_level();
-	ayumi_set_volume(&_engine->ay, channel, (int)(_final_level * 15));
+	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * 15));
 
 	// Increment sample count since voice on
 	_smp_count++;
@@ -113,7 +113,7 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 }
 
 void Voice::update_pan() {
-	ayumi_set_pan(&_engine->ay, channel, _patch->pan.channel[channel], 0);
+	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
 }
 
 void Voice::update_tone_off() {
@@ -339,7 +339,7 @@ void Voice::update_ringmod_waveform_level() {
 void Voice::sync_ringmod() {
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
-	struct tone_channel& ch = _engine->ay.channels[channel];
+	struct tone_channel& ch = _engine->ay.channels[ym_channel];
 	double tc = ch.tone_counter;
 	double tp = ch.tone_period;
 	double wtc = tc + ch.tone * tp; // Whole tone counter

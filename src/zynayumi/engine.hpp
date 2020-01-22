@@ -68,9 +68,10 @@ public:
 	// Current emulation mode (YM2149 or AY8910)
 	EmulMode emulmode;
 
+	// Current play mode
+	PlayMode playmode;
+
 	// Current pitches. Useful for handling chord based arp.
-	//
-	// TODO: have a map from channel to this multiset
 	std::multiset<unsigned char> pitches;
 
 	// Stack of pitches, for mono mode

@@ -416,19 +416,19 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	// Pan
 	parameters[PAN_CHANNEL0] = new LinearFloatParameter(PAN_CHANNEL0_STR,
-	                                                    &zynayumi.patch.pan.channel[0],
+	                                                    &zynayumi.patch.pan.ym_channel[0],
 	                                                    PAN_CHANNEL0_DFLT,
 	                                                    PAN_CHANNEL0_L,
 	                                                    PAN_CHANNEL0_U);
 
 	parameters[PAN_CHANNEL1] = new LinearFloatParameter(PAN_CHANNEL1_STR,
-	                                                    &zynayumi.patch.pan.channel[1],
+	                                                    &zynayumi.patch.pan.ym_channel[1],
 	                                                    PAN_CHANNEL1_DFLT,
 	                                                    PAN_CHANNEL1_L,
 	                                                    PAN_CHANNEL1_U);
 
 	parameters[PAN_CHANNEL2] = new LinearFloatParameter(PAN_CHANNEL2_STR,
-	                                                    &zynayumi.patch.pan.channel[2],
+	                                                    &zynayumi.patch.pan.ym_channel[2],
 	                                                    PAN_CHANNEL2_DFLT,
 	                                                    PAN_CHANNEL2_L,
 	                                                    PAN_CHANNEL2_U);

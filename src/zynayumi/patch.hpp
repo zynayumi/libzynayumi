@@ -153,7 +153,7 @@ class Pan {
 public:
 	Pan();
 
-	float channel[3];
+	float ym_channel[3];
 };
 
 /**

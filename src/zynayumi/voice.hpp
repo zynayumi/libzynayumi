@@ -44,7 +44,7 @@ public:
 	/////////////////////////////////
 
 	Voice(Engine& engine, const Patch& patch,
-	      unsigned char channel, unsigned char pitch, unsigned char velocity);
+	      unsigned char ym_channel, unsigned char pitch, unsigned char velocity);
 
 	////////////////
 	// Methods    //
@@ -62,7 +62,7 @@ public:
 	// Attributes    //
 	///////////////////
 
-	int channel;                // YM2149 channel
+	int ym_channel;             // YM2149 channel
 	unsigned char velocity;     // Note velocity
 	unsigned char pitch;        // Note pitch
 	bool note_on;
