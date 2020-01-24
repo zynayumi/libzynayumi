@@ -311,8 +311,7 @@ void Voice::update_ringmod_pitch() {
 }
 
 void Voice::update_ringmod_smp_period() {
-	_ringmod_smp_period = (_patch->ringmod.mirror ? 2 : 1) *
-		_engine->pitch2period_ym(_ringmod_pitch);
+	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch);
 }
 
 void Voice::update_ringmod_smp_count() {
@@ -325,11 +324,13 @@ void Voice::update_ringmod_smp_count() {
 }
 
 void Voice::update_ringmod_waveform_index() {
-	_ringmod_waveform_index = (RING_MOD_WAVEFORM_SIZE * _ringmod_smp_count)
-		/ (0.5 * _ringmod_smp_period);
-	if (RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
-		_ringmod_waveform_index = _patch->ringmod.mirror ?
-			(2 * RING_MOD_WAVEFORM_SIZE - 1) - _ringmod_waveform_index : 0;
+	unsigned index_size = RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
+	_ringmod_waveform_index =
+		std::floor((double)index_size * _ringmod_smp_count / _ringmod_smp_period);
+
+	// Create mirror effect if needed
+	if (_patch->ringmod.mirror and RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
+		_ringmod_waveform_index = (index_size - 1) - _ringmod_waveform_index;
 }
 
 void Voice::update_ringmod_waveform_level() {
