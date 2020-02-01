@@ -241,12 +241,13 @@ enum ParameterIndex {
 	NOISE_PERIOD_ENV_TIME,
 
 	// Amplitude envelope
-	AMP_ENV_ATTACK_LEVEL,
-	AMP_ENV_TIME1,
-	AMP_ENV_LEVEL1,
-	AMP_ENV_TIME2,
-	AMP_ENV_LEVEL2,
-	AMP_ENV_TIME3,
+	AMP_ENV_ATTACK_TIME,
+	AMP_ENV_HOLD1_LEVEL,
+	AMP_ENV_INTER1_TIME,
+	AMP_ENV_HOLD2_LEVEL,
+	AMP_ENV_INTER2_TIME,
+	AMP_ENV_HOLD3_LEVEL,
+	AMP_ENV_DECAY_TIME,
 	AMP_ENV_SUSTAIN_LEVEL,
 	AMP_ENV_RELEASE,
 
@@ -283,6 +284,9 @@ enum ParameterIndex {
 	// Portamento time
 	PORTAMENTO_TIME,
 
+	// Gain
+	GAIN,
+	
 	// Pan
 	PAN_CHANNEL0,
 	PAN_CHANNEL1,
@@ -307,12 +311,13 @@ enum ParameterIndex {
 #define NOISE_PERIOD_STR "Noise period"
 #define NOISE_PERIOD_ENV_ATTACK_STR "NoisePeriodEnv attack"
 #define NOISE_PERIOD_ENV_TIME_STR "NoisePeriodEnv time"
-#define AMP_ENV_ATTACK_LEVEL_STR "AmpEnv attack level"
-#define AMP_ENV_TIME1_STR "AmpEnv time1"
-#define AMP_ENV_LEVEL1_STR "AmpEnv level1"
-#define AMP_ENV_TIME2_STR "AmpEnv time2"
-#define AMP_ENV_LEVEL2_STR "AmpEnv level2"
-#define AMP_ENV_TIME3_STR "AmpEnv time3"
+#define AMP_ENV_ATTACK_TIME_STR "AmpEnv attack time"
+#define AMP_ENV_HOLD1_LEVEL_STR "AmpEnv hold1_level"
+#define AMP_ENV_INTER1_TIME_STR "AmpEnv inter1_time"
+#define AMP_ENV_HOLD2_LEVEL_STR "AmpEnv hold2_level"
+#define AMP_ENV_INTER2_TIME_STR "AmpEnv inter2_time"
+#define AMP_ENV_HOLD3_LEVEL_STR "AmpEnv hold3_level"
+#define AMP_ENV_DECAY_TIME_STR "AmpEnv decay_time"
 #define AMP_ENV_SUSTAIN_LEVEL_STR "AmpEnv sustain level"
 #define AMP_ENV_RELEASE_STR "AmpEnv release"
 #define PITCH_ENV_ATTACK_PITCH_STR "PitchEnv attack pitch"
@@ -338,6 +343,7 @@ enum ParameterIndex {
 #define LFO_DELAY_STR "LFO delay"
 #define LFO_DEPTH_STR "LFO depth"
 #define PORTAMENTO_TIME_STR "Portamento time"
+#define GAIN_STR "Gain"
 #define PAN_CHANNEL0_STR "Pan channel0"
 #define PAN_CHANNEL1_STR "Pan channel1"
 #define PAN_CHANNEL2_STR "Pan channel2"
@@ -355,12 +361,13 @@ enum ParameterIndex {
 #define NOISE_PERIOD_DFLT 1
 #define NOISE_PERIOD_ENV_ATTACK_DFLT 1
 #define NOISE_PERIOD_ENV_TIME_DFLT 0.0
-#define AMP_ENV_ATTACK_LEVEL_DFLT 1.0
-#define AMP_ENV_TIME1_DFLT 0.0
-#define AMP_ENV_LEVEL1_DFLT 1.0
-#define AMP_ENV_TIME2_DFLT 0.0
-#define AMP_ENV_LEVEL2_DFLT 1.0
-#define AMP_ENV_TIME3_DFLT 0.0
+#define AMP_ENV_ATTACK_TIME_DFLT 0.0
+#define AMP_ENV_HOLD1_LEVEL_DFLT 1.0
+#define AMP_ENV_INTER1_TIME_DFLT 0.0
+#define AMP_ENV_HOLD2_LEVEL_DFLT 1.0
+#define AMP_ENV_INTER2_TIME_DFLT 0.0
+#define AMP_ENV_HOLD3_LEVEL_DFLT 1.0
+#define AMP_ENV_DECAY_TIME_DFLT 0.0
 #define AMP_ENV_SUSTAIN_LEVEL_DFLT 1.0
 #define AMP_ENV_RELEASE_DFLT 0.0
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0
@@ -386,6 +393,7 @@ enum ParameterIndex {
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
 #define PORTAMENTO_TIME_DFLT 0.0
+#define GAIN_DFLT 1.0
 #define PAN_CHANNEL0_DFLT 0.5
 #define PAN_CHANNEL1_DFLT 0.25
 #define PAN_CHANNEL2_DFLT 0.75
@@ -408,18 +416,20 @@ enum ParameterIndex {
 #define NOISE_PERIOD_ENV_ATTACK_U 31
 #define NOISE_PERIOD_ENV_TIME_L 0.0f
 #define NOISE_PERIOD_ENV_TIME_U 10.0f
-#define AMP_ENV_ATTACK_LEVEL_L 0.0f
-#define AMP_ENV_ATTACK_LEVEL_U 1.0f
-#define AMP_ENV_TIME1_L 0.0f
-#define AMP_ENV_TIME1_U 10.0f
-#define AMP_ENV_LEVEL1_L 0.0f
-#define AMP_ENV_LEVEL1_U 1.0f
-#define AMP_ENV_TIME2_L 0.0f
-#define AMP_ENV_TIME2_U 10.0f
-#define AMP_ENV_LEVEL2_L 0.0f
-#define AMP_ENV_LEVEL2_U 1.0f
-#define AMP_ENV_TIME3_L 0.0f
-#define AMP_ENV_TIME3_U 10.0f
+#define AMP_ENV_ATTACK_TIME_L 0.0f
+#define AMP_ENV_ATTACK_TIME_U 10.0f
+#define AMP_ENV_HOLD1_LEVEL_L 0.0f
+#define AMP_ENV_HOLD1_LEVEL_U 1.0f
+#define AMP_ENV_INTER1_TIME_L 0.0f
+#define AMP_ENV_INTER1_TIME_U 10.0f
+#define AMP_ENV_HOLD2_LEVEL_L 0.0f
+#define AMP_ENV_HOLD2_LEVEL_U 1.0f
+#define AMP_ENV_INTER2_TIME_L 0.0f
+#define AMP_ENV_INTER2_TIME_U 10.0f
+#define AMP_ENV_HOLD3_LEVEL_L 0.0f
+#define AMP_ENV_HOLD3_LEVEL_U 1.0f
+#define AMP_ENV_DECAY_TIME_L 0.0f
+#define AMP_ENV_DECAY_TIME_U 10.0f
 #define AMP_ENV_SUSTAIN_LEVEL_L 0.0f
 #define AMP_ENV_SUSTAIN_LEVEL_U 1.0f
 #define AMP_ENV_RELEASE_L 0.0f
@@ -470,6 +480,8 @@ enum ParameterIndex {
 #define LFO_DEPTH_U 12.0f
 #define PORTAMENTO_TIME_L 0.0f
 #define PORTAMENTO_TIME_U 0.5f
+#define GAIN_L 0.0f
+#define GAIN_U 2.0f
 #define PAN_CHANNEL0_L 0.0f
 #define PAN_CHANNEL0_U 1.0f
 #define PAN_CHANNEL1_L 0.0f

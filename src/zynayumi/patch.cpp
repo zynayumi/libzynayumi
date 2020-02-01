@@ -32,10 +32,11 @@ Noise::Noise() : time(0), period(1) {}
 
 NoisePeriodEnv::NoisePeriodEnv() : attack(1), time(0) {}
 
-AmpEnv::AmpEnv() : attack_level(1),
-                   time1(0), level1(1),
-                   time2(0), level2(1),
-                   time3(0), sustain_level(1), release(0.0) {}
+AmpEnv::AmpEnv() : attack_time(0),
+                   hold1_level(1), inter1_time(0),
+                   hold2_level(1), inter2_time(0),
+                   hold3_level(1), decay_time(0),
+                   sustain_level(1), release(0) {}
 
 PitchEnv::PitchEnv() : attack_pitch(0),
                        time(0) {}
@@ -56,7 +57,7 @@ Control::Control() : pitchwheel(2),
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
                  playmode(PlayMode::Mono),
-                 port(0)
+                 port(0), gain(1)
 {}
 
 std::string to_string(PlayMode pm)

@@ -31,7 +31,7 @@ Presets::Presets() {
 		// Power bass
 		Patch patch;
 		patch.name = "Power bass";
-		patch.ampenv.time3 = 5.0;
+		patch.ampenv.inter2_time = 5.0;
 		patch.ampenv.sustain_level = 0.5;
 		patch.ampenv.release = 0.05;
 		patch.pitchenv.attack_pitch = 24.0;

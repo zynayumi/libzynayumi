@@ -81,12 +81,13 @@ class AmpEnv {
 public:
 	AmpEnv();
 
-	float attack_level;          // Attack level
-	float time1;                 // Duration between attack and hold-1
-	float level1;                // Hold-1 level
-	float time2;                 // Duration between hold-1 and hold-2
-	float level2;                // Hold-2 level
-	float time3;                 // Duration between hold-2 and sustain
+	float attack_time;           // Attack time
+	float hold1_level;           // Hold-1 level
+	float inter1_time;           // Duration between hold-1 and hold-2
+	float hold2_level;           // Hold-2 level
+	float inter2_time;           // Duration between hold-2 and hold-3
+	float hold3_level;           // Hold-3 level
+	float decay_time;            // Duration between hold-3 and sustain
 	float sustain_level;         // Sustain level
 	float release;               // Release
 };
@@ -193,6 +194,7 @@ public:
 	RingMod ringmod;            // Ring modulation
 	LFO lfo;                    // LFO
 	float port;                 // Portamento time in second per semitone
+	float gain;                 // Output gain
 	Pan pan;                    // Channels panning
 	Control control;            // Pitchwheel, velocity sensitivity, etc
 };

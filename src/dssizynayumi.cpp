@@ -49,7 +49,6 @@ void DSSIZynayumi::run_synth(unsigned long sample_count,
 	// handle any MIDI events that occur in this frame
 	while(e < event_count) {
 		if(events[e].time.tick == t) {
-			// printf("events[e].type = %d\nAMP_ENV_ATTACK_LEVEL_STR", events[e].type);
 			switch(events[e].type) {
 				//Note On, Off
 			case SND_SEQ_EVENT_NOTEON :
@@ -152,18 +151,20 @@ void initialise_2() {
 	               NOISE_PERIOD_ENV_TIME_L, NOISE_PERIOD_ENV_TIME_U);
 
 	// Amplitude envelope
-	ports.add_port(c_desc, AMP_ENV_ATTACK_LEVEL_STR, r_desc | d_1,
-	               AMP_ENV_ATTACK_LEVEL_L, AMP_ENV_ATTACK_LEVEL_U);
-	ports.add_port(c_desc, AMP_ENV_TIME1_STR, r_desc | d_0,
-	               AMP_ENV_TIME1_L, AMP_ENV_TIME1_U);
-	ports.add_port(c_desc, AMP_ENV_LEVEL1_STR, r_desc | d_1,
-	               AMP_ENV_LEVEL1_L, AMP_ENV_LEVEL1_U);
-	ports.add_port(c_desc, AMP_ENV_TIME2_STR, r_desc | d_0,
-	               AMP_ENV_TIME2_L, AMP_ENV_TIME2_U);
-	ports.add_port(c_desc, AMP_ENV_LEVEL2_STR, r_desc | d_1,
-	               AMP_ENV_LEVEL2_L, AMP_ENV_LEVEL2_U);
-	ports.add_port(c_desc, AMP_ENV_TIME3_STR, r_desc | d_0,
-	               AMP_ENV_TIME3_L, AMP_ENV_TIME3_U);
+	ports.add_port(c_desc, AMP_ENV_ATTACK_TIME_STR, r_desc | d_0,
+	               AMP_ENV_ATTACK_TIME_L, AMP_ENV_ATTACK_TIME_U);
+	ports.add_port(c_desc, AMP_ENV_HOLD1_LEVEL_STR, r_desc | d_1,
+	               AMP_ENV_HOLD1_LEVEL_L, AMP_ENV_HOLD1_LEVEL_U);
+	ports.add_port(c_desc, AMP_ENV_INTER1_TIME_STR, r_desc | d_0,
+	               AMP_ENV_INTER1_TIME_L, AMP_ENV_INTER1_TIME_U);
+	ports.add_port(c_desc, AMP_ENV_HOLD2_LEVEL_STR, r_desc | d_1,
+	               AMP_ENV_HOLD2_LEVEL_L, AMP_ENV_HOLD2_LEVEL_U);
+	ports.add_port(c_desc, AMP_ENV_INTER2_TIME_STR, r_desc | d_0,
+	               AMP_ENV_INTER2_TIME_L, AMP_ENV_INTER2_TIME_U);
+	ports.add_port(c_desc, AMP_ENV_HOLD3_LEVEL_STR, r_desc | d_1,
+	               AMP_ENV_HOLD3_LEVEL_L, AMP_ENV_HOLD3_LEVEL_U);
+	ports.add_port(c_desc, AMP_ENV_DECAY_TIME_STR, r_desc | d_0,
+	               AMP_ENV_DECAY_TIME_L, AMP_ENV_DECAY_TIME_U);
 	ports.add_port(c_desc, AMP_ENV_SUSTAIN_LEVEL_STR, r_desc | d_1,
 	               AMP_ENV_SUSTAIN_LEVEL_L, AMP_ENV_SUSTAIN_LEVEL_U);
 	ports.add_port(c_desc, AMP_ENV_RELEASE_STR, r_desc | d_0,
@@ -224,6 +225,9 @@ void initialise_2() {
 	// Portamento
 	ports.add_port(c_desc, PORTAMENTO_TIME_STR, r_desc | d_0,
 	               PORTAMENTO_TIME_L, PORTAMENTO_TIME_U);
+
+	// Gain
+	ports.add_port(c_desc, GAIN_STR, r_desc | d_1, GAIN_L, GAIN_U);
 
 	// Pan
 	ports.add_port(c_desc, PAN_CHANNEL0_STR, r_desc | d_middle,

@@ -111,8 +111,8 @@ void Engine::audio_process(float* left_out, float* right_out,
 		ayumi_remove_dc(&ay);
 
 		// Update outputs
-		left_out[i] = (float) ay.left;
-		right_out[i] = (float) ay.right;
+		left_out[i] = std::clamp((float)ay.left * _zynayumi.patch.gain, -1.0f, 1.0f);
+		right_out[i] = std::clamp((float)ay.right * _zynayumi.patch.gain, -1.0f, 1.0f);
 	}
 }
 

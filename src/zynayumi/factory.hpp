@@ -43,11 +43,11 @@ class Factory {
 // NoisePeriodEnv attack: 2
 // NoisePeriodEnv time: 0.927835
 // AmpEnv attack level: 1.000000
-// AmpEnv time1: 0.154639
-// AmpEnv level1: 0.304124
-// AmpEnv time2: 0.618557
-// AmpEnv level2: 0.567010
-// AmpEnv time3: 1.417526
+// AmpEnv inter1_time: 0.154639
+// AmpEnv hold1_level: 0.304124
+// AmpEnv inter2_time: 0.618557
+// AmpEnv hold2_level: 0.567010
+// AmpEnv decay_time: 1.417526
 // AmpEnv sustain level: 0.000000
 // AmpEnv release: 0.128866
 // PitchEnv attack pitch: 0.000000
