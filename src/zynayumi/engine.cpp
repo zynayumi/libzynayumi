@@ -261,10 +261,19 @@ void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
 }
 
 void Engine::free_voice() {
-	auto it = boost::min_element(_voices,
-	                             [](const Voice& v1, const Voice& v2)
-		                             { return v1.env_level < v2.env_level; });
-	_voices.erase(it);
+	auto lt = [](const Voice& v1, const Voice& v2) {
+		if (v1.note_on) {
+			if (v2.note_on)
+				return v1.time > v2.time;
+			return false;
+		}
+		else {
+			if (v2.note_on)
+				return true;
+			return v1.env_level < v2.env_level;
+		}
+	};
+	_voices.erase(boost::min_element(_voices, lt));
 }
 
 void Engine::set_note_off_with_pitch(unsigned char pitch) {

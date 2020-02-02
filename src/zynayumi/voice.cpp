@@ -59,7 +59,7 @@ void Voice::set_note_off() {
 
 void Voice::update() {
 	// Update _time
-	_time = _engine->smp2sec(_smp_count);
+	time = _engine->smp2sec(_smp_count);
 
 	// Update pan
 	update_pan();
@@ -117,43 +117,43 @@ void Voice::update_pan() {
 }
 
 void Voice::update_tone_off() {
-	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < _time : false;
+	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < time : false;
 }
 
 void Voice::update_noise_off() {
-	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < _time : false;
+	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < time : false;
 }
 
 void Voice::update_noise_period() {
 	double aperiod = _patch->noise_period_env.attack;
 	double envtime = _patch->noise_period_env.time;
 	double fperiod = _patch->noise.period;
-	_noise_period = envtime < _time ? fperiod
-		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, _time));
+	_noise_period = envtime < time ? fperiod
+		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, time));
 }
 
 void Voice::update_pitchenv() {
 	double apitch = _patch->pitchenv.attack_pitch;
 	double ptime = _patch->pitchenv.time;
-	_relative_pitchenv_pitch = _patch->pitchenv.time < _time ? 0.0
-		: linear_interpolate(0.0, apitch, ptime, 0.0, _time);
+	_relative_pitchenv_pitch = _patch->pitchenv.time < time ? 0.0
+		: linear_interpolate(0.0, apitch, ptime, 0.0, time);
 }
 
 void Voice::update_port() {
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
 	double end_time = _patch->port * std::abs(pitch_diff);
 	_relative_port_pitch =
-		(0 != pitch_diff and _time < end_time ?
-		 linear_interpolate(0, pitch_diff, end_time, 0, _time)
+		(0 != pitch_diff and time < end_time ?
+		 linear_interpolate(0, pitch_diff, end_time, 0, time)
 		 : 0.0);
 	_engine->last_pitch = _relative_port_pitch + _initial_pitch;
 }
 
 void Voice::update_lfo() {
-	double depth = _patch->lfo.delay < _time ? _patch->lfo.depth
-		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, _time);
+	double depth = _patch->lfo.delay < time ? _patch->lfo.depth
+		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, time);
 	depth += _engine->mw_depth;
-	_relative_lfo_pitch = depth * sin(2*M_PI*_time*_patch->lfo.freq);
+	_relative_lfo_pitch = depth * sin(2*M_PI*time*_patch->lfo.freq);
 }
 
 void Voice::update_arp()

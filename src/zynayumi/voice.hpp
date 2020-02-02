@@ -68,6 +68,7 @@ public:
 	bool note_on;
 	double env_level;           // Current level, taking into account
 	                            // amplitude envelope and velocity
+	double time;                // Time in second since voice on
 
 private:
 	// References are passed by pointer to please move assign operator
@@ -106,7 +107,6 @@ private:
 
 	unsigned _env_smp_count;           // Number of samples since note on or off
 	unsigned _smp_count;               // Number of samples since voice on
-	double _time;                      // Time in second since voice on
 
 	// Final level
 	double _final_level;               // Current level, taking into account
