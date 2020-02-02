@@ -134,8 +134,13 @@ void Engine::noteOn_process(unsigned char channel,
 	// If we're here there is at least a voice on
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
-		free_voice();
-		add_voice(pitch, velocity);
+		if (pitch_stack.size() == 1) {
+			free_voice();
+			add_voice(pitch, velocity);
+		} else {
+			unsigned char pitch = pitch_stack.back();
+			_voices.front().set_note_pitch(pitch);
+		}	
 		break;
 	case PlayMode::Poly:
 		if ((size_t)_max_voices <= _voices.size())
