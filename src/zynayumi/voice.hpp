@@ -117,6 +117,8 @@ private:
 	double _ringmod_smp_count;         // Number of samples since last
 	                                   // ring modulation waveform
 	                                   // cycle reset
+	bool _ringmod_back;                // Whether ringmod waveform is
+                                      // going backward
 	unsigned _ringmod_waveform_index;  // Current waveform index
 	double _ringmod_waveform_level;    // Current waveform level
 	double _ringmod_pitch;             // Pitch of ringmod

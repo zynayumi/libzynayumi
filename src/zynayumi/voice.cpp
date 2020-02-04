@@ -46,6 +46,7 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _env_smp_count(0)
 	, _smp_count(0)
 	, _ringmod_smp_count(0)
+	, _ringmod_back(false)
 	, _ringmod_waveform_index(0)
 	, _first_update(true)
 {
