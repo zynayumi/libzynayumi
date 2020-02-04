@@ -318,26 +318,34 @@ void Voice::update_ringmod_pitch() {
 }
 
 void Voice::update_ringmod_smp_period() {
-	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch);
+	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch)
+		/ (RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
 }
 
 void Voice::update_ringmod_smp_count() {
-	// Update ringmod sample count. If it goes from very low pitch to
-	// very high pitch we need to remove _ringmod_smp_period from
-	// _ringmod_smp_count more than once.
+	// Update ringmod sample count and waveform index
 	_ringmod_smp_count += _engine->ay.step * DECIMATE_FACTOR;
-	while (_ringmod_smp_period <= _ringmod_smp_count)
+	while (_ringmod_smp_period <= _ringmod_smp_count) {
 		_ringmod_smp_count -= _ringmod_smp_period;
+		update_ringmod_waveform_index();
+	}
 }
 
 void Voice::update_ringmod_waveform_index() {
-	unsigned index_size = RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
-	_ringmod_waveform_index =
-		std::floor((double)index_size * _ringmod_smp_count / _ringmod_smp_period);
-
-	// Create mirror effect if needed
-	if (_patch->ringmod.mirror and RING_MOD_WAVEFORM_SIZE <= _ringmod_waveform_index)
-		_ringmod_waveform_index = (index_size - 1) - _ringmod_waveform_index;
+	static unsigned last_index = RING_MOD_WAVEFORM_SIZE - 1;
+	if (_ringmod_waveform_index == 0 and _ringmod_back) {
+		_ringmod_back = false;
+	} else if (_ringmod_waveform_index == last_index and _patch->ringmod.mirror
+	           and not _ringmod_back) {
+		_ringmod_back = true;
+	} else if (_ringmod_waveform_index == last_index
+	           and not _patch->ringmod.mirror) {
+		_ringmod_waveform_index = 0;
+	} else if (_ringmod_back) {
+		_ringmod_waveform_index--;
+	} else {
+		_ringmod_waveform_index++;
+	}
 }
 
 void Voice::update_ringmod_waveform_level() {
