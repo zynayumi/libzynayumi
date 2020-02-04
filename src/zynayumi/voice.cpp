@@ -309,7 +309,6 @@ void Voice::update_ringmod() {
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 	update_ringmod_smp_count();
-	update_ringmod_waveform_index();
 	update_ringmod_waveform_level();
 }
 
