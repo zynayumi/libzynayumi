@@ -364,9 +364,16 @@ void Voice::sync_ringmod() {
 	// at the next ayumi update
 	while (wtp <= wtc)
 		wtc -= wtp;
+
+	// Tone counter / period ratio
 	double ratio = wtc / wtp;
-	_ringmod_smp_count = ratio * _ringmod_smp_period;
-	update_ringmod_waveform_index();
+
+	// Whole ringmod period
+	double wrp = _ringmod_smp_period
+		* RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
+
+	// Update ringmod count and index to be in sync
+	_ringmod_smp_count = ratio * wrp;
 }
 
 void Voice::update_final_level() {
