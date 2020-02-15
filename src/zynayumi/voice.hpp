@@ -129,6 +129,12 @@ private:
 
 	bool _first_update;
 
+	/**
+	 * Return the spread, null for the first channel, negative for the
+	 * second, positive for the third.
+	 */
+	double ym_channel_to_spread() const;
+
 	void update_pan();
 	void update_tone_off();
 	void update_noise_off();

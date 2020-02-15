@@ -200,6 +200,12 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                              TONE_TRANSPOSE_L,
 	                                              TONE_TRANSPOSE_U);
 
+	parameters[TONE_SPREAD] = new LinearFloatParameter(TONE_SPREAD_STR,
+	                                                   &zynayumi.patch.tone.spread,
+	                                                   TONE_SPREAD_DFLT,
+	                                                   TONE_SPREAD_L,
+	                                                   TONE_SPREAD_U);
+
 	// Noise
 	parameters[NOISE_TIME] = new TanFloatParameter(NOISE_TIME_STR,
 	                                               &zynayumi.patch.noise.time,
@@ -394,6 +400,18 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                  RING_MOD_TRANSPOSE_L,
 	                                                  RING_MOD_TRANSPOSE_U);
 
+	parameters[RING_MOD_FIXED_FREQUENCY] = new LinearFloatParameter(RING_MOD_FIXED_FREQUENCY_STR,
+	                                                                &zynayumi.patch.ringmod.fixed_freq,
+	                                                                RING_MOD_FIXED_FREQUENCY_DFLT,
+	                                                                RING_MOD_FIXED_FREQUENCY_L,
+	                                                                RING_MOD_FIXED_FREQUENCY_U);
+
+	parameters[RING_MOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RING_MOD_FIXED_VS_RELATIVE_STR,
+	                                                               &zynayumi.patch.ringmod.fixed_vs_relative,
+	                                                               RING_MOD_FIXED_VS_RELATIVE_DFLT,
+	                                                               RING_MOD_FIXED_VS_RELATIVE_L,
+	                                                               RING_MOD_FIXED_VS_RELATIVE_U);
+
 	// Pitch LFO
 	parameters[LFO_FREQ] = new LinearFloatParameter(LFO_FREQ_STR,
 	                                                &zynayumi.patch.lfo.freq,
@@ -428,23 +446,23 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                            GAIN_U);
 
 	// Pan
-	parameters[PAN_CHANNEL0] = new LinearFloatParameter(PAN_CHANNEL0_STR,
-	                                                    &zynayumi.patch.pan.ym_channel[0],
-	                                                    PAN_CHANNEL0_DFLT,
-	                                                    PAN_CHANNEL0_L,
-	                                                    PAN_CHANNEL0_U);
+	parameters[PAN0] = new LinearFloatParameter(PAN0_STR,
+	                                            &zynayumi.patch.pan.ym_channel[0],
+	                                            PAN0_DFLT,
+	                                            PAN0_L,
+	                                            PAN0_U);
 
-	parameters[PAN_CHANNEL1] = new LinearFloatParameter(PAN_CHANNEL1_STR,
-	                                                    &zynayumi.patch.pan.ym_channel[1],
-	                                                    PAN_CHANNEL1_DFLT,
-	                                                    PAN_CHANNEL1_L,
-	                                                    PAN_CHANNEL1_U);
+	parameters[PAN1] = new LinearFloatParameter(PAN1_STR,
+	                                            &zynayumi.patch.pan.ym_channel[1],
+	                                            PAN1_DFLT,
+	                                            PAN1_L,
+	                                            PAN1_U);
 
-	parameters[PAN_CHANNEL2] = new LinearFloatParameter(PAN_CHANNEL2_STR,
-	                                                    &zynayumi.patch.pan.ym_channel[2],
-	                                                    PAN_CHANNEL2_DFLT,
-	                                                    PAN_CHANNEL2_L,
-	                                                    PAN_CHANNEL2_U);
+	parameters[PAN2] = new LinearFloatParameter(PAN2_STR,
+	                                            &zynayumi.patch.pan.ym_channel[2],
+	                                            PAN2_DFLT,
+	                                            PAN2_L,
+	                                            PAN2_U);
 
 	// Control
 	parameters[PITCH_WHEEL] = new IntParameter(PITCH_WHEEL_STR,

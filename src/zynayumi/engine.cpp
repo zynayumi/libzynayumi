@@ -42,11 +42,6 @@ Engine::Engine(const Zynayumi& ref)
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  lower_note_freq(8.1757989156),
-	  // In principle it should be 8.1757989156 as in
-	  // http://subsynth.sourceforge.net/midinote2freq.html. But for
-	  // some reason it's out of tune so we found this value by
-	  // bisective search using xsynth.
-	  lower_note_freq_ym(2.88310682560),
 	  sample_rate(44100),        // This is redefined by the host anyway
 	  // According to wikipedia
 	  // https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 the
@@ -125,12 +120,6 @@ void Engine::noteOn_process(unsigned char channel,
 	pitches.insert(pitch);
 	pitch_stack.push_back(pitch);
 
-	// If no voice
-	if (_voices.empty()) {
-		add_voice(pitch, velocity);
-		return;
-	}
-
 	// If we're here there is at least a voice on
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
@@ -138,14 +127,10 @@ void Engine::noteOn_process(unsigned char channel,
 			free_voice();
 			add_voice(pitch, velocity);
 		} else {
+			// VVT: fix portamento
 			unsigned char pitch = pitch_stack.back();
 			_voices.front().set_note_pitch(pitch);
 		}	
-		break;
-	case PlayMode::Poly:
-		if ((size_t)_max_voices <= _voices.size())
-			free_voice();
-		add_voice(pitch, velocity);
 		break;
 	case PlayMode::UpArp:
 	case PlayMode::DownArp:
@@ -154,6 +139,20 @@ void Engine::noteOn_process(unsigned char channel,
 			free_voice();
 			add_voice(pitch, velocity);
 		};
+		break;
+	case PlayMode::Poly:
+		if ((size_t)_max_voices <= _voices.size())
+			free_voice();
+		add_voice(pitch, velocity);
+		break;
+	case PlayMode::Unison:
+		if (pitch_stack.size() == 1) {
+			free_all_voices();
+			add_all_voices(pitch, velocity);
+		} else {
+			unsigned char pitch = pitch_stack.back();
+			set_all_voices_with_pitch(pitch);
+		}
 		break;
 	default:
 		break;
@@ -186,12 +185,9 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
 			_voices.front().set_note_pitch(prev_pitch);
-			break;
+		} else {
+			set_note_off_with_pitch(pitch);
 		}
-	}
-	case PlayMode::Poly:
-	{
-		set_note_off_with_pitch(pitch);
 		break;
 	}
 	case PlayMode::UpArp:
@@ -209,15 +205,30 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 			}
 		}
 		break;
+	case PlayMode::Poly:
+	{
+		set_note_off_with_pitch(pitch);
+		break;
+	}
+	case PlayMode::Unison:
+	{
+		// If the pitch stack is not empty, get the previous pitch and
+		// the set the voice with it.
+		if (not pitch_stack.empty()) {
+			unsigned char prev_pitch = pitch_stack.back();
+			set_all_voices_with_pitch(prev_pitch);
+		} else {
+			set_note_off_on_all_voices();
+		}
+		break;
+	}
 	default:
 		break;
 	}
 }
 
 void Engine::allNotesOff_process() {
-	for (auto& v : _voices)
-		if (v.note_on)
-			v.set_note_off();
+	set_note_off_on_all_voices();
 }
 
 void Engine::modulation_process(unsigned char channel, unsigned char value) {
@@ -242,9 +253,19 @@ void Engine::print(int m) const {
 double Engine::pitch2period_ym(double pitch) const {
 	// We need to divide coef1 by 16.0. I have no explanation for it,
 	// but it works this way.
-	static double coef1 = (clock_rate / lower_note_freq) / 16.0;
-	static double coef2 = log(2.0) / 12.0;
+	static const double coef1 = (clock_rate / lower_note_freq) / 16.0;
+	static const double coef2 = log(2.0) / 12.0;
 	return coef1 * exp(-pitch * coef2);
+}
+
+double Engine::freq2pitch(double freq) const {
+	// Based on formula
+	//
+	// freq = lowfreq * exp(pitch * (log(2.0) / 12.0))
+	// ...
+	// pitch = 12.0 * log(freq / lowfreq) / log(2.0)
+	static const double coef = 12.0 / log(2.0);
+	return coef * log(freq / lower_note_freq);
 }
 
 double Engine::smp2sec(unsigned long long smp_count) const {
@@ -265,6 +286,12 @@ void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
 	_voices.emplace_back(*this, _zynayumi.patch, ym_channel, pitch, velocity);
 }
 
+void Engine::add_all_voices(unsigned char pitch, unsigned char velocity) {
+	_voices.emplace_back(*this, _zynayumi.patch, 0, pitch, velocity);
+	_voices.emplace_back(*this, _zynayumi.patch, 1, pitch, velocity);
+	_voices.emplace_back(*this, _zynayumi.patch, 2, pitch, velocity);
+}
+
 void Engine::free_voice() {
 	auto lt = [](const Voice& v1, const Voice& v2) {
 		if (v1.note_on) {
@@ -278,7 +305,18 @@ void Engine::free_voice() {
 			return v1.env_level < v2.env_level;
 		}
 	};
-	_voices.erase(boost::min_element(_voices, lt));
+	auto it = boost::min_element(_voices, lt);
+	if (it != _voices.end())
+		_voices.erase(boost::min_element(_voices, lt));
+}
+
+void Engine::free_all_voices() {
+	_voices.clear();
+}
+
+void Engine::set_all_voices_with_pitch(unsigned char pitch) {
+	for (auto& voice : _voices)
+		voice.set_note_pitch(pitch);
 }
 
 void Engine::set_note_off_with_pitch(unsigned char pitch) {
@@ -288,6 +326,12 @@ void Engine::set_note_off_with_pitch(unsigned char pitch) {
 			break;
 		}
 	}
+}
+
+void Engine::set_note_off_on_all_voices() {
+	for (auto& v : _voices)
+		if (v.note_on)
+			v.set_note_off();
 }
 
 } // ~namespace zynayumi

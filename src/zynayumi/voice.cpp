@@ -113,6 +113,15 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 	}
 }
 
+double Voice::ym_channel_to_spread() const {
+	switch(ym_channel) {
+	case 0: return 0.0;
+	case 1: return -_patch->tone.spread;
+	case 2: return _patch->tone.spread;
+	default: return 0.0;
+	}
+}
+
 void Voice::update_pan() {
 	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
 }
@@ -210,14 +219,6 @@ void Voice::update_arp()
 	};
 
 	switch (_patch->playmode) {
-	case PlayMode::Mono:
-	case PlayMode::Poly:
-		switch(count2index(_patch->arp.repeat, 3)) {
-		case 0: _relative_arp_pitch = _patch->arp.pitch1; break;
-		case 1: _relative_arp_pitch = _patch->arp.pitch2; break;
-		case 2: _relative_arp_pitch = _patch->arp.pitch3; break;
-		}
-		break;
 	case PlayMode::UpArp:
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(false) - _initial_pitch : 0.0;
@@ -230,6 +231,15 @@ void Voice::update_arp()
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2rndpitch() - _initial_pitch : 0.0;
 		break;
+	case PlayMode::Unison:
+	case PlayMode::Mono:
+	case PlayMode::Poly:
+		switch(count2index(_patch->arp.repeat, 3)) {
+		case 0: _relative_arp_pitch = _patch->arp.pitch1; break;
+		case 1: _relative_arp_pitch = _patch->arp.pitch2; break;
+		case 2: _relative_arp_pitch = _patch->arp.pitch3; break;
+		}
+		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;
 	}
@@ -238,6 +248,7 @@ void Voice::update_arp()
 void Voice::update_final_pitch() {
 	_final_pitch = _initial_pitch
 		+ _patch->tone.detune
+		+ ym_channel_to_spread()
 		+ _relative_pitchenv_pitch
 		+ _relative_port_pitch
 		+ _relative_lfo_pitch
@@ -313,7 +324,14 @@ void Voice::update_ringmod() {
 }
 
 void Voice::update_ringmod_pitch() {
-	_ringmod_pitch = _patch->ringmod.detune + _final_pitch;
+	double fvr = _patch->ringmod.fixed_vs_relative;	
+	double rp = _patch->ringmod.detune + _final_pitch;
+	if (fvr < 1.0) {
+		double fp = _engine->freq2pitch(_patch->ringmod.fixed_freq);
+		_ringmod_pitch = linear_interpolate(0.0, fp, 1.0, rp, fvr);
+	} else {
+		_ringmod_pitch = rp;
+	}
 }
 
 void Voice::update_ringmod_smp_period() {

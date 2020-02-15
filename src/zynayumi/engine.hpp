@@ -129,14 +129,18 @@ public:
 	void print(int m) const;
 
 	double pitch2period_ym(double pitch) const;
+	double freq2pitch(double freq) const;
 	double smp2sec(unsigned long long smp_count) const;
 
 private:
-
 	int select_ym_channel() const;
 	void add_voice(unsigned char pitch, unsigned char velocity);
+	void add_all_voices(unsigned char pitch, unsigned char velocity);
 	void free_voice();
+	void free_all_voices();
+	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);
+	void set_note_off_on_all_voices();
 
 	const Zynayumi& _zynayumi;
 

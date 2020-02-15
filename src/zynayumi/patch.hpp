@@ -38,10 +38,11 @@ enum class EmulMode {
 
 enum class PlayMode {
 	Mono,
-	Poly,
 	UpArp,
 	DownArp,
 	RndArp,
+	Poly,
+	Unison,
 
 	Count
 };
@@ -52,7 +53,10 @@ public:
 
 	float time;                  // Tone duration in second, inf if
                                 // negative.
-	float detune;                // Detune in semitone
+	float detune;                // Detune in semitone.
+	float spread;                // Spread of detune of second
+                                // (negative) and third (positive)
+                                // voice, in semitone.
 };
 
 class Noise {
@@ -136,6 +140,8 @@ public:
 	                                         // with YM2149 oscilator
 	float detune;                            // Relative detune in semitone
 	                                         // compared to the tone
+	float fixed_freq;                        // Fixed frequency
+	float fixed_vs_relative;                 // How much fixed vs relative
 };
 
 /**
@@ -184,7 +190,7 @@ public:
 	std::string name;           // Name
 
 	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
-	PlayMode playmode;          // Monophonic, polyphonic or arp
+	PlayMode playmode;          // Monophonic, polyphonic, unison or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	NoisePeriodEnv noise_period_env; // Noise period envelope

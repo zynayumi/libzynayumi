@@ -83,12 +83,13 @@ but if it starts then it should run flawlessly.
 
 - **Play mode:**
   - 0: Mono, always use the first voice of the YM2149.
-  - 1: Poly, alternate between the three voices of the YM2149.
-  - 2: UpArp, create arpegio with all pressed keys, going from lowest
+  - 1: UpArp, create arpegio with all pressed keys, going from lowest
        to highest pitch.
-  - 3: DownArp, like UpArp but goes from higest to lowest pitch.
-  - 4: RndArp, like UpArp or DownArp but the pitch is randomly
+  - 2: DownArp, like UpArp but goes from higest to lowest pitch.
+  - 3: RndArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
+  - 4: Poly, alternate between the three voices of the YM2149.
+  - 5: Unison, all voices play the same note.
 
 - **Tone time:** time in second the square voice is played.  Ranges
   from 0.0 to +inf.
@@ -98,6 +99,10 @@ but if it starts then it should run flawlessly.
 
 - **Tone transpose:** global transpose in semitone.  Ranges from -24
   to +24.
+
+- **Tone Spread** detune the second and third voices respectively by
+  minus and plus the spread expressed in semintone. Ranges from 0.0 to
+  0.5.
 
 - **Noise time:** time the noise generator is played in second.
   Ranges from 0.0 to +inf.
@@ -156,6 +161,7 @@ but if it starts then it should run flawlessly.
 - **Arp pitch3:** pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
+// VVT: sync arp freq with tempo, from 1 per beat to 64 per beat
 - **Arp freq:** frequency of the arpegio pitch change.  For instance
   if its value is 1.0, the arpegio will change the pitch every second.
   Ranges from 0.0 to 50.0.
@@ -186,6 +192,13 @@ but if it starts then it should run flawlessly.
   modulation waveform relative the square waveform.  Ranges from -24
   to +24.
 
+- **RingMod fixed frequency:** fixed frequency of the ring modulation.
+  Ranges from 1Hz to 5000Hz.
+
+- **RingMode fixed vs relative:** How much of the ring modulation
+  frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
+  fixed) to 1.0 (completely determined by tone pitch).
+
 - **LFO freq:** frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.
 
@@ -200,9 +213,9 @@ but if it starts then it should run flawlessly.
 - **Gain:** gain coefficient of the output signal.  Ranges from 0.0 to
   2.0.
 
-- **Pan channel0 to channel2:** panning level of the 3 voices of the
-  YM2149.  Ranges from 0.0 to 1.0.  Can be to set to hard left, 0.0,
-  hard right, 1.0, or any value in between.
+- **Pan0 to Pan2:** panning level of the 3 voices of the YM2149.
+  Ranges from 0.0 to 1.0.  Can be to set to hard left, 0.0, hard
+  right, 1.0, or any value in between.
 
 - **Pitch wheel range:** range [-pw, +pw] of the pitch wheel in
   semitones.  Ranges from 1 to 12.

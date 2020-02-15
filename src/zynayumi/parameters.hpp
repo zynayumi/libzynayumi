@@ -231,6 +231,7 @@ enum ParameterIndex {
 	TONE_TIME,
 	TONE_DETUNE,
 	TONE_TRANSPOSE,
+	TONE_SPREAD,
 
 	// Noise
 	NOISE_TIME,
@@ -275,6 +276,8 @@ enum ParameterIndex {
 	RING_MOD_SYNC,
 	RING_MOD_DETUNE,
 	RING_MOD_TRANSPOSE,
+	RING_MOD_FIXED_FREQUENCY,
+	RING_MOD_FIXED_VS_RELATIVE,
 
 	// Pitch LFO
 	LFO_FREQ,
@@ -288,9 +291,9 @@ enum ParameterIndex {
 	GAIN,
 	
 	// Pan
-	PAN_CHANNEL0,
-	PAN_CHANNEL1,
-	PAN_CHANNEL2,
+	PAN0,
+	PAN1,
+	PAN2,
 
 	// Control
 	PITCH_WHEEL,
@@ -307,46 +310,49 @@ enum ParameterIndex {
 #define TONE_TIME_STR "Tone time"
 #define TONE_DETUNE_STR "Tone detune"
 #define TONE_TRANSPOSE_STR "Tone transpose"
+#define TONE_SPREAD_STR "Tone spread"
 #define NOISE_TIME_STR "Noise time"
 #define NOISE_PERIOD_STR "Noise period"
 #define NOISE_PERIOD_ENV_ATTACK_STR "NoisePeriodEnv attack"
 #define NOISE_PERIOD_ENV_TIME_STR "NoisePeriodEnv time"
 #define AMP_ENV_ATTACK_TIME_STR "AmpEnv attack time"
-#define AMP_ENV_HOLD1_LEVEL_STR "AmpEnv hold1 level"
-#define AMP_ENV_INTER1_TIME_STR "AmpEnv inter1 time"
-#define AMP_ENV_HOLD2_LEVEL_STR "AmpEnv hold2 level"
-#define AMP_ENV_INTER2_TIME_STR "AmpEnv inter2 time"
-#define AMP_ENV_HOLD3_LEVEL_STR "AmpEnv hold3 level"
+#define AMP_ENV_HOLD1_LEVEL_STR "AmpEnv hold level 1"
+#define AMP_ENV_INTER1_TIME_STR "AmpEnv inter time 1"
+#define AMP_ENV_HOLD2_LEVEL_STR "AmpEnv hold level 2"
+#define AMP_ENV_INTER2_TIME_STR "AmpEnv inter time 2"
+#define AMP_ENV_HOLD3_LEVEL_STR "AmpEnv hold level 3"
 #define AMP_ENV_DECAY_TIME_STR "AmpEnv decay time"
 #define AMP_ENV_SUSTAIN_LEVEL_STR "AmpEnv sustain level"
 #define AMP_ENV_RELEASE_STR "AmpEnv release"
 #define PITCH_ENV_ATTACK_PITCH_STR "PitchEnv attack pitch"
 #define PITCH_ENV_TIME_STR "PitchEnv time"
-#define ARP_PITCH1_STR "Arp pitch1"
-#define ARP_PITCH2_STR "Arp pitch2"
-#define ARP_PITCH3_STR "Arp pitch3"
+#define ARP_PITCH1_STR "Arp pitch 1"
+#define ARP_PITCH2_STR "Arp pitch 2"
+#define ARP_PITCH3_STR "Arp pitch 3"
 #define ARP_FREQ_STR "Arp freq"
 #define ARP_REPEAT_STR "Arp repeat"
-#define RING_MOD_WAVEFORM_LEVEL1_STR "RingMod waveform level1"
-#define RING_MOD_WAVEFORM_LEVEL2_STR "RingMod waveform level2"
-#define RING_MOD_WAVEFORM_LEVEL3_STR "RingMod waveform level3"
-#define RING_MOD_WAVEFORM_LEVEL4_STR "RingMod waveform level4"
-#define RING_MOD_WAVEFORM_LEVEL5_STR "RingMod waveform level5"
-#define RING_MOD_WAVEFORM_LEVEL6_STR "RingMod waveform level6"
-#define RING_MOD_WAVEFORM_LEVEL7_STR "RingMod waveform level7"
-#define RING_MOD_WAVEFORM_LEVEL8_STR "RingMod waveform level8"
+#define RING_MOD_WAVEFORM_LEVEL1_STR "RingMod waveform level 1"
+#define RING_MOD_WAVEFORM_LEVEL2_STR "RingMod waveform level 2"
+#define RING_MOD_WAVEFORM_LEVEL3_STR "RingMod waveform level 3"
+#define RING_MOD_WAVEFORM_LEVEL4_STR "RingMod waveform level 4"
+#define RING_MOD_WAVEFORM_LEVEL5_STR "RingMod waveform level 5"
+#define RING_MOD_WAVEFORM_LEVEL6_STR "RingMod waveform level 6"
+#define RING_MOD_WAVEFORM_LEVEL7_STR "RingMod waveform level 7"
+#define RING_MOD_WAVEFORM_LEVEL8_STR "RingMod waveform level 8"
 #define RING_MOD_MIRROR_STR "RingMod mirror"
 #define RING_MOD_SYNC_STR "RingMod sync"
 #define RING_MOD_DETUNE_STR "RingMod detune"
 #define RING_MOD_TRANSPOSE_STR "RingMod transpose"
+#define RING_MOD_FIXED_FREQUENCY_STR "RingMod fixed frequency"
+#define RING_MOD_FIXED_VS_RELATIVE_STR "RingMod fixed vs relative"
 #define LFO_FREQ_STR "LFO freq"
 #define LFO_DELAY_STR "LFO delay"
 #define LFO_DEPTH_STR "LFO depth"
 #define PORTAMENTO_TIME_STR "Portamento time"
 #define GAIN_STR "Gain"
-#define PAN_CHANNEL0_STR "Pan channel0"
-#define PAN_CHANNEL1_STR "Pan channel1"
-#define PAN_CHANNEL2_STR "Pan channel2"
+#define PAN0_STR "Pan 1"
+#define PAN1_STR "Pan 2"
+#define PAN2_STR "Pan 3"
 #define PITCH_WHEEL_STR "Pitch wheel"
 #define VELOCITY_SENSITIVITY_STR "Velocity sensitivity"
 #define MODULATION_SENSITIVITY_STR "Modulation sensitivity"
@@ -357,6 +363,7 @@ enum ParameterIndex {
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()
 #define TONE_DETUNE_DFLT 0.0
 #define TONE_TRANSPOSE_DFLT 0
+#define TONE_SPREAD_DFLT 0.0
 #define NOISE_TIME_DFLT 0.0
 #define NOISE_PERIOD_DFLT 1
 #define NOISE_PERIOD_ENV_ATTACK_DFLT 1
@@ -389,14 +396,16 @@ enum ParameterIndex {
 #define RING_MOD_SYNC_DFLT true
 #define RING_MOD_DETUNE_DFLT 0.0
 #define RING_MOD_TRANSPOSE_DFLT 0
+#define RING_MOD_FIXED_FREQUENCY_DFLT 1.0
+#define RING_MOD_FIXED_VS_RELATIVE_DFLT 1.0
 #define LFO_FREQ_DFLT 4.5
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
 #define PORTAMENTO_TIME_DFLT 0.0
 #define GAIN_DFLT 1.0
-#define PAN_CHANNEL0_DFLT 0.5
-#define PAN_CHANNEL1_DFLT 0.25
-#define PAN_CHANNEL2_DFLT 0.75
+#define PAN0_DFLT 0.5
+#define PAN1_DFLT 0.25
+#define PAN2_DFLT 0.75
 #define PITCH_WHEEL_DFLT 2
 #define VELOCITY_SENSITIVITY_DFLT 0.5
 #define MODULATION_SENSITIVITY_DFLT 0.5f
@@ -408,6 +417,8 @@ enum ParameterIndex {
 #define TONE_DETUNE_U 0.5f
 #define TONE_TRANSPOSE_L -24
 #define TONE_TRANSPOSE_U 24
+#define TONE_SPREAD_L 0
+#define TONE_SPREAD_U 0.5
 #define NOISE_TIME_L 0.0f
 #define NOISE_TIME_U std::numeric_limits<float>::infinity()
 #define NOISE_PERIOD_L 1
@@ -472,6 +483,10 @@ enum ParameterIndex {
 #define RING_MOD_DETUNE_U 0.5f
 #define RING_MOD_TRANSPOSE_L -24
 #define RING_MOD_TRANSPOSE_U 24
+#define RING_MOD_FIXED_FREQUENCY_L 1.0f
+#define RING_MOD_FIXED_FREQUENCY_U 5000.0f
+#define RING_MOD_FIXED_VS_RELATIVE_L 0.0f
+#define RING_MOD_FIXED_VS_RELATIVE_U 1.0f
 #define LFO_FREQ_L 0.0f
 #define LFO_FREQ_U 20.0f
 #define LFO_DELAY_L 0.0f
@@ -482,12 +497,12 @@ enum ParameterIndex {
 #define PORTAMENTO_TIME_U 0.5f
 #define GAIN_L 0.0f
 #define GAIN_U 2.0f
-#define PAN_CHANNEL0_L 0.0f
-#define PAN_CHANNEL0_U 1.0f
-#define PAN_CHANNEL1_L 0.0f
-#define PAN_CHANNEL1_U 1.0f
-#define PAN_CHANNEL2_L 0.0f
-#define PAN_CHANNEL2_U 1.0f
+#define PAN0_L 0.0f
+#define PAN0_U 1.0f
+#define PAN1_L 0.0f
+#define PAN1_U 1.0f
+#define PAN2_L 0.0f
+#define PAN2_U 1.0f
 #define PITCH_WHEEL_L 1
 #define PITCH_WHEEL_U 12
 #define VELOCITY_SENSITIVITY_L 0.0f

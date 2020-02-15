@@ -26,7 +26,7 @@
 
 namespace zynayumi {
 
-Tone::Tone() : time(-1), detune(0) {}
+Tone::Tone() : time(-1), detune(0), spread(0) {}
 	
 Noise::Noise() : time(0), period(1) {}
 
@@ -38,8 +38,7 @@ AmpEnv::AmpEnv() : attack_time(0),
                    hold3_level(1), decay_time(0),
                    sustain_level(1), release(0) {}
 
-PitchEnv::PitchEnv() : attack_pitch(0),
-                       time(0) {}
+PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
 Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(12.5), repeat(0) {}
 
@@ -67,6 +66,8 @@ std::string to_string(PlayMode pm)
 		return "Mono";
 	case PlayMode::Poly:
 		return "Poly";
+	case PlayMode::Unison:
+		return "Unison";
 	case PlayMode::UpArp:
 		return "UpArp";
 	case PlayMode::DownArp:

@@ -137,6 +137,8 @@ void initialise_2() {
 	               TONE_DETUNE_L, TONE_DETUNE_U);
 	ports.add_port(c_desc, TONE_TRANSPOSE_STR, i_desc | d_0,
 	               TONE_TRANSPOSE_L - 0.1f, TONE_TRANSPOSE_U + 0.1);
+	ports.add_port(c_desc, TONE_SPREAD_STR, i_desc | d_0,
+	               TONE_SPREAD_L, TONE_SPREAD_U);
 
 	// Noise
 	ports.add_port(c_desc, NOISE_TIME_STR, r_desc | d_0,
@@ -213,6 +215,10 @@ void initialise_2() {
 	               RING_MOD_DETUNE_L, RING_MOD_DETUNE_U);
 	ports.add_port(c_desc, RING_MOD_TRANSPOSE_STR, i_desc | d_0,
 	               RING_MOD_TRANSPOSE_L - 0.1, RING_MOD_TRANSPOSE_U + 0.1);
+	ports.add_port(c_desc, RING_MOD_FIXED_FREQUENCY_STR, i_desc | d_1,
+	               RING_MOD_FIXED_FREQUENCY_L, RING_MOD_FIXED_FREQUENCY_U);
+	ports.add_port(c_desc, RING_MOD_FIXED_VS_RELATIVE_STR, i_desc | d_0,
+	               RING_MOD_FIXED_VS_RELATIVE_L, RING_MOD_FIXED_VS_RELATIVE_U);
 
 	// Pitch LFO
 	ports.add_port(c_desc, LFO_FREQ_STR, r_desc | d_1,
@@ -230,12 +236,12 @@ void initialise_2() {
 	ports.add_port(c_desc, GAIN_STR, r_desc | d_1, GAIN_L, GAIN_U);
 
 	// Pan
-	ports.add_port(c_desc, PAN_CHANNEL0_STR, r_desc | d_middle,
-	               PAN_CHANNEL0_L, PAN_CHANNEL0_U);
-	ports.add_port(c_desc, PAN_CHANNEL1_STR, r_desc | d_low,
-	               PAN_CHANNEL1_L, PAN_CHANNEL1_U);
-	ports.add_port(c_desc, PAN_CHANNEL2_STR, r_desc | d_high,
-	               PAN_CHANNEL2_L, PAN_CHANNEL2_U);
+	ports.add_port(c_desc, PAN0_STR, r_desc | d_middle,
+	               PAN0_L, PAN0_U);
+	ports.add_port(c_desc, PAN1_STR, r_desc | d_low,
+	               PAN1_L, PAN1_U);
+	ports.add_port(c_desc, PAN2_STR, r_desc | d_high,
+	               PAN2_L, PAN2_U);
 
 	// Pitch wheel range
 	ports.add_port(c_desc, PITCH_WHEEL_STR, i_desc | d_0,
