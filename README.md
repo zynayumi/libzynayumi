@@ -83,13 +83,16 @@ but if it starts then it should run flawlessly.
 
 - **Play mode:**
   - 0: Mono, always use the first voice of the YM2149.
-  - 1: UpArp, create arpegio with all pressed keys, going from lowest
-       to highest pitch.
-  - 2: DownArp, like UpArp but goes from higest to lowest pitch.
-  - 3: RndArp, like UpArp or DownArp but the pitch is randomly
+  - 1: MonoUpArp, create arpegio with all pressed keys, going from
+       lowest to highest pitch.
+  - 2: MonoDownArp, like UpArp but goes from higest to lowest pitch.
+  - 3: MonoRndArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
   - 4: Poly, alternate between the three voices of the YM2149.
   - 5: Unison, all voices play the same note.
+  - 6: UnisonUpArp, like MonoUpArp with all voices in unison.
+  - 7: UnisonDownArp, like MonoDownArp with all voices in unison.
+  - 8: UnisonRndArp, like MonoRndArp with all voices in unison.
 
 - **Tone time:** time in second the square voice is played.  Ranges
   from 0.0 to +inf.

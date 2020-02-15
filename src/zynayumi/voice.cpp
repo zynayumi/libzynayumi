@@ -219,15 +219,18 @@ void Voice::update_arp()
 	};
 
 	switch (_patch->playmode) {
-	case PlayMode::UpArp:
+	case PlayMode::MonoUpArp:
+	case PlayMode::UnisonUpArp:
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(false) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::DownArp:
+	case PlayMode::MonoDownArp:
+	case PlayMode::UnisonDownArp:
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(true) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::RndArp:
+	case PlayMode::MonoRndArp:
+	case PlayMode::UnisonRndArp:
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2rndpitch() - _initial_pitch : 0.0;
 		break;

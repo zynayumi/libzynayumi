@@ -64,16 +64,22 @@ std::string to_string(PlayMode pm)
 	switch(pm) {
 	case PlayMode::Mono:
 		return "Mono";
+	case PlayMode::MonoUpArp:
+		return "MonoUpArp";
+	case PlayMode::MonoDownArp:
+		return "MonoDownArp";
+	case PlayMode::MonoRndArp:
+		return "MonoRndArp";
 	case PlayMode::Poly:
 		return "Poly";
 	case PlayMode::Unison:
 		return "Unison";
-	case PlayMode::UpArp:
-		return "UpArp";
-	case PlayMode::DownArp:
-		return "DownArp";
-	case PlayMode::RndArp:
-		return "RndArp";
+	case PlayMode::UnisonUpArp:
+		return "UnisonUpArp";
+	case PlayMode::UnisonDownArp:
+		return "UnisonDownArp";
+	case PlayMode::UnisonRndArp:
+		return "UnisonRndArp";
 	default:
 		return "";
 	}

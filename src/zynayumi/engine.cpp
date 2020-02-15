@@ -132,9 +132,9 @@ void Engine::noteOn_process(unsigned char channel,
 			_voices.front().set_note_pitch(pitch);
 		}	
 		break;
-	case PlayMode::UpArp:
-	case PlayMode::DownArp:
-	case PlayMode::RndArp:
+	case PlayMode::MonoUpArp:
+	case PlayMode::MonoDownArp:
+	case PlayMode::MonoRndArp:
 		if (pitches.size() == 1) {
 			free_voice();
 			add_voice(pitch, velocity);
@@ -153,6 +153,14 @@ void Engine::noteOn_process(unsigned char channel,
 			unsigned char pitch = pitch_stack.back();
 			set_all_voices_with_pitch(pitch);
 		}
+		break;
+	case PlayMode::UnisonUpArp:
+	case PlayMode::UnisonDownArp:
+	case PlayMode::UnisonRndArp:
+		if (pitches.size() == 1) {
+			free_all_voices();
+			add_all_voices(pitch, velocity);
+		};
 		break;
 	default:
 		break;
@@ -190,9 +198,9 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		}
 		break;
 	}
-	case PlayMode::UpArp:
-	case PlayMode::DownArp:
-	case PlayMode::RndArp:
+	case PlayMode::MonoUpArp:
+	case PlayMode::MonoDownArp:
+	case PlayMode::MonoRndArp:
 		if (pitches.empty()) {
 			set_note_off_with_pitch(pitch);
 		} else if (pitches.size() == 1) {
@@ -222,6 +230,21 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		}
 		break;
 	}
+	case PlayMode::UnisonUpArp:
+	case PlayMode::UnisonDownArp:
+	case PlayMode::UnisonRndArp:
+		if (pitches.empty()) {
+			set_note_off_on_all_voices();
+		} else if (pitches.size() == 1) {
+			unsigned char last_pitch = *pitches.begin();
+			for (Voice& v : _voices) {
+				if (v.note_on) {
+					v.set_note_pitch(last_pitch);
+					break;
+				}
+			}
+		}
+		break;
 	default:
 		break;
 	}
