@@ -47,11 +47,13 @@ distribution, otherwise, have a look at http://dssi.sourceforge.net/.
 
 ## VST Support
 
-For VST support, you need an old DSK as recent ones no longer support
+For VST support, you need an old SDK as recent ones no longer support
 VST2.  You may find one
 [here](https://www.steinberg.net/sdk_downloads/vstsdk366_27_06_2016_build_61.zip).
 If the link no longer works let me know, hopefully I have a copy of
 it.
+
+Just unzip the SDK under the zynayumi root folder.
 
 Under GNU/Linux 64-bit, you may need to comment out some code in
 
