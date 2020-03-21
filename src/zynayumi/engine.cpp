@@ -150,6 +150,7 @@ void Engine::noteOn_process(unsigned char channel,
 			free_all_voices();
 			add_all_voices(pitch, velocity);
 		} else {
+			// VVT: fix portamento
 			unsigned char pitch = pitch_stack.back();
 			set_all_voices_with_pitch(pitch);
 		}

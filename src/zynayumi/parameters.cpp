@@ -319,6 +319,7 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                          ARP_PITCH3_L,
 	                                          ARP_PITCH3_U);
 
+	// VVT: sync with tempo
 	parameters[ARP_FREQ] = new LinearFloatParameter(ARP_FREQ_STR,
 	                                                &zynayumi.patch.arp.freq,
 	                                                ARP_FREQ_DFLT,
@@ -400,6 +401,7 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                  RING_MOD_TRANSPOSE_L,
 	                                                  RING_MOD_TRANSPOSE_U);
 
+	// VVT: try quadratic or exponential
 	parameters[RING_MOD_FIXED_FREQUENCY] = new LinearFloatParameter(RING_MOD_FIXED_FREQUENCY_STR,
 	                                                                &zynayumi.patch.ringmod.fixed_freq,
 	                                                                RING_MOD_FIXED_FREQUENCY_DFLT,
