@@ -320,6 +320,7 @@ void Voice::update_ampenv() {
 }
 
 void Voice::update_ringmod() {
+	// VVT: fix ringmod phasing issue with mono playmod
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 	update_ringmod_smp_count();
