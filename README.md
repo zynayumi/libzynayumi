@@ -233,6 +233,24 @@ but if it starts then it should run flawlessly.
   ignored, to 12.0 modulation wheel is fully taken into account for
   pitch LFO up to 12 semitones.
 
+## MIDI Controls
+
+Zynayumi responds to the following MIDI controls:
+
+- Control Change (CC)
+  - 1: Modulation
+  - 5: Portamento Time
+  - [TODO] 7: Volume
+  - [TODO] 64: Sustain Pedal
+  - [TODO] 72: Release Time
+  - [TODO] 73: Attack Time
+  - [TODO] 74: Brightness
+  - [TODO] 75: Decay Time
+  - [TODO] 76: Vibrato Rate
+  - [TODO] 77: Vibrato Depth
+  - [TODO] 78: Vibrato Delay
+  - [CHECK] 123: All Sound Off
+
 ## Clicks and other glitches
 
 It's easy to generate undesired clicks, especially in the attack and
