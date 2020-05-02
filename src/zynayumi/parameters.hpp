@@ -51,7 +51,7 @@ static float affine(float minx, float maxx, float miny, float maxy, float x) {
 class Parameter {
 public:
 	// Ctor
-	Parameter(const std::string& name);
+	Parameter(const std::string& name, const std::string& unit);
 
 	// Convert parameter (name and value) into string
 	std::string to_string(std::string indent=std::string()) const;
@@ -73,12 +73,16 @@ public:
 
 	// Name exposed to the user
 	std::string name;
+
+	// Unit exposed to the user
+	std::string unit;
 };
 
 class BoolParameter : public Parameter {
 public:
 	// Ctor
-	BoolParameter(const std::string& name, bool* value_ptr, bool value_dflt);
+	BoolParameter(const std::string& name, const std::string& unit,
+	              bool* value_ptr, bool value_dflt);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -96,8 +100,9 @@ public:
 class IntParameter : public Parameter {
 public:
 	// Ctor
-	IntParameter(const std::string& name, int* value_ptr,
-	             int value_dflt, int low, int up);
+	IntParameter(const std::string& name, const std::string& unit,
+	             int* value_ptr, int value_dflt,
+	             int low, int up);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -119,8 +124,9 @@ public:
 class FloatParameter : public Parameter {
 public:
 	// Ctor
-	FloatParameter(const std::string& name, float* value_ptr,
-	               float value_dflt, float low, float up);
+	FloatParameter(const std::string& name, const std::string& unit,
+	               float* value_ptr, float value_dflt,
+	               float low, float up);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -140,8 +146,9 @@ public:
 class LinearFloatParameter : public FloatParameter {
 public:
 	// Ctor
-	LinearFloatParameter(const std::string& name, float* value_ptr,
-	                     float value_dflt, float low, float up);
+	LinearFloatParameter(const std::string& name, const std::string& unit,
+	                     float* value_ptr, float value_dflt,
+	                     float low, float up);
 
 	// Get/set methods
 	float norm_float_value() const override;
@@ -151,8 +158,9 @@ public:
 class TanFloatParameter : public FloatParameter {
 public:
 	// Ctor
-	TanFloatParameter(const std::string& name, float* value_ptr,
-	                  float value_dflt, float low, float up);
+	TanFloatParameter(const std::string& name, const std::string& unit,
+	                  float* value_ptr, float value_dflt,
+	                  float low, float up);
 
 	// Get/set methods
 	float norm_float_value() const override;
@@ -167,7 +175,8 @@ template<typename E>
 class EnumParameter : public Parameter {
 public:
 	// Ctor
-	EnumParameter(const std::string& name, E* value_ptr, E value_dflt);
+	EnumParameter(const std::string& name, const std::string& unit,
+	              E* value_ptr, E value_dflt);
 
 	// Convert value parameter into string
 	std::string value_to_string() const override;
@@ -183,8 +192,10 @@ public:
 };
 
 template<typename E>
-EnumParameter<E>::EnumParameter(const std::string& nm, E* vl_ptr, E vl_dflt)
-	: Parameter(nm), value_ptr(vl_ptr)
+EnumParameter<E>::EnumParameter(const std::string& n,
+                                const std::string& u,
+                                E* vl_ptr, E vl_dflt)
+	: Parameter(n, u), value_ptr(vl_ptr)
 {
 	*value_ptr = vl_dflt;
 }
@@ -305,57 +316,114 @@ enum ParameterIndex {
 };
 
 // Parameter names
-#define EMUL_MODE_STR "Emulation mode"
-#define PLAY_MODE_STR "Play mode"
-#define TONE_TIME_STR "Tone time"
-#define TONE_DETUNE_STR "Tone detune"
-#define TONE_TRANSPOSE_STR "Tone transpose"
-#define TONE_SPREAD_STR "Tone spread"
-#define NOISE_TIME_STR "Noise time"
-#define NOISE_PERIOD_STR "Noise period"
-#define NOISE_PERIOD_ENV_ATTACK_STR "NoisePeriodEnv attack"
-#define NOISE_PERIOD_ENV_TIME_STR "NoisePeriodEnv time"
-#define AMP_ENV_ATTACK_TIME_STR "AmpEnv attack time"
-#define AMP_ENV_HOLD1_LEVEL_STR "AmpEnv hold level 1"
-#define AMP_ENV_INTER1_TIME_STR "AmpEnv inter time 1"
-#define AMP_ENV_HOLD2_LEVEL_STR "AmpEnv hold level 2"
-#define AMP_ENV_INTER2_TIME_STR "AmpEnv inter time 2"
-#define AMP_ENV_HOLD3_LEVEL_STR "AmpEnv hold level 3"
-#define AMP_ENV_DECAY_TIME_STR "AmpEnv decay time"
-#define AMP_ENV_SUSTAIN_LEVEL_STR "AmpEnv sustain level"
-#define AMP_ENV_RELEASE_STR "AmpEnv release"
-#define PITCH_ENV_ATTACK_PITCH_STR "PitchEnv attack pitch"
-#define PITCH_ENV_TIME_STR "PitchEnv time"
-#define ARP_PITCH1_STR "Arp pitch 1"
-#define ARP_PITCH2_STR "Arp pitch 2"
-#define ARP_PITCH3_STR "Arp pitch 3"
-#define ARP_FREQ_STR "Arp freq"
-#define ARP_REPEAT_STR "Arp repeat"
-#define RING_MOD_WAVEFORM_LEVEL1_STR "RingMod waveform level 1"
-#define RING_MOD_WAVEFORM_LEVEL2_STR "RingMod waveform level 2"
-#define RING_MOD_WAVEFORM_LEVEL3_STR "RingMod waveform level 3"
-#define RING_MOD_WAVEFORM_LEVEL4_STR "RingMod waveform level 4"
-#define RING_MOD_WAVEFORM_LEVEL5_STR "RingMod waveform level 5"
-#define RING_MOD_WAVEFORM_LEVEL6_STR "RingMod waveform level 6"
-#define RING_MOD_WAVEFORM_LEVEL7_STR "RingMod waveform level 7"
-#define RING_MOD_WAVEFORM_LEVEL8_STR "RingMod waveform level 8"
-#define RING_MOD_MIRROR_STR "RingMod mirror"
-#define RING_MOD_SYNC_STR "RingMod sync"
-#define RING_MOD_DETUNE_STR "RingMod detune"
-#define RING_MOD_TRANSPOSE_STR "RingMod transpose"
-#define RING_MOD_FIXED_FREQUENCY_STR "RingMod fixed frequency"
-#define RING_MOD_FIXED_VS_RELATIVE_STR "RingMod fixed vs relative"
-#define LFO_FREQ_STR "LFO freq"
-#define LFO_DELAY_STR "LFO delay"
-#define LFO_DEPTH_STR "LFO depth"
-#define PORTAMENTO_TIME_STR "Portamento time"
-#define GAIN_STR "Gain"
-#define PAN0_STR "Pan 1"
-#define PAN1_STR "Pan 2"
-#define PAN2_STR "Pan 3"
-#define PITCH_WHEEL_STR "Pitch wheel"
-#define VELOCITY_SENSITIVITY_STR "Velocity sensitivity"
-#define MODULATION_SENSITIVITY_STR "Modulation sensitivity"
+#define EMUL_MODE_NAME "Emulation mode"
+#define PLAY_MODE_NAME "Play mode"
+#define TONE_TIME_NAME "Tone time"
+#define TONE_DETUNE_NAME "Tone detune"
+#define TONE_TRANSPOSE_NAME "Tone transpose"
+#define TONE_SPREAD_NAME "Tone spread"
+#define NOISE_TIME_NAME "Noise time"
+#define NOISE_PERIOD_NAME "Noise period"
+#define NOISE_PERIOD_ENV_ATTACK_NAME "NoisePeriodEnv attack"
+#define NOISE_PERIOD_ENV_TIME_NAME "NoisePeriodEnv time"
+#define AMP_ENV_ATTACK_TIME_NAME "AmpEnv attack time"
+#define AMP_ENV_HOLD1_LEVEL_NAME "AmpEnv hold level 1"
+#define AMP_ENV_INTER1_TIME_NAME "AmpEnv inter time 1"
+#define AMP_ENV_HOLD2_LEVEL_NAME "AmpEnv hold level 2"
+#define AMP_ENV_INTER2_TIME_NAME "AmpEnv inter time 2"
+#define AMP_ENV_HOLD3_LEVEL_NAME "AmpEnv hold level 3"
+#define AMP_ENV_DECAY_TIME_NAME "AmpEnv decay time"
+#define AMP_ENV_SUSTAIN_LEVEL_NAME "AmpEnv sustain level"
+#define AMP_ENV_RELEASE_NAME "AmpEnv release"
+#define PITCH_ENV_ATTACK_PITCH_NAME "PitchEnv attack pitch"
+#define PITCH_ENV_TIME_NAME "PitchEnv time"
+#define ARP_PITCH1_NAME "Arp pitch 1"
+#define ARP_PITCH2_NAME "Arp pitch 2"
+#define ARP_PITCH3_NAME "Arp pitch 3"
+#define ARP_FREQ_NAME "Arp freq"
+#define ARP_REPEAT_NAME "Arp repeat"
+#define RING_MOD_WAVEFORM_LEVEL1_NAME "RingMod waveform level 1"
+#define RING_MOD_WAVEFORM_LEVEL2_NAME "RingMod waveform level 2"
+#define RING_MOD_WAVEFORM_LEVEL3_NAME "RingMod waveform level 3"
+#define RING_MOD_WAVEFORM_LEVEL4_NAME "RingMod waveform level 4"
+#define RING_MOD_WAVEFORM_LEVEL5_NAME "RingMod waveform level 5"
+#define RING_MOD_WAVEFORM_LEVEL6_NAME "RingMod waveform level 6"
+#define RING_MOD_WAVEFORM_LEVEL7_NAME "RingMod waveform level 7"
+#define RING_MOD_WAVEFORM_LEVEL8_NAME "RingMod waveform level 8"
+#define RING_MOD_MIRROR_NAME "RingMod mirror"
+#define RING_MOD_SYNC_NAME "RingMod sync"
+#define RING_MOD_DETUNE_NAME "RingMod detune"
+#define RING_MOD_TRANSPOSE_NAME "RingMod transpose"
+#define RING_MOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
+#define RING_MOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
+#define LFO_FREQ_NAME "LFO freq"
+#define LFO_DELAY_NAME "LFO delay"
+#define LFO_DEPTH_NAME "LFO depth"
+#define PORTAMENTO_TIME_NAME "Portamento time"
+#define GAIN_NAME "Gain"
+#define PAN0_NAME "Pan 1"
+#define PAN1_NAME "Pan 2"
+#define PAN2_NAME "Pan 3"
+#define PITCH_WHEEL_NAME "Pitch wheel"
+#define VELOCITY_SENSITIVITY_NAME "Velocity sensitivity"
+#define MODULATION_SENSITIVITY_NAME "Modulation sensitivity"
+
+// Parameter units
+#define SECOND "sec"
+#define SEMITONE "semitone"
+#define HERTZ "Hz"
+#define EMPTY ""
+#define EMUL_MODE_UNIT EMPTY
+#define PLAY_MODE_UNIT EMPTY
+#define TONE_TIME_UNIT SECOND
+#define TONE_DETUNE_UNIT SEMITONE
+#define TONE_TRANSPOSE_UNIT SEMITONE
+#define TONE_SPREAD_UNIT SEMITONE
+#define NOISE_TIME_UNIT SECOND
+#define NOISE_PERIOD_UNIT EMPTY
+#define NOISE_PERIOD_ENV_ATTACK_UNIT EMPTY
+#define NOISE_PERIOD_ENV_TIME_UNIT SECOND
+#define AMP_ENV_ATTACK_TIME_UNIT SECOND
+#define AMP_ENV_HOLD1_LEVEL_UNIT EMPTY
+#define AMP_ENV_INTER1_TIME_UNIT SECOND
+#define AMP_ENV_HOLD2_LEVEL_UNIT EMPTY
+#define AMP_ENV_INTER2_TIME_UNIT SECOND
+#define AMP_ENV_HOLD3_LEVEL_UNIT EMPTY
+#define AMP_ENV_DECAY_TIME_UNIT SECOND
+#define AMP_ENV_SUSTAIN_LEVEL_UNIT EMPTY
+#define AMP_ENV_RELEASE_UNIT SECOND
+#define PITCH_ENV_ATTACK_PITCH_UNIT SEMITONE
+#define PITCH_ENV_TIME_UNIT SECOND
+#define ARP_PITCH1_UNIT SEMITONE
+#define ARP_PITCH2_UNIT SEMITONE
+#define ARP_PITCH3_UNIT SEMITONE
+#define ARP_FREQ_UNIT HERTZ
+#define ARP_REPEAT_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL1_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL2_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL3_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL4_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL5_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL6_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL7_UNIT EMPTY
+#define RING_MOD_WAVEFORM_LEVEL8_UNIT EMPTY
+#define RING_MOD_MIRROR_UNIT EMPTY
+#define RING_MOD_SYNC_UNIT EMPTY
+#define RING_MOD_DETUNE_UNIT SEMITONE
+#define RING_MOD_TRANSPOSE_UNIT SEMITONE
+#define RING_MOD_FIXED_FREQUENCY_UNIT HERTZ
+#define RING_MOD_FIXED_VS_RELATIVE_UNIT EMPTY
+#define LFO_FREQ_UNIT HERTZ
+#define LFO_DELAY_UNIT SECOND
+#define LFO_DEPTH_UNIT EMPTY
+#define PORTAMENTO_TIME_UNIT SECOND
+#define GAIN_UNIT EMPTY
+#define PAN0_UNIT EMPTY
+#define PAN1_UNIT EMPTY
+#define PAN2_UNIT EMPTY
+#define PITCH_WHEEL_UNIT EMPTY
+#define VELOCITY_SENSITIVITY_UNIT EMPTY
+#define MODULATION_SENSITIVITY_UNIT EMPTY
 
 // Parameter defaults
 #define EMUL_MODE_DFLT EmulMode::YM2149
@@ -494,7 +562,7 @@ enum ParameterIndex {
 #define LFO_DEPTH_L 0.0f
 #define LFO_DEPTH_U 12.0f
 #define PORTAMENTO_TIME_L 0.0f
-#define PORTAMENTO_TIME_U 0.5f
+#define PORTAMENTO_TIME_U 5.0f
 #define GAIN_L 0.0f
 #define GAIN_U 2.0f
 #define PAN0_L 0.0f
@@ -520,6 +588,9 @@ public:
 
 	// Get the parameter name at index pi
 	std::string get_name(ParameterIndex pi) const;
+
+	// Return a string of the unit: sec, dB, etc.
+	std::string get_unit(ParameterIndex pi) const;
 
 	// Get the parameter value string at index pi
 	std::string get_value_str(ParameterIndex pi) const;

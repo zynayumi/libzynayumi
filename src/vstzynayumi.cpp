@@ -221,14 +221,14 @@ float VSTZynayumi::getParameter(VstInt32 index)
 	return _parameters.norm_float_value((ParameterIndex)index);
 }
 
-void VSTZynayumi::getParameterLabel(VstInt32 index, char *text)
-{
-	strcpy(text, "unit");
-}
-
 void VSTZynayumi::getParameterName(VstInt32 index, char *text)
 {
 	strcpy(text, _parameters.get_name((ParameterIndex)index).c_str());
+}
+
+void VSTZynayumi::getParameterLabel(VstInt32 index, char *text)
+{
+	strcpy(text, _parameters.get_unit((ParameterIndex)index).c_str());
 }
 
 void VSTZynayumi::getParameterDisplay(VstInt32 index, char *text)

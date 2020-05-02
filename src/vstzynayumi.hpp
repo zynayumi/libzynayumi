@@ -52,8 +52,8 @@ public:
 	// // Access/modify parameter
 	void setParameter(VstInt32 index, float value);
 	float getParameter(VstInt32 index);
-	void getParameterLabel(VstInt32 index, char *label);
 	void getParameterName(VstInt32 index, char *text);
+	void getParameterLabel(VstInt32 index, char *text);
 	void getParameterDisplay(VstInt32 index, char *text);
 
 	// Plugin name, vendor and version
