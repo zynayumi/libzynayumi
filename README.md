@@ -212,8 +212,9 @@ but if it starts then it should run flawlessly.
 
 - **LFO depth:** LFO depth in semitone.  Ranges from 0.0 to 12.0.
 
-- **Portamento time:** time in second of the portamento effect to go
-  from 1 semitone to the next.  Ranges from 0.0 to 0.5.
+- **Portamento time:** time in second of the portamento effect,
+  constant regardless of the distance between notes.  Ranges from 0.0
+  to 5.0.
 
 - **Gain:** gain coefficient of the output signal.  Ranges from 0.0 to
   2.0.
