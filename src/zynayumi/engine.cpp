@@ -114,20 +114,18 @@ void Engine::audio_process(float* left_out, float* right_out,
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
                             unsigned char velocity) {
-	previous_pitch = last_pitch;
-	last_pitch = pitch;
-
+	set_last_pitch(pitch);
 	pitches.insert(pitch);
 	pitch_stack.push_back(pitch);
 
-	// If we're here there is at least a voice on
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
 		if (pitch_stack.size() == 1) {
+			// We go from 0 to 1 on note
 			free_voice();
 			add_voice(pitch, velocity);
 		} else {
-			// VVT: enable portamento
+			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
 			_voices.front().set_note_pitch(pitch);
 		}	
@@ -136,6 +134,7 @@ void Engine::noteOn_process(unsigned char channel,
 	case PlayMode::MonoDownArp:
 	case PlayMode::MonoRndArp:
 		if (pitches.size() == 1) {
+			// We go from 0 to 1 on note
 			free_voice();
 			add_voice(pitch, velocity);
 		};
@@ -147,10 +146,11 @@ void Engine::noteOn_process(unsigned char channel,
 		break;
 	case PlayMode::Unison:
 		if (pitch_stack.size() == 1) {
+			// We go from 0 to 1 on note
 			free_all_voices();
 			add_all_voices(pitch, velocity);
 		} else {
-			// VVT: enable portamento
+			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
 			set_all_voices_with_pitch(pitch);
 		}
@@ -159,6 +159,7 @@ void Engine::noteOn_process(unsigned char channel,
 	case PlayMode::UnisonDownArp:
 	case PlayMode::UnisonRndArp:
 		if (pitches.size() == 1) {
+			// We go from 0 to 1 on note
 			free_all_voices();
 			add_all_voices(pitch, velocity);
 		};
@@ -193,6 +194,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		// the set the voice with it.
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
+			set_last_pitch(prev_pitch);
 			_voices.front().set_note_pitch(prev_pitch);
 		} else {
 			set_note_off_with_pitch(pitch);
@@ -225,6 +227,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 		// the set the voice with it.
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
+			set_last_pitch(prev_pitch);
 			set_all_voices_with_pitch(prev_pitch);
 		} else {
 			set_note_off_on_all_voices();
@@ -304,6 +307,11 @@ int Engine::select_ym_channel() const {
 	return *std::next(free_channels.begin(), chi);
 }
 
+void Engine::set_last_pitch(unsigned char pitch) {
+	previous_pitch = last_pitch;
+	last_pitch = pitch;
+}
+
 void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
 	int ym_channel = _zynayumi.patch.playmode == PlayMode::Poly ?
 		select_ym_channel() : 0;
@@ -320,7 +328,7 @@ void Engine::free_voice() {
 	auto lt = [](const Voice& v1, const Voice& v2) {
 		if (v1.note_on) {
 			if (v2.note_on)
-				return v1.time > v2.time;
+				return v1.on_time > v2.on_time;
 			return false;
 		}
 		else {

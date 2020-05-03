@@ -44,7 +44,8 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _arp_rnd_offset_step(rand())
 	, _index(-1)
 	, _env_smp_count(0)
-	, _smp_count(0)
+	, _on_smp_count(0)
+	, _pitch_smp_count(0)
 	, _ringmod_smp_count(0)
 	, _ringmod_back(false)
 	, _ringmod_waveform_index(0)
@@ -59,8 +60,9 @@ void Voice::set_note_off() {
 }
 
 void Voice::update() {
-	// Update _time
-	time = _engine->smp2sec(_smp_count);
+	// Update time
+	on_time = _engine->smp2sec(_on_smp_count);
+	pitch_time = _engine->smp2sec(_pitch_smp_count);
 
 	// Update pan
 	update_pan();
@@ -93,13 +95,15 @@ void Voice::update() {
 	update_final_level();
 	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * 15));
 
-	// Increment sample count since voice on
-	_smp_count++;
+	// Increment sample count since voice on or pitch change
+	_on_smp_count++;
+	_pitch_smp_count++;
 }
 
 void Voice::set_note_pitch(unsigned char pi) {
 	pitch = pi;
 	_initial_pitch = pi;
+	_pitch_smp_count = 0;
 }
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
@@ -127,48 +131,48 @@ void Voice::update_pan() {
 }
 
 void Voice::update_tone_off() {
-	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < time : false;
+	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < on_time : false;
 }
 
 void Voice::update_noise_off() {
-	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < time : false;
+	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < on_time : false;
 }
 
 void Voice::update_noise_period() {
 	double aperiod = _patch->noise_period_env.attack;
 	double envtime = _patch->noise_period_env.time;
 	double fperiod = _patch->noise.period;
-	_noise_period = envtime < time ? fperiod
-		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, time));
+	_noise_period = envtime < on_time ? fperiod
+		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, on_time));
 }
 
 void Voice::update_pitchenv() {
 	double apitch = _patch->pitchenv.attack_pitch;
 	double ptime = _patch->pitchenv.time;
-	_relative_pitchenv_pitch = _patch->pitchenv.time < time ? 0.0
-		: linear_interpolate(0.0, apitch, ptime, 0.0, time);
+	_relative_pitchenv_pitch = _patch->pitchenv.time < on_time ? 0.0
+		: linear_interpolate(0.0, apitch, ptime, 0.0, on_time);
 }
 
 void Voice::update_port() {
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
 	double end_time = _patch->port;
 	_relative_port_pitch =
-		(0 != pitch_diff and time < end_time ?
-		 linear_interpolate(0, pitch_diff, end_time, 0, time)
+		(0 != pitch_diff and pitch_time < end_time ?
+		 linear_interpolate(0, pitch_diff, end_time, 0, pitch_time)
 		 : 0.0);
 	_engine->last_pitch = _relative_port_pitch + _initial_pitch;
 }
 
 void Voice::update_lfo() {
-	double depth = _patch->lfo.delay < time ? _patch->lfo.depth
-		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, time);
+	double depth = _patch->lfo.delay < on_time ? _patch->lfo.depth
+		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, on_time);
 	depth += _engine->mw_depth;
-	_relative_lfo_pitch = depth * sin(2*M_PI*time*_patch->lfo.freq);
+	_relative_lfo_pitch = depth * sin(2*M_PI*on_time*_patch->lfo.freq);
 }
 
 void Voice::update_arp()
 {
-	unsigned step = _smp_count * _patch->arp.freq / _engine->sample_rate;
+	unsigned step = _on_smp_count * _patch->arp.freq / _engine->sample_rate;
 	bool step_change = _arp_step != step;
 	_arp_step = step;
 

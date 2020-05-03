@@ -134,6 +134,7 @@ public:
 
 private:
 	int select_ym_channel() const;
+	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
 	void free_voice();
