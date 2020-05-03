@@ -144,6 +144,24 @@ void LinearFloatParameter::set_norm_value(float nf)
 	*value_ptr = affine(0.0f, 1.0f, low, up, nf);
 }
 
+CubeFloatParameter::CubeFloatParameter(const std::string& nm, const std::string& unt,
+                                       float* v_ptr, float v_dflt, float l, float u)
+	: FloatParameter(nm, unt, v_ptr, v_dflt, l, u)
+	, cbrt_low(std::cbrt(l))
+	, cbrt_up(std::cbrt(u))
+{
+}
+
+float CubeFloatParameter::norm_float_value() const
+{
+	return affine(cbrt_low, cbrt_up, 0.0f, 1.0f, std::cbrt(*value_ptr));
+}
+
+void CubeFloatParameter::set_norm_value(float nf)
+{
+	*value_ptr = std::pow(affine(0.0f, 1.0f, cbrt_low, cbrt_up, nf), 3.0);
+}
+
 TanFloatParameter::TanFloatParameter(const std::string& nm, const std::string& unt,
                                      float* v_ptr, float v_dflt, float l, float u)
 	: FloatParameter(nm, unt, v_ptr, v_dflt, l, u)
@@ -155,17 +173,17 @@ TanFloatParameter::TanFloatParameter(const std::string& nm, const std::string& u
 float TanFloatParameter::norm_float_value() const
 {
 	if (*value_ptr == low)
-		return 0.0;
+		return 0.0f;
 	if (*value_ptr == up)
-		return 1.0;
+		return 1.0f;
 	return affine(atan_low, atan_up, 0.0f, 1.0f, atanf(*value_ptr));
 }
 
 void TanFloatParameter::set_norm_value(float nf)
 {
-	if (nf == 0.0)
+	if (nf == 0.0f)
 		*value_ptr = low;
-	else if (nf == 1.0)
+	else if (nf == 1.0f)
 		*value_ptr = up;
 	else
 		*value_ptr = tanf(affine(0.0f, 1.0f, atan_low, atan_up, nf));
@@ -442,13 +460,12 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                  RING_MOD_TRANSPOSE_L,
 	                                                  RING_MOD_TRANSPOSE_U);
 
-	// VVT: try quadratic or exponential
-	parameters[RING_MOD_FIXED_FREQUENCY] = new LinearFloatParameter(RING_MOD_FIXED_FREQUENCY_NAME,
-	                                                                RING_MOD_FIXED_FREQUENCY_UNIT,
-	                                                                &zynayumi.patch.ringmod.fixed_freq,
-	                                                                RING_MOD_FIXED_FREQUENCY_DFLT,
-	                                                                RING_MOD_FIXED_FREQUENCY_L,
-	                                                                RING_MOD_FIXED_FREQUENCY_U);
+	parameters[RING_MOD_FIXED_FREQUENCY] = new CubeFloatParameter(RING_MOD_FIXED_FREQUENCY_NAME,
+	                                                              RING_MOD_FIXED_FREQUENCY_UNIT,
+	                                                              &zynayumi.patch.ringmod.fixed_freq,
+	                                                              RING_MOD_FIXED_FREQUENCY_DFLT,
+	                                                              RING_MOD_FIXED_FREQUENCY_L,
+	                                                              RING_MOD_FIXED_FREQUENCY_U);
 
 	parameters[RING_MOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RING_MOD_FIXED_VS_RELATIVE_NAME,
 	                                                               RING_MOD_FIXED_VS_RELATIVE_UNIT,

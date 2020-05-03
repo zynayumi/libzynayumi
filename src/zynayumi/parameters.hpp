@@ -155,6 +155,22 @@ public:
 	void set_norm_value(float nf) override;
 };
 
+class CubeFloatParameter : public FloatParameter {
+public:
+	// Ctor
+	CubeFloatParameter(const std::string& name, const std::string& unit,
+	                   float* value_ptr, float value_dflt,
+	                   float low, float up);
+
+	// Get/set methods
+	float norm_float_value() const override;
+	void set_norm_value(float nf) override;
+
+	// Cubic root range [cbrt_low, cbrt_up]
+	float cbrt_low;
+	float cbrt_up;
+};
+
 class TanFloatParameter : public FloatParameter {
 public:
 	// Ctor
