@@ -166,9 +166,13 @@ but if it starts then it should run flawlessly.
 - **Arp pitch3:** pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Arp beat divisor, Arp beat multiplier:** arpegio period is
-  measured in host beat period (bpm / 60) times the fraction
-  arp beat multiplier / arp beat divisor.
+- **Arp beat divisor:** arpegio period is measured in host beat period
+  (bpm / 60) times the fraction arp beat multiplier / arp beat
+  divisor. Ranges from 1 to 64.
+
+- **Arp beat multiplier:** arpegio period is measured in host beat
+  period (bpm / 60) times the fraction arp beat multiplier / arp beat
+  divisor. Ranges from 1 to 64.
 
 - **Arp repeat:** select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
