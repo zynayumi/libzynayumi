@@ -15,7 +15,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [ ] Buzzer
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] MIDI controls assigned to parameters (only portamento for now)
-- [ ] GUI.  Pease help if you want one, I am no GUI guy
+- [ ] GUI.  Please help if you want one, I am no GUI guy.
 
 ## Requirements
 
@@ -166,7 +166,7 @@ but if it starts then it should run flawlessly.
 - **Arp pitch3:** pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Apr beat divisor, Apr beat multiplier:** arpegio period is
+- **Arp beat divisor, Arp beat multiplier:** arpegio period is
   measured in host beat period (bpm / 60) times the fraction
   arp beat multiplier / arp beat divisor.
 
