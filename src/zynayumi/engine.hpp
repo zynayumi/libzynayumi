@@ -85,7 +85,8 @@ public:
 	double lower_note_freq;
 	double lower_note_freq_ym;
 	int clock_rate;
-	int sample_rate;
+	int sample_rate;             // Host sample rate
+	double bpm;                  // Host beats per minute
 
 	// Modulation wheel depth (in semitone)
 	double mw_depth;
@@ -105,6 +106,9 @@ public:
 
 	// Set sample rate
 	void set_sample_rate(int sr);
+
+	// Set bpm
+	void set_bpm(double bpm);
 
 	// Assumptions:
 	//

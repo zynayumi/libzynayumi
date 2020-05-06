@@ -287,7 +287,8 @@ enum ParameterIndex {
 	ARP_PITCH1,
 	ARP_PITCH2,
 	ARP_PITCH3,
-	ARP_FREQ,
+	ARP_BEAT_DIVISOR,
+	ARP_BEAT_MULTIPLIER,
 	ARP_REPEAT,
 
 	// Ring modulation
@@ -356,7 +357,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_NAME "Arp pitch 1"
 #define ARP_PITCH2_NAME "Arp pitch 2"
 #define ARP_PITCH3_NAME "Arp pitch 3"
-#define ARP_FREQ_NAME "Arp freq"
+#define ARP_BEAT_DIVISOR_NAME "Arp beat divisor"
+#define ARP_BEAT_MULTIPLIER_NAME "Arp beat multiplier"
 #define ARP_REPEAT_NAME "Arp repeat"
 #define RING_MOD_WAVEFORM_LEVEL1_NAME "RingMod waveform level 1"
 #define RING_MOD_WAVEFORM_LEVEL2_NAME "RingMod waveform level 2"
@@ -413,7 +415,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_UNIT SEMITONE
 #define ARP_PITCH2_UNIT SEMITONE
 #define ARP_PITCH3_UNIT SEMITONE
-#define ARP_FREQ_UNIT HERTZ
+#define ARP_BEAT_DIVISOR_UNIT EMPTY
+#define ARP_BEAT_MULTIPLIER_UNIT EMPTY
 #define ARP_REPEAT_UNIT EMPTY
 #define RING_MOD_WAVEFORM_LEVEL1_UNIT EMPTY
 #define RING_MOD_WAVEFORM_LEVEL2_UNIT EMPTY
@@ -466,7 +469,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_DFLT 0
 #define ARP_PITCH2_DFLT 0
 #define ARP_PITCH3_DFLT 0
-#define ARP_FREQ_DFLT 12.5
+#define ARP_BEAT_DIVISOR_DFLT 9
+#define ARP_BEAT_MULTIPLIER_DFLT 1
 #define ARP_REPEAT_DFLT 0
 #define RING_MOD_WAVEFORM_LEVEL1_DFLT 1.0
 #define RING_MOD_WAVEFORM_LEVEL2_DFLT 1.0
@@ -539,6 +543,10 @@ enum ParameterIndex {
 #define ARP_PITCH2_U 48
 #define ARP_PITCH3_L -48
 #define ARP_PITCH3_U 48
+#define ARP_BEAT_DIVISOR_L 1
+#define ARP_BEAT_DIVISOR_U 64
+#define ARP_BEAT_MULTIPLIER_L 1
+#define ARP_BEAT_MULTIPLIER_U 64
 #define ARP_FREQ_L 0.0f
 #define ARP_FREQ_U 50.0f
 #define ARP_REPEAT_L 0.0f
@@ -631,6 +639,8 @@ public:
 	// to the user
 	float tone_detune;
 	int tone_transpose;
+	int arp_beat_divisor;
+	int arp_beat_multiplier;
 	float ringmod_detune;
 	int ringmod_transpose;
 };

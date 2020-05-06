@@ -166,10 +166,9 @@ but if it starts then it should run flawlessly.
 - **Arp pitch3:** pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-// VVT: sync arp freq with tempo, from 1 per beat to 64 per beat
-- **Arp freq:** frequency of the arpegio pitch change.  For instance
-  if its value is 1.0, the arpegio will change the pitch every second.
-  Ranges from 0.0 to 50.0.
+- **Apr beat divisor, Apr beat multiplier:** arpegio period is
+  measured in host beat period (bpm / 60) times the fraction
+  arp beat multiplier / arp beat divisor.
 
 - **Arp repeat:** select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
@@ -278,6 +277,7 @@ is welcome.
 
 ## TODO
 
+- [ ] Update arp frequency with host tempo change
 - [ ] Fix click in release (maybe?)
 - [ ] Define presets
 - [ ] Map more parameters to MIDI CC

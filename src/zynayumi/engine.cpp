@@ -68,6 +68,11 @@ void Engine::set_sample_rate(int sr)
 	                clock_rate, sample_rate);
 }
 
+void Engine::set_bpm(double b)
+{
+	bpm = b;
+}
+
 void Engine::audio_process(float* left_out, float* right_out,
                            unsigned long sample_count) {
 	// Switch to the correct emulation mode (YM2149 or YM8910)

@@ -43,6 +43,16 @@ unsigned Zynayumi::get_sample_rate() const
 	return engine.sample_rate;
 }
 
+void Zynayumi::set_bpm(double bpm)
+{
+	engine.set_bpm(bpm);
+}
+
+double Zynayumi::get_bpm() const
+{
+	return engine.bpm;
+}
+
 void Zynayumi::audio_process(float* left_out, float* right_out,
                              unsigned long sample_count) {
 	engine.audio_process(left_out, right_out, sample_count);

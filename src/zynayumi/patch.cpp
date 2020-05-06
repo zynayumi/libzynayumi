@@ -40,7 +40,7 @@ AmpEnv::AmpEnv() : attack_time(0),
 
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
-Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(12.5), repeat(0) {}
+Arp::Arp() : pitch1(0), pitch2(0), pitch3(0), freq(18.0), repeat(0) {}
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
                      mirror(true), sync(true), detune(0) {}

@@ -213,6 +213,8 @@ VstIntPtr VSTZynayumi::dispatcher(VstInt32 opCode, VstInt32 index, VstIntPtr val
 
 void VSTZynayumi::setParameter(VstInt32 index, float value)
 {
+	// TODO: optimize to avoid systematic getTimeInfo call
+	zynayumi.set_bpm(getTimeInfo(kVstTempoValid)->tempo);
 	_parameters.set_norm_value((ParameterIndex)index, value);
 }
 

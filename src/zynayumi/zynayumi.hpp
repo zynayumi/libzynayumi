@@ -68,9 +68,13 @@ public:
 	// Methods    //
 	////////////////
 
-	// Set/get sample rate
+	// Set/get host sample rate
 	void set_sample_rate(int sr);
 	unsigned get_sample_rate() const;
+
+	// Get/set host BPM
+	void set_bpm(double bpm);
+	double get_bpm() const;
 
 	// Assumptions:
 	//
