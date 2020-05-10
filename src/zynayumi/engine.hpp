@@ -82,8 +82,7 @@ public:
 	double previous_pitch;
 	double last_pitch;
 
-	double lower_note_freq;
-	double lower_note_freq_ym;
+	const double lower_note_freq;
 	int clock_rate;
 	int sample_rate;             // Host sample rate
 	double bpm;                  // Host beats per minute
