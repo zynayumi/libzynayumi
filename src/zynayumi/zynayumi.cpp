@@ -24,6 +24,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <sstream>
 
 #include "zynayumi.hpp"
 
@@ -95,7 +96,10 @@ void Zynayumi::sysex_process(unsigned length, unsigned char* data)
 }
 
 //print method
-void Zynayumi::print() {
-	printf("State of the engine :\n");
-	engine.print(2);
+std::string Zynayumi::to_string(const std::string& indent) const
+{
+	std::stringstream ss;
+	ss << indent << "engine:" << std::endl;
+	ss << engine.to_string(indent + "  ");
+	return ss.str();
 }

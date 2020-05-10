@@ -274,12 +274,25 @@ void Engine::pitchWheel_process(unsigned char channel, short value)
 	                                     (double)value);
 }
 
-// Print method
-void Engine::print(int m) const {
-	// TODO
+std::string Engine::to_string(const std::string& indent) const
+{
+	std::string di = indent + indent;
+	std::stringstream ss;
+	ss << indent << "pitches:";
+	for (unsigned char p : pitches)
+		ss << " " << (int)p;
+	ss << std::endl;
+	ss << indent << "pitch_stack:";
+	for (unsigned char p : pitch_stack)
+		ss << " " << (int)p;
+	ss << std::endl;
+	ss << indent << "previous_pitch = " << previous_pitch << std::endl;
+	ss << indent << "last_pitch = " << last_pitch;
+	return ss.str();
 }
 
-double Engine::pitch2period_ym(double pitch) const {
+double Engine::pitch2period_ym(double pitch) const
+{
 	// We need to divide coef1 by 16.0. I have no explanation for it,
 	// but it works this way.
 	static const double coef1 = (clock_rate / lower_note_freq) / 16.0;

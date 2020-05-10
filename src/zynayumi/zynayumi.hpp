@@ -104,8 +104,8 @@ public:
 	// Process sysex
 	void sysex_process(unsigned length, unsigned char* data);
 
-	// Print method
-	void print();
+	// to_string method for debugging
+	std::string to_string(const std::string& indent) const;
 };
 
 } // ~namespace zynayumi

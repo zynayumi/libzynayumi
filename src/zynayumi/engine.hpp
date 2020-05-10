@@ -130,7 +130,9 @@ public:
 
 	void pitchWheel_process(unsigned char channel, short value);
 
-	void print(int m) const;
+	// Render to string the state of the engine. Convenient for
+	// debugging.
+	std::string to_string(const std::string& indent=std::string("  ")) const;
 
 	double pitch2period_ym(double pitch) const;
 	double freq2pitch(double freq) const;
