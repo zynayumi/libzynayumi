@@ -53,13 +53,15 @@ Voice::Voice(Engine& engine, const Patch& pa,
 {
 }
 
-void Voice::set_note_off() {
+void Voice::set_note_off()
+{
 	note_on = false;
 	_env_smp_count = 0;
 	_actual_sustain_level = env_level;
 }
 
-void Voice::update() {
+void Voice::update()
+{
 	// Update time
 	on_time = _engine->smp2sec(_on_smp_count);
 	pitch_time = _engine->smp2sec(_pitch_smp_count);
@@ -100,14 +102,16 @@ void Voice::update() {
 	_pitch_smp_count++;
 }
 
-void Voice::set_note_pitch(unsigned char pi) {
+void Voice::set_note_pitch(unsigned char pi)
+{
 	pitch = pi;
 	_initial_pitch = pi;
 	_pitch_smp_count = 0;
 }
 
 double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
-                                 double x) {
+                                 double x)
+{
 	if (0 != (x2 - x1)) {
 		double a = (y2 - y1) / (x2 - x1);
 		double b = y1;
@@ -117,7 +121,8 @@ double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
 	}
 }
 
-double Voice::ym_channel_to_spread() const {
+double Voice::ym_channel_to_spread() const
+{
 	switch(ym_channel) {
 	case 0: return 0.0;
 	case 1: return -_patch->tone.spread;
@@ -126,19 +131,23 @@ double Voice::ym_channel_to_spread() const {
 	}
 }
 
-void Voice::update_pan() {
+void Voice::update_pan()
+{
 	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
 }
 
-void Voice::update_tone_off() {
+void Voice::update_tone_off()
+{
 	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < on_time : false;
 }
 
-void Voice::update_noise_off() {
+void Voice::update_noise_off()
+{
 	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < on_time : false;
 }
 
-void Voice::update_noise_period() {
+void Voice::update_noise_period()
+{
 	double aperiod = _patch->noise_period_env.attack;
 	double envtime = _patch->noise_period_env.time;
 	double fperiod = _patch->noise.period;
@@ -146,14 +155,16 @@ void Voice::update_noise_period() {
 		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, on_time));
 }
 
-void Voice::update_pitchenv() {
+void Voice::update_pitchenv()
+{
 	double apitch = _patch->pitchenv.attack_pitch;
 	double ptime = _patch->pitchenv.time;
 	_relative_pitchenv_pitch = _patch->pitchenv.time < on_time ? 0.0
 		: linear_interpolate(0.0, apitch, ptime, 0.0, on_time);
 }
 
-void Voice::update_port() {
+void Voice::update_port()
+{
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
 	double end_time = _patch->port;
 	_relative_port_pitch =
@@ -163,7 +174,8 @@ void Voice::update_port() {
 	_engine->last_pitch = _relative_port_pitch + _initial_pitch;
 }
 
-void Voice::update_lfo() {
+void Voice::update_lfo()
+{
 	double depth = _patch->lfo.delay < on_time ? _patch->lfo.depth
 		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, on_time);
 	depth += _engine->mw_depth;
@@ -252,7 +264,8 @@ void Voice::update_arp()
 	}
 }
 
-void Voice::update_final_pitch() {
+void Voice::update_final_pitch()
+{
 	_final_pitch = _initial_pitch
 		+ _patch->tone.detune
 		+ ym_channel_to_spread()
@@ -263,7 +276,8 @@ void Voice::update_final_pitch() {
 		+ _relative_arp_pitch;
 }
 
-void Voice::update_ampenv() {
+void Voice::update_ampenv()
+{
 	// Determine portion of the envelope to interpolate
 	double env_time = _engine->smp2sec(_env_smp_count);
 	double x1, y1, x2, y2;
@@ -323,7 +337,8 @@ void Voice::update_ampenv() {
 	_env_smp_count++;
 }
 
-void Voice::update_ringmod() {
+void Voice::update_ringmod()
+{
 	// VVT: fix ringmod phasing issue with mono playmod
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
@@ -331,7 +346,8 @@ void Voice::update_ringmod() {
 	update_ringmod_waveform_level();
 }
 
-void Voice::update_ringmod_pitch() {
+void Voice::update_ringmod_pitch()
+{
 	double fvr = _patch->ringmod.fixed_vs_relative;	
 	double rp = _patch->ringmod.detune + _final_pitch;
 	if (fvr < 1.0) {
@@ -342,12 +358,14 @@ void Voice::update_ringmod_pitch() {
 	}
 }
 
-void Voice::update_ringmod_smp_period() {
+void Voice::update_ringmod_smp_period()
+{
 	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch)
 		/ (RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
 }
 
-void Voice::update_ringmod_smp_count() {
+void Voice::update_ringmod_smp_count()
+{
 	// Update ringmod sample count and waveform index
 	_ringmod_smp_count += _engine->ay.step * DECIMATE_FACTOR;
 	while (_ringmod_smp_period <= _ringmod_smp_count) {
@@ -356,7 +374,8 @@ void Voice::update_ringmod_smp_count() {
 	}
 }
 
-void Voice::update_ringmod_waveform_index() {
+void Voice::update_ringmod_waveform_index()
+{
 	static unsigned last_index = RING_MOD_WAVEFORM_SIZE - 1;
 	if (_ringmod_waveform_index == 0 and _ringmod_back) {
 		_ringmod_back = false;
@@ -373,11 +392,13 @@ void Voice::update_ringmod_waveform_index() {
 	}
 }
 
-void Voice::update_ringmod_waveform_level() {
+void Voice::update_ringmod_waveform_level()
+{
 	_ringmod_waveform_level = _patch->ringmod.waveform[_ringmod_waveform_index];
 }
 
-void Voice::sync_ringmod() {
+void Voice::sync_ringmod()
+{
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 	struct tone_channel& ch = _engine->ay.channels[ym_channel];
@@ -402,6 +423,7 @@ void Voice::sync_ringmod() {
 	_ringmod_smp_count = ratio * wrp;
 }
 
-void Voice::update_final_level() {
+void Voice::update_final_level()
+{
 	_final_level = _ringmod_waveform_level * env_level;
 }

@@ -54,47 +54,40 @@ double Zynayumi::get_bpm() const
 }
 
 void Zynayumi::audio_process(float* left_out, float* right_out,
-                             unsigned long sample_count) {
+                             unsigned long sample_count)
+{
 	engine.audio_process(left_out, right_out, sample_count);
 }
 
 void Zynayumi::noteOn_process(unsigned char channel,
                               unsigned char pitch,
-                              unsigned char velocity) {
-	dbg_printf("Zynayumi::noteOn_process(channel=%d, pitch=%d, velocity=%d)\n",
-	           channel, pitch, velocity);
-
+                              unsigned char velocity)
+{
 	engine.noteOn_process(channel, pitch, velocity);
 }
 
-void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch) {
-	dbg_printf("Zynayumi::noteOff_process(channel=%d, pitch=%d)\n",
-	           channel, pitch);
-
+void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch)
+{
 	engine.noteOff_process(channel, pitch);
 }
 
-void Zynayumi::allNotesOff_process() {
-	dbg_printf("Zynayumi::allNotesOff_process()\n");
-
+void Zynayumi::allNotesOff_process()
+{
 	engine.allNotesOff_process();
 }
 
-void Zynayumi::modulation_process(unsigned char channel, unsigned char value) {
-	dbg_printf("Zynayumi::modulation_process(channel=%d, value=%d)\n",
-	           channel, value);
-
+void Zynayumi::modulation_process(unsigned char channel, unsigned char value)
+{
 	engine.modulation_process(channel, value);
 }
 
-void Zynayumi::pitchWheel_process(unsigned char channel, short value) {
-	dbg_printf("Zynayumi::pitchWheel_process(channel=%d, value=%d)\n",
-	           channel, value);
-
+void Zynayumi::pitchWheel_process(unsigned char channel, short value)
+{
 	engine.pitchWheel_process(channel, value);
 }
 
-void Zynayumi::sysex_process(unsigned length, unsigned char* data) {
+void Zynayumi::sysex_process(unsigned length, unsigned char* data)
+{
 	unsigned char command_ID;
 	dbg_printf("Zynayumi::sysex_process\n");
 	for(unsigned i = 0; i < length; i++) dbg_printf("%x ", data[i]);

@@ -74,7 +74,8 @@ void Engine::set_bpm(double b)
 }
 
 void Engine::audio_process(float* left_out, float* right_out,
-                           unsigned long sample_count) {
+                           unsigned long sample_count)
+{
 	// Switch to the correct emulation mode (YM2149 or YM8910)
 	if (_zynayumi.patch.emulmode != emulmode) {
 		ayumi_configure(&ay, emulmode == EmulMode::YM2149,
@@ -118,7 +119,8 @@ void Engine::audio_process(float* left_out, float* right_out,
 
 void Engine::noteOn_process(unsigned char channel,
                             unsigned char pitch,
-                            unsigned char velocity) {
+                            unsigned char velocity)
+{
 	set_last_pitch(pitch);
 	pitches.insert(pitch);
 	pitch_stack.push_back(pitch);
@@ -259,16 +261,19 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	}
 }
 
-void Engine::allNotesOff_process() {
-	set_note_off_on_all_voices();
+void Engine::allNotesOff_process()
+{
+	set_note_off_all_voices();
 }
 
-void Engine::modulation_process(unsigned char channel, unsigned char value) {
+void Engine::modulation_process(unsigned char channel, unsigned char value)
+{
 	double ms = _zynayumi.patch.control.modulation_sensitivity;
 	mw_depth = Voice::linear_interpolate(0.0, 0.0, 127.0, ms, (double)value);
 }
 
-void Engine::pitchWheel_process(unsigned char channel, short value) {
+void Engine::pitchWheel_process(unsigned char channel, short value)
+{
 	static double max_value = std::pow(2.0, 14.0);
 	double min_pitch = -(double)_zynayumi.patch.control.pitchwheel;
 	double max_pitch = (double)_zynayumi.patch.control.pitchwheel;
@@ -290,7 +295,8 @@ double Engine::pitch2period_ym(double pitch) const {
 	return coef1 * exp(-pitch * coef2);
 }
 
-double Engine::freq2pitch(double freq) const {
+double Engine::freq2pitch(double freq) const
+{
 	// Based on formula
 	//
 	// freq = lowfreq * exp(pitch * (log(2.0) / 12.0))
@@ -300,11 +306,13 @@ double Engine::freq2pitch(double freq) const {
 	return coef * log(freq / lower_note_freq);
 }
 
-double Engine::smp2sec(unsigned long long smp_count) const {
+double Engine::smp2sec(unsigned long long smp_count) const
+{
 	return (double)smp_count / (double)sample_rate;
 }
 
-int Engine::select_ym_channel() const {
+int Engine::select_ym_channel() const
+{
 	std::set<int> free_channels{0, 1, 2};
 	for (const auto& v : _voices)
 		free_channels.erase(v.ym_channel);
@@ -312,24 +320,28 @@ int Engine::select_ym_channel() const {
 	return *std::next(free_channels.begin(), chi);
 }
 
-void Engine::set_last_pitch(unsigned char pitch) {
+void Engine::set_last_pitch(unsigned char pitch)
+{
 	previous_pitch = last_pitch;
 	last_pitch = pitch;
 }
 
-void Engine::add_voice(unsigned char pitch, unsigned char velocity) {
+void Engine::add_voice(unsigned char pitch, unsigned char velocity)
+{
 	int ym_channel = _zynayumi.patch.playmode == PlayMode::Poly ?
 		select_ym_channel() : 0;
 	_voices.emplace_back(*this, _zynayumi.patch, ym_channel, pitch, velocity);
 }
 
-void Engine::add_all_voices(unsigned char pitch, unsigned char velocity) {
+void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
+{
 	_voices.emplace_back(*this, _zynayumi.patch, 0, pitch, velocity);
 	_voices.emplace_back(*this, _zynayumi.patch, 1, pitch, velocity);
 	_voices.emplace_back(*this, _zynayumi.patch, 2, pitch, velocity);
 }
 
-void Engine::free_voice() {
+void Engine::free_voice()
+{
 	auto lt = [](const Voice& v1, const Voice& v2) {
 		if (v1.note_on) {
 			if (v2.note_on)
