@@ -24,10 +24,12 @@
 ****************************************************************************/
 
 #include <iostream>
+#include <sstream>
 #include <assert.h>
 
 #include <boost/range/algorithm/find.hpp>
 #include <boost/range/algorithm/min_element.hpp>
+#include <boost/range/algorithm_ext/erase.hpp>
 
 #include "engine.hpp"
 #include "zynayumi.hpp"
@@ -176,22 +178,12 @@ void Engine::noteOn_process(unsigned char channel,
 	}
 }
 
-void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
-	auto print_err = [&]() {
-		std::cerr << "NoteOff (channel=" << (int)channel << ", pitch="
-		          << (int)pitch << ") has no corresponding NoteOn"
-		          << std::endl;
-	};
-
+void Engine::noteOff_process(unsigned char channel, unsigned char pitch)
+{
 	// Remove the corresponding pitch
-	auto pit = pitches.find(pitch);
-	if (pit != pitches.end()) {
-		pitches.erase(pit);
-		pitch_stack.erase(boost::find(pitch_stack, pitch));
-	} else {
-		print_err();
-		return;
-	}
+	auto range = pitches.equal_range(pitch);
+	pitches.erase(range.first, range.second);
+	boost::remove_erase(pitch_stack, pitch);
 
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.playmode) {
@@ -237,7 +229,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 			set_last_pitch(prev_pitch);
 			set_all_voices_with_pitch(prev_pitch);
 		} else {
-			set_note_off_on_all_voices();
+			set_note_off_all_voices();
 		}
 		break;
 	}
@@ -245,7 +237,7 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch) {
 	case PlayMode::UnisonDownArp:
 	case PlayMode::UnisonRndArp:
 		if (pitches.empty()) {
-			set_note_off_on_all_voices();
+			set_note_off_all_voices();
 		} else if (pitches.size() == 1) {
 			unsigned char last_pitch = *pitches.begin();
 			for (Voice& v : _voices) {
@@ -359,25 +351,31 @@ void Engine::free_voice()
 		_voices.erase(boost::min_element(_voices, lt));
 }
 
-void Engine::free_all_voices() {
+void Engine::free_all_voices()
+{
 	_voices.clear();
 }
 
-void Engine::set_all_voices_with_pitch(unsigned char pitch) {
+void Engine::set_all_voices_with_pitch(unsigned char pitch)
+{
 	for (auto& voice : _voices)
 		voice.set_note_pitch(pitch);
 }
 
-void Engine::set_note_off_with_pitch(unsigned char pitch) {
+void Engine::set_note_off_with_pitch(unsigned char pitch)
+{
+	// Set all voices off with this pitch, not just one, as it seems to
+	// be the standard to deal with overlapping notes of same pitch, if
+	// one of them goes off.
 	for (Voice& v : _voices) {
 		if (v.pitch == pitch and v.note_on) {
 			v.set_note_off();
-			break;
 		}
 	}
 }
 
-void Engine::set_note_off_on_all_voices() {
+void Engine::set_note_off_all_voices()
+{
 	for (auto& v : _voices)
 		if (v.note_on)
 			v.set_note_off();

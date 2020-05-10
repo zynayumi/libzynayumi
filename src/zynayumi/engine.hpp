@@ -145,7 +145,7 @@ private:
 	void free_all_voices();
 	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);
-	void set_note_off_on_all_voices();
+	void set_note_off_all_voices();
 
 	const Zynayumi& _zynayumi;
 
