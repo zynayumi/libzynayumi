@@ -1,4 +1,4 @@
-add_library(zynayumi SHARED
+add_library(zynayumi STATIC
   zynayumi
   patch
   voice
