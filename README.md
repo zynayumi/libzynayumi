@@ -243,14 +243,15 @@ but if it starts then it should run flawlessly.
 
 Control changes range from 0 to 127.
 
-- 1: **Modulation** [default=0], set the modulation depth up to
-     Modulation sensitivity parameter.
-- 5: **Portamento Time** [default=0], set portamento time in second from
-     0 to 5, added to the Portamento time parameter.
+- 1: **Modulation** [default=0], set the modulation depth up to the
+     value in semitone defined by the *Modulation sensitivity*
+     parameter.
+- 5: **Portamento Time** [default=0], set portamento time in second
+     from 0 to 5, added to the *Portamento time* parameter.
 - 7: **Volume** [default=100], control gain g=v^2/127^2, multiplied by
-     the gain of Expression CC and Gain parameter.
-- 11: **Expression** [default=127], control gain g=v^2/127^2, multiplied
-      by the gain of Volume CC and Gain parameter.
+     the gain of *Expression* CC and *Gain* parameter.
+- 11: **Expression** [default=127], control gain g=v^2/127^2,
+      multiplied by the gain of *Volume* CC and *Gain* parameter.
 - 64: **Sustain Pedal** [TODO]
 - 72: **Release Time** [TODO]
 - 73: **Attack Time** [TODO]
