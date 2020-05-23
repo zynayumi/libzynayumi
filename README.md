@@ -239,25 +239,30 @@ but if it starts then it should run flawlessly.
 
 ## MIDI Controls
 
-Zynayumi responds to the following MIDI controls:
+### Control Changes (CC)
 
-- Control Changes (CC). Range from 0 to 127.
-  - 1: Modulation [default=0], set the modulation depth up to
-       Modulation sensitivity parameter.
-  - 5: Portamento Time [default=0], set portamento time in second from
-       0 to 5, added to the Portamento time parameter.
-  - 7: Volume [default=100], control gain g=v^2/127^2, multiplied by
-       the gain of Expression CC and Gain parameter.
-  - 11: Expression [default=127], control gain g=v^2/127^2, multiplied
-        by the gain of Volume CC and Gain parameter.
-  - 64: Sustain Pedal [TODO]
-  - 72: Release Time [TODO]
-  - 73: Attack Time [TODO]
-  - 75: Decay Time [TODO]
-  - 76: Vibrato Rate [TODO]
-  - 77: Vibrato Depth [TODO]
-  - 78: Vibrato Delay [TODO]
-  - 123: All Sound Off [TODO]
+Control changes range from 0 to 127.
+
+- 1: **Modulation** [default=0], set the modulation depth up to
+     Modulation sensitivity parameter.
+- 5: **Portamento Time** [default=0], set portamento time in second from
+     0 to 5, added to the Portamento time parameter.
+- 7: **Volume** [default=100], control gain g=v^2/127^2, multiplied by
+     the gain of Expression CC and Gain parameter.
+- 11: **Expression** [default=127], control gain g=v^2/127^2, multiplied
+      by the gain of Volume CC and Gain parameter.
+- 64: **Sustain Pedal** [TODO]
+- 72: **Release Time** [TODO]
+- 73: **Attack Time** [TODO]
+- 75: **Decay Time** [TODO]
+- 76: **Vibrato Rate** [TODO]
+- 77: **Vibrato Depth** [TODO]
+- 78: **Vibrato Delay** [TODO]
+- 123: **All Sound Off** [TODO]
+
+### Pitch wheel
+
+The pitch wheel ranges from 0 to 16383. [TODO]
 
 ## Clicks and other glitches
 
