@@ -249,9 +249,9 @@ Control changes range from 0 to 127.
 - 5: **Portamento Time** [default=0], set portamento time in second
      from 0 to 5, added to the *Portamento time* parameter.
 - 7: **Volume** [default=100], control gain g=v^2/127^2, multiplied by
-     the gain of *Expression* CC and *Gain* parameter.
+     the gains of *Expression* CC and *Gain* parameter.
 - 11: **Expression** [default=127], control gain g=v^2/127^2,
-      multiplied by the gain of *Volume* CC and *Gain* parameter.
+      multiplied by the gains of *Volume* CC and *Gain* parameter.
 - 64: **Sustain Pedal** [TODO]
 - 72: **Release Time** [TODO]
 - 73: **Attack Time** [TODO]
