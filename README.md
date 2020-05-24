@@ -79,11 +79,11 @@ but if it starts then it should run flawlessly.
 
 ## Parameters
 
-- **Emulation mode:**
+- **Emulation mode**:
   - 0: YM2149 (Atari ST)
   - 1: AY-3-8910 (Amdstrad CPC, ZX Spectrum)
 
-- **Play mode:**
+- **Play mode**:
   - 0: Mono, always use the first voice of the YM2149.
   - 1: MonoUpArp, create arpegio with all pressed keys, going from
        lowest to highest pitch.
@@ -96,144 +96,144 @@ but if it starts then it should run flawlessly.
   - 7: UnisonDownArp, like MonoDownArp with all voices in unison.
   - 8: UnisonRndArp, like MonoRndArp with all voices in unison.
 
-- **Tone time:** time in second the square voice is played.  Ranges
+- **Tone time**: time in second the square voice is played.  Ranges
   from 0.0 to +inf.
 
-- **Tone detune:** global detune in semitone.  Ranges from -0.5 to
+- **Tone detune**: global detune in semitone.  Ranges from -0.5 to
   +0.5.
 
-- **Tone transpose:** global transpose in semitone.  Ranges from -24
+- **Tone transpose**: global transpose in semitone.  Ranges from -24
   to +24.
 
 - **Tone Spread** detune the second and third voices respectively by
   minus and plus the spread expressed in semintone. Ranges from 0.0 to
   0.5.
 
-- **Noise time:** time the noise generator is played in second.
+- **Noise time**: time the noise generator is played in second.
   Ranges from 0.0 to +inf.
 
-- **Noise period:** affect the frequency of the noise.  Ranges from 1
+- **Noise period**: affect the frequency of the noise.  Ranges from 1
   to 31.
 
-- **NoisePeriodEnv attack:** attack period of the noise.  Ranges from
+- **NoisePeriodEnv attack**: attack period of the noise.  Ranges from
   1 to 31.
 
-- **NoisePeriodEnv time:** time in second to go from noise period
+- **NoisePeriodEnv time**: time in second to go from noise period
   attack to noise attack.  Ranges from 0.0 to 5.0.
 
-- **AmpEnv attack time:** attack time of the amplitude envelope.
+- **AmpEnv attack time**: attack time of the amplitude envelope.
   Ranges from 0.0 to 10.0.
 
-- **AmpEnv hold1 level:** level of the first hold of the amplitude
+- **AmpEnv hold1 level**: level of the first hold of the amplitude
   envelope.  Ranges from 0.0 to 1.0.
 
-- **AmpEnv inter1 time:** time in second to go from the first hold to
+- **AmpEnv inter1 time**: time in second to go from the first hold to
   the second hold level of the amplitude envelope.  Ranges from 0.0 to
   10.0.
 
-- **AmpEnv hold2 level:** level of the second hold of the amplitude
+- **AmpEnv hold2 level**: level of the second hold of the amplitude
   envelope.  Ranges from 0.0 to 1.0.
 
-- **AmpEnv inter2 time:** time in second to go from the second hold to
+- **AmpEnv inter2 time**: time in second to go from the second hold to
   the third hold level of the amplitude envelope.  Ranges from 0.0 to
   10.0.
 
-- **AmpEnv hold3 level:** level of the third hold of the amplitude
+- **AmpEnv hold3 level**: level of the third hold of the amplitude
   envelope.  Ranges from 0.0 to 1.0.
 
-- **AmpEnv decay time:** time in second to go from the third hold to
+- **AmpEnv decay time**: time in second to go from the third hold to
   the sustain level of the amplitude envelope.  Range from 0.0 to
   10.0.
 
-- **AmpEnv sustain level:** sustain level of the amplitude envelope.
+- **AmpEnv sustain level**: sustain level of the amplitude envelope.
   Ranges from 0.0 to 1.0.
   
-- **AmpEnv release:** time in second to go from sustain_level to 0.0
+- **AmpEnv release**: time in second to go from sustain_level to 0.0
   of the amplitude envelope.  Ranges from 0.0 to 10.0.
 
-- **PitchEnv attack pitch:** attack pitch of the pitch envelope in
+- **PitchEnv attack pitch**: attack pitch of the pitch envelope in
   semitone.  Ranges from -96 to +96.
 
-- **PitchEnv time:** time in second to go from attack_pitch to 0 of
+- **PitchEnv time**: time in second to go from attack_pitch to 0 of
   the pitch envelope.  Ranges from 0.0 to 10.0.
 
-- **Arp pitch1:** pitch in semitone of the first arpegio note.  Only
+- **Arp pitch1**: pitch in semitone of the first arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Arp pitch2:** pitch in semitone of the second arpegio note.  Only
+- **Arp pitch2**: pitch in semitone of the second arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Arp pitch3:** pitch in semitone of the third arpegio note.  Only
+- **Arp pitch3**: pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Arp beat divisor:** arpegio period is measured in host beat period
+- **Arp beat divisor**: arpegio period is measured in host beat period
   (bpm / 60) times the fraction arp beat multiplier / arp beat
   divisor. Ranges from 1 to 64.
 
-- **Arp beat multiplier:** arpegio period is measured in host beat
+- **Arp beat multiplier**: arpegio period is measured in host beat
   period (bpm / 60) times the fraction arp beat multiplier / arp beat
   divisor. Ranges from 1 to 64.
 
-- **Arp repeat:** select which pitch to repeat the arpegio.
+- **Arp repeat**: select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
   - 1: from pitch2, thus cycle through pitch2 to pitch3.
   - 2: from pitch3, thus cycle through pitch3, that is no arpegio
     expect for the first cycle.
 
-- **RingMod waveform level1 to level8:** can define an 8 points
+- **RingMod waveform level1 to level8**: can define an 8 points
   waveform.  That waveform is multipled with the YN2149 square
   waveform, thus creating a ring modulation.  Ranges from 0.0 to 1.0.
 
-- **RingMod mirror:** whether the ring modulation waveform is
+- **RingMod mirror**: whether the ring modulation waveform is
   mirrored.  This can soften the ring modulation.
 
-- **RingMod sync:** whether the phase of the ring modulation is
+- **RingMod sync**: whether the phase of the ring modulation is
   synchronized with the phase of the square tone when a new on note is
   created.
 
-- **RingMod detune:** detune in semitone of the ring modulation
+- **RingMod detune**: detune in semitone of the ring modulation
   waveform relative to the square waveform.  The famous SID phaser
   effect can be obtained by setting a value difference than, though
   close to, zero.  Ranges from -0.5 to +0.5.
 
-- **RingMod transpose:** transposition in semitone of the ring
+- **RingMod transpose**: transposition in semitone of the ring
   modulation waveform relative the square waveform.  Ranges from -24
   to +24.
 
-- **RingMod fixed frequency:** fixed frequency of the ring modulation.
+- **RingMod fixed frequency**: fixed frequency of the ring modulation.
   Ranges from 1Hz to 5000Hz.
 
-- **RingMode fixed vs relative:** How much of the ring modulation
+- **RingMode fixed vs relative**: How much of the ring modulation
   frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
   fixed) to 1.0 (completely determined by tone pitch).
 
-- **LFO freq:** frequency of the low frequency oscillation to create a
+- **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.
 
-- **LFO delay:** time in second to progressively reach full LFO depth.
+- **LFO delay**: time in second to progressively reach full LFO depth.
   Ranges from 0.0 to 10.0.
 
-- **LFO depth:** LFO depth in semitone.  Ranges from 0.0 to 12.0.
+- **LFO depth**: LFO depth in semitone.  Ranges from 0.0 to 12.0.
 
-- **Portamento time:** time in second of the portamento effect,
+- **Portamento time**: time in second of the portamento effect,
   constant regardless of the distance between notes.  Ranges from 0.0
   to 5.0.
 
-- **Gain:** gain coefficient of the output signal.  Ranges from 0.0 to
+- **Gain**: gain coefficient of the output signal.  Ranges from 0.0 to
   2.0.
 
-- **Pan0 to Pan2:** panning level of the 3 voices of the YM2149.
+- **Pan0 to Pan2**: panning level of the 3 voices of the YM2149.
   Ranges from 0.0 to 1.0.  Can be to set to hard left, 0.0, hard
   right, 1.0, or any value in between.
 
-- **Pitch wheel range:** range [-pw, +pw] of the pitch wheel in
+- **Pitch wheel range**: range [-pw, +pw] of the pitch wheel in
   semitones.  Ranges from 1 to 12.
   
-- **Velocity sensitivity:** ranges from 0.0, no key velocity is taken
+- **Velocity sensitivity**: ranges from 0.0, no key velocity is taken
   into account, all notes are played at maximum volume, to 1.0,
   velocity is fully taken into account.
 
-- **Modulation sensitivity:** ranges from 0.0, modulation wheel is
+- **Modulation sensitivity**: ranges from 0.0, modulation wheel is
   ignored, to 12.0 modulation wheel is fully taken into account for
   pitch LFO up to 12 semitones.
 
@@ -243,14 +243,15 @@ but if it starts then it should run flawlessly.
 
 Control changes range from 0 to 127.
 
-- 1: **Modulation** [default=0], set the modulation depth up to the
+- 1: **Modulation** [default=0]: set the modulation depth up to the
      value in semitone defined by the *Modulation sensitivity*
      parameter.
-- 5: **Portamento Time** [default=0], set portamento time in second
-     from 0 to 5, added to the *Portamento time* parameter.
-- 7: **Volume** [default=100], control gain g=v^2/127^2, multiplied by
+- 5: **Portamento Time** [default=0]: set portamento time in second
+     from 0 to 2, added to the *Portamento time* parameter.
+- 7: **Volume** [default=100]: control gain g=v^2/127^2, multiplied by
      the gains of *Expression* CC and *Gain* parameter.
-- 11: **Expression** [default=127], control gain g=v^2/127^2,
+- 10: **Pan** [default=64]: panning control.
+- 11: **Expression** [default=127]: control gain g=v^2/127^2,
       multiplied by the gains of *Volume* CC and *Gain* parameter.
 - 64: **Sustain Pedal** [TODO]
 - 72: **Release Time** [TODO]
@@ -259,7 +260,7 @@ Control changes range from 0 to 127.
 - 76: **Vibrato Rate** [TODO]
 - 77: **Vibrato Depth** [TODO]
 - 78: **Vibrato Delay** [TODO]
-- 123: **All Sound Off** [TODO]
+- 123: **All Sound Off**: set all voices off.
 
 ### Pitch wheel
 
