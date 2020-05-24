@@ -107,14 +107,14 @@ void VSTZynayumi::midi(unsigned char status,
 	case MSC_NOTE_OFF: {
 		unsigned char pitch = byte1, velocity = byte2;
 		if (status == MSC_NOTE_ON and velocity > 0)
-			zynayumi.noteOn_process(0, pitch, velocity);
+			zynayumi.note_on_process(0, pitch, velocity);
 		else if (status == MSC_NOTE_OFF or
 		         (status == MSC_NOTE_ON and velocity == 0))
-			zynayumi.noteOff_process(0, pitch);
+			zynayumi.note_off_process(0, pitch);
 		break;
 	}
 	case MSC_PITCH_WHEEL:
-		zynayumi.pitchWheel_process(0, ((short)byte2 << 7) + (short)byte1);
+		zynayumi.pitch_wheel_process(0, ((short)byte2 << 7) + (short)byte1);
 		break;
 	case MSC_CONTROL: {
 		unsigned char cc = byte1;
@@ -139,7 +139,7 @@ void VSTZynayumi::midi(unsigned char status,
 			zynayumi.sustain_pedal_process(0, value);
 			break;
 		case CTL_ALL_NOTES_OFF:
-			zynayumi.allNotesOff_process();
+			zynayumi.all_notes_off_process();
 			break;
 		default:
 			std::cerr << "Control change " << (int)cc << " unsupported" << std::endl;

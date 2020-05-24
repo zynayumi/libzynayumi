@@ -87,12 +87,12 @@ public:
 	                   unsigned long sample_count);
 
 	// Process MIDI events
-	void noteOn_process(unsigned char channel,
-	                    unsigned char pitch,
-	                    unsigned char velocity);
-	void noteOff_process(unsigned char channel, unsigned char pitch);
-	void allNotesOff_process();
-	void pitchWheel_process(unsigned char channel, short value);
+	void note_on_process(unsigned char channel,
+	                     unsigned char pitch,
+	                     unsigned char velocity);
+	void note_off_process(unsigned char channel, unsigned char pitch);
+	void all_notes_off_process();
+	void pitch_wheel_process(unsigned char channel, short value);
 	void modulation_process(unsigned char channel, unsigned char value);
 	void portamento_process(unsigned char channel, unsigned char value);
 	void volume_process(unsigned char channel, unsigned char value);

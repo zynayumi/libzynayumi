@@ -125,12 +125,14 @@ void Engine::audio_process(float* left_out, float* right_out,
 	}
 }
 
-void Engine::noteOn_process(unsigned char /* channel */,
-                            unsigned char pitch,
-                            unsigned char velocity)
+void Engine::note_on_process(unsigned char /* channel */,
+                             unsigned char pitch,
+                             unsigned char velocity)
 {
 	set_last_pitch(pitch);
 	insert_pitch(pitch);
+	if (sustain_pedal)
+		erase_sustain_pitch(pitch);
 
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
@@ -183,7 +185,7 @@ void Engine::noteOn_process(unsigned char /* channel */,
 	}
 }
 
-void Engine::noteOff_process(unsigned char /* channel */, unsigned char pitch)
+void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 {
 	// If sustain pedal is on then ignore the off, but save it for when
 	// the pedal will go iff
@@ -263,7 +265,7 @@ void Engine::noteOff_process(unsigned char /* channel */, unsigned char pitch)
 	}
 }
 
-void Engine::allNotesOff_process()
+void Engine::all_notes_off_process()
 {
 	pitches.clear();
 	pitch_stack.clear();
@@ -271,7 +273,7 @@ void Engine::allNotesOff_process()
 	set_note_off_all_voices();
 }
 
-void Engine::pitchWheel_process(unsigned char /* channel */, short value)
+void Engine::pitch_wheel_process(unsigned char /* channel */, short value)
 {
 	static double max_value = std::pow(2.0, 14.0);
 	double min_pitch = -(double)_zynayumi.patch.control.pitchwheel;
@@ -316,7 +318,7 @@ void Engine::sustain_pedal_process(unsigned char channel, unsigned char value)
 		for (auto it = sustain_pitches.begin(); it != sustain_pitches.end();) {
 			unsigned char pitch = *it;
 			it = erase_sustain_pitch(pitch);
-			noteOff_process(channel, pitch);
+			note_off_process(channel, pitch);
 		}
 	}
 }

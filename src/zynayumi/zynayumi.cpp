@@ -60,26 +60,26 @@ void Zynayumi::audio_process(float* left_out, float* right_out,
 	engine.audio_process(left_out, right_out, sample_count);
 }
 
-void Zynayumi::noteOn_process(unsigned char channel,
-                              unsigned char pitch,
-                              unsigned char velocity)
+void Zynayumi::note_on_process(unsigned char channel,
+                               unsigned char pitch,
+                               unsigned char velocity)
 {
-	engine.noteOn_process(channel, pitch, velocity);
+	engine.note_on_process(channel, pitch, velocity);
 }
 
-void Zynayumi::noteOff_process(unsigned char channel, unsigned char pitch)
+void Zynayumi::note_off_process(unsigned char channel, unsigned char pitch)
 {
-	engine.noteOff_process(channel, pitch);
+	engine.note_off_process(channel, pitch);
 }
 
-void Zynayumi::allNotesOff_process()
+void Zynayumi::all_notes_off_process()
 {
-	engine.allNotesOff_process();
+	engine.all_notes_off_process();
 }
 
-void Zynayumi::pitchWheel_process(unsigned char channel, short value)
+void Zynayumi::pitch_wheel_process(unsigned char channel, short value)
 {
-	engine.pitchWheel_process(channel, value);
+	engine.pitch_wheel_process(channel, value);
 }
 
 void Zynayumi::modulation_process(unsigned char channel, unsigned char value)
