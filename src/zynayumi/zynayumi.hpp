@@ -98,6 +98,7 @@ public:
 	void volume_process(unsigned char channel, unsigned char value);
 	void pan_process(unsigned char channel, unsigned char value);
 	void expression_process(unsigned char channel, unsigned char value);
+	void sustain_pedal_process(unsigned char channel, unsigned char value);
 	void sysex_process(unsigned length, unsigned char* data);
 
 	// to_string method for debugging

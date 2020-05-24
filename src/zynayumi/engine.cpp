@@ -125,13 +125,12 @@ void Engine::audio_process(float* left_out, float* right_out,
 	}
 }
 
-void Engine::noteOn_process(unsigned char channel,
+void Engine::noteOn_process(unsigned char /* channel */,
                             unsigned char pitch,
                             unsigned char velocity)
 {
 	set_last_pitch(pitch);
-	pitches.insert(pitch);
-	pitch_stack.push_back(pitch);
+	insert_pitch(pitch);
 
 	switch(_zynayumi.patch.playmode) {
 	case PlayMode::Mono:
@@ -184,12 +183,17 @@ void Engine::noteOn_process(unsigned char channel,
 	}
 }
 
-void Engine::noteOff_process(unsigned char channel, unsigned char pitch)
+void Engine::noteOff_process(unsigned char /* channel */, unsigned char pitch)
 {
-	// Remove the corresponding pitch
-	auto range = pitches.equal_range(pitch);
-	pitches.erase(range.first, range.second);
-	boost::remove_erase(pitch_stack, pitch);
+	// If sustain pedal is on then ignore the off, but save it for when
+	// the pedal will go iff
+	if (sustain_pedal) {
+		insert_sustain_pitch(pitch);
+		return;
+	}
+
+	// Otherwise erase the corresponding pitch
+	erase_pitch(pitch);
 
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.playmode) {
@@ -261,6 +265,9 @@ void Engine::noteOff_process(unsigned char channel, unsigned char pitch)
 
 void Engine::allNotesOff_process()
 {
+	pitches.clear();
+	pitch_stack.clear();
+	sustain_pitches.clear();
 	set_note_off_all_voices();
 }
 
@@ -302,6 +309,18 @@ void Engine::expression_process(unsigned char /* channel */, unsigned char value
 	expression_gain = vol2gain(value);
 }
 
+void Engine::sustain_pedal_process(unsigned char channel, unsigned char value)
+{
+	sustain_pedal = 64 <= value;
+	if (not sustain_pedal) {
+		for (auto it = sustain_pitches.begin(); it != sustain_pitches.end();) {
+			unsigned char pitch = *it;
+			it = erase_sustain_pitch(pitch);
+			noteOff_process(channel, pitch);
+		}
+	}
+}
+
 std::string Engine::to_string(const std::string& indent) const
 {
 	std::string di = indent + indent;
@@ -312,6 +331,10 @@ std::string Engine::to_string(const std::string& indent) const
 	ss << std::endl;
 	ss << indent << "pitch_stack:";
 	for (unsigned char p : pitch_stack)
+		ss << " " << (int)p;
+	ss << std::endl;
+	ss << indent << "sustain pitches:";
+	for (unsigned char p : sustain_pitches)
 		ss << " " << (int)p;
 	ss << std::endl;
 	ss << indent << "previous_pitch = " << previous_pitch << std::endl;
@@ -425,6 +448,31 @@ void Engine::set_note_off_all_voices()
 	for (auto& v : _voices)
 		if (v.note_on)
 			v.set_note_off();
+}
+
+void Engine::insert_pitch(unsigned char pitch)
+{
+	pitches.insert(pitch);
+	pitch_stack.push_back(pitch);
+}
+
+void Engine::erase_pitch(unsigned char pitch)
+{
+	auto range = pitches.equal_range(pitch);
+	pitches.erase(range.first, range.second);
+	boost::remove_erase(pitch_stack, pitch);
+}
+
+void Engine::insert_sustain_pitch(unsigned char pitch)
+{
+	sustain_pitches.insert(pitch);
+}
+
+std::multiset<unsigned char>::iterator
+Engine::erase_sustain_pitch(unsigned char pitch)
+{
+	auto range = sustain_pitches.equal_range(pitch);
+	return sustain_pitches.erase(range.first, range.second);
 }
 
 } // ~namespace zynayumi

@@ -77,6 +77,9 @@ public:
 	// Stack of pitches, for mono mode
 	std::vector<unsigned char> pitch_stack;
 
+	// Pitches hold by the sustain pedal
+	std::multiset<unsigned char> sustain_pitches;
+
 	// Keep track of the previous pitch for portamento. Negative means
 	// none.
 	double previous_pitch;
@@ -104,6 +107,9 @@ public:
 
 	// Expression CC gain
 	float expression_gain;
+
+	// True iff the sustain pedal is on
+	bool sustain_pedal;
 
 	/////////////////////////////////
 	// Constructors/descructors    //
@@ -143,6 +149,7 @@ public:
 	void volume_process(unsigned char channel, unsigned char value);
 	void pan_process(unsigned char channel, unsigned char value);
 	void expression_process(unsigned char channel, unsigned char value);
+	void sustain_pedal_process(unsigned char channel, unsigned char value);
 
 	// Render to string the state of the engine. Convenient for
 	// debugging.
@@ -164,6 +171,10 @@ private:
 	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
+	void insert_pitch(unsigned char pitch);
+	void erase_pitch(unsigned char pitch);
+	void insert_sustain_pitch(unsigned char pitch);
+	std::multiset<unsigned char>::iterator erase_sustain_pitch(unsigned char pitch);
 
 	const Zynayumi& _zynayumi;
 

@@ -107,6 +107,11 @@ void Zynayumi::expression_process(unsigned char channel, unsigned char value)
 	engine.expression_process(channel, value);
 }
 
+void Zynayumi::sustain_pedal_process(unsigned char channel, unsigned char value)
+{
+	engine.sustain_pedal_process(channel, value);
+}
+
 void Zynayumi::sysex_process(unsigned length, unsigned char* data)
 {
 	unsigned char command_ID;

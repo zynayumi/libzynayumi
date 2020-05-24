@@ -135,6 +135,9 @@ void VSTZynayumi::midi(unsigned char status,
 		case CTL_EXPRESSION:
 			zynayumi.expression_process(0, value);
 			break;
+		case CTL_DAMPER_PEDAL:
+			zynayumi.sustain_pedal_process(0, value);
+			break;
 		case CTL_ALL_NOTES_OFF:
 			zynayumi.allNotesOff_process();
 			break;

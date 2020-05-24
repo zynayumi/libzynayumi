@@ -93,6 +93,7 @@ private:
 	static const unsigned char CTL_MAIN_VOLUME = 0x07;
 	static const unsigned char CTL_PAN = 0x0a;
 	static const unsigned char CTL_EXPRESSION = 0x0b;
+	static const unsigned char CTL_DAMPER_PEDAL = 0x40;
 	static const unsigned char CTL_ALL_NOTES_OFF = 0x7b;
 
    void processEvent(VstEvent* event);
