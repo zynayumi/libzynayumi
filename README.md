@@ -248,18 +248,18 @@ Control changes range from 0 to 127.
      parameter.
 - 5: **Portamento Time** [default=0]: set portamento time in second
      from 0 to 2, added to the *Portamento time* parameter.
-- 7: **Volume** [default=100]: control gain `g=v^2/127^2`, multiplied by
+- 7: **Volume** [default=100]: control gain *g=v^2/127^2*, multiplied by
      the gains of *Expression* CC and *Gain* parameter.
 - 10: **Pan** [default=64]: panning control.
-- 11: **Expression** [default=127]: control gain `g=v^2/127^2`,
+- 11: **Expression** [default=127]: control gain *g=v^2/127^2*,
       multiplied by the gains of *Volume* CC and *Gain* parameter.
-- 64: **Sustain Pedal** [default=0]: `v<64` is off, `64<=v` is on.
-- 72: **Release Time** [default=64]: `v<64` is shorter, `64<v` is longer.
-- 73: **Attack Time** [default=64]: `v<64` is shorter, `64<v` is longer.
-- 75: **Decay Time** [default=64]: `v<64` is shorter, `64<v` is longer.
-- 76: **Vibrato Rate** [default=64]: `v<64` is slower, `64<v` is faster.
-- 77: **Vibrato Depth** [default=64]: `v<64` is shallower, `64<v` is deeper.
-- 78: **Vibrato Delay** [default=64]: `v<64` is shorter, `64<v` is longer.
+- 64: **Sustain Pedal** [default=0]: *v<64* is off, *64<=v* is on.
+- 72: **Release Time** [default=64]: *v<64* is shorter, *64<v* is longer.
+- 73: **Attack Time** [default=64]: *v<64* is shorter, *64<v* is longer.
+- 75: **Decay Time** [default=64]: *v<64* is shorter, *64<v* is longer.
+- 76: **Vibrato Rate** [default=64]: *v<64* is slower, *64<v* is faster.
+- 77: **Vibrato Depth** [default=64]: *v<64* is shallower, *64<v* is deeper.
+- 78: **Vibrato Delay** [default=64]: *v<64* is shorter, *64<v* is longer.
 - 123: **All Sound Off**: set all voices off.
 
 ### Pitch wheel
