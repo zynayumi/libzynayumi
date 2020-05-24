@@ -77,14 +77,34 @@ void Zynayumi::allNotesOff_process()
 	engine.allNotesOff_process();
 }
 
+void Zynayumi::pitchWheel_process(unsigned char channel, short value)
+{
+	engine.pitchWheel_process(channel, value);
+}
+
 void Zynayumi::modulation_process(unsigned char channel, unsigned char value)
 {
 	engine.modulation_process(channel, value);
 }
 
-void Zynayumi::pitchWheel_process(unsigned char channel, short value)
+void Zynayumi::portamento_process(unsigned char channel, unsigned char value)
 {
-	engine.pitchWheel_process(channel, value);
+	engine.portamento_process(channel, value);
+}
+
+void Zynayumi::volume_process(unsigned char channel, unsigned char value)
+{
+	engine.volume_process(channel, value);
+}
+
+void Zynayumi::pan_process(unsigned char channel, unsigned char value)
+{
+	engine.pan_process(channel, value);
+}
+
+void Zynayumi::expression_process(unsigned char channel, unsigned char value)
+{
+	engine.expression_process(channel, value);
 }
 
 void Zynayumi::sysex_process(unsigned length, unsigned char* data)

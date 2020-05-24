@@ -76,6 +76,8 @@ public:
 	void set_bpm(double bpm);
 	double get_bpm() const;
 
+	// Process audio.
+	//
 	// Assumptions:
 	//
 	// 1. The parameters do not change during audio processing
@@ -84,24 +86,18 @@ public:
 	void audio_process(float* left_out, float* right_out,
 	                   unsigned long sample_count);
 
-	// Process on note
+	// Process MIDI events
 	void noteOn_process(unsigned char channel,
 	                    unsigned char pitch,
 	                    unsigned char velocity);
-
-	// Process off note
 	void noteOff_process(unsigned char channel, unsigned char pitch);
-
-	// Process all notes off
 	void allNotesOff_process();
-
-	// Process modulation
-	void modulation_process(unsigned char channel, unsigned char value);
-
-	// Process pitch wheel
 	void pitchWheel_process(unsigned char channel, short value);
-
-	// Process sysex
+	void modulation_process(unsigned char channel, unsigned char value);
+	void portamento_process(unsigned char channel, unsigned char value);
+	void volume_process(unsigned char channel, unsigned char value);
+	void pan_process(unsigned char channel, unsigned char value);
+	void expression_process(unsigned char channel, unsigned char value);
 	void sysex_process(unsigned length, unsigned char* data);
 
 	// to_string method for debugging

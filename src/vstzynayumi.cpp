@@ -120,15 +120,21 @@ void VSTZynayumi::midi(unsigned char status,
 		unsigned char cc = byte1;
 		unsigned char value = byte2;
 		switch (cc) {
-		case CTL_MODWHEEL: {
+		case CTL_MODWHEEL:
 			zynayumi.modulation_process(0, value);
 			break;
-		}
-		case CTL_PORTAMENTO_TIME: {
-			float valuef = affine(0, 127, 0.0f, 1.0f, value);
-			setParameterAutomated(PORTAMENTO_TIME, valuef);
+		case CTL_PORTAMENTO_TIME:
+			zynayumi.portamento_process(0, value);
 			break;
-		}
+		case CTL_MAIN_VOLUME:
+			zynayumi.volume_process(0, value);
+			break;
+		case CTL_PAN:
+			zynayumi.pan_process(0, value);
+			break;
+		case CTL_EXPRESSION:
+			zynayumi.expression_process(0, value);
+			break;
 		case CTL_ALL_NOTES_OFF:
 			zynayumi.allNotesOff_process();
 			break;

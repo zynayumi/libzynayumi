@@ -87,11 +87,23 @@ public:
 	int sample_rate;             // Host sample rate
 	double bpm;                  // Host beats per minute
 
-	// Modulation wheel depth (in semitone)
-	double mw_depth;
-	
 	// Pitch wheel pitch
 	double pw_pitch;
+
+	// Modulation wheel CC depth (in semitone)
+	double mw_depth;
+
+	// Portamento time CC
+	double portamento_time;
+
+	// Volume CC gain
+	float volume_gain;
+
+	// Pan CC
+	float pan;
+
+	// Expression CC gain
+	float expression_gain;
 
 	/////////////////////////////////
 	// Constructors/descructors    //
@@ -109,6 +121,8 @@ public:
 	// Set bpm
 	void set_bpm(double bpm);
 
+	// Process audio.
+	//
 	// Assumptions:
 	//
 	// 1. The parameters do not change during audio processing
@@ -117,17 +131,18 @@ public:
 	void audio_process(float* left_out, float* right_out,
 	                   unsigned long sample_count);
 
+	// Process MIDI events
 	void noteOn_process(unsigned char channel,
 	                    unsigned char pitch,
 	                    unsigned char velocity);
-
 	void noteOff_process(unsigned char channel, unsigned char pitch);
-
 	void allNotesOff_process();
-
-	void modulation_process(unsigned char channel, unsigned char value);
-
 	void pitchWheel_process(unsigned char channel, short value);
+	void modulation_process(unsigned char channel, unsigned char value);
+	void portamento_process(unsigned char channel, unsigned char value);
+	void volume_process(unsigned char channel, unsigned char value);
+	void pan_process(unsigned char channel, unsigned char value);
+	void expression_process(unsigned char channel, unsigned char value);
 
 	// Render to string the state of the engine. Convenient for
 	// debugging.
@@ -136,6 +151,8 @@ public:
 	double pitch2period_ym(double pitch) const;
 	double freq2pitch(double freq) const;
 	double smp2sec(unsigned long long smp_count) const;
+
+	static float vol2gain(short value);
 
 private:
 	int select_ym_channel() const;

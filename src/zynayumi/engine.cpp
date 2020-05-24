@@ -54,8 +54,12 @@ Engine::Engine(const Zynayumi& ref)
 	  // ayumi generate terrible noise, so 2MHz is set and fixed for
 	  // now.
 	  clock_rate(2000000),
-	  mw_depth(0),
 	  pw_pitch(0),
+	  mw_depth(0),
+	  portamento_time(0),
+	  volume_gain(vol2gain(100)),
+	  pan(0.5),
+	  expression_gain(vol2gain(127)),
 	  _max_voices(3)
 {
 	// TODO: probably unnecessary, as configured when setting the patch
@@ -114,8 +118,10 @@ void Engine::audio_process(float* left_out, float* right_out,
 		ayumi_remove_dc(&ay);
 
 		// Update outputs
-		left_out[i] = std::clamp((float)ay.left * _zynayumi.patch.gain, -1.0f, 1.0f);
-		right_out[i] = std::clamp((float)ay.right * _zynayumi.patch.gain, -1.0f, 1.0f);
+		left_out[i] = (float)ay.left * (1.0f - pan) *
+			_zynayumi.patch.gain * volume_gain * expression_gain;
+		right_out[i] = (float)ay.right * pan *
+			_zynayumi.patch.gain * volume_gain * expression_gain;
 	}
 }
 
@@ -258,13 +264,7 @@ void Engine::allNotesOff_process()
 	set_note_off_all_voices();
 }
 
-void Engine::modulation_process(unsigned char channel, unsigned char value)
-{
-	double ms = _zynayumi.patch.control.modulation_sensitivity;
-	mw_depth = Voice::linear_interpolate(0.0, 0.0, 127.0, ms, (double)value);
-}
-
-void Engine::pitchWheel_process(unsigned char channel, short value)
+void Engine::pitchWheel_process(unsigned char /* channel */, short value)
 {
 	static double max_value = std::pow(2.0, 14.0);
 	double min_pitch = -(double)_zynayumi.patch.control.pitchwheel;
@@ -272,6 +272,34 @@ void Engine::pitchWheel_process(unsigned char channel, short value)
 	pw_pitch = Voice::linear_interpolate(0.0, min_pitch,
 	                                     max_value, max_pitch,
 	                                     (double)value);
+}
+
+void Engine::modulation_process(unsigned char /* channel */, unsigned char value)
+{
+	double ms = _zynayumi.patch.control.modulation_sensitivity;
+	mw_depth = Voice::linear_interpolate(0.0, 0.0, 127.0, ms, (double)value);
+}
+
+void Engine::portamento_process(unsigned char /* channel */, unsigned char value)
+{
+	// Cubic mapping
+	portamento_time = 2.0f *
+		((float)value*(float)value*(float)value) / (127.0f*127.0f*127.0f);
+}
+
+void Engine::volume_process(unsigned char /* channel */, unsigned char value)
+{
+	volume_gain = vol2gain(value);
+}
+
+void Engine::pan_process(unsigned char /* channel */, unsigned char value)
+{
+	pan = value == 127 ? 1.0 : (value / 128.0f);
+}
+
+void Engine::expression_process(unsigned char /* channel */, unsigned char value)
+{
+	expression_gain = vol2gain(value);
 }
 
 std::string Engine::to_string(const std::string& indent) const
@@ -314,6 +342,11 @@ double Engine::freq2pitch(double freq) const
 double Engine::smp2sec(unsigned long long smp_count) const
 {
 	return (double)smp_count / (double)sample_rate;
+}
+
+float Engine::vol2gain(short value)
+{
+	return ((float)value*(float)value) / (127.0f*127.0f);
 }
 
 int Engine::select_ym_channel() const
