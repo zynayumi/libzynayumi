@@ -47,24 +47,30 @@ distribution, otherwise, have a look at http://dssi.sourceforge.net/.
 
 ## VST Support
 
-For VST support, you need an old SDK as recent ones no longer support
-VST2.  You may find one
-[here](https://www.steinberg.net/sdk_downloads/vstsdk366_27_06_2016_build_61.zip).
-If the link no longer works let me know, hopefully I have a copy of
-it.
+For VST2 support, you need a copy of the old VST36 SDK as recent ones don't come with VST2 headers anymore.
 
-Just unzip the SDK under the zynayumi root folder.
+[vstsdk367_03_03_2017_build_352](https://www.steinberg.net/sdk_downloads/vstsdk367_03_03_2017_build_352.zip) is the last known one still available.
 
-Under GNU/Linux 64-bit, you may need to comment out some code in
+Just unzip the VST2_SDK folder to the Zynayumi root folder.
 
-```
-pluginterfaces/vst2.x/aeffect.h
-```
+Under GNU/Linux 64-bit, you may need to do this patch first:
 
-specifically all definitions of `VSTCALLBACK` except the last one
-
-```
-#define VSTCALLBACK
+```diff
+--- VST2_SDK/pluginterfaces/vst2.x/aeffect.h
++++ VST2_SDK/pluginterfaces/vst2.x/aeffect.h
+@@ -66,7 +66,11 @@
+        #pragma options push -a8
+ #elif defined(__GNUC__)
+     #pragma pack(push,8)
+-    #define VSTCALLBACK __cdecl
++    #if defined(__linux__)
++        #define VSTCALLBACK
++    #else
++        #define VSTCALLBACK __cdecl
++    #endif
+ #elif defined(WIN32) || defined(__FLAT__) || defined CBUILDER
+        #pragma pack(push)
+        #pragma pack(8)
 ```
 
 ## LV2 Support
