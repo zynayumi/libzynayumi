@@ -325,6 +325,7 @@ if you have one.
   - [ ] Vibrato Rate
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
+- [ ] Fix ringmod phase issue
 - [ ] Define presets
 - [ ] Add LV2 support
 - [ ] Add parameter to choose between perfect and legacy tuning
