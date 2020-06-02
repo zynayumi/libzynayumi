@@ -38,7 +38,7 @@ if(HAVE_ZYNAYUMI AND LVTK_FOUND)
   set(HAVE_LVTK 1)
 endif(HAVE_ZYNAYUMI AND LVTK_FOUND)
 
-if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/VST3 SDK/public.sdk/source/vst2.x/audioeffectx.h")
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/VST2_SDK/public.sdk/source/vst2.x/audioeffectx.h")
   set(HAVE_VST 1)
 endif()
 
