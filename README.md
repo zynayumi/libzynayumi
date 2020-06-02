@@ -46,6 +46,9 @@ $ sudo make install
 Just install the DSSI SDK.  You likely have a package in your
 distribution, otherwise, have a look at http://dssi.sourceforge.net/.
 
+Note that the DSSI version has been left behind a little bit.  The VST
+version is more complete as of today.
+
 ## VST Support
 
 For VST2 support, you need a copy of the old VST36 SDK as recent ones don't come with VST2 headers anymore.
