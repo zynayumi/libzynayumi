@@ -12,9 +12,10 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
 - [X] VST, DSSI
+- [X] MIDI controls assigned to parameters (Modulation, Portamento
+      Time, Volume, Pan, Expression and Sustain).
 - [ ] Buzzer
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
-- [ ] MIDI controls assigned to parameters (only portamento for now)
 - [ ] GUI.  Please help if you want one, I am no GUI guy.
 
 ## Requirements
@@ -260,17 +261,19 @@ Control changes range from 0 to 127.
 - 11: **Expression** [default=127]: control gain *g=v^2/127^2*,
       multiplied by the gains of *Volume* CC and *Gain* parameter.
 - 64: **Sustain Pedal** [default=0]: *v<64* is off, *64<=v* is on.
-- 72: **Release Time** [default=64]: *v<64* is shorter, *64<v* is longer.
-- 73: **Attack Time** [default=64]: *v<64* is shorter, *64<v* is longer.
-- 75: **Decay Time** [default=64]: *v<64* is shorter, *64<v* is longer.
-- 76: **Vibrato Rate** [default=64]: *v<64* is slower, *64<v* is faster.
-- 77: **Vibrato Depth** [default=64]: *v<64* is shallower, *64<v* is deeper.
-- 78: **Vibrato Delay** [default=64]: *v<64* is shorter, *64<v* is longer.
+- 72: **Release Time** [default=64]: *v<64* is shorter, *64<v* is longer. [TODO]
+- 73: **Attack Time** [default=64]: *v<64* is shorter, *64<v* is longer. [TODO]
+- 75: **Decay Time** [default=64]: *v<64* is shorter, *64<v* is longer. [TODO]
+- 76: **Vibrato Rate** [default=64]: *v<64* is slower, *64<v* is faster. [TODO]
+- 77: **Vibrato Depth** [default=64]: *v<64* is shallower, *64<v* is deeper. [TODO]
+- 78: **Vibrato Delay** [default=64]: *v<64* is shorter, *64<v* is longer. [TODO]
 - 123: **All Sound Off**: set all voices off.
 
 ### Pitch wheel
 
-The pitch wheel ranges from 0 to 16383. [TODO]
+The pitch wheel [default=8192] ranges from 0 to 16383, corresponds to
+`-pw` to `+pw` in semitone where `pw` is the value set by the plugin
+parameter *Pitch wheel range*.
 
 ## Clicks and other glitches
 
@@ -280,8 +283,8 @@ clicks set a non null release of the amplitude envelope.  See AmpEnv
 release in the section above.
 
 Also, the amplitude envelope itself can create clicks as it is using
-the YM2149 to control the amplitude in a staircase fashion.  This is a
-feature, not a bug.
+the emulated YM2149 to control the amplitude in a staircase fashion.
+This is a feature, not a bug.
 
 ## Wait, that tuning is too perfect to come from the YM2149! 
 
@@ -313,3 +316,7 @@ is welcome.
 ## Author
 
 Nil Geisweiller
+
+## Contributor(s)
+
+Teteros
