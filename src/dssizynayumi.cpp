@@ -99,10 +99,7 @@ char* DSSIZynayumi::configure(const char* key, const char* value) {
 void DSSIZynayumi::update_patch()
 {
 	for (std::size_t pi = 0; pi < (std::size_t)PARAMETERS_COUNT; pi++)
-		parameters.parameters[pi]->set_value(*m_ports[pi]);
-
-	zynayumi.patch.tone.detune = parameters.tone_detune + parameters.tone_transpose;
-	zynayumi.patch.ringmod.detune = parameters.ringmod_detune + parameters.ringmod_transpose;
+		parameters.set_value((ParameterIndex)pi, *m_ports[pi]);
 }
 
 void initialise_2() __attribute__((constructor));
