@@ -322,6 +322,7 @@ if you have one.
 
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
+- [ ] Implement pitch wheel and CC for DSSI
 - [ ] Implement CC:
   - [ ] Release Time
   - [ ] Attack Time
