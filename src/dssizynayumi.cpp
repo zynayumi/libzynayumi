@@ -131,19 +131,19 @@ void initialise_2() {
 	const LADSPA_PortRangeHintDescriptor d_100 = LADSPA_HINT_DEFAULT_100;
 	const LADSPA_PortRangeHintDescriptor d_440 = LADSPA_HINT_DEFAULT_440;
 
-	const double delta = 0.1;
+	const double delta = 0.001;
 
 	// Emulation mode
 	ports.add_port(c_desc, EMUL_MODE_NAME, i_desc | d_0,
-	               (double)EmulMode::Count - delta, (double)EmulMode::Count + delta);
+	               -delta, (double)EmulMode::Count -1.0 + delta);
 
 	// Play mode
 	ports.add_port(c_desc, PLAY_MODE_NAME, i_desc | d_0,
-	               (double)PlayMode::Count - delta, (double)PlayMode::Count + delta);
+	               -delta, (double)PlayMode::Count -1.0 + delta);
 
 	// Tone
 	ports.add_port(c_desc, TONE_TIME_NAME, r_desc | d_min,
-	               TONE_TIME_L, TONE_TIME_U);
+	               TONE_TIME_L_ALT, TONE_TIME_U_ALT);
 	ports.add_port(c_desc, TONE_DETUNE_NAME, r_desc | d_0,
 	               TONE_DETUNE_L, TONE_DETUNE_U);
 	ports.add_port(c_desc, TONE_TRANSPOSE_NAME, i_desc | d_0,
@@ -153,12 +153,12 @@ void initialise_2() {
 
 	// Noise
 	ports.add_port(c_desc, NOISE_TIME_NAME, r_desc | d_0,
-	               NOISE_TIME_L, NOISE_TIME_U);
+	               NOISE_TIME_L_ALT, NOISE_TIME_U_ALT);
 	ports.add_port(c_desc, NOISE_PERIOD_NAME, i_desc | d_1,
 	               NOISE_PERIOD_L - delta, NOISE_PERIOD_U + delta);
 
 	// Noise Period Envelope
-	ports.add_port(c_desc, NOISE_PERIOD_ENV_ATTACK_NAME, i_desc | d_0,
+	ports.add_port(c_desc, NOISE_PERIOD_ENV_ATTACK_NAME, i_desc | d_1,
 	               NOISE_PERIOD_ENV_ATTACK_L - delta, NOISE_PERIOD_ENV_ATTACK_U + delta);
 	ports.add_port(c_desc, NOISE_PERIOD_ENV_TIME_NAME, r_desc | d_0,
 	               NOISE_PERIOD_ENV_TIME_L, NOISE_PERIOD_ENV_TIME_U);
@@ -192,13 +192,13 @@ void initialise_2() {
 	// Arpegio
 	ports.add_port(c_desc, ARP_PITCH1_NAME, i_desc | d_0,
 	               ARP_PITCH1_L - delta, ARP_PITCH1_U + delta);
-	ports.add_port(c_desc, ARP_PITCH2_NAME, r_desc | d_0,
+	ports.add_port(c_desc, ARP_PITCH2_NAME, i_desc | d_0,
 	               ARP_PITCH2_L - delta, ARP_PITCH2_U + delta);
-	ports.add_port(c_desc, ARP_PITCH3_NAME, r_desc | d_0,
+	ports.add_port(c_desc, ARP_PITCH3_NAME, i_desc | d_0,
 	               ARP_PITCH3_L - delta, ARP_PITCH3_U + delta);
 	ports.add_port(c_desc, ARP_BEAT_DIVISOR_NAME, i_desc | d_low,
 	               ARP_BEAT_DIVISOR_L - delta, ARP_BEAT_DIVISOR_U + delta);
-	ports.add_port(c_desc, ARP_BEAT_MULTIPLIER_NAME, i_desc | d_low,
+	ports.add_port(c_desc, ARP_BEAT_MULTIPLIER_NAME, i_desc | d_1,
 	               ARP_BEAT_MULTIPLIER_L - delta, ARP_BEAT_MULTIPLIER_U + delta);
 	ports.add_port(c_desc, ARP_REPEAT_NAME, i_desc | d_0,
 	               ARP_REPEAT_L - delta, ARP_REPEAT_U + delta);
@@ -257,7 +257,7 @@ void initialise_2() {
 	               PAN2_L, PAN2_U);
 
 	// Control
-	ports.add_port(c_desc, PITCH_WHEEL_NAME, i_desc | d_middle,
+	ports.add_port(c_desc, PITCH_WHEEL_NAME, i_desc | d_low,
 	               PITCH_WHEEL_L - delta, PITCH_WHEEL_U + delta);
 
 	ports.add_port(c_desc, VELOCITY_SENSITIVITY_NAME, r_desc | d_middle,

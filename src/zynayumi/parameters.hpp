@@ -448,6 +448,7 @@ enum ParameterIndex {
 #define EMUL_MODE_DFLT EmulMode::YM2149
 #define PLAY_MODE_DFLT PlayMode::Mono
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()
+#define TONE_TIME_DFLT_ALT -1.0 // In case infinity isn't supported
 #define TONE_DETUNE_DFLT 0.0
 #define TONE_TRANSPOSE_DFLT 0
 #define TONE_SPREAD_DFLT 0.0
@@ -500,7 +501,9 @@ enum ParameterIndex {
 
 // Parameter ranges
 #define TONE_TIME_L 0.0f
+#define TONE_TIME_L_ALT -1.0f   // In case infinity isn't supported
 #define TONE_TIME_U std::numeric_limits<float>::infinity()
+#define TONE_TIME_U_ALT 10.0f   // In case infinity isn't supported
 #define TONE_DETUNE_L -0.5f
 #define TONE_DETUNE_U 0.5f
 #define TONE_TRANSPOSE_L -24
@@ -508,7 +511,9 @@ enum ParameterIndex {
 #define TONE_SPREAD_L 0
 #define TONE_SPREAD_U 0.5
 #define NOISE_TIME_L 0.0f
+#define NOISE_TIME_L_ALT -1.0f  // In case infinity isn't supported
 #define NOISE_TIME_U std::numeric_limits<float>::infinity()
+#define NOISE_TIME_U_ALT 10.0f  // In case infinity isn't supported
 #define NOISE_PERIOD_L 1
 #define NOISE_PERIOD_U 31
 #define NOISE_PERIOD_ENV_ATTACK_L 1
