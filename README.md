@@ -178,11 +178,13 @@ but if it starts then it should run flawlessly.
 
 - **Arp beat divisor**: arpegio period is measured in host beat period
   (bpm / 60) times the fraction arp beat multiplier / arp beat
-  divisor. Ranges from 1 to 64.
+  divisor.  Ranges from 1 to 64.  Note that the DSSI version has a
+  fixed bpm of 120.
 
 - **Arp beat multiplier**: arpegio period is measured in host beat
   period (bpm / 60) times the fraction arp beat multiplier / arp beat
-  divisor. Ranges from 1 to 64.
+  divisor.  Ranges from 1 to 64.  Note that the DSSI version has a
+  fixed bpm of 120.
 
 - **Arp repeat**: select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
@@ -318,6 +320,8 @@ if you have one.
 
 ## TODO
 
+- [ ] Fix ringmod phase issue
+- [ ] Update tempo when it has changed on the host
 - [ ] Implement CC:
   - [ ] Release Time
   - [ ] Attack Time
@@ -325,7 +329,6 @@ if you have one.
   - [ ] Vibrato Rate
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
-- [ ] Fix ringmod phase issue
 - [ ] Define presets
 - [ ] Add LV2 support
 - [ ] Add parameter to choose between perfect and legacy tuning
