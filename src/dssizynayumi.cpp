@@ -29,9 +29,10 @@
 using namespace zynayumi;
 using namespace std;
 
-DSSIZynayumi::DSSIZynayumi(unsigned long frame_rate)
+DSSIZynayumi::DSSIZynayumi(unsigned long sample_rate)
 	: parameters(zynayumi)
 {
+	zynayumi.set_sample_rate(sample_rate);
 }
 
 void DSSIZynayumi::run_synth(unsigned long sample_count,

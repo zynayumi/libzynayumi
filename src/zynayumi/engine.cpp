@@ -44,7 +44,6 @@ Engine::Engine(const Zynayumi& ref)
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  lower_note_freq(8.1757989156),
-	  sample_rate(44100),        // This is redefined by the host anyway
 	  // According to wikipedia
 	  // https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 the
 	  // clock rate should be 4MHz for the AY-3-8910 and 8MHz for the
@@ -54,6 +53,8 @@ Engine::Engine(const Zynayumi& ref)
 	  // ayumi generate terrible noise, so 2MHz is set and fixed for
 	  // now.
 	  clock_rate(2000000),
+	  sample_rate(44100),        // Nornally redefined by the host
+	  bpm(120),                  // Normally redefined by the host
 	  pw_pitch(0),
 	  mw_depth(0),
 	  portamento_time(0),

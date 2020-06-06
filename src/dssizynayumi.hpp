@@ -43,7 +43,7 @@ public:
 	Zynayumi zynayumi;
 	Parameters parameters;
 
-	DSSIZynayumi(unsigned long frame_rate);
+	DSSIZynayumi(unsigned long sample_rate);
 
 	void run_synth(unsigned long sample_count, snd_seq_event_t* events,
 	               unsigned long event_count);
@@ -56,18 +56,8 @@ public:
 
 protected:
 
-	unsigned long m_frame_rate;
-	unsigned long m_last_frame;
-
-	LADSPA_Data m_velocity;
-	LADSPA_Data m_pitch;
-	unsigned char m_note;
-	bool m_note_is_on;
-
 	DSSI_Program_Descriptor m_prog;
 	std::vector<DSSI_Program_Descriptor> m_progs;
-
-	LADSPA_Data m_pitchbend;
 
 	// Read the control ports and update the patch accordingly
 	void update_patch();
