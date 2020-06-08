@@ -318,8 +318,19 @@ the AY-3-8910 (4 MHz) or the YM2149 (8 MHz).  Instead the clock is the
 same for both modes and is set to 2 MHz.  A better solution is welcome
 if you have one.
 
+### Why do I hear a ringing in my ears?
+
+Be careful, chip sounds tend to be rich in high frequencies, if you
+expose yourself for too long especially at high volume you risk to
+loose your hearing permanently.
+
+Take plenty of sonic rest.  Do not hesitate to use low pass filters,
+ear plugs, work at low volume, use any means necessary to reduce your
+exposure to harmful sounds and protect your hearing.
+
 ## TODO
 
+- [ ] Add tempo + host parameters
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI
