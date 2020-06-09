@@ -18,6 +18,13 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] GUI.  Please help if you want one, I am no GUI guy.
 
+## Demo Songs
+
+[Monstrosity by A-Lin](https://lbry.tv/@ngeiswei:d/A-Lin---Monstrosity---2020-06-09:f)
+
+If you make a song with Zynayumi please let me know so I can include
+it.
+
 ## Requirements
 
 - Boost (version 1.54 minimum) http://www.boost.org/
