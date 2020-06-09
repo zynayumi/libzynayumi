@@ -1,3 +1,3 @@
-add_library(dssiplugin SHARED
+add_library(dssiplugin STATIC
   dssiplugin
 )
