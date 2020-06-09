@@ -364,6 +364,18 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                          ARP_PITCH3_L,
 	                                          ARP_PITCH3_U);
 
+	parameters[ARP_TEMPO] = new LinearFloatParameter(ARP_TEMPO_NAME,
+	                                                 ARP_TEMPO_UNIT,
+	                                                 &zynayumi.patch.arp.tempo,
+	                                                 ARP_TEMPO_DFLT,
+	                                                 ARP_TEMPO_L,
+	                                                 ARP_TEMPO_U);
+
+	parameters[ARP_HOST_SYNC] = new BoolParameter(ARP_HOST_SYNC_NAME,
+	                                              ARP_HOST_SYNC_UNIT,
+	                                              &zynayumi.patch.arp.host_sync,
+	                                              ARP_HOST_SYNC_DFLT);
+
 	parameters[ARP_BEAT_DIVISOR] = new IntParameter(ARP_BEAT_DIVISOR_NAME,
 	                                                ARP_BEAT_DIVISOR_UNIT,
 	                                                &arp_beat_divisor,
@@ -605,24 +617,7 @@ float to_freq(float bpm, float beat_divisor, float beat_multiplier)
 void Parameters::set_value(ParameterIndex pi, float f)
 {
 	parameters[pi]->set_value(f);
-	switch (pi) {
-	case TONE_DETUNE:
-	case TONE_TRANSPOSE:
-		zynayumi.patch.tone.detune = tone_detune + tone_transpose;
-		break;
-	case ARP_BEAT_DIVISOR:
-	case ARP_BEAT_MULTIPLIER:
-		zynayumi.patch.arp.freq = to_freq(zynayumi.get_bpm(),
-		                                  arp_beat_divisor,
-		                                  arp_beat_multiplier);
-		break;
-	case RING_MOD_DETUNE:
-	case RING_MOD_TRANSPOSE:
-		zynayumi.patch.ringmod.detune = ringmod_detune + ringmod_transpose;
-		break;
-	default:
-		break;
-	}
+	update(pi);
 }
 
 float Parameters::norm_float_value(ParameterIndex pi) const
@@ -635,14 +630,23 @@ float Parameters::norm_float_value(ParameterIndex pi) const
 void Parameters::set_norm_value(ParameterIndex pi, float nf)
 {
 	parameters[pi]->set_norm_value(nf);
+	update(pi);
+}
+
+void Parameters::update(ParameterIndex pi)
+{
 	switch (pi) {
 	case TONE_DETUNE:
 	case TONE_TRANSPOSE:
 		zynayumi.patch.tone.detune = tone_detune + tone_transpose;
 		break;
+	case ARP_TEMPO:
+	case ARP_HOST_SYNC:
 	case ARP_BEAT_DIVISOR:
 	case ARP_BEAT_MULTIPLIER:
-		zynayumi.patch.arp.freq = to_freq(zynayumi.get_bpm(),
+		zynayumi.patch.arp.freq = to_freq(zynayumi.patch.arp.host_sync ?
+		                                  zynayumi.get_bpm() :
+		                                  zynayumi.patch.arp.tempo,
 		                                  arp_beat_divisor,
 		                                  arp_beat_multiplier);
 		break;

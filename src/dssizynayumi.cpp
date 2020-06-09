@@ -194,6 +194,10 @@ void initialise_2() {
 	               ARP_PITCH2_L - delta, ARP_PITCH2_U + delta);
 	ports.add_port(c_desc, ARP_PITCH3_NAME, i_desc | d_0,
 	               ARP_PITCH3_L - delta, ARP_PITCH3_U + delta);
+	ports.add_port(c_desc, ARP_TEMPO_NAME, r_desc | d_low,
+	               ARP_TEMPO_L, ARP_TEMPO_U);
+	ports.add_port(c_desc, ARP_HOST_SYNC_NAME, i_desc | d_1,
+	               ARP_HOST_SYNC_L - delta, ARP_HOST_SYNC_U + delta);
 	ports.add_port(c_desc, ARP_BEAT_DIVISOR_NAME, i_desc | d_low,
 	               ARP_BEAT_DIVISOR_L - delta, ARP_BEAT_DIVISOR_U + delta);
 	ports.add_port(c_desc, ARP_BEAT_MULTIPLIER_NAME, i_desc | d_1,

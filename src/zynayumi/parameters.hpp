@@ -287,6 +287,8 @@ enum ParameterIndex {
 	ARP_PITCH1,
 	ARP_PITCH2,
 	ARP_PITCH3,
+	ARP_TEMPO,
+	ARP_HOST_SYNC,
 	ARP_BEAT_DIVISOR,
 	ARP_BEAT_MULTIPLIER,
 	ARP_REPEAT,
@@ -357,6 +359,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_NAME "Arp pitch 1"
 #define ARP_PITCH2_NAME "Arp pitch 2"
 #define ARP_PITCH3_NAME "Arp pitch 3"
+#define ARP_TEMPO_NAME "Arp tempo"
+#define ARP_HOST_SYNC_NAME "Arp host sync"
 #define ARP_BEAT_DIVISOR_NAME "Arp beat divisor"
 #define ARP_BEAT_MULTIPLIER_NAME "Arp beat multiplier"
 #define ARP_REPEAT_NAME "Arp repeat"
@@ -390,6 +394,7 @@ enum ParameterIndex {
 #define SECOND "sec"
 #define SEMITONE "semitone"
 #define HERTZ "Hz"
+#define BPM "bpm"
 #define EMPTY ""
 #define EMUL_MODE_UNIT EMPTY
 #define PLAY_MODE_UNIT EMPTY
@@ -415,6 +420,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_UNIT SEMITONE
 #define ARP_PITCH2_UNIT SEMITONE
 #define ARP_PITCH3_UNIT SEMITONE
+#define ARP_TEMPO_UNIT BPM
+#define ARP_HOST_SYNC_UNIT EMPTY
 #define ARP_BEAT_DIVISOR_UNIT EMPTY
 #define ARP_BEAT_MULTIPLIER_UNIT EMPTY
 #define ARP_REPEAT_UNIT EMPTY
@@ -470,6 +477,8 @@ enum ParameterIndex {
 #define ARP_PITCH1_DFLT 0
 #define ARP_PITCH2_DFLT 0
 #define ARP_PITCH3_DFLT 0
+#define ARP_TEMPO_DFLT 120
+#define ARP_HOST_SYNC_DFLT 1
 #define ARP_BEAT_DIVISOR_DFLT 9
 #define ARP_BEAT_MULTIPLIER_DFLT 1
 #define ARP_REPEAT_DFLT 0
@@ -548,6 +557,10 @@ enum ParameterIndex {
 #define ARP_PITCH2_U 48
 #define ARP_PITCH3_L -48
 #define ARP_PITCH3_U 48
+#define ARP_TEMPO_L 30
+#define ARP_TEMPO_U 300
+#define ARP_HOST_SYNC_L 0
+#define ARP_HOST_SYNC_U 1
 #define ARP_BEAT_DIVISOR_L 1
 #define ARP_BEAT_DIVISOR_U 64
 #define ARP_BEAT_MULTIPLIER_L 1
@@ -631,6 +644,9 @@ public:
 	// Get (resp. set) normalized [0, 1] value at parameter index pi
 	float norm_float_value(ParameterIndex pi) const;
 	void set_norm_value(ParameterIndex pi, float nf);
+
+	// Call after setting changing a value
+	void update(ParameterIndex pi);
 
 	// Convert parameters into string (useful for creating presets)
 	std::string to_string(std::string indent=std::string()) const;

@@ -330,7 +330,6 @@ exposure to harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Add tempo + host parameters
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI
