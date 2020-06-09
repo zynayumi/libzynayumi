@@ -233,6 +233,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                   TONE_SPREAD_L,
 	                                                   TONE_SPREAD_U);
 
+	parameters[TONE_LEGACY_TUNING] = new BoolParameter(TONE_LEGACY_TUNING_NAME,
+	                                                   TONE_LEGACY_TUNING_UNIT,
+	                                                   &zynayumi.patch.tone.legacy_tuning,
+	                                                   TONE_LEGACY_TUNING_DFLT);
+
 	// Noise
 	parameters[NOISE_TIME] = new TanFloatParameter(NOISE_TIME_NAME,
 	                                               NOISE_TIME_UNIT,

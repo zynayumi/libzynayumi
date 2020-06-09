@@ -148,6 +148,8 @@ void initialise_2() {
 	               TONE_TRANSPOSE_L - delta, TONE_TRANSPOSE_U + delta);
 	ports.add_port(c_desc, TONE_SPREAD_NAME, r_desc | d_0,
 	               TONE_SPREAD_L, TONE_SPREAD_U);
+	ports.add_port(c_desc, TONE_LEGACY_TUNING_NAME, i_desc | d_0,
+	               TONE_LEGACY_TUNING_L - delta, TONE_LEGACY_TUNING_U + delta);
 
 	// Noise
 	ports.add_port(c_desc, NOISE_TIME_NAME, r_desc | d_0,

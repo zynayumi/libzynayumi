@@ -82,8 +82,8 @@ void Voice::update()
 	update_lfo();
 	update_arp();
 	update_final_pitch();
-	double p2p_ym = _engine->pitch2period_ym(_final_pitch);
-	ayumi_set_tone(&_engine->ay, ym_channel, p2p_ym);
+	double pym = _engine->pitch2period_ym(_final_pitch);
+	ayumi_set_tone(&_engine->ay, ym_channel, pym);
 
 	// Update level, including ring modulation
 	update_ampenv();

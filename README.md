@@ -119,6 +119,9 @@ but if it starts then it should run flawlessly.
   minus and plus the spread expressed in semintone. Ranges from 0.0 to
   0.5.
 
+- **Tone legacy tuning**: whether the pitch is perfect or follows the
+  legacy tuning.
+
 - **Noise time**: time the noise generator is played in second.
   Ranges from 0.0 to +inf.
 
@@ -300,10 +303,10 @@ This is a feature, not a bug.
 
 ### Wait, that tuning is too perfect to come from the YM2149!?
 
-Yes, I've modified ayumi so that tuning is perfect, even in high
-pitch.  I prefer it that way.  A parameter could be added that lets
-the user choose between legacy and perfect tuning.  I may not add this
-parameter soon or ever but your contribution is welcome.
+Yes, I've modified ayumi so that tuning is perfect.  To enable legacy
+tuning instead use the *Tone legacy tuning* parameter.  Using legacy
+tuning produces more glitches when combined with the ring modulator.
+This is a feature, not a bug.
 
 ### Where's the buzzer?
 
@@ -347,7 +350,6 @@ exposure to harmful sounds and protect your hearing.
   - [ ] Vibrato Delay
 - [ ] Define presets
 - [ ] Add LV2 support
-- [ ] Add parameter to choose between perfect and legacy tuning
 - [ ] Add Buzzer
 
 ## Author

@@ -259,6 +259,7 @@ enum ParameterIndex {
 	TONE_DETUNE,
 	TONE_TRANSPOSE,
 	TONE_SPREAD,
+	TONE_LEGACY_TUNING,
 
 	// Noise
 	NOISE_TIME,
@@ -341,6 +342,7 @@ enum ParameterIndex {
 #define TONE_DETUNE_NAME "Tone detune"
 #define TONE_TRANSPOSE_NAME "Tone transpose"
 #define TONE_SPREAD_NAME "Tone spread"
+#define TONE_LEGACY_TUNING_NAME "Tone legacy tuning"
 #define NOISE_TIME_NAME "Noise time"
 #define NOISE_PERIOD_NAME "Noise period"
 #define NOISE_PERIOD_ENV_ATTACK_NAME "NoisePeriodEnv attack"
@@ -402,6 +404,7 @@ enum ParameterIndex {
 #define TONE_DETUNE_UNIT SEMITONE
 #define TONE_TRANSPOSE_UNIT SEMITONE
 #define TONE_SPREAD_UNIT SEMITONE
+#define TONE_LEGACY_TUNING_UNIT EMPTY
 #define NOISE_TIME_UNIT SECOND
 #define NOISE_PERIOD_UNIT EMPTY
 #define NOISE_PERIOD_ENV_ATTACK_UNIT EMPTY
@@ -459,6 +462,7 @@ enum ParameterIndex {
 #define TONE_DETUNE_DFLT 0.0
 #define TONE_TRANSPOSE_DFLT 0
 #define TONE_SPREAD_DFLT 0.0
+#define TONE_LEGACY_TUNING_DFLT false
 #define NOISE_TIME_DFLT 0.0
 #define NOISE_PERIOD_DFLT 1
 #define NOISE_PERIOD_ENV_ATTACK_DFLT 1
@@ -478,7 +482,7 @@ enum ParameterIndex {
 #define ARP_PITCH2_DFLT 0
 #define ARP_PITCH3_DFLT 0
 #define ARP_TEMPO_DFLT 120
-#define ARP_HOST_SYNC_DFLT 1
+#define ARP_HOST_SYNC_DFLT true
 #define ARP_BEAT_DIVISOR_DFLT 9
 #define ARP_BEAT_MULTIPLIER_DFLT 1
 #define ARP_REPEAT_DFLT 0
@@ -519,6 +523,8 @@ enum ParameterIndex {
 #define TONE_TRANSPOSE_U 24
 #define TONE_SPREAD_L 0
 #define TONE_SPREAD_U 0.5
+#define TONE_LEGACY_TUNING_L 0
+#define TONE_LEGACY_TUNING_U 1
 #define NOISE_TIME_L 0.0f
 #define NOISE_TIME_L_ALT -1.0f  // In case infinity isn't supported
 #define NOISE_TIME_U std::numeric_limits<float>::infinity()

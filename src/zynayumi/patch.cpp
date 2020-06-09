@@ -26,7 +26,10 @@
 
 namespace zynayumi {
 
-Tone::Tone() : time(-1), detune(0), spread(0) {}
+Tone::Tone() : time(-1),
+               detune(0),
+               spread(0),
+               legacy_tuning(false) {}
 	
 Noise::Noise() : time(0), period(1) {}
 

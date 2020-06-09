@@ -351,7 +351,10 @@ double Engine::pitch2period_ym(double pitch) const
 	// but it works this way.
 	static const double coef1 = (clock_rate / lower_note_freq) / 16.0;
 	static const double coef2 = log(2.0) / 12.0;
-	return coef1 * exp(-pitch * coef2);
+	double pym = coef1 * exp(-pitch * coef2);
+	if (_zynayumi.patch.tone.legacy_tuning)
+		pym = std::round(pym);
+	return pym;
 }
 
 double Engine::freq2pitch(double freq) const

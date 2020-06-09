@@ -60,6 +60,8 @@ public:
 	float spread;                // Spread of detune of second
                                 // (negative) and third (positive)
                                 // voice, in semitone.
+	bool legacy_tuning;          // Whether the tuning is perfect or
+                                // legacy.
 };
 
 class Noise {
