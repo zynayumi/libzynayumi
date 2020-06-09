@@ -176,15 +176,20 @@ but if it starts then it should run flawlessly.
 - **Arp pitch3**: pitch in semitone of the third arpegio note.  Only
   active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
 
-- **Arp beat divisor**: arpegio period is measured in host beat period
-  (bpm / 60) times the fraction arp beat multiplier / arp beat
-  divisor.  Ranges from 1 to 64.  Note that the DSSI version has a
-  fixed bpm of 120.
+- **Arp tempo**: tempo in bpm considered to calculate the frequency of
+  the arpegio.  Ranges from 30 to 300.
+
+- **Arp host sync**: whether the tempo's host is used instead of *Arp
+  tempo*.  Note that the DSSI version cannot access the tempo's host
+  which remains fixed at 120 bpm.
+
+- **Arp beat divisor**: arpegio period is measured in beat period (bpm
+  / 60) times the fraction arp beat multiplier / arp beat divisor.
+  Ranges from 1 to 64.
 
 - **Arp beat multiplier**: arpegio period is measured in host beat
   period (bpm / 60) times the fraction arp beat multiplier / arp beat
-  divisor.  Ranges from 1 to 64.  Note that the DSSI version has a
-  fixed bpm of 120.
+  divisor.  Ranges from 1 to 64.
 
 - **Arp repeat**: select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
