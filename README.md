@@ -22,8 +22,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 
 * [Monstrosity by A-Lin](https://lbry.tv/@ngeiswei:d/A-Lin---Monstrosity---2020-06-09:f)
 
-If you make a song with Zynayumi please let me know so I can include
-it.
+If you make a song with Zynayumi let me know so I can include it.
 
 ## Requirements
 
