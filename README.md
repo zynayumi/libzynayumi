@@ -243,7 +243,7 @@ but if it starts then it should run flawlessly.
 
 - **Portamento time**: time in second of the portamento effect,
   constant regardless of the distance between notes.  Ranges from 0.0
-  to 5.0.
+  to 2.0.
 
 - **Gain**: gain coefficient of the output signal.  Ranges from 0.0 to
   2.0.

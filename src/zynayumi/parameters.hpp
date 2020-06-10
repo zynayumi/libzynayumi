@@ -610,7 +610,7 @@ enum ParameterIndex {
 #define LFO_DEPTH_L 0.0f
 #define LFO_DEPTH_U 12.0f
 #define PORTAMENTO_TIME_L 0.0f
-#define PORTAMENTO_TIME_U 5.0f
+#define PORTAMENTO_TIME_U 2.0f
 #define GAIN_L 0.0f
 #define GAIN_U 2.0f
 #define PAN0_L 0.0f
