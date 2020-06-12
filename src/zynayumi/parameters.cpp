@@ -497,6 +497,13 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                               RING_MOD_FIXED_VS_RELATIVE_L,
 	                                                               RING_MOD_FIXED_VS_RELATIVE_U);
 
+	parameters[RING_MOD_DEPTH] = new LinearFloatParameter(RING_MOD_DEPTH_NAME,
+	                                                      RING_MOD_DEPTH_UNIT,
+	                                                      &zynayumi.patch.ringmod.depth,
+	                                                      RING_MOD_DEPTH_DFLT,
+	                                                      RING_MOD_DEPTH_L,
+	                                                      RING_MOD_DEPTH_U);
+
 	// Pitch LFO
 	parameters[LFO_FREQ] = new LinearFloatParameter(LFO_FREQ_NAME,
 	                                                LFO_FREQ_UNIT,

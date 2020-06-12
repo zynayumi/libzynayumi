@@ -109,7 +109,8 @@ void Voice::set_note_pitch(unsigned char pi)
 	_pitch_smp_count = 0;
 }
 
-double Voice::linear_interpolate(double x1, double y1, double x2, double y2,
+double Voice::linear_interpolate(double x1, double y1,
+                                 double x2, double y2,
                                  double x)
 {
 	if (0 != (x2 - x1)) {
@@ -394,7 +395,9 @@ void Voice::update_ringmod_waveform_index()
 
 void Voice::update_ringmod_waveform_level()
 {
-	_ringmod_waveform_level = _patch->ringmod.waveform[_ringmod_waveform_index];
+	_ringmod_waveform_level =
+		linear_interpolate(0.0, (1.0 - _patch->ringmod.depth), 1.0, 1.0,
+		                   _patch->ringmod.waveform[_ringmod_waveform_index]);
 }
 
 void Voice::sync_ringmod()

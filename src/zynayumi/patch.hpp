@@ -141,14 +141,26 @@ public:
 	RingMod();
 
 	float waveform[RING_MOD_WAVEFORM_SIZE];  // Sample volume levels
+
 	bool mirror;                             // Add 8 mirroring samples
+
 	bool sync;                               // Whether ring
 	                                         // modulation is in sync
 	                                         // with YM2149 oscilator
-	float detune;                            // Relative detune in semitone
-	                                         // compared to the tone
+
+	float detune;                            // Relative detune in
+	                                         // semitone compared to
+	                                         // the tone
+
 	float fixed_freq;                        // Fixed frequency
-	float fixed_vs_relative;                 // How much fixed vs relative
+
+	float fixed_vs_relative;                 // How much fixed vs
+                                            // relative (0.0 is all
+                                            // fixed, 1.0 is all
+                                            // relative)
+
+	float depth;                             // Ring modulation
+                                            // intensity
 };
 
 /**

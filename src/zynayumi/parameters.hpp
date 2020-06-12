@@ -309,6 +309,7 @@ enum ParameterIndex {
 	RING_MOD_TRANSPOSE,
 	RING_MOD_FIXED_FREQUENCY,
 	RING_MOD_FIXED_VS_RELATIVE,
+	RING_MOD_DEPTH,
 
 	// Pitch LFO
 	LFO_FREQ,
@@ -380,6 +381,7 @@ enum ParameterIndex {
 #define RING_MOD_TRANSPOSE_NAME "RingMod transpose"
 #define RING_MOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
 #define RING_MOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
+#define RING_MOD_DEPTH_NAME "RingMod depth"
 #define LFO_FREQ_NAME "LFO freq"
 #define LFO_DELAY_NAME "LFO delay"
 #define LFO_DEPTH_NAME "LFO depth"
@@ -442,6 +444,7 @@ enum ParameterIndex {
 #define RING_MOD_TRANSPOSE_UNIT SEMITONE
 #define RING_MOD_FIXED_FREQUENCY_UNIT HERTZ
 #define RING_MOD_FIXED_VS_RELATIVE_UNIT EMPTY
+#define RING_MOD_DEPTH_UNIT EMPTY
 #define LFO_FREQ_UNIT HERTZ
 #define LFO_DELAY_UNIT SECOND
 #define LFO_DEPTH_UNIT EMPTY
@@ -500,6 +503,7 @@ enum ParameterIndex {
 #define RING_MOD_TRANSPOSE_DFLT 0
 #define RING_MOD_FIXED_FREQUENCY_DFLT 1.0
 #define RING_MOD_FIXED_VS_RELATIVE_DFLT 1.0
+#define RING_MOD_DEPTH_DFLT 1.0
 #define LFO_FREQ_DFLT 4.5
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
@@ -603,6 +607,8 @@ enum ParameterIndex {
 #define RING_MOD_FIXED_FREQUENCY_U 5000.0f
 #define RING_MOD_FIXED_VS_RELATIVE_L 0.0f
 #define RING_MOD_FIXED_VS_RELATIVE_U 1.0f
+#define RING_MOD_DEPTH_L 0.0f
+#define RING_MOD_DEPTH_U 1.0f
 #define LFO_FREQ_L 0.0f
 #define LFO_FREQ_U 20.0f
 #define LFO_DELAY_L 0.0f

@@ -236,6 +236,8 @@ void initialise_2() {
 	               RING_MOD_FIXED_FREQUENCY_L - delta, RING_MOD_FIXED_FREQUENCY_U + delta);
 	ports.add_port(c_desc, RING_MOD_FIXED_VS_RELATIVE_NAME, r_desc | d_1,
 	               RING_MOD_FIXED_VS_RELATIVE_L, RING_MOD_FIXED_VS_RELATIVE_U);
+	ports.add_port(c_desc, RING_MOD_DEPTH_NAME, r_desc | d_1,
+	               RING_MOD_DEPTH_L, RING_MOD_DEPTH_U);
 
 	// Pitch LFO
 	ports.add_port(c_desc, LFO_FREQ_NAME, r_desc | d_low,

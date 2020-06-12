@@ -229,9 +229,12 @@ but if it starts then it should run flawlessly.
 - **RingMod fixed frequency**: fixed frequency of the ring modulation.
   Ranges from 1Hz to 5000Hz.
 
-- **RingMode fixed vs relative**: How much of the ring modulation
+- **RingMode fixed vs relative**: how much of the ring modulation
   frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
   fixed) to 1.0 (completely determined by tone pitch).
+
+- **RingMod depth**: level of depth of ring modulation. Ranges from
+  0.0 (no ring modulation) to 1.0 (full ring modulation).
 
 - **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.

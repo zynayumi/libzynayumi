@@ -47,7 +47,8 @@ Arp::Arp() : pitch1(0), pitch2(0), pitch3(0),
              tempo(120), host_sync(1), freq(18.0), repeat(0) {}
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
-                     mirror(true), sync(true), detune(0) {}
+                     mirror(true), sync(true), detune(0.0),
+                     fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0) {}
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
