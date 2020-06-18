@@ -50,6 +50,10 @@ RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
                      mirror(true), sync(true), detune(0.0),
                      fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0) {}
 
+Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
+                   time(0.0),
+                   detune(0.0) {}
+
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
 Pan::Pan() : ym_channel{0.5, 0.25, 0.75} {}
@@ -97,6 +101,22 @@ std::string to_string(EmulMode em)
 		return "YM2149";
 	case EmulMode::AY8910:
 		return "AY-3-8910";
+	default:
+		return "";
+	}
+}
+
+std::string to_string(Buzzer::Shape sh)
+{
+	switch(sh) {
+	case Buzzer::Shape::DownSaw:
+		return "DownSaw";
+	case Buzzer::Shape::DownTriangle:
+		return "DownTriangle";
+	case Buzzer::Shape::UpSaw:
+		return "UpSaw";
+	case Buzzer::Shape::UpTriangle:
+		return "UpTriangle";
 	default:
 		return "";
 	}

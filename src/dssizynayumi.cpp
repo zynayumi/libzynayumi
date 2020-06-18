@@ -208,36 +208,36 @@ void initialise_2() {
 	               ARP_REPEAT_L - delta, ARP_REPEAT_U + delta);
 
 	// Ring modulation
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL1_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL1_L, RING_MOD_WAVEFORM_LEVEL1_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL2_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL2_L, RING_MOD_WAVEFORM_LEVEL2_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL3_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL3_L, RING_MOD_WAVEFORM_LEVEL3_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL4_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL4_L, RING_MOD_WAVEFORM_LEVEL4_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL5_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL5_L, RING_MOD_WAVEFORM_LEVEL5_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL6_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL6_L, RING_MOD_WAVEFORM_LEVEL6_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL7_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL7_L, RING_MOD_WAVEFORM_LEVEL7_U);
-	ports.add_port(c_desc, RING_MOD_WAVEFORM_LEVEL8_NAME, r_desc | d_1,
-	               RING_MOD_WAVEFORM_LEVEL8_L, RING_MOD_WAVEFORM_LEVEL8_U);
-	ports.add_port(c_desc, RING_MOD_MIRROR_NAME, t_desc | d_1,
-	               RING_MOD_MIRROR_L - delta, RING_MOD_MIRROR_U + delta);
-	ports.add_port(c_desc, RING_MOD_SYNC_NAME, t_desc | d_1,
-	               RING_MOD_SYNC_L - delta, RING_MOD_SYNC_U + delta);
-	ports.add_port(c_desc, RING_MOD_DETUNE_NAME, r_desc | d_0,
-	               RING_MOD_DETUNE_L, RING_MOD_DETUNE_U);
-	ports.add_port(c_desc, RING_MOD_TRANSPOSE_NAME, i_desc | d_0,
-	               RING_MOD_TRANSPOSE_L - delta, RING_MOD_TRANSPOSE_U + delta);
-	ports.add_port(c_desc, RING_MOD_FIXED_FREQUENCY_NAME, i_desc | d_1,
-	               RING_MOD_FIXED_FREQUENCY_L - delta, RING_MOD_FIXED_FREQUENCY_U + delta);
-	ports.add_port(c_desc, RING_MOD_FIXED_VS_RELATIVE_NAME, r_desc | d_1,
-	               RING_MOD_FIXED_VS_RELATIVE_L, RING_MOD_FIXED_VS_RELATIVE_U);
-	ports.add_port(c_desc, RING_MOD_DEPTH_NAME, r_desc | d_1,
-	               RING_MOD_DEPTH_L, RING_MOD_DEPTH_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL1_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL1_L, RINGMOD_WAVEFORM_LEVEL1_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL2_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL2_L, RINGMOD_WAVEFORM_LEVEL2_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL3_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL3_L, RINGMOD_WAVEFORM_LEVEL3_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL4_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL4_L, RINGMOD_WAVEFORM_LEVEL4_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL5_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL5_L, RINGMOD_WAVEFORM_LEVEL5_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL6_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL6_L, RINGMOD_WAVEFORM_LEVEL6_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL7_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL7_L, RINGMOD_WAVEFORM_LEVEL7_U);
+	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL8_NAME, r_desc | d_1,
+	               RINGMOD_WAVEFORM_LEVEL8_L, RINGMOD_WAVEFORM_LEVEL8_U);
+	ports.add_port(c_desc, RINGMOD_MIRROR_NAME, t_desc | d_1,
+	               RINGMOD_MIRROR_L - delta, RINGMOD_MIRROR_U + delta);
+	ports.add_port(c_desc, RINGMOD_SYNC_NAME, t_desc | d_1,
+	               RINGMOD_SYNC_L - delta, RINGMOD_SYNC_U + delta);
+	ports.add_port(c_desc, RINGMOD_DETUNE_NAME, r_desc | d_0,
+	               RINGMOD_DETUNE_L, RINGMOD_DETUNE_U);
+	ports.add_port(c_desc, RINGMOD_TRANSPOSE_NAME, i_desc | d_0,
+	               RINGMOD_TRANSPOSE_L - delta, RINGMOD_TRANSPOSE_U + delta);
+	ports.add_port(c_desc, RINGMOD_FIXED_FREQUENCY_NAME, i_desc | d_1,
+	               RINGMOD_FIXED_FREQUENCY_L - delta, RINGMOD_FIXED_FREQUENCY_U + delta);
+	ports.add_port(c_desc, RINGMOD_FIXED_VS_RELATIVE_NAME, r_desc | d_1,
+	               RINGMOD_FIXED_VS_RELATIVE_L, RINGMOD_FIXED_VS_RELATIVE_U);
+	ports.add_port(c_desc, RINGMOD_DEPTH_NAME, r_desc | d_1,
+	               RINGMOD_DEPTH_L, RINGMOD_DEPTH_U);
 
 	// Buzzer
 	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,

@@ -135,12 +135,12 @@ public:
  * samples mirroring the first 8. That is to obtain a smooth dephasing
  * effect when the tone is enabled.
  */
-#define RING_MOD_WAVEFORM_SIZE 8
+#define RINGMOD_WAVEFORM_SIZE 8
 class RingMod {
 public:
 	RingMod();
 
-	float waveform[RING_MOD_WAVEFORM_SIZE];  // Sample volume levels
+	float waveform[RINGMOD_WAVEFORM_SIZE];  // Sample volume levels
 
 	bool mirror;                             // Add 8 mirroring samples
 
@@ -164,6 +164,9 @@ public:
 };
 
 class Buzzer {
+public:
+	Buzzer();
+
 	enum class Shape {
 		DownSaw,                  // 8
 		DownTriangle,             // 10
@@ -233,6 +236,7 @@ public:
 	PitchEnv pitchenv;          // Pitch envelope
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
+	Buzzer buzzer;              // Buzzer
 	LFO lfo;                    // LFO
 	float port;                 // Portamento time in second per semitone
 	float gain;                 // Output gain
@@ -242,6 +246,7 @@ public:
 
 std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
+std::string to_string(Buzzer::Shape sh);
 
 } // ~namespace zynayumi
 

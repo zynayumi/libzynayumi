@@ -362,7 +362,7 @@ void Voice::update_ringmod_pitch()
 void Voice::update_ringmod_smp_period()
 {
 	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch)
-		/ (RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
+		/ (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
 }
 
 void Voice::update_ringmod_smp_count()
@@ -377,7 +377,7 @@ void Voice::update_ringmod_smp_count()
 
 void Voice::update_ringmod_waveform_index()
 {
-	static unsigned last_index = RING_MOD_WAVEFORM_SIZE - 1;
+	static unsigned last_index = RINGMOD_WAVEFORM_SIZE - 1;
 	if (_ringmod_waveform_index == 0 and _ringmod_back) {
 		_ringmod_back = false;
 	} else if (_ringmod_waveform_index == last_index and _patch->ringmod.mirror
@@ -420,7 +420,7 @@ void Voice::sync_ringmod()
 
 	// Whole ringmod period
 	double wrp = _ringmod_smp_period
-		* RING_MOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
+		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
 
 	// Update ringmod count and index to be in sync
 	_ringmod_smp_count = ratio * wrp;
