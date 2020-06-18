@@ -504,6 +504,33 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                      RING_MOD_DEPTH_L,
 	                                                      RING_MOD_DEPTH_U);
 
+	// Buzzer
+	parameters[BUZZER_SHAPE] = EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
+	                                                        BUZZER_SHAPE_UNIT,
+	                                                        &zynayumi.patch.buzzer.shape,
+	                                                        BUZZER_SHAPE_DFLT);
+
+	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
+	                                                BUZZER_TIME_UNIT,
+	                                                &zynayumi.patch.buzzer.time,
+	                                                BUZZER_TIME_DFLT,
+	                                                BUZZER_TIME_L,
+	                                                BUZZER_TIME_U);
+
+	parameters[BUZZER_DETUNE] = new TanFloatParameter(BUZZER_DETUNE_NAME,
+	                                                  BUZZER_DETUNE_UNIT,
+	                                                  &buzzer_detune,
+	                                                  BUZZER_DETUNE_DFLT,
+	                                                  BUZZER_DETUNE_L,
+	                                                  BUZZER_DETUNE_U);
+
+	parameters[BUZZER_TRANSPOSE] = new IntParameter(BUZZER_TRANSPOSE_NAME,
+	                                                BUZZER_TRANSPOSE_UNIT,
+	                                                &buzzer_transpose,
+	                                                BUZZER_TRANSPOSE_DFLT,
+	                                                BUZZER_TRANSPOSE_L,
+	                                                BUZZER_TRANSPOSE_U);
+
 	// Pitch LFO
 	parameters[LFO_FREQ] = new LinearFloatParameter(LFO_FREQ_NAME,
 	                                                LFO_FREQ_UNIT,
@@ -665,6 +692,10 @@ void Parameters::update(ParameterIndex pi)
 	case RING_MOD_DETUNE:
 	case RING_MOD_TRANSPOSE:
 		zynayumi.patch.ringmod.detune = ringmod_detune + ringmod_transpose;
+		break;
+	case BUZZER_DETUNE:
+	case BUZZER_TRANSPOSE:
+		zynayumi.patch.buzzer.detune = buzzer_detune + buzzer_transpose;
 		break;
 	default:
 		break;

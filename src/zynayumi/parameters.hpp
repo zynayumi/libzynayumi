@@ -311,6 +311,12 @@ enum ParameterIndex {
 	RING_MOD_FIXED_VS_RELATIVE,
 	RING_MOD_DEPTH,
 
+	// Buzzer
+	BUZZER_SHAPE,
+	BUZZER_TIME,
+	BUZZER_DETUNE,
+	BUZZER_TRANSPOSE,
+
 	// Pitch LFO
 	LFO_FREQ,
 	LFO_DELAY,
@@ -382,6 +388,10 @@ enum ParameterIndex {
 #define RING_MOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
 #define RING_MOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
 #define RING_MOD_DEPTH_NAME "RingMod depth"
+#define BUZZER_SHAPE "Buzzer shape"
+#define BUZZER_TIME "Buzzer time"
+#define BUZZER_DETUNE "Buzzer detune"
+#define BUZZER_TRANSPOSE "Buzzer transpose"	
 #define LFO_FREQ_NAME "LFO freq"
 #define LFO_DELAY_NAME "LFO delay"
 #define LFO_DEPTH_NAME "LFO depth"
@@ -445,6 +455,10 @@ enum ParameterIndex {
 #define RING_MOD_FIXED_FREQUENCY_UNIT HERTZ
 #define RING_MOD_FIXED_VS_RELATIVE_UNIT EMPTY
 #define RING_MOD_DEPTH_UNIT EMPTY
+#define BUZZER_SHAPE_UNIT EMPTY
+#define BUZZER_TIME_UNIT SECOND
+#define BUZZER_DETUNE_UNIT SEMITONE
+#define BUZZER_TRANSPOSE_UNIT SEMITONE
 #define LFO_FREQ_UNIT HERTZ
 #define LFO_DELAY_UNIT SECOND
 #define LFO_DEPTH_UNIT EMPTY
@@ -504,6 +518,10 @@ enum ParameterIndex {
 #define RING_MOD_FIXED_FREQUENCY_DFLT 1.0
 #define RING_MOD_FIXED_VS_RELATIVE_DFLT 1.0
 #define RING_MOD_DEPTH_DFLT 1.0
+#define BUZZER_SHAPE_DFLT Buzzer::Shape::DownSaw
+#define BUZZER_TIME_DFLT 0.0
+#define BUZZER_DETUNE_DFLT 0.0
+#define BUZZER_TRANSPOSE_DFLT 0
 #define LFO_FREQ_DFLT 4.5
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
@@ -523,8 +541,8 @@ enum ParameterIndex {
 #define TONE_TIME_U_ALT 10.0f   // In case infinity isn't supported
 #define TONE_DETUNE_L -0.5f
 #define TONE_DETUNE_U 0.5f
-#define TONE_TRANSPOSE_L -24
-#define TONE_TRANSPOSE_U 24
+#define TONE_TRANSPOSE_L -36
+#define TONE_TRANSPOSE_U 36
 #define TONE_SPREAD_L 0
 #define TONE_SPREAD_U 0.5
 #define TONE_LEGACY_TUNING_L 0
@@ -601,14 +619,22 @@ enum ParameterIndex {
 #define RING_MOD_SYNC_U 1.0f
 #define RING_MOD_DETUNE_L -0.5f
 #define RING_MOD_DETUNE_U 0.5f
-#define RING_MOD_TRANSPOSE_L -24
-#define RING_MOD_TRANSPOSE_U 24
+#define RING_MOD_TRANSPOSE_L -36
+#define RING_MOD_TRANSPOSE_U 36
 #define RING_MOD_FIXED_FREQUENCY_L 1.0f
 #define RING_MOD_FIXED_FREQUENCY_U 5000.0f
 #define RING_MOD_FIXED_VS_RELATIVE_L 0.0f
 #define RING_MOD_FIXED_VS_RELATIVE_U 1.0f
 #define RING_MOD_DEPTH_L 0.0f
 #define RING_MOD_DEPTH_U 1.0f
+#define BUZZER_TIME_L 0.0f
+#define BUZZER_TIME_L_ALT -1.0f   // In case infinity isn't supported
+#define BUZZER_TIME_U std::numeric_limits<float>::infinity()
+#define BUZZER_TIME_U_ALT 10.0f   // In case infinity isn't supported
+#define BUZZER_DETUNE_L -0.5f
+#define BUZZER_DETUNE_U 0.5f
+#define BUZZER_TRANSPOSE_L -36
+#define BUZZER_TRANSPOSE_U 36
 #define LFO_FREQ_L 0.0f
 #define LFO_FREQ_U 20.0f
 #define LFO_DELAY_L 0.0f
@@ -676,6 +702,8 @@ public:
 	int arp_beat_multiplier;
 	float ringmod_detune;
 	int ringmod_transpose;
+	float buzzer_detune;
+	int buzzer_transpose;
 };
 
 } // ~namespace zynayumi

@@ -239,6 +239,16 @@ void initialise_2() {
 	ports.add_port(c_desc, RING_MOD_DEPTH_NAME, r_desc | d_1,
 	               RING_MOD_DEPTH_L, RING_MOD_DEPTH_U);
 
+	// Buzzer
+	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,
+	               -delta, (double)Buzzer::Shape::Count -1.0 + delta);
+	ports.add_port(c_desc, BUZZER_TIME_NAME, r_desc | d_0,
+	               BUZZER_TIME_L_ALT, BUZZER_TIME_U_ALT);
+	ports.add_port(c_desc, BUZZER_DETUNE_NAME, r_desc | d_0,
+	               BUZZER_DETUNE_L, BUZZER_DETUNE_U);
+	ports.add_port(c_desc, BUZZER_TRANSPOSE_NAME, i_desc | d_0,
+	               BUZZER_TRANSPOSE_L - delta, BUZZER_TRANSPOSE_U + delta);
+	
 	// Pitch LFO
 	ports.add_port(c_desc, LFO_FREQ_NAME, r_desc | d_low,
 	               LFO_FREQ_L, LFO_FREQ_U);

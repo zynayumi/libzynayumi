@@ -11,10 +11,10 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Vibrato
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
+- [ ] Buzzer
 - [X] VST, DSSI
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
       Time, Volume, Pan, Expression and Sustain).
-- [ ] Buzzer
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] GUI.  Please help if you want one, I am no GUI guy.
 
@@ -223,8 +223,8 @@ but if it starts then it should run flawlessly.
   close to, zero.  Ranges from -0.5 to +0.5.
 
 - **RingMod transpose**: transposition in semitone of the ring
-  modulation waveform relative the square waveform.  Ranges from -24
-  to +24.
+  modulation waveform relative the square waveform.  Ranges from -36
+  to +36.
 
 - **RingMod fixed frequency**: fixed frequency of the ring modulation.
   Ranges from 1Hz to 5000Hz.
@@ -317,11 +317,11 @@ tuning instead use the *Tone legacy tuning* parameter.  Using legacy
 tuning produces more glitches when combined with the ring modulator.
 This is a feature, not a bug.
 
-### Where's the buzzer?
+### Why does the buzzer disable the envelop?
 
-The buzzer is not implemented yet, I tend to prefer ring modulation
-which is more versatile so I may not add it soon or ever but your
-contribution is welcome.
+Because the buzzer was originally designed to be an envelop, until
+people realized that it could be used as an oscillator and was
+popularly rebranded as "the buzzer".
 
 ### Why can't I hear any difference between the YM2149 and AY-3-8910?
 
@@ -338,15 +338,16 @@ if you have one.
 ### Why do I hear a ringing in my ears?
 
 Be careful, chip sounds tend to be rich in harmonics, if you expose
-yourself for too long especially at high volume you risk to loose your
-hearing permanently.
+yourself for too long at high volume you risk to loose your hearing
+permanently.
 
 Take plenty of sonic rest.  Use low pass filters, ear plugs, work at
-low volume, any means necessary to reduce your exposure to harmful
-sounds and protect your hearing.
+low volume, take any means necessary to reduce your exposure to
+harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Implement Buzzer
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI
@@ -359,7 +360,6 @@ sounds and protect your hearing.
   - [ ] Vibrato Delay
 - [ ] Define presets
 - [ ] Add LV2 support
-- [ ] Add Buzzer
 
 ## Author
 

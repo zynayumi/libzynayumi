@@ -163,6 +163,22 @@ public:
                                             // intensity
 };
 
+class Buzzer {
+	enum class Shape {
+		DownSaw,                  // 8
+		DownTriangle,             // 10
+		UpSaw,                    // 12
+		UpTriangle,               // 14
+
+		Count
+	};
+
+	Shape shape;                 // Buzzer shape
+	float time;                  // Buzzer duration in second, inf if
+                                // negative.
+	float detune;                // Detune in semitone.
+};
+
 /**
  * Pitch LFO
  */
