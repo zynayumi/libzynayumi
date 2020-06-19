@@ -47,11 +47,13 @@ Engine::Engine(const Zynayumi& ref)
 	  // According to wikipedia
 	  // https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 the
 	  // clock rate should be 4MHz for the AY-3-8910 and 8MHz for the
-	  // YM2149. However, it seems that ayumi only supports up to 2MHz,
-	  // and in http://sovietov.com/app/ayumi/ayumi.html the possible
-	  // clock rates are 1.75MHz to 2MHz. Using higher clock rates make
-	  // ayumi generate terrible noise, so 2MHz is set and fixed for
-	  // now.
+	  // YM2149.  However, it seems that ayumi only supports up to
+	  // 2MHz, and in http://sovietov.com/app/ayumi/ayumi.html the
+	  // possible clock rates are 1.75MHz to 2MHz.  Using higher clock
+	  // rates make ayumi generate terrible noise, so 2MHz is set and
+	  // fixed for now.  It should also be noted that in
+	  // http://users.rcn.com/carlott/ay3-8910.pdf they consistently
+	  // give 2MHz as example of clock rate.
 	  clock_rate(2000000),
 	  sample_rate(44100),        // Nornally redefined by the host
 	  bpm(120),                  // Normally redefined by the host
@@ -345,16 +347,26 @@ std::string Engine::to_string(const std::string& indent) const
 	return ss.str();
 }
 
-double Engine::pitch2period_ym(double pitch) const
+double Engine::pitch2toneperiod(double pitch) const
 {
-	// We need to divide coef1 by 16.0. I have no explanation for it,
-	// but it works this way.
+	// We need to divide coef1 by 16.0, as explained in
+	// http://ym2149.com/ym2149.pdf page 5.
 	static const double coef1 = (clock_rate / lower_note_freq) / 16.0;
 	static const double coef2 = log(2.0) / 12.0;
 	double pym = coef1 * exp(-pitch * coef2);
 	if (_zynayumi.patch.tone.legacy_tuning)
 		pym = std::round(pym);
 	return pym;
+}
+
+int Engine::pitch2envperiod(double pitch) const
+{
+	// We need to divide coef1 by 256.0, as explained in
+	// http://ym2149.com/ym2149.pdf page 7.
+	static const double coef1 = (clock_rate / lower_note_freq) / 256.0;
+	static const double coef2 = log(2.0) / 12.0;
+	double pym = coef1 * exp(-pitch * coef2);
+	return (int)std::round(pym);
 }
 
 double Engine::freq2pitch(double freq) const

@@ -155,7 +155,8 @@ public:
 	// debugging.
 	std::string to_string(const std::string& indent=std::string("  ")) const;
 
-	double pitch2period_ym(double pitch) const;
+	double pitch2toneperiod(double pitch) const;
+	int pitch2envperiod(double pitch) const;
 	double freq2pitch(double freq) const;
 	double smp2sec(unsigned long long smp_count) const;
 

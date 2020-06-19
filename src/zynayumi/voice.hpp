@@ -82,6 +82,7 @@ private:
 
 	bool _tone_off;                    // True iff the tone is off
 	bool _noise_off;                   // True iff the noise is off
+	bool _buzzer_off;                  // True iff the buzzer is off
 
 	int _noise_period;                 // Final noise period, after
 	                                   // account for noise period
@@ -128,6 +129,8 @@ private:
 	double _ringmod_smp_period;        // Number of samples to make an
 	                                   // entire cycle
 
+	double _buzzer_pitch;              // Pitch of the buzzer
+
 	double _actual_sustain_level;
 
 	bool _first_update;
@@ -139,6 +142,7 @@ private:
 	double ym_channel_to_spread() const;
 
 	void update_pan();
+	void update_tone();
 	void update_tone_off();
 	void update_noise_off();
 	void update_noise_period();
@@ -155,6 +159,10 @@ private:
 	void update_ringmod_waveform_index();
 	void update_ringmod_waveform_level();
 	void sync_ringmod();
+	void update_buzzer();
+	void update_buzzer_off();
+	void update_buzzer_pitch();
+	void update_buzzer_shape();
 	void update_final_level();
 };
 

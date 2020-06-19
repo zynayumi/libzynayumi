@@ -11,7 +11,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Vibrato
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
-- [ ] Buzzer
+- [X] Buzzer
 - [X] VST, DSSI
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
       Time, Volume, Pan, Expression and Sustain).
@@ -319,9 +319,9 @@ This is a feature, not a bug.
 
 ### Why does the buzzer disable the envelop?
 
-Because the buzzer was originally designed to be an envelop, until
-people realized that it could be used as an oscillator and was
-popularly rebranded as "the buzzer".
+Because the buzzer was originally designed to be an envelop, even
+though it is typically used as an oscillator, as is the case here.  To
+avoid disabling the envelop you may use the ring modulator instead.
 
 ### Why can't I hear any difference between the YM2149 and AY-3-8910?
 
@@ -347,7 +347,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Implement Buzzer
+- [ ] Add sync tone + ringmod phase parameters
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI

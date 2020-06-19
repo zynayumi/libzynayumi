@@ -72,9 +72,10 @@ void Voice::update()
 	// Update tone and noise
 	update_tone_off();
 	update_noise_off();
+	update_buzzer_off();
 	update_noise_period();
 	ayumi_set_noise(&_engine->ay, _noise_period);
-	ayumi_set_mixer(&_engine->ay, ym_channel, _tone_off, _noise_off, 0);
+	ayumi_set_mixer(&_engine->ay, ym_channel, _tone_off, _noise_off, _buzzer_off);
 
 	// Update pitch
 	update_pitchenv();
@@ -82,8 +83,7 @@ void Voice::update()
 	update_lfo();
 	update_arp();
 	update_final_pitch();
-	double pym = _engine->pitch2period_ym(_final_pitch);
-	ayumi_set_tone(&_engine->ay, ym_channel, pym);
+	update_tone();
 
 	// Update level, including ring modulation
 	update_ampenv();
@@ -96,6 +96,9 @@ void Voice::update()
 	update_ringmod();
 	update_final_level();
 	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * 15));
+
+	// TODO: no need to update level if the buzzer is enabled
+	update_buzzer();
 
 	// Increment sample count since voice on or pitch change
 	_on_smp_count++;
@@ -135,6 +138,12 @@ double Voice::ym_channel_to_spread() const
 void Voice::update_pan()
 {
 	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
+}
+
+void Voice::update_tone()
+{
+	double tp = _engine->pitch2toneperiod(_final_pitch);
+	ayumi_set_tone(&_engine->ay, ym_channel, tp);
 }
 
 void Voice::update_tone_off()
@@ -361,7 +370,7 @@ void Voice::update_ringmod_pitch()
 
 void Voice::update_ringmod_smp_period()
 {
-	_ringmod_smp_period = 2 * _engine->pitch2period_ym(_ringmod_pitch)
+	_ringmod_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch)
 		/ (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
 }
 
@@ -424,6 +433,47 @@ void Voice::sync_ringmod()
 
 	// Update ringmod count and index to be in sync
 	_ringmod_smp_count = ratio * wrp;
+}
+
+void Voice::update_buzzer()
+{
+	update_buzzer_shape();              // TODO: only set when changed
+	update_buzzer_pitch();
+	int ep = _engine->pitch2toneperiod(_buzzer_pitch);
+	ayumi_set_envelope(&_engine->ay, ep);
+}
+
+void Voice::update_buzzer_off()
+{
+	_buzzer_off = 0 <= _patch->buzzer.time ? _patch->buzzer.time < on_time : false;
+}
+
+void Voice::update_buzzer_pitch()
+{
+	_buzzer_pitch = _patch->buzzer.detune + _final_pitch;
+}
+
+void Voice::update_buzzer_shape()
+{
+	int ym_shape = 0;
+	switch(_patch->buzzer.shape) {
+	case Buzzer::Shape::DownSaw:
+		ym_shape = 8;
+		break;
+	case Buzzer::Shape::DownTriangle:
+		ym_shape = 10;
+		break;
+	case Buzzer::Shape::UpSaw:
+		ym_shape = 12;
+		break;
+	case Buzzer::Shape::UpTriangle:
+		ym_shape = 14;
+		break;
+	default:
+		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+		break;
+	}
+	ayumi_set_envelope_shape(&_engine->ay, ym_shape);
 }
 
 void Voice::update_final_level()
