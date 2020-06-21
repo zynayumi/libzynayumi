@@ -182,6 +182,11 @@ void Voice::update_port()
 		 linear_interpolate(0, pitch_diff, end_time, 0, pitch_time)
 		 : 0.0);
 	_engine->last_pitch = _relative_port_pitch + _initial_pitch;
+
+	// Make sure that increasing the portamento time once it's over
+	// doesn't retrigger it
+	if (end_time <= pitch_time)
+		_engine->previous_pitch = _engine->last_pitch;
 }
 
 void Voice::update_lfo()
