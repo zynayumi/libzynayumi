@@ -260,6 +260,8 @@ void initialise_2() {
 	// Portamento
 	ports.add_port(c_desc, PORTAMENTO_TIME_NAME, r_desc | d_0,
 	               PORTAMENTO_TIME_L, PORTAMENTO_TIME_U);
+	ports.add_port(c_desc, PORTAMENTO_SMOOTHNESS_NAME, r_desc | d_1,
+	               PORTAMENTO_SMOOTHNESS_L, PORTAMENTO_SMOOTHNESS_U);
 
 	// Gain
 	ports.add_port(c_desc, GAIN_NAME, r_desc | d_1, GAIN_L, GAIN_U);
