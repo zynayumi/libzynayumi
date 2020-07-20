@@ -176,7 +176,8 @@ void Voice::update_pitchenv()
 void Voice::update_port()
 {
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
-	double end_time = _patch->port + _engine->portamento_time;
+	double end_time = _patch->portamento.time + _engine->portamento_time;
+	// NEXT: support _patch->portamento.smoothness
 	_relative_port_pitch =
 		(0 != pitch_diff and pitch_time < end_time ?
 		 linear_interpolate(0, pitch_diff, end_time, 0, pitch_time)

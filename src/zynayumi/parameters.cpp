@@ -556,10 +556,17 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Portamento
 	parameters[PORTAMENTO_TIME] = new TanFloatParameter(PORTAMENTO_TIME_NAME,
 	                                                    PORTAMENTO_TIME_UNIT,
-	                                                    &zynayumi.patch.port,
+	                                                    &zynayumi.patch.portamento.time,
 	                                                    PORTAMENTO_TIME_DFLT,
 	                                                    PORTAMENTO_TIME_L,
 	                                                    PORTAMENTO_TIME_U);
+
+	parameters[PORTAMENTO_SMOOTHNESS] = new LinearFloatParameter(PORTAMENTO_SMOOTHNESS_NAME,
+	                                                             PORTAMENTO_SMOOTHNESS_UNIT,
+	                                                             &zynayumi.patch.portamento.smoothness,
+	                                                             PORTAMENTO_SMOOTHNESS_DFLT,
+	                                                             PORTAMENTO_SMOOTHNESS_L,
+	                                                             PORTAMENTO_SMOOTHNESS_U);
 
 	// Gain
 	parameters[GAIN] = new LinearFloatParameter(GAIN_NAME,

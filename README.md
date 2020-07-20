@@ -236,6 +236,8 @@ but if it starts then it should run flawlessly.
 - **RingMod depth**: level of depth of ring modulation. Ranges from
   0.0 (no ring modulation) to 1.0 (full ring modulation).
 
+- **Buzzer shape**: NEXT
+
 - **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.
 
@@ -247,6 +249,10 @@ but if it starts then it should run flawlessly.
 - **Portamento time**: time in second of the portamento effect,
   constant regardless of the distance between notes.  Ranges from 0.0
   to 2.0.
+
+- **Portamento smoothness**: determine how linear vs sigmoidal the
+  portamento pitch curve is.  Ranges from 0.0 (linear) to 1.0
+  (sigmoidal).
 
 - **Gain**: gain coefficient of the output signal.  Ranges from 0.0 to
   2.0.
@@ -347,7 +353,11 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Add ringmod env sensitivity parameter
+- [ ] Add amp env sensitivity parameter
 - [ ] Add sync tone + ringmod phase parameters
+- [ ] Add LFO shape parameter
+- [ ] Add sigmoidal portamento
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI

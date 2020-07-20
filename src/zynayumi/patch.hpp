@@ -194,6 +194,17 @@ public:
 	float depth;                // LFO depth in semitone
 };
 
+/**
+ * Portamento
+ */
+class Portamento {
+public:
+	Portamento();
+
+	float time;
+	float smoothness;
+};
+
 class Pan {
 public:
 	Pan();
@@ -238,7 +249,7 @@ public:
 	RingMod ringmod;            // Ring modulation
 	Buzzer buzzer;              // Buzzer
 	LFO lfo;                    // LFO
-	float port;                 // Portamento time in second per semitone
+	Portamento portamento;      // Portamento
 	float gain;                 // Output gain
 	Pan pan;                    // Channels panning
 	Control control;            // Pitchwheel, velocity sensitivity, etc

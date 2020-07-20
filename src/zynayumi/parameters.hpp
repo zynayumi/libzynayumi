@@ -255,6 +255,8 @@ enum ParameterIndex {
 	PLAY_MODE,
 
 	// Tone
+	TONE_PHASE,                  // NEXT
+	TONE_SYNC,                   // NEXT
 	TONE_TIME,
 	TONE_DETUNE,
 	TONE_TRANSPOSE,
@@ -303,6 +305,7 @@ enum ParameterIndex {
 	RINGMOD_WAVEFORM_LEVEL6,
 	RINGMOD_WAVEFORM_LEVEL7,
 	RINGMOD_WAVEFORM_LEVEL8,
+	RINGMOD_PHASE,               // NEXT
 	RINGMOD_MIRROR,
 	RINGMOD_SYNC,
 	RINGMOD_DETUNE,
@@ -313,6 +316,8 @@ enum ParameterIndex {
 
 	// Buzzer
 	BUZZER_SHAPE,
+	BUZZER_PHASE,                // NEXT
+	BUZZER_SYNC,                 // NEXT
 	BUZZER_TIME,
 	BUZZER_DETUNE,
 	BUZZER_TRANSPOSE,
@@ -324,6 +329,7 @@ enum ParameterIndex {
 
 	// Portamento time
 	PORTAMENTO_TIME,
+	PORTAMENTO_SMOOTHNESS,       // NEXT
 
 	// Gain
 	GAIN,
@@ -396,6 +402,7 @@ enum ParameterIndex {
 #define LFO_DELAY_NAME "LFO delay"
 #define LFO_DEPTH_NAME "LFO depth"
 #define PORTAMENTO_TIME_NAME "Portamento time"
+#define PORTAMENTO_SMOOTHNESS_NAME "Portamento smoothness"
 #define GAIN_NAME "Gain"
 #define PAN0_NAME "Pan 1"
 #define PAN1_NAME "Pan 2"
@@ -463,6 +470,7 @@ enum ParameterIndex {
 #define LFO_DELAY_UNIT SECOND
 #define LFO_DEPTH_UNIT EMPTY
 #define PORTAMENTO_TIME_UNIT SECOND
+#define PORTAMENTO_SMOOTHNESS_UNIT EMPTY
 #define GAIN_UNIT EMPTY
 #define PAN0_UNIT EMPTY
 #define PAN1_UNIT EMPTY
@@ -526,6 +534,7 @@ enum ParameterIndex {
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
 #define PORTAMENTO_TIME_DFLT 0.0
+#define PORTAMENTO_SMOOTHNESS_DFLT 1.0
 #define GAIN_DFLT 1.0
 #define PAN0_DFLT 0.5
 #define PAN1_DFLT 0.25
@@ -643,6 +652,8 @@ enum ParameterIndex {
 #define LFO_DEPTH_U 12.0f
 #define PORTAMENTO_TIME_L 0.0f
 #define PORTAMENTO_TIME_U 2.0f
+#define PORTAMENTO_SMOOTHNESS_L 0.0f
+#define PORTAMENTO_SMOOTHNESS_U 1.0f
 #define GAIN_L 0.0f
 #define GAIN_U 2.0f
 #define PAN0_L 0.0f

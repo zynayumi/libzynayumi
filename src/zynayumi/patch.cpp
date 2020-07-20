@@ -56,6 +56,8 @@ Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
 
 LFO::LFO() : freq(1), delay(0), depth(0) {}
 
+Portamento::Portamento() : time(0.0), smoothness(1.0) {}
+
 Pan::Pan() : ym_channel{0.5, 0.25, 0.75} {}
 
 Control::Control() : pitchwheel(2),
@@ -65,7 +67,7 @@ Control::Control() : pitchwheel(2),
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
                  playmode(PlayMode::Mono),
-                 port(0), gain(1)
+                 gain(1)
 {}
 
 std::string to_string(PlayMode pm)
