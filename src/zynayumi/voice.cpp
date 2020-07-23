@@ -125,6 +125,39 @@ double Voice::linear_interpolate(double x1, double y1,
 	}
 }
 
+double Voice::logistic_interpolate(double x1, double y1,
+                                   double x2, double y2,
+                                   double x, double scale)
+{
+	// mu is the inflection point on the x-axis
+	double mu = (x2 - x1) / 2.0;
+
+	// We resolve the following equations, by adding and subtracting
+	//
+	// y1 = b + a / (1.0 + exp(-(x1 - mu) / scale))
+	// y2 = b + a / (1.0 + exp(-(x2 - mu) / scale))
+	//
+	// or alternatively by using maxima with the command
+	//
+	// solve([y1 = b + a / (1.0 + exp(-(x1 - mu) / scale)), y2 = b + a / (1.0 + exp(-(x2 - mu) / scale))], [a, b]);
+	//
+	// to obtain
+	//
+	// a = - (e1 * (-e2 - 1) * y2 + (-e2 - 1) * y2 + (e1 * (e2 + 1) + e2 + 1) * y1) / (e1 - e2)
+	// b = ((-e2 - 1) * y2 + (e1 + 1) * y1) / (e1 - e2)
+	//
+	// with
+	//
+	// e1 = exp((mu - x1) / scale)
+	// e2 = exp((mu - x2) / scale)
+	double e1 = exp((mu - x1) / scale);
+	double e2 = exp((mu - x2) / scale);
+	double a = - (e1 * (-e2 - 1) * y2 + (-e2 - 1) * y2 + (e1 * (e2 + 1) + e2 + 1) * y1) / (e1 - e2);
+	double b = ((-e2 - 1) * y2 + (e1 + 1) * y1) / (e1 - e2);
+
+	return b + a / (1.0 + exp(-(x - mu) / scale));
+}
+
 double Voice::ym_channel_to_spread() const
 {
 	switch(ym_channel) {
@@ -177,15 +210,24 @@ void Voice::update_port()
 {
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
 	double end_time = _patch->portamento.time + _engine->portamento_time;
-	// NEXT: support _patch->portamento.smoothness
-	_relative_port_pitch =
-		(0 != pitch_diff and pitch_time < end_time ?
-		 linear_interpolate(0, pitch_diff, end_time, 0, pitch_time)
-		 : 0.0);
-	_engine->last_pitch = _relative_port_pitch + _initial_pitch;
 
-	// Make sure that increasing the portamento time once it's over
-	// doesn't retrigger it
+	if (0.0 < end_time) {
+		const double scale_L = 0.1;
+		const double scale_U = 100;
+		double scale = end_time *
+			linear_interpolate(0.0, scale_U, 1.0, scale_L,
+			                   _patch->portamento.smoothness);
+		_relative_port_pitch =
+			(0 != pitch_diff and pitch_time < end_time ?
+			 logistic_interpolate(0, pitch_diff, end_time, 0, pitch_time, scale)
+			 : 0.0);
+		_engine->last_pitch = _relative_port_pitch + _initial_pitch;
+	} else {
+		_engine->last_pitch = _initial_pitch;
+	}
+
+	// Make sure that increasing the portamento time once over doesn't
+	// retrigger it
 	if (end_time <= pitch_time)
 		_engine->previous_pitch = _engine->last_pitch;
 }

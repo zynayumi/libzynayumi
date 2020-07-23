@@ -329,7 +329,7 @@ enum ParameterIndex {
 
 	// Portamento time
 	PORTAMENTO_TIME,
-	PORTAMENTO_SMOOTHNESS,       // NEXT
+	PORTAMENTO_SMOOTHNESS,
 
 	// Gain
 	GAIN,

@@ -357,7 +357,6 @@ harmful sounds and protect your hearing.
 - [ ] Add amp env sensitivity parameter
 - [ ] Add sync tone + ringmod phase parameters
 - [ ] Add LFO shape parameter
-- [ ] Add sigmoidal portamento
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI
