@@ -269,68 +269,75 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                          NOISE_PERIOD_ENV_TIME_U);
 
 	// Amplitude envelope
-	parameters[AMP_ENV_ATTACK_TIME] = new TanFloatParameter(AMP_ENV_ATTACK_TIME_NAME,
-	                                                        AMP_ENV_ATTACK_TIME_UNIT,
-	                                                        &zynayumi.patch.ampenv.attack_time,
-	                                                        AMP_ENV_ATTACK_TIME_DFLT,
-	                                                        AMP_ENV_ATTACK_TIME_L,
-	                                                        AMP_ENV_ATTACK_TIME_U);
+	parameters[ENV_ATTACK_TIME] = new TanFloatParameter(ENV_ATTACK_TIME_NAME,
+	                                                    ENV_ATTACK_TIME_UNIT,
+	                                                    &zynayumi.patch.env.attack_time,
+	                                                    ENV_ATTACK_TIME_DFLT,
+	                                                    ENV_ATTACK_TIME_L,
+	                                                    ENV_ATTACK_TIME_U);
 
-	parameters[AMP_ENV_HOLD1_LEVEL] = new LinearFloatParameter(AMP_ENV_HOLD1_LEVEL_NAME,
-	                                                           AMP_ENV_HOLD1_LEVEL_UNIT,
-	                                                           &zynayumi.patch.ampenv.hold1_level,
-	                                                           AMP_ENV_HOLD1_LEVEL_DFLT,
-	                                                           AMP_ENV_HOLD1_LEVEL_L,
-	                                                           AMP_ENV_HOLD1_LEVEL_U);
+	parameters[ENV_HOLD1_LEVEL] = new LinearFloatParameter(ENV_HOLD1_LEVEL_NAME,
+	                                                       ENV_HOLD1_LEVEL_UNIT,
+	                                                       &zynayumi.patch.env.hold1_level,
+	                                                       ENV_HOLD1_LEVEL_DFLT,
+	                                                       ENV_HOLD1_LEVEL_L,
+	                                                       ENV_HOLD1_LEVEL_U);
 
-	parameters[AMP_ENV_INTER1_TIME] = new TanFloatParameter(AMP_ENV_INTER1_TIME_NAME,
-	                                                        AMP_ENV_INTER1_TIME_UNIT,
-	                                                        &zynayumi.patch.ampenv.inter1_time,
-	                                                        AMP_ENV_INTER1_TIME_DFLT,
-	                                                        AMP_ENV_INTER1_TIME_L,
-	                                                        AMP_ENV_INTER1_TIME_U);
+	parameters[ENV_INTER1_TIME] = new TanFloatParameter(ENV_INTER1_TIME_NAME,
+	                                                    ENV_INTER1_TIME_UNIT,
+	                                                    &zynayumi.patch.env.inter1_time,
+	                                                    ENV_INTER1_TIME_DFLT,
+	                                                    ENV_INTER1_TIME_L,
+	                                                    ENV_INTER1_TIME_U);
 
-	parameters[AMP_ENV_HOLD2_LEVEL] = new LinearFloatParameter(AMP_ENV_HOLD2_LEVEL_NAME,
-	                                                           AMP_ENV_HOLD2_LEVEL_UNIT,
-	                                                           &zynayumi.patch.ampenv.hold2_level,
-	                                                           AMP_ENV_HOLD2_LEVEL_DFLT,
-	                                                           AMP_ENV_HOLD2_LEVEL_L,
-	                                                           AMP_ENV_HOLD2_LEVEL_U);
+	parameters[ENV_HOLD2_LEVEL] = new LinearFloatParameter(ENV_HOLD2_LEVEL_NAME,
+	                                                       ENV_HOLD2_LEVEL_UNIT,
+	                                                       &zynayumi.patch.env.hold2_level,
+	                                                       ENV_HOLD2_LEVEL_DFLT,
+	                                                       ENV_HOLD2_LEVEL_L,
+	                                                       ENV_HOLD2_LEVEL_U);
 
-	parameters[AMP_ENV_INTER2_TIME] = new TanFloatParameter(AMP_ENV_INTER2_TIME_NAME,
-	                                                        AMP_ENV_INTER2_TIME_UNIT,
-	                                                        &zynayumi.patch.ampenv.inter2_time,
-	                                                        AMP_ENV_INTER2_TIME_DFLT,
-	                                                        AMP_ENV_INTER2_TIME_L,
-	                                                        AMP_ENV_INTER2_TIME_U);
+	parameters[ENV_INTER2_TIME] = new TanFloatParameter(ENV_INTER2_TIME_NAME,
+	                                                    ENV_INTER2_TIME_UNIT,
+	                                                    &zynayumi.patch.env.inter2_time,
+	                                                    ENV_INTER2_TIME_DFLT,
+	                                                    ENV_INTER2_TIME_L,
+	                                                    ENV_INTER2_TIME_U);
 
-	parameters[AMP_ENV_HOLD3_LEVEL] = new LinearFloatParameter(AMP_ENV_HOLD3_LEVEL_NAME,
-	                                                           AMP_ENV_HOLD3_LEVEL_UNIT,
-	                                                           &zynayumi.patch.ampenv.hold3_level,
-	                                                           AMP_ENV_HOLD3_LEVEL_DFLT,
-	                                                           AMP_ENV_HOLD3_LEVEL_L,
-	                                                           AMP_ENV_HOLD3_LEVEL_U);
+	parameters[ENV_HOLD3_LEVEL] = new LinearFloatParameter(ENV_HOLD3_LEVEL_NAME,
+	                                                       ENV_HOLD3_LEVEL_UNIT,
+	                                                       &zynayumi.patch.env.hold3_level,
+	                                                       ENV_HOLD3_LEVEL_DFLT,
+	                                                       ENV_HOLD3_LEVEL_L,
+	                                                       ENV_HOLD3_LEVEL_U);
 
-	parameters[AMP_ENV_DECAY_TIME] = new TanFloatParameter(AMP_ENV_DECAY_TIME_NAME,
-	                                                       AMP_ENV_DECAY_TIME_UNIT,
-	                                                       &zynayumi.patch.ampenv.decay_time,
-	                                                       AMP_ENV_DECAY_TIME_DFLT,
-	                                                       AMP_ENV_DECAY_TIME_L,
-	                                                       AMP_ENV_DECAY_TIME_U);
+	parameters[ENV_DECAY_TIME] = new TanFloatParameter(ENV_DECAY_TIME_NAME,
+	                                                   ENV_DECAY_TIME_UNIT,
+	                                                   &zynayumi.patch.env.decay_time,
+	                                                   ENV_DECAY_TIME_DFLT,
+	                                                   ENV_DECAY_TIME_L,
+	                                                   ENV_DECAY_TIME_U);
 
-	parameters[AMP_ENV_SUSTAIN_LEVEL] = new LinearFloatParameter(AMP_ENV_SUSTAIN_LEVEL_NAME,
-	                                                             AMP_ENV_SUSTAIN_LEVEL_UNIT,
-	                                                             &zynayumi.patch.ampenv.sustain_level,
-	                                                             AMP_ENV_SUSTAIN_LEVEL_DFLT,
-	                                                             AMP_ENV_SUSTAIN_LEVEL_L,
-	                                                             AMP_ENV_SUSTAIN_LEVEL_U);
+	parameters[ENV_SUSTAIN_LEVEL] = new LinearFloatParameter(ENV_SUSTAIN_LEVEL_NAME,
+	                                                         ENV_SUSTAIN_LEVEL_UNIT,
+	                                                         &zynayumi.patch.env.sustain_level,
+	                                                         ENV_SUSTAIN_LEVEL_DFLT,
+	                                                         ENV_SUSTAIN_LEVEL_L,
+	                                                         ENV_SUSTAIN_LEVEL_U);
 
-	parameters[AMP_ENV_RELEASE] = new TanFloatParameter(AMP_ENV_RELEASE_NAME,
-	                                                    AMP_ENV_RELEASE_UNIT,
-	                                                    &zynayumi.patch.ampenv.release,
-	                                                    AMP_ENV_RELEASE_DFLT,
-	                                                    AMP_ENV_RELEASE_L,
-	                                                    AMP_ENV_RELEASE_U);
+	parameters[ENV_RELEASE] = new TanFloatParameter(ENV_RELEASE_NAME,
+	                                                ENV_RELEASE_UNIT,
+	                                                &zynayumi.patch.env.release,
+	                                                ENV_RELEASE_DFLT,
+	                                                ENV_RELEASE_L,
+	                                                ENV_RELEASE_U);
+
+	parameters[AMP_ENV_DEPTH] = new LinearFloatParameter(AMP_ENV_DEPTH_NAME,
+	                                                     AMP_ENV_DEPTH_UNIT,
+	                                                     &zynayumi.patch.amp_env_depth,
+	                                                     AMP_ENV_DEPTH_DFLT,
+	                                                     AMP_ENV_DEPTH_L,
+	                                                     AMP_ENV_DEPTH_U);
 
 	// Pitch envelope
 	parameters[PITCH_ENV_ATTACK_PITCH] = new LinearFloatParameter(PITCH_ENV_ATTACK_PITCH_NAME,
@@ -504,6 +511,13 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                     RINGMOD_DEPTH_L,
 	                                                     RINGMOD_DEPTH_U);
 
+	parameters[RINGMOD_ENV_DEPTH] = new LinearFloatParameter(RINGMOD_ENV_DEPTH_NAME,
+	                                                         RINGMOD_ENV_DEPTH_UNIT,
+	                                                         &zynayumi.patch.ringmod.env_depth,
+	                                                         RINGMOD_ENV_DEPTH_DFLT,
+	                                                         RINGMOD_ENV_DEPTH_L,
+	                                                         RINGMOD_ENV_DEPTH_U);
+
 	// Buzzer
 	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
 	                                                            BUZZER_SHAPE_UNIT,
@@ -532,6 +546,11 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                BUZZER_TRANSPOSE_U);
 
 	// Pitch LFO
+	parameters[LFO_SHAPE] = new EnumParameter<LFO::Shape>(LFO_SHAPE_NAME,
+	                                                      LFO_SHAPE_UNIT,
+	                                                      &zynayumi.patch.lfo.shape,
+	                                                      LFO_SHAPE_DFLT);
+
 	parameters[LFO_FREQ] = new LinearFloatParameter(LFO_FREQ_NAME,
 	                                                LFO_FREQ_UNIT,
 	                                                &zynayumi.patch.lfo.freq,

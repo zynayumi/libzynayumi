@@ -163,25 +163,29 @@ void initialise_2() {
 	ports.add_port(c_desc, NOISE_PERIOD_ENV_TIME_NAME, r_desc | d_0,
 	               NOISE_PERIOD_ENV_TIME_L, NOISE_PERIOD_ENV_TIME_U);
 
-	// Amplitude envelope
-	ports.add_port(c_desc, AMP_ENV_ATTACK_TIME_NAME, r_desc | d_0,
-	               AMP_ENV_ATTACK_TIME_L, AMP_ENV_ATTACK_TIME_U);
-	ports.add_port(c_desc, AMP_ENV_HOLD1_LEVEL_NAME, r_desc | d_1,
-	               AMP_ENV_HOLD1_LEVEL_L, AMP_ENV_HOLD1_LEVEL_U);
-	ports.add_port(c_desc, AMP_ENV_INTER1_TIME_NAME, r_desc | d_0,
-	               AMP_ENV_INTER1_TIME_L, AMP_ENV_INTER1_TIME_U);
-	ports.add_port(c_desc, AMP_ENV_HOLD2_LEVEL_NAME, r_desc | d_1,
-	               AMP_ENV_HOLD2_LEVEL_L, AMP_ENV_HOLD2_LEVEL_U);
-	ports.add_port(c_desc, AMP_ENV_INTER2_TIME_NAME, r_desc | d_0,
-	               AMP_ENV_INTER2_TIME_L, AMP_ENV_INTER2_TIME_U);
-	ports.add_port(c_desc, AMP_ENV_HOLD3_LEVEL_NAME, r_desc | d_1,
-	               AMP_ENV_HOLD3_LEVEL_L, AMP_ENV_HOLD3_LEVEL_U);
-	ports.add_port(c_desc, AMP_ENV_DECAY_TIME_NAME, r_desc | d_0,
-	               AMP_ENV_DECAY_TIME_L, AMP_ENV_DECAY_TIME_U);
-	ports.add_port(c_desc, AMP_ENV_SUSTAIN_LEVEL_NAME, r_desc | d_1,
-	               AMP_ENV_SUSTAIN_LEVEL_L, AMP_ENV_SUSTAIN_LEVEL_U);
-	ports.add_port(c_desc, AMP_ENV_RELEASE_NAME, r_desc | d_0,
-	               AMP_ENV_RELEASE_L, AMP_ENV_RELEASE_U);
+	// Envelope
+	ports.add_port(c_desc, ENV_ATTACK_TIME_NAME, r_desc | d_0,
+	               ENV_ATTACK_TIME_L, ENV_ATTACK_TIME_U);
+	ports.add_port(c_desc, ENV_HOLD1_LEVEL_NAME, r_desc | d_1,
+	               ENV_HOLD1_LEVEL_L, ENV_HOLD1_LEVEL_U);
+	ports.add_port(c_desc, ENV_INTER1_TIME_NAME, r_desc | d_0,
+	               ENV_INTER1_TIME_L, ENV_INTER1_TIME_U);
+	ports.add_port(c_desc, ENV_HOLD2_LEVEL_NAME, r_desc | d_1,
+	               ENV_HOLD2_LEVEL_L, ENV_HOLD2_LEVEL_U);
+	ports.add_port(c_desc, ENV_INTER2_TIME_NAME, r_desc | d_0,
+	               ENV_INTER2_TIME_L, ENV_INTER2_TIME_U);
+	ports.add_port(c_desc, ENV_HOLD3_LEVEL_NAME, r_desc | d_1,
+	               ENV_HOLD3_LEVEL_L, ENV_HOLD3_LEVEL_U);
+	ports.add_port(c_desc, ENV_DECAY_TIME_NAME, r_desc | d_0,
+	               ENV_DECAY_TIME_L, ENV_DECAY_TIME_U);
+	ports.add_port(c_desc, ENV_SUSTAIN_LEVEL_NAME, r_desc | d_1,
+	               ENV_SUSTAIN_LEVEL_L, ENV_SUSTAIN_LEVEL_U);
+	ports.add_port(c_desc, ENV_RELEASE_NAME, r_desc | d_0,
+	               ENV_RELEASE_L, ENV_RELEASE_U);
+
+	// Amplitude envelope depth
+	ports.add_port(c_desc, AMP_ENV_DEPTH_NAME, r_desc | d_1,
+	               AMP_ENV_DEPTH_L, AMP_ENV_DEPTH_U);
 
 	// Pitch envelope
 	ports.add_port(c_desc, PITCH_ENV_ATTACK_PITCH_NAME, r_desc | d_0,
@@ -238,6 +242,8 @@ void initialise_2() {
 	               RINGMOD_FIXED_VS_RELATIVE_L, RINGMOD_FIXED_VS_RELATIVE_U);
 	ports.add_port(c_desc, RINGMOD_DEPTH_NAME, r_desc | d_1,
 	               RINGMOD_DEPTH_L, RINGMOD_DEPTH_U);
+	ports.add_port(c_desc, RINGMOD_ENV_DEPTH_NAME, r_desc | d_0,
+	               RINGMOD_ENV_DEPTH_L, RINGMOD_ENV_DEPTH_U);
 
 	// Buzzer
 	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,

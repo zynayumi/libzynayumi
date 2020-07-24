@@ -155,7 +155,7 @@ private:
 	void update_arp();
 	void update_port();
 	void update_final_pitch();
-	void update_ampenv();
+	void update_env();
 	void update_ringmod();
 	void update_ringmod_pitch();
 	void update_ringmod_smp_period();

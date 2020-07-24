@@ -140,35 +140,35 @@ but if it starts then it should run flawlessly.
 - **NoisePeriodEnv time**: time in second to go from noise period
   attack to noise attack.  Ranges from 0.0 to 5.0.
 
-- **AmpEnv attack time**: attack time of the amplitude envelope.
-  Ranges from 0.0 to 10.0.
+- **Env attack time**: attack time of the envelope.  Ranges from 0.0
+  to 10.0.
 
-- **AmpEnv hold1 level**: level of the first hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0.
-
-- **AmpEnv inter1 time**: time in second to go from the first hold to
-  the second hold level of the amplitude envelope.  Ranges from 0.0 to
-  10.0.
-
-- **AmpEnv hold2 level**: level of the second hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0.
-
-- **AmpEnv inter2 time**: time in second to go from the second hold to
-  the third hold level of the amplitude envelope.  Ranges from 0.0 to
-  10.0.
-
-- **AmpEnv hold3 level**: level of the third hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0.
-
-- **AmpEnv decay time**: time in second to go from the third hold to
-  the sustain level of the amplitude envelope.  Range from 0.0 to
-  10.0.
-
-- **AmpEnv sustain level**: sustain level of the amplitude envelope.
+- **Env hold1 level**: level of the first hold of the envelope.
   Ranges from 0.0 to 1.0.
+
+- **Env inter1 time**: time in second to go from the first hold to the
+  second hold level of the envelope.  Ranges from 0.0 to 10.0.
+
+- **Env hold2 level**: level of the second hold of the envelope.
+  Ranges from 0.0 to 1.0.
+
+- **Env inter2 time**: time in second to go from the second hold to
+  the third hold level of the envelope.  Ranges from 0.0 to 10.0.
+
+- **Env hold3 level**: level of the third hold of the envelope.
+  Ranges from 0.0 to 1.0.
+
+- **Env decay time**: time in second to go from the third hold to the
+  sustain level of the envelope.  Range from 0.0 to 10.0.
+
+- **Env sustain level**: sustain level of the envelope.  Ranges from
+  0.0 to 1.0.
   
-- **AmpEnv release**: time in second to go from sustain_level to 0.0
-  of the amplitude envelope.  Ranges from 0.0 to 10.0.
+- **Env release**: time in second to go from sustain_level to 0.0 of
+  the envelope.  Ranges from 0.0 to 10.0.
+  
+- **Amp env depth**: Depth of the amplitude envelope.  Ranges from 0.0
+  (full amplitude) to 1.0 (envelope amplitude).
 
 - **PitchEnv attack pitch**: attack pitch of the pitch envelope in
   semitone.  Ranges from -96 to +96.
@@ -233,10 +233,29 @@ but if it starts then it should run flawlessly.
   frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
   fixed) to 1.0 (completely determined by tone pitch).
 
-- **RingMod depth**: level of depth of ring modulation. Ranges from
+- **RingMod depth**: level of depth of ring modulation.  Ranges from
   0.0 (no ring modulation) to 1.0 (full ring modulation).
 
-- **Buzzer shape**: NEXT
+- **RingMod env depth**: level of ring modulation envelope depth.
+  Ranges from -1.0 (maximum ring modulation when the envelope is low),
+  0.0 (no ring modulation envelope), to 1.0 (maximum ring modulation
+  when the envelope is high).
+
+- **Buzzer shape**: oscillator shape of the buzzer.  Warning: the
+  buzzer disactivates the envelope and the ring modulator.
+  - 0: DownSaw
+  - 1: DownTriangle
+  - 2: UpSaw
+  - 3: UpTriangle
+  
+- **Buzzer time**: buzzer duration in second.  Ranges from 0.0 to
+  +inf.
+
+- **Buzzer detune**: buzzer detune in semitone.  Ranges from -0.5 to
+  +0.5.
+
+- **Buzzer transpose**: buzzer transpose in semitone.  Ranges from
+  -36 to +36.
 
 - **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.

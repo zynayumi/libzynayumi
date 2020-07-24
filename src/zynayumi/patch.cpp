@@ -35,11 +35,11 @@ Noise::Noise() : time(0), period(1) {}
 
 NoisePeriodEnv::NoisePeriodEnv() : attack(1), time(0) {}
 
-AmpEnv::AmpEnv() : attack_time(0),
-                   hold1_level(1), inter1_time(0),
-                   hold2_level(1), inter2_time(0),
-                   hold3_level(1), decay_time(0),
-                   sustain_level(1), release(0) {}
+Env::Env() : attack_time(0),
+             hold1_level(1), inter1_time(0),
+             hold2_level(1), inter2_time(0),
+             hold3_level(1), decay_time(0),
+             sustain_level(1), release(0) {}
 
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
@@ -48,15 +48,17 @@ Arp::Arp() : pitch1(0), pitch2(0), pitch3(0),
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
                      mirror(true), sync(true), detune(0.0),
-                     fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0) {}
+                     fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0),
+                     env_depth(0.0) {}
 
 Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
                    time(0.0),
                    detune(0.0) {}
 
-LFO::LFO() : freq(1), delay(0), depth(0) {}
+LFO::LFO() : shape(LFO::Shape::Sine),
+             freq(1), delay(0), depth(0) {}
 
-Portamento::Portamento() : time(0.0), smoothness(1.0) {}
+Portamento::Portamento() : time(0.0), smoothness(0.5) {}
 
 Pan::Pan() : ym_channel{0.5, 0.25, 0.75} {}
 
@@ -67,6 +69,7 @@ Control::Control() : pitchwheel(2),
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
                  playmode(PlayMode::Mono),
+                 amp_env_depth(1.0),
                  gain(1)
 {}
 
@@ -124,4 +127,22 @@ std::string to_string(Buzzer::Shape sh)
 	}
 }
 
+std::string to_string(LFO::Shape sh)
+{
+	switch(sh) {
+	case LFO::Shape::Sine:
+		return "Sine";
+	case LFO::Shape::Triangle:
+		return "Triangle";
+	case LFO::Shape::DownSaw:
+		return "DownSaw";
+	case LFO::Shape::UpSaw:
+		return "UpSaw";
+	case LFO::Shape::Square:
+		return "Square";
+	default:
+		return "";
+	}
+}
+	
 } // ~namespace zynayumi

@@ -219,7 +219,7 @@ EnumParameter<E>::EnumParameter(const std::string& n,
 template<typename E>
 std::string EnumParameter<E>::value_to_string() const
 {
-	return zynayumi::to_string(*value_ptr);
+	return zynayumi::to_string(*value_ptr); // defined in patch.{hpp,cpp}
 }
 
 template<typename E>
@@ -271,16 +271,19 @@ enum ParameterIndex {
 	NOISE_PERIOD_ENV_ATTACK,
 	NOISE_PERIOD_ENV_TIME,
 
-	// Amplitude envelope
-	AMP_ENV_ATTACK_TIME,
-	AMP_ENV_HOLD1_LEVEL,
-	AMP_ENV_INTER1_TIME,
-	AMP_ENV_HOLD2_LEVEL,
-	AMP_ENV_INTER2_TIME,
-	AMP_ENV_HOLD3_LEVEL,
-	AMP_ENV_DECAY_TIME,
-	AMP_ENV_SUSTAIN_LEVEL,
-	AMP_ENV_RELEASE,
+	// Envelope
+	ENV_ATTACK_TIME,
+	ENV_HOLD1_LEVEL,
+	ENV_INTER1_TIME,
+	ENV_HOLD2_LEVEL,
+	ENV_INTER2_TIME,
+	ENV_HOLD3_LEVEL,
+	ENV_DECAY_TIME,
+	ENV_SUSTAIN_LEVEL,
+	ENV_RELEASE,
+
+	// Amplitude envelope depth
+	AMP_ENV_DEPTH,               // NEXT
 
 	// Pitch envelope
 	PITCH_ENV_ATTACK_PITCH,
@@ -313,6 +316,7 @@ enum ParameterIndex {
 	RINGMOD_FIXED_FREQUENCY,
 	RINGMOD_FIXED_VS_RELATIVE,
 	RINGMOD_DEPTH,
+	RINGMOD_ENV_DEPTH,           // NEXT
 
 	// Buzzer
 	BUZZER_SHAPE,
@@ -323,6 +327,7 @@ enum ParameterIndex {
 	BUZZER_TRANSPOSE,
 
 	// Pitch LFO
+	LFO_SHAPE,                   // NEXT
 	LFO_FREQ,
 	LFO_DELAY,
 	LFO_DEPTH,
@@ -360,17 +365,18 @@ enum ParameterIndex {
 #define NOISE_PERIOD_NAME "Noise period"
 #define NOISE_PERIOD_ENV_ATTACK_NAME "NoisePeriodEnv attack"
 #define NOISE_PERIOD_ENV_TIME_NAME "NoisePeriodEnv time"
-#define AMP_ENV_ATTACK_TIME_NAME "AmpEnv attack time"
-#define AMP_ENV_HOLD1_LEVEL_NAME "AmpEnv hold level 1"
-#define AMP_ENV_INTER1_TIME_NAME "AmpEnv inter time 1"
-#define AMP_ENV_HOLD2_LEVEL_NAME "AmpEnv hold level 2"
-#define AMP_ENV_INTER2_TIME_NAME "AmpEnv inter time 2"
-#define AMP_ENV_HOLD3_LEVEL_NAME "AmpEnv hold level 3"
-#define AMP_ENV_DECAY_TIME_NAME "AmpEnv decay time"
-#define AMP_ENV_SUSTAIN_LEVEL_NAME "AmpEnv sustain level"
-#define AMP_ENV_RELEASE_NAME "AmpEnv release"
-#define PITCH_ENV_ATTACK_PITCH_NAME "PitchEnv attack pitch"
-#define PITCH_ENV_TIME_NAME "PitchEnv time"
+#define ENV_ATTACK_TIME_NAME "Env attack time"
+#define ENV_HOLD1_LEVEL_NAME "Env hold level 1"
+#define ENV_INTER1_TIME_NAME "Env inter time 1"
+#define ENV_HOLD2_LEVEL_NAME "Env hold level 2"
+#define ENV_INTER2_TIME_NAME "Env inter time 2"
+#define ENV_HOLD3_LEVEL_NAME "Env hold level 3"
+#define ENV_DECAY_TIME_NAME "Env decay time"
+#define ENV_SUSTAIN_LEVEL_NAME "Env sustain level"
+#define ENV_RELEASE_NAME "Env release"
+#define AMP_ENV_DEPTH_NAME "Amplitude env depth"
+#define PITCH_ENV_ATTACK_PITCH_NAME "Pitch env attack pitch"
+#define PITCH_ENV_TIME_NAME "Pitch env time"
 #define ARP_PITCH1_NAME "Arp pitch 1"
 #define ARP_PITCH2_NAME "Arp pitch 2"
 #define ARP_PITCH3_NAME "Arp pitch 3"
@@ -394,10 +400,12 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
 #define RINGMOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
 #define RINGMOD_DEPTH_NAME "RingMod depth"
+#define RINGMOD_ENV_DEPTH_NAME "RingMod env depth"
 #define BUZZER_SHAPE_NAME "Buzzer shape"
 #define BUZZER_TIME_NAME "Buzzer time"
 #define BUZZER_DETUNE_NAME "Buzzer detune"
 #define BUZZER_TRANSPOSE_NAME "Buzzer transpose"
+#define LFO_SHAPE_NAME "LFO shape"
 #define LFO_FREQ_NAME "LFO freq"
 #define LFO_DELAY_NAME "LFO delay"
 #define LFO_DEPTH_NAME "LFO depth"
@@ -428,15 +436,16 @@ enum ParameterIndex {
 #define NOISE_PERIOD_UNIT EMPTY
 #define NOISE_PERIOD_ENV_ATTACK_UNIT EMPTY
 #define NOISE_PERIOD_ENV_TIME_UNIT SECOND
-#define AMP_ENV_ATTACK_TIME_UNIT SECOND
-#define AMP_ENV_HOLD1_LEVEL_UNIT EMPTY
-#define AMP_ENV_INTER1_TIME_UNIT SECOND
-#define AMP_ENV_HOLD2_LEVEL_UNIT EMPTY
-#define AMP_ENV_INTER2_TIME_UNIT SECOND
-#define AMP_ENV_HOLD3_LEVEL_UNIT EMPTY
-#define AMP_ENV_DECAY_TIME_UNIT SECOND
-#define AMP_ENV_SUSTAIN_LEVEL_UNIT EMPTY
-#define AMP_ENV_RELEASE_UNIT SECOND
+#define ENV_ATTACK_TIME_UNIT SECOND
+#define ENV_HOLD1_LEVEL_UNIT EMPTY
+#define ENV_INTER1_TIME_UNIT SECOND
+#define ENV_HOLD2_LEVEL_UNIT EMPTY
+#define ENV_INTER2_TIME_UNIT SECOND
+#define ENV_HOLD3_LEVEL_UNIT EMPTY
+#define ENV_DECAY_TIME_UNIT SECOND
+#define ENV_SUSTAIN_LEVEL_UNIT EMPTY
+#define ENV_RELEASE_UNIT SECOND
+#define AMP_ENV_DEPTH_UNIT EMPTY
 #define PITCH_ENV_ATTACK_PITCH_UNIT SEMITONE
 #define PITCH_ENV_TIME_UNIT SECOND
 #define ARP_PITCH1_UNIT SEMITONE
@@ -462,10 +471,12 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_UNIT HERTZ
 #define RINGMOD_FIXED_VS_RELATIVE_UNIT EMPTY
 #define RINGMOD_DEPTH_UNIT EMPTY
+#define RINGMOD_ENV_DEPTH_UNIT EMPTY
 #define BUZZER_SHAPE_UNIT EMPTY
 #define BUZZER_TIME_UNIT SECOND
 #define BUZZER_DETUNE_UNIT SEMITONE
 #define BUZZER_TRANSPOSE_UNIT SEMITONE
+#define LFO_SHAPE_UNIT EMPTY
 #define LFO_FREQ_UNIT HERTZ
 #define LFO_DELAY_UNIT SECOND
 #define LFO_DEPTH_UNIT EMPTY
@@ -492,15 +503,16 @@ enum ParameterIndex {
 #define NOISE_PERIOD_DFLT 1
 #define NOISE_PERIOD_ENV_ATTACK_DFLT 1
 #define NOISE_PERIOD_ENV_TIME_DFLT 0.0
-#define AMP_ENV_ATTACK_TIME_DFLT 0.0
-#define AMP_ENV_HOLD1_LEVEL_DFLT 1.0
-#define AMP_ENV_INTER1_TIME_DFLT 0.0
-#define AMP_ENV_HOLD2_LEVEL_DFLT 1.0
-#define AMP_ENV_INTER2_TIME_DFLT 0.0
-#define AMP_ENV_HOLD3_LEVEL_DFLT 1.0
-#define AMP_ENV_DECAY_TIME_DFLT 0.0
-#define AMP_ENV_SUSTAIN_LEVEL_DFLT 1.0
-#define AMP_ENV_RELEASE_DFLT 0.0
+#define ENV_ATTACK_TIME_DFLT 0.0
+#define ENV_HOLD1_LEVEL_DFLT 1.0
+#define ENV_INTER1_TIME_DFLT 0.0
+#define ENV_HOLD2_LEVEL_DFLT 1.0
+#define ENV_INTER2_TIME_DFLT 0.0
+#define ENV_HOLD3_LEVEL_DFLT 1.0
+#define ENV_DECAY_TIME_DFLT 0.0
+#define ENV_SUSTAIN_LEVEL_DFLT 1.0
+#define ENV_RELEASE_DFLT 0.0
+#define AMP_ENV_DEPTH_DFLT 1.0
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0
 #define PITCH_ENV_TIME_DFLT 0.0
 #define ARP_PITCH1_DFLT 0
@@ -526,15 +538,17 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_DFLT 1.0
 #define RINGMOD_FIXED_VS_RELATIVE_DFLT 1.0
 #define RINGMOD_DEPTH_DFLT 1.0
+#define RINGMOD_ENV_DEPTH_DFLT 0.0
 #define BUZZER_SHAPE_DFLT Buzzer::Shape::DownSaw
 #define BUZZER_TIME_DFLT 0.0
 #define BUZZER_DETUNE_DFLT 0.0
 #define BUZZER_TRANSPOSE_DFLT 0
+#define LFO_SHAPE_DFLT LFO::Shape::Sine
 #define LFO_FREQ_DFLT 4.5
 #define LFO_DELAY_DFLT 0.0
 #define LFO_DEPTH_DFLT 0.0
 #define PORTAMENTO_TIME_DFLT 0.0
-#define PORTAMENTO_SMOOTHNESS_DFLT 1.0
+#define PORTAMENTO_SMOOTHNESS_DFLT 0.5
 #define GAIN_DFLT 1.0
 #define PAN0_DFLT 0.5
 #define PAN1_DFLT 0.25
@@ -566,24 +580,26 @@ enum ParameterIndex {
 #define NOISE_PERIOD_ENV_ATTACK_U 31
 #define NOISE_PERIOD_ENV_TIME_L 0.0f
 #define NOISE_PERIOD_ENV_TIME_U 10.0f
-#define AMP_ENV_ATTACK_TIME_L 0.0f
-#define AMP_ENV_ATTACK_TIME_U 10.0f
-#define AMP_ENV_HOLD1_LEVEL_L 0.0f
-#define AMP_ENV_HOLD1_LEVEL_U 1.0f
-#define AMP_ENV_INTER1_TIME_L 0.0f
-#define AMP_ENV_INTER1_TIME_U 10.0f
-#define AMP_ENV_HOLD2_LEVEL_L 0.0f
-#define AMP_ENV_HOLD2_LEVEL_U 1.0f
-#define AMP_ENV_INTER2_TIME_L 0.0f
-#define AMP_ENV_INTER2_TIME_U 10.0f
-#define AMP_ENV_HOLD3_LEVEL_L 0.0f
-#define AMP_ENV_HOLD3_LEVEL_U 1.0f
-#define AMP_ENV_DECAY_TIME_L 0.0f
-#define AMP_ENV_DECAY_TIME_U 10.0f
-#define AMP_ENV_SUSTAIN_LEVEL_L 0.0f
-#define AMP_ENV_SUSTAIN_LEVEL_U 1.0f
-#define AMP_ENV_RELEASE_L 0.0f
-#define AMP_ENV_RELEASE_U 10.0f
+#define ENV_ATTACK_TIME_L 0.0f
+#define ENV_ATTACK_TIME_U 10.0f
+#define ENV_HOLD1_LEVEL_L 0.0f
+#define ENV_HOLD1_LEVEL_U 1.0f
+#define ENV_INTER1_TIME_L 0.0f
+#define ENV_INTER1_TIME_U 10.0f
+#define ENV_HOLD2_LEVEL_L 0.0f
+#define ENV_HOLD2_LEVEL_U 1.0f
+#define ENV_INTER2_TIME_L 0.0f
+#define ENV_INTER2_TIME_U 10.0f
+#define ENV_HOLD3_LEVEL_L 0.0f
+#define ENV_HOLD3_LEVEL_U 1.0f
+#define ENV_DECAY_TIME_L 0.0f
+#define ENV_DECAY_TIME_U 10.0f
+#define ENV_SUSTAIN_LEVEL_L 0.0f
+#define ENV_SUSTAIN_LEVEL_U 1.0f
+#define ENV_RELEASE_L 0.0f
+#define ENV_RELEASE_U 10.0f
+#define AMP_ENV_DEPTH_L 0.0f
+#define AMP_ENV_DEPTH_U 1.0f
 #define PITCH_ENV_ATTACK_PITCH_L -96.0f
 #define PITCH_ENV_ATTACK_PITCH_U 96.0f
 #define PITCH_ENV_TIME_L 0.0f
@@ -636,6 +652,8 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_U 1.0f
 #define RINGMOD_DEPTH_L 0.0f
 #define RINGMOD_DEPTH_U 1.0f
+#define RINGMOD_ENV_DEPTH_L -1.0f
+#define RINGMOD_ENV_DEPTH_U 1.0f
 #define BUZZER_TIME_L 0.0f
 #define BUZZER_TIME_L_ALT -1.0f   // In case infinity isn't supported
 #define BUZZER_TIME_U std::numeric_limits<float>::infinity()

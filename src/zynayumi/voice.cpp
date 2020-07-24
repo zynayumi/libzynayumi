@@ -86,7 +86,7 @@ void Voice::update()
 	update_tone();
 
 	// Update level, including ring modulation
-	update_ampenv();
+	update_env();
 	if (_first_update and _patch->ringmod.sync) {
 		// If sync is enabled, synchronize the phase of the ringmod
 		// waveform to the phase of the square tone
@@ -334,50 +334,50 @@ void Voice::update_final_pitch()
 		+ _relative_arp_pitch;
 }
 
-void Voice::update_ampenv()
+void Voice::update_env()
 {
 	// Determine portion of the envelope to interpolate
 	double env_time = _engine->smp2sec(_env_smp_count);
 	double x1, y1, x2, y2;
 	if (note_on) {
-		double ta = _patch->ampenv.attack_time;
-		double ta1 = ta + _patch->ampenv.inter1_time;
-		double ta12 = ta1 + _patch->ampenv.inter2_time;
-		double ta123 = ta12 + _patch->ampenv.decay_time;
+		double ta = _patch->env.attack_time;
+		double ta1 = ta + _patch->env.inter1_time;
+		double ta12 = ta1 + _patch->env.inter2_time;
+		double ta123 = ta12 + _patch->env.decay_time;
 		if (env_time <= ta) {
 			x1 = 0;
 			y1 = 0;
 			x2 = ta;
-			y2 = _patch->ampenv.hold1_level;
+			y2 = _patch->env.hold1_level;
 		} else if (env_time <= ta1) {
 			x1 = ta;
-			y1 = _patch->ampenv.hold1_level;
+			y1 = _patch->env.hold1_level;
 			x2 = ta1;
-			y2 = _patch->ampenv.hold2_level;
+			y2 = _patch->env.hold2_level;
 		} else if (env_time <= ta12) {
 			x1 = ta1;
-			y1 = _patch->ampenv.hold2_level;
+			y1 = _patch->env.hold2_level;
 			x2 = ta12;
-			y2 = _patch->ampenv.hold3_level;
+			y2 = _patch->env.hold3_level;
 		} else if (env_time <= ta123) {
 			x1 = ta12;
-			y1 = _patch->ampenv.hold3_level;
+			y1 = _patch->env.hold3_level;
 			x2 = ta123;
-			y2 = _patch->ampenv.sustain_level;
+			y2 = _patch->env.sustain_level;
 		} else {
 			x1 = ta123;
-			y1 = _patch->ampenv.sustain_level;
+			y1 = _patch->env.sustain_level;
 			x2 = x1 + 1;
 			y2 = y1;
 		}
 	} else {                    // Note off
-		if (env_time <= _patch->ampenv.release) {
+		if (env_time <= _patch->env.release) {
 			x1 = 0;
 			y1 = _actual_sustain_level;
-			x2 = _patch->ampenv.release;
+			x2 = _patch->env.release;
 			y2 = 0;
 		} else {
-			x1 = _patch->ampenv.release;
+			x1 = _patch->env.release;
 			y1 = 0;
 			x2 = x1 + 1;
 			y2 = 0;

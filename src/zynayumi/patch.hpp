@@ -83,12 +83,12 @@ public:
 };
 
 /**
- * Amplitude envelope. Durations are in second and levels are between
+ * Envelope. Durations are in second and levels are between
  * 0.0 and 1.0.
  */
-class AmpEnv {
+class Env {
 public:
-	AmpEnv();
+	Env();
 
 	float attack_time;           // Attack time
 	float hold1_level;           // Hold-1 level
@@ -161,6 +161,10 @@ public:
 
 	float depth;                             // Ring modulation
                                             // intensity
+
+	float env_depth;                         // Ring modulation
+                                            // envelope depth, ranges
+                                            // from -1.0 to +1.0.
 };
 
 class Buzzer {
@@ -189,6 +193,17 @@ class LFO {
 public:
 	LFO();
 
+	enum class Shape {
+		Sine,
+		Triangle,
+		DownSaw,
+		UpSaw,
+		Square,
+
+		Count
+	};
+
+	Shape shape;                // LFO shape
 	float freq;                 // LFO frequency
 	float delay;                // LFO progressive delay in second
 	float depth;                // LFO depth in semitone
@@ -243,7 +258,8 @@ public:
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	NoisePeriodEnv noise_period_env; // Noise period envelope
-	AmpEnv ampenv;              // Amplitude envelope
+	Env env;                    // Envelope
+	float amp_env_depth;        // Amplitude envolpe depth
 	PitchEnv pitchenv;          // Pitch envelope
 	Arp arp;                    // Arpeggio
 	RingMod ringmod;            // Ring modulation
@@ -258,6 +274,7 @@ public:
 std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
 std::string to_string(Buzzer::Shape sh);
+std::string to_string(LFO::Shape sh);
 
 } // ~namespace zynayumi
 
