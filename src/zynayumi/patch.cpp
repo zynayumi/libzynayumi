@@ -26,7 +26,9 @@
 
 namespace zynayumi {
 
-Tone::Tone() : time(-1),
+Tone::Tone() : sync(true),
+               phase(0.0),
+               time(-1),
                detune(0),
                spread(0),
                legacy_tuning(false) {}
@@ -47,11 +49,13 @@ Arp::Arp() : pitch1(0), pitch2(0), pitch3(0),
              tempo(120), host_sync(1), freq(18.0), repeat(0) {}
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
-                     mirror(true), sync(true), detune(0.0),
+                     sync(true), phase(0.0), mirror(true), detune(0.0),
                      fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0),
                      env_depth(0.0) {}
 
 Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
+                   sync(true),
+                   phase(0.0),
                    time(0.0),
                    detune(0.0) {}
 

@@ -54,12 +54,20 @@ class Tone {
 public:
 	Tone();
 
+	bool sync;                   // Whether the tone phase is reset at
+                                // each new on note.
+
+	float phase;                 // Phase, from 0.0 to 1.0
+
 	float time;                  // Tone duration in second, inf if
                                 // negative.
+
 	float detune;                // Detune in semitone.
+
 	float spread;                // Spread of detune of second
                                 // (negative) and third (positive)
                                 // voice, in semitone.
+
 	bool legacy_tuning;          // Whether the tuning is perfect or
                                 // legacy.
 };
@@ -142,11 +150,13 @@ public:
 
 	float waveform[RINGMOD_WAVEFORM_SIZE];  // Sample volume levels
 
-	bool mirror;                             // Add 8 mirroring samples
-
 	bool sync;                               // Whether ring
 	                                         // modulation is in sync
 	                                         // with YM2149 oscilator
+
+	float phase;                             // Initial phase, from 0.0 to 1.0
+	
+	bool mirror;                             // Add 8 mirroring samples
 
 	float detune;                            // Relative detune in
 	                                         // semitone compared to
@@ -181,8 +191,15 @@ public:
 	};
 
 	Shape shape;                 // Buzzer shape
+
+	bool sync;                   // Whether to reset the phase at each
+                                // on note
+
+	float phase;                 // Initial phase, from 0.0 to 1.0
+	
 	float time;                  // Buzzer duration in second, inf if
                                 // negative.
+
 	float detune;                // Detune in semitone.
 };
 

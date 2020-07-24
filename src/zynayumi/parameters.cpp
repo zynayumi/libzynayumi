@@ -205,6 +205,18 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                    PLAY_MODE_DFLT);
 
 	// Tone
+	parameters[TONE_SYNC] = new BoolParameter(TONE_SYNC_NAME,
+	                                          TONE_SYNC_UNIT,
+	                                          &zynayumi.patch.tone.sync,
+	                                          TONE_SYNC_DFLT);
+
+	parameters[TONE_PHASE] = new LinearFloatParameter(TONE_PHASE_NAME,
+	                                                  TONE_PHASE_UNIT,
+	                                                  &zynayumi.patch.tone.phase,
+	                                                  TONE_PHASE_DFLT,
+	                                                  TONE_PHASE_L,
+	                                                  TONE_PHASE_U);
+	
 	parameters[TONE_TIME] = new TanFloatParameter(TONE_TIME_NAME,
 	                                              TONE_TIME_UNIT,
 	                                              &zynayumi.patch.tone.time,
@@ -466,15 +478,22 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                               RINGMOD_WAVEFORM_LEVEL8_L,
 	                                                               RINGMOD_WAVEFORM_LEVEL8_U);
 
-	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
-	                                               RINGMOD_MIRROR_UNIT,
-	                                               &zynayumi.patch.ringmod.mirror,
-	                                               RINGMOD_MIRROR_DFLT);
-
 	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
 	                                             RINGMOD_SYNC_UNIT,
 	                                             &zynayumi.patch.ringmod.sync,
 	                                             RINGMOD_SYNC_DFLT);
+
+	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
+	                                                     RINGMOD_PHASE_UNIT,
+	                                                     &zynayumi.patch.ringmod.phase,
+	                                                     RINGMOD_PHASE_DFLT,
+	                                                     RINGMOD_PHASE_L,
+	                                                     RINGMOD_PHASE_U);
+
+	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
+	                                               RINGMOD_MIRROR_UNIT,
+	                                               &zynayumi.patch.ringmod.mirror,
+	                                               RINGMOD_MIRROR_DFLT);
 
 	parameters[RINGMOD_DETUNE] = new TanFloatParameter(RINGMOD_DETUNE_NAME,
 	                                                   RINGMOD_DETUNE_UNIT,
@@ -523,6 +542,18 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                            BUZZER_SHAPE_UNIT,
 	                                                            &zynayumi.patch.buzzer.shape,
 	                                                            BUZZER_SHAPE_DFLT);
+
+	parameters[BUZZER_SYNC] = new BoolParameter(BUZZER_SYNC_NAME,
+	                                            BUZZER_SYNC_UNIT,
+	                                            &zynayumi.patch.buzzer.sync,
+	                                            BUZZER_SYNC_DFLT);
+
+	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
+	                                                    BUZZER_PHASE_UNIT,
+	                                                    &zynayumi.patch.buzzer.phase,
+	                                                    BUZZER_PHASE_DFLT,
+	                                                    BUZZER_PHASE_L,
+	                                                    BUZZER_PHASE_U);
 
 	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
 	                                                BUZZER_TIME_UNIT,

@@ -140,6 +140,10 @@ void initialise_2() {
 	               -delta, (double)PlayMode::Count -1.0 + delta);
 
 	// Tone
+	ports.add_port(c_desc, TONE_SYNC_NAME, t_desc | d_1,
+	               TONE_SYNC_L - delta, TONE_SYNC_U + delta);
+	ports.add_port(c_desc, TONE_PHASE_NAME, r_desc | d_0,
+	               TONE_PHASE_L - delta, TONE_PHASE_U + delta);
 	ports.add_port(c_desc, TONE_TIME_NAME, r_desc | d_min,
 	               TONE_TIME_L_ALT, TONE_TIME_U_ALT);
 	ports.add_port(c_desc, TONE_DETUNE_NAME, r_desc | d_0,
@@ -228,10 +232,12 @@ void initialise_2() {
 	               RINGMOD_WAVEFORM_LEVEL7_L, RINGMOD_WAVEFORM_LEVEL7_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL8_NAME, r_desc | d_1,
 	               RINGMOD_WAVEFORM_LEVEL8_L, RINGMOD_WAVEFORM_LEVEL8_U);
-	ports.add_port(c_desc, RINGMOD_MIRROR_NAME, t_desc | d_1,
-	               RINGMOD_MIRROR_L - delta, RINGMOD_MIRROR_U + delta);
 	ports.add_port(c_desc, RINGMOD_SYNC_NAME, t_desc | d_1,
 	               RINGMOD_SYNC_L - delta, RINGMOD_SYNC_U + delta);
+	ports.add_port(c_desc, RINGMOD_PHASE_NAME, r_desc | d_0,
+	               RINGMOD_PHASE_L - delta, RINGMOD_PHASE_U + delta);
+	ports.add_port(c_desc, RINGMOD_MIRROR_NAME, t_desc | d_1,
+	               RINGMOD_MIRROR_L - delta, RINGMOD_MIRROR_U + delta);
 	ports.add_port(c_desc, RINGMOD_DETUNE_NAME, r_desc | d_0,
 	               RINGMOD_DETUNE_L, RINGMOD_DETUNE_U);
 	ports.add_port(c_desc, RINGMOD_TRANSPOSE_NAME, i_desc | d_0,
@@ -248,6 +254,10 @@ void initialise_2() {
 	// Buzzer
 	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,
 	               -delta, (double)Buzzer::Shape::Count -1.0 + delta);
+	ports.add_port(c_desc, BUZZER_SYNC_NAME, t_desc | d_1,
+	               BUZZER_SYNC_L - delta, BUZZER_SYNC_U + delta);
+	ports.add_port(c_desc, BUZZER_PHASE_NAME, r_desc | d_0,
+	               BUZZER_PHASE_L - delta, BUZZER_PHASE_U + delta);
 	ports.add_port(c_desc, BUZZER_TIME_NAME, r_desc | d_0,
 	               BUZZER_TIME_L_ALT, BUZZER_TIME_U_ALT);
 	ports.add_port(c_desc, BUZZER_DETUNE_NAME, r_desc | d_0,
@@ -256,6 +266,8 @@ void initialise_2() {
 	               BUZZER_TRANSPOSE_L - delta, BUZZER_TRANSPOSE_U + delta);
 	
 	// Pitch LFO
+	ports.add_port(c_desc, LFO_SHAPE_NAME, i_desc | d_0,
+	               -delta, (double)LFO::Shape::Count -1.0 + delta);
 	ports.add_port(c_desc, LFO_FREQ_NAME, r_desc | d_low,
 	               LFO_FREQ_L, LFO_FREQ_U);
 	ports.add_port(c_desc, LFO_DELAY_NAME, r_desc | d_0,
