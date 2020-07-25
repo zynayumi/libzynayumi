@@ -351,7 +351,7 @@ parameter *Pitch wheel range*.
 It's easy to generate undesired clicks, especially in the attack and
 release.  This may not be a bug of Zynayumi though.  To avoid such
 clicks set a non null attack time and release of the amplitude
-envelope.  See *AmpEnv attack time* and *AmpEnv release* parameters.
+envelope.  See *Env attack time* and *Env release* parameters.
 
 Also, the amplitude envelope itself can create clicks as it is driving
 the emulated YM2149 to control the amplitude in a staircase fashion.
