@@ -526,30 +526,12 @@ void Voice::sync_tone()
 
 void Voice::sync_ringmod()
 {
-	// NEXT: support ringmod.phase
-
-	update_ringmod_pitch();
-	update_ringmod_smp_period();
-	struct tone_channel& ch = _engine->ay.channels[ym_channel];
-	double tc = ch.tone_counter;
-	double tp = ch.tone_period;
-	double wtc = tc + ch.tone * tp; // Whole tone counter
-	double wtp = 2 * tp;            // Whole tone period
-
-	// If the tone counter is passed the period, then it will be reset
-	// at the next ayumi update
-	while (wtp <= wtc)
-		wtc -= wtp;
-
-	// Tone counter / period ratio
-	double ratio = wtc / wtp;
-
 	// Whole ringmod period
 	double wrp = _ringmod_smp_period
 		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
 
-	// Update ringmod count and index to be in sync
-	_ringmod_smp_count = ratio * wrp;
+	// Update ringmod count to be in sync
+	_ringmod_smp_count = _patch->ringmod.phase * wrp;
 }
 
 void Voice::sync_buzzer()
