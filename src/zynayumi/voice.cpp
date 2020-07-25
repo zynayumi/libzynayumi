@@ -85,19 +85,22 @@ void Voice::update()
 	update_final_pitch();
 	update_tone();
 
-	// Update level, including ring modulation
-	update_env();
-	if (_first_update and _patch->ringmod.sync) {
-		// If sync is enabled, synchronize the phase of the ringmod
-		// waveform to the phase of the square tone
-		sync_ringmod();
+	// Sync
+	if (_first_update) {
+		if (_patch->tone.sync) sync_tone();
+		if (_patch->ringmod.sync) sync_ringmod();
+		if (_patch->buzzer.sync) sync_buzzer();
 		_first_update = false;
 	}
+
+	// Update level, including ring modulation
+	update_env();
 	update_ringmod();
 	update_final_level();
 	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * 15));
 
-	// TODO: no need to update level if the buzzer is enabled
+	// Update buzzer (TODO: no need to update ayumi level if buzzer is
+	// enabled)
 	update_buzzer();
 
 	// Increment sample count since voice on or pitch change
@@ -129,7 +132,7 @@ double Voice::logistic_interpolate(double x1, double y1,
                                    double x2, double y2,
                                    double x, double scale)
 {
-	// mu is the inflection point on the x-axis
+	// mu is the x-axis coordinate of the inflection point
 	double mu = (x2 - x1) / 2.0;
 
 	// We resolve the following equations, by adding and subtracting
@@ -388,6 +391,9 @@ void Voice::update_env()
 	env_level = linear_interpolate(x1, y1, x2, y2, env_time);
 
 	// Adjust according to key velocity
+	//
+	// NEXT: probably have velocity_sensitivity be taken into account
+	// outside of env_level.
 	env_level *= linear_interpolate(0.0, 1.0 - _patch->control.velocity_sensitivity,
 	                                127.0, 1.0, (double)velocity);
 
@@ -397,7 +403,7 @@ void Voice::update_env()
 
 void Voice::update_ringmod()
 {
-	// VVT: fix ringmod phasing issue with mono playmod
+	// TODO: fix ringmod phasing issue with mono playmod
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 	update_ringmod_smp_count();
@@ -457,32 +463,6 @@ void Voice::update_ringmod_waveform_level()
 		                   _patch->ringmod.waveform[_ringmod_waveform_index]);
 }
 
-void Voice::sync_ringmod()
-{
-	update_ringmod_pitch();
-	update_ringmod_smp_period();
-	struct tone_channel& ch = _engine->ay.channels[ym_channel];
-	double tc = ch.tone_counter;
-	double tp = ch.tone_period;
-	double wtc = tc + ch.tone * tp; // Whole tone counter
-	double wtp = 2 * tp;            // Whole tone period
-
-	// If the tone counter is passed the period, then it will be reset
-	// at the next ayumi update
-	while (wtp <= wtc)
-		wtc -= wtp;
-
-	// Tone counter / period ratio
-	double ratio = wtc / wtp;
-
-	// Whole ringmod period
-	double wrp = _ringmod_smp_period
-		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
-
-	// Update ringmod count and index to be in sync
-	_ringmod_smp_count = ratio * wrp;
-}
-
 void Voice::update_buzzer()
 {
 	update_buzzer_shape();              // TODO: only set when changed
@@ -527,4 +507,52 @@ void Voice::update_buzzer_shape()
 void Voice::update_final_level()
 {
 	_final_level = _ringmod_waveform_level * env_level;
+}
+
+void Voice::sync_tone()
+{
+	struct tone_channel& ch = _engine->ay.channels[ym_channel];
+	double tp = ch.tone_period;
+	double wtp = 2 * tp;            // Whole tone period
+	double counter = std::round(_patch->tone.phase * wtp);
+	if (counter < tp) {
+		ch.tone = 0;
+	} else {
+		ch.tone = 1;
+		counter -= std::floor(tp);
+	}
+	ch.tone_counter = counter;
+}
+
+void Voice::sync_ringmod()
+{
+	// NEXT: support ringmod.phase
+
+	update_ringmod_pitch();
+	update_ringmod_smp_period();
+	struct tone_channel& ch = _engine->ay.channels[ym_channel];
+	double tc = ch.tone_counter;
+	double tp = ch.tone_period;
+	double wtc = tc + ch.tone * tp; // Whole tone counter
+	double wtp = 2 * tp;            // Whole tone period
+
+	// If the tone counter is passed the period, then it will be reset
+	// at the next ayumi update
+	while (wtp <= wtc)
+		wtc -= wtp;
+
+	// Tone counter / period ratio
+	double ratio = wtc / wtp;
+
+	// Whole ringmod period
+	double wrp = _ringmod_smp_period
+		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
+
+	// Update ringmod count and index to be in sync
+	_ringmod_smp_count = ratio * wrp;
+}
+
+void Voice::sync_buzzer()
+{
+	// NEXT
 }

@@ -162,12 +162,14 @@ private:
 	void update_ringmod_smp_count();
 	void update_ringmod_waveform_index();
 	void update_ringmod_waveform_level();
-	void sync_ringmod();
 	void update_buzzer();
 	void update_buzzer_off();
 	void update_buzzer_pitch();
 	void update_buzzer_shape();
 	void update_final_level();
+	void sync_tone();
+	void sync_ringmod();
+	void sync_buzzer();
 };
 
 } // ~namespace zynayumi

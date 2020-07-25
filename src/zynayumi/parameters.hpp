@@ -255,8 +255,8 @@ enum ParameterIndex {
 	PLAY_MODE,
 
 	// Tone
-	TONE_SYNC,                   // NEXT
-	TONE_PHASE,                  // NEXT
+	TONE_SYNC,
+	TONE_PHASE,
 	TONE_TIME,
 	TONE_DETUNE,
 	TONE_TRANSPOSE,
