@@ -303,8 +303,8 @@ void Voice::update_arp()
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(true) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::MonoRndArp:
-	case PlayMode::UnisonRndArp:
+	case PlayMode::MonoRandArp:
+	case PlayMode::UnisonRandArp:
 		_relative_arp_pitch = 1 < _engine->pitches.size() ?
 			count2rndpitch() - _initial_pitch : 0.0;
 		break;

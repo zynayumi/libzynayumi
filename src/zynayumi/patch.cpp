@@ -86,8 +86,8 @@ std::string to_string(PlayMode pm)
 		return "MonoUpArp";
 	case PlayMode::MonoDownArp:
 		return "MonoDownArp";
-	case PlayMode::MonoRndArp:
-		return "MonoRndArp";
+	case PlayMode::MonoRandArp:
+		return "MonoRandArp";
 	case PlayMode::Poly:
 		return "Poly";
 	case PlayMode::Unison:
@@ -96,8 +96,8 @@ std::string to_string(PlayMode pm)
 		return "UnisonUpArp";
 	case PlayMode::UnisonDownArp:
 		return "UnisonDownArp";
-	case PlayMode::UnisonRndArp:
-		return "UnisonRndArp";
+	case PlayMode::UnisonRandArp:
+		return "UnisonRandArp";
 	default:
 		return "";
 	}
@@ -144,6 +144,8 @@ std::string to_string(LFO::Shape sh)
 		return "UpSaw";
 	case LFO::Shape::Square:
 		return "Square";
+	case LFO::Shape::Rand:
+		return "Rand";
 	default:
 		return "";
 	}

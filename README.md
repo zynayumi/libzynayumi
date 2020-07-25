@@ -104,13 +104,13 @@ but if it starts then it should run flawlessly.
   - 1: MonoUpArp, create arpegio with all pressed keys, going from
        lowest to highest pitch.
   - 2: MonoDownArp, like UpArp but goes from higest to lowest pitch.
-  - 3: MonoRndArp, like UpArp or DownArp but the pitch is randomly
+  - 3: MonoRandArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
-  - 4: Poly, alternate between the three voices of the YM2149.
-  - 5: Unison, all voices play the same note.
-  - 6: UnisonUpArp, like MonoUpArp with all voices in unison.
-  - 7: UnisonDownArp, like MonoDownArp with all voices in unison.
-  - 8: UnisonRndArp, like MonoRndArp with all voices in unison.
+  - 4: Unison, all voices play the same note.
+  - 5: UnisonUpArp, like MonoUpArp with all voices in unison.
+  - 6: UnisonDownArp, like MonoDownArp with all voices in unison.
+  - 7: UnisonRandArp, like MonoRandArp with all voices in unison.
+  - 8: Poly, alternate between the three voices of the YM2149.
 
 - **Tone sync**: whether the phase of the tone oscillator gets reset
   to *Tone phase* when a new on note is created.
@@ -270,6 +270,14 @@ but if it starts then it should run flawlessly.
 
 - **Buzzer transpose**: buzzer transpose in semitone.  Ranges from
   -36 to +36.
+
+- **LFO shape**: shape of the LFO
+  - 0: Sine
+  - 1: Triangle
+  - 2: DownSaw
+  - 3: UpSaw
+  - 4: Square
+  - 5: Rand
 
 - **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.

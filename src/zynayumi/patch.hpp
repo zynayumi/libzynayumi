@@ -40,12 +40,12 @@ enum class PlayMode {
 	Mono,
 	MonoUpArp,
 	MonoDownArp,
-	MonoRndArp,
-	Poly,
+	MonoRandArp,
 	Unison,
 	UnisonUpArp,
 	UnisonDownArp,
-	UnisonRndArp,
+	UnisonRandArp,
+	Poly,
 
 	Count
 };
@@ -216,6 +216,7 @@ public:
 		DownSaw,
 		UpSaw,
 		Square,
+		Rand,
 
 		Count
 	};

@@ -151,7 +151,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 		break;
 	case PlayMode::MonoUpArp:
 	case PlayMode::MonoDownArp:
-	case PlayMode::MonoRndArp:
+	case PlayMode::MonoRandArp:
 		if (pitches.size() == 1) {
 			// We go from 0 to 1 on note
 			free_voice();
@@ -176,7 +176,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 		break;
 	case PlayMode::UnisonUpArp:
 	case PlayMode::UnisonDownArp:
-	case PlayMode::UnisonRndArp:
+	case PlayMode::UnisonRandArp:
 		if (pitches.size() == 1) {
 			// We go from 0 to 1 on note
 			free_all_voices();
@@ -217,7 +217,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 	}
 	case PlayMode::MonoUpArp:
 	case PlayMode::MonoDownArp:
-	case PlayMode::MonoRndArp:
+	case PlayMode::MonoRandArp:
 		if (pitches.empty()) {
 			set_note_off_with_pitch(pitch);
 		} else if (pitches.size() == 1) {
@@ -250,7 +250,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 	}
 	case PlayMode::UnisonUpArp:
 	case PlayMode::UnisonDownArp:
-	case PlayMode::UnisonRndArp:
+	case PlayMode::UnisonRandArp:
 		if (pitches.empty()) {
 			set_note_off_all_voices();
 		} else if (pitches.size() == 1) {
