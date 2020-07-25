@@ -112,6 +112,12 @@ but if it starts then it should run flawlessly.
   - 7: UnisonDownArp, like MonoDownArp with all voices in unison.
   - 8: UnisonRndArp, like MonoRndArp with all voices in unison.
 
+- **Tone sync**: whether the phase of the tone oscillator gets reset
+  to *Tone phase* when a new on note is created.
+
+- **Tone phase**: phase of the tone oscillator.  Ranges from 0.0 to
+  1.0.
+
 - **Tone time**: time in second the square voice is played.  Ranges
   from 0.0 to +inf.
 
@@ -210,12 +216,15 @@ but if it starts then it should run flawlessly.
   waveform.  That waveform is multipled with the YN2149 square
   waveform, thus creating a ring modulation.  Ranges from 0.0 to 1.0.
 
-- **RingMod mirror**: whether the ring modulation waveform is
-  mirrored.  This can soften the ring modulation.
-
 - **RingMod sync**: whether the phase of the ring modulation is
   synchronized with the phase of the square tone when a new on note is
   created.
+
+- **RingMod phase**: phase of the ring modulator.  Ranges from 0.0 to
+  1.0.
+
+- **RingMod mirror**: whether the ring modulation waveform is
+  mirrored.  This can soften the ring modulation.
 
 - **RingMod detune**: detune in semitone of the ring modulation
   waveform relative to the square waveform.  The famous SID phaser
@@ -248,6 +257,11 @@ but if it starts then it should run flawlessly.
   - 2: UpSaw
   - 3: UpTriangle
   
+- **Buzzer sync**: whether the phase of the buzzer gets reset to
+  *Buzzer phase* when a new on note is created.
+
+- **Buzzer phase**: phase of the buzzer.  Ranges from 0.0 to 1.0.
+
 - **Buzzer time**: buzzer duration in second.  Ranges from 0.0 to
   +inf.
 
