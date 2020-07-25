@@ -213,7 +213,7 @@ but if it starts then it should run flawlessly.
     expect for the first cycle.
 
 - **RingMod waveform level1 to level8**: can define an 8 points
-  waveform.  That waveform is multipled with the YN2149 square
+  waveform.  That waveform is multipled with the YM2149 square
   waveform, thus creating a ring modulation.  Ranges from 0.0 to 1.0.
 
 - **RingMod sync**: whether the phase of the ring modulation is
