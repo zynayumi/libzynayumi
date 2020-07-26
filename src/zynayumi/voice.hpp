@@ -134,6 +134,7 @@ private:
 	                                   // entire cycle
 
 	double _buzzer_pitch;              // Pitch of the buzzer
+	int _buzzer_period;                // Period of the buzzer
 
 	double _actual_sustain_level;
 
@@ -165,6 +166,7 @@ private:
 	void update_buzzer();
 	void update_buzzer_off();
 	void update_buzzer_pitch();
+	void update_buzzer_period();
 	void update_buzzer_shape();
 	void update_final_level();
 	void sync_tone();

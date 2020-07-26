@@ -71,6 +71,9 @@ public:
 	// Current play mode
 	PlayMode playmode;
 
+	// Current buzzer shape
+	Buzzer::Shape buzzershape;
+
 	// Current pitches. Useful for handling chord based arp.
 	std::multiset<unsigned char> pitches;
 

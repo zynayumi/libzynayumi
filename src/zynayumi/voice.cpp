@@ -88,8 +88,8 @@ void Voice::update()
 	// Sync
 	if (_first_update) {
 		if (_patch->tone.sync) sync_tone();
-		if (_patch->ringmod.sync) sync_ringmod(); // NEXT: make sure ringmod period is set
-		if (_patch->buzzer.sync) sync_buzzer();   // NEXT: make sure buzzer period is set
+		if (_patch->ringmod.sync) sync_ringmod();
+		if (_patch->buzzer.sync) sync_buzzer();
 		_first_update = false;
 	}
 
@@ -466,14 +466,10 @@ void Voice::update_ringmod_waveform_level()
 
 void Voice::update_buzzer()
 {
-	update_buzzer_shape();              // NEXT: only set when changed
+	update_buzzer_shape();
 	update_buzzer_pitch();
-	int ep = _engine->pitch2toneperiod(_buzzer_pitch);
-	if (_patch->buzzer.shape == DownTriangle or
-	    _patch->buzzer.shape == UpTriangle) {
-		ep /= 2;
-	}
-	ayumi_set_envelope(&_engine->ay, ep);
+	update_buzzer_period();
+	ayumi_set_envelope(&_engine->ay, _buzzer_period);
 }
 
 void Voice::update_buzzer_off()
@@ -484,6 +480,15 @@ void Voice::update_buzzer_off()
 void Voice::update_buzzer_pitch()
 {
 	_buzzer_pitch = _patch->buzzer.detune + _final_pitch;
+}
+
+void Voice::update_buzzer_period()
+{
+	_buzzer_period = _engine->pitch2toneperiod(_buzzer_pitch);
+	if (_patch->buzzer.shape == Buzzer::Shape::DownTriangle or
+	    _patch->buzzer.shape == Buzzer::Shape::UpTriangle) {
+		_buzzer_period /= 2;
+	}
 }
 
 void Voice::update_buzzer_shape()
@@ -508,7 +513,7 @@ void Voice::update_buzzer_shape()
 			break;
 		}
 		ayumi_set_envelope_shape(&_engine->ay, ym_shape);
-		_engine->buzzershape = _zynayumi.patch.buzzer.shape;
+		_engine->buzzershape = _patch->buzzer.shape;
 	}
 }
 
@@ -534,6 +539,10 @@ void Voice::sync_tone()
 
 void Voice::sync_ringmod()
 {
+	// Make the ring modulation period is correct
+	update_ringmod_pitch();
+	update_ringmod_smp_period();
+
 	// Whole ringmod period
 	double wrp = _ringmod_smp_period
 		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
@@ -544,6 +553,9 @@ void Voice::sync_ringmod()
 
 void Voice::sync_buzzer()
 {
-	int period = ay->envelope_period;
-	ay->envelope_counter = (int)std::round(period * _patch->buzzer.phase);
+	// Make sure the buzzer period is correct
+	update_buzzer_shape();
+	update_buzzer_pitch();
+	update_buzzer_period();
+	_engine->ay.envelope_counter = (int)std::round(_buzzer_period * _patch->buzzer.phase);
 }

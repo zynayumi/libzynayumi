@@ -41,7 +41,7 @@ Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
 	  emulmode(EmulMode::YM2149),
 	  playmode(PlayMode::Mono),
-	  buzzershape(Buzzer::Count),
+	  buzzershape(Buzzer::Shape::Count),
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  lower_note_freq(8.1757989156),

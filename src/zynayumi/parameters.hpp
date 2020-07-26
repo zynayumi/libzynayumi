@@ -320,8 +320,8 @@ enum ParameterIndex {
 
 	// Buzzer
 	BUZZER_SHAPE,
-	BUZZER_SYNC,                 // NEXT
-	BUZZER_PHASE,                // NEXT
+	BUZZER_SYNC,
+	BUZZER_PHASE,
 	BUZZER_TIME,
 	BUZZER_DETUNE,
 	BUZZER_TRANSPOSE,
