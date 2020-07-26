@@ -488,25 +488,28 @@ void Voice::update_buzzer_pitch()
 
 void Voice::update_buzzer_shape()
 {
-	int ym_shape = 0;
-	switch(_patch->buzzer.shape) {
-	case Buzzer::Shape::DownSaw:
-		ym_shape = 8;
-		break;
-	case Buzzer::Shape::DownTriangle:
-		ym_shape = 10;
-		break;
-	case Buzzer::Shape::UpSaw:
-		ym_shape = 12;
-		break;
-	case Buzzer::Shape::UpTriangle:
-		ym_shape = 14;
-		break;
-	default:
-		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
-		break;
+	if (_patch->buzzer.shape != _engine->buzzershape) {
+		int ym_shape = 0;
+		switch(_patch->buzzer.shape) {
+		case Buzzer::Shape::DownSaw:
+			ym_shape = 8;
+			break;
+		case Buzzer::Shape::DownTriangle:
+			ym_shape = 10;
+			break;
+		case Buzzer::Shape::UpSaw:
+			ym_shape = 12;
+			break;
+		case Buzzer::Shape::UpTriangle:
+			ym_shape = 14;
+			break;
+		default:
+			std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+			break;
+		}
+		ayumi_set_envelope_shape(&_engine->ay, ym_shape);
+		_engine->buzzershape = _zynayumi.patch.buzzer.shape;
 	}
-	ayumi_set_envelope_shape(&_engine->ay, ym_shape);
 }
 
 void Voice::update_final_level()
