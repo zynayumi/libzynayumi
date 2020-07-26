@@ -88,8 +88,8 @@ void Voice::update()
 	// Sync
 	if (_first_update) {
 		if (_patch->tone.sync) sync_tone();
-		if (_patch->ringmod.sync) sync_ringmod();
-		if (_patch->buzzer.sync) sync_buzzer();
+		if (_patch->ringmod.sync) sync_ringmod(); // NEXT: make sure ringmod period is set
+		if (_patch->buzzer.sync) sync_buzzer();   // NEXT: make sure buzzer period is set
 		_first_update = false;
 	}
 
@@ -237,6 +237,7 @@ void Voice::update_port()
 
 void Voice::update_lfo()
 {
+	// NEXT: support shapes
 	double depth = _patch->lfo.delay < on_time ? _patch->lfo.depth
 		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, on_time);
 	depth += _engine->mw_depth;
@@ -465,9 +466,13 @@ void Voice::update_ringmod_waveform_level()
 
 void Voice::update_buzzer()
 {
-	update_buzzer_shape();              // TODO: only set when changed
+	update_buzzer_shape();              // NEXT: only set when changed
 	update_buzzer_pitch();
 	int ep = _engine->pitch2toneperiod(_buzzer_pitch);
+	if (_patch->buzzer.shape == DownTriangle or
+	    _patch->buzzer.shape == UpTriangle) {
+		ep /= 2;
+	}
 	ayumi_set_envelope(&_engine->ay, ep);
 }
 
@@ -536,5 +541,6 @@ void Voice::sync_ringmod()
 
 void Voice::sync_buzzer()
 {
-	// NEXT
+	int period = ay->envelope_period;
+	ay->envelope_counter = (int)std::round(period * _patch->buzzer.phase);
 }
