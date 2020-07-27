@@ -172,6 +172,16 @@ private:
 	void sync_tone();
 	void sync_ringmod();
 	void sync_buzzer();
+
+	static double lfo_cycle_remainder(double freq, double time);
+	static double lfo_sine_pitch(double freq, double time);
+	static double lfo_triangle_pitch(double freq, double time);
+	static double lfo_downsaw_pitch(double freq, double time);
+	static double lfo_upsaw_pitch(double freq, double time);
+	static double lfo_square_pitch(double freq, double time);
+	static double lfo_rand_pitch(double freq, double time);
+
+	static uint32_t hash(uint32_t a);
 };
 
 } // ~namespace zynayumi

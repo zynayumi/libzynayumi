@@ -237,11 +237,31 @@ void Voice::update_port()
 
 void Voice::update_lfo()
 {
-	// NEXT: support shapes
 	double depth = _patch->lfo.delay < on_time ? _patch->lfo.depth
 		: linear_interpolate(0, 0, _patch->lfo.delay, _patch->lfo.depth, on_time);
 	depth += _engine->mw_depth;
-	_relative_lfo_pitch = depth * sin(2*M_PI*on_time*_patch->lfo.freq);
+	double lfo_pitch;
+	switch (_patch->lfo.shape) {
+	case LFO::Shape::Sine:
+		lfo_pitch = lfo_sine_pitch(_patch->lfo.freq, on_time);
+		break;
+	case LFO::Shape::Triangle:
+		lfo_pitch = lfo_triangle_pitch(_patch->lfo.freq, on_time);
+		break;
+	case LFO::Shape::DownSaw:
+		lfo_pitch = lfo_downsaw_pitch(_patch->lfo.freq, on_time);
+		break;
+	case LFO::Shape::UpSaw:
+		lfo_pitch = lfo_upsaw_pitch(_patch->lfo.freq, on_time);
+		break;
+	case LFO::Shape::Square:
+		lfo_pitch = lfo_square_pitch(_patch->lfo.freq, on_time);
+		break;
+	case LFO::Shape::Rand:
+		lfo_pitch = lfo_rand_pitch(_patch->lfo.freq, on_time);
+		break;
+	}
+	_relative_lfo_pitch = depth * lfo_pitch;
 }
 
 void Voice::update_arp()
@@ -263,22 +283,15 @@ void Voice::update_arp()
 			index = (_engine->pitches.size() - 1) - index;
 		return *std::next(_engine->pitches.begin(), index);
 	};
+
 	// Like the above but return a random index and pitch
-	auto indexhash = [&](unsigned a) -> unsigned {
-		a = (a ^ 61) ^ (a >> 16);
-		a = a + (a << 3);
-		a = a ^ (a >> 4);
-		a = a * 0x27d4eb2d;
-		a = a ^ (a >> 15);
-		return a;
-	};
 	auto count2rndindex = [&](size_t size) -> unsigned {
 		if (step_change) {
 			bool same_index;
 			unsigned new_index;
-			do {                    // Try the next random index if the
+			do {                   // Try the next random index if the
 				                    // note wouldn't changed.
-				new_index = indexhash(_arp_rnd_offset_step + _arp_step) % size;
+				new_index = hash(_arp_rnd_offset_step + _arp_step) % size;
 				same_index = new_index == _index;
 				if (same_index)
 					++_arp_rnd_offset_step;
@@ -287,7 +300,7 @@ void Voice::update_arp()
 			return _index;
 		}
 		else {
-			_index = indexhash(_arp_rnd_offset_step + _arp_step) % size;
+			_index = hash(_arp_rnd_offset_step + _arp_step) % size;
 			return _index;
 		}
 	};
@@ -558,4 +571,79 @@ void Voice::sync_buzzer()
 	update_buzzer_pitch();
 	update_buzzer_period();
 	_engine->ay.envelope_counter = (int)std::round(_buzzer_period * _patch->buzzer.phase);
+}
+
+double Voice::lfo_cycle_remainder(double freq, double time)
+{
+	// TODO: optimize by maintaining a lfo_time attribute instead.
+	if (freq < time)
+		time -= std::floor(time / freq);
+	return time;
+}
+
+double Voice::lfo_sine_pitch(double freq, double time)
+{
+	return sin(2 * M_PI * time * freq);
+}
+
+double Voice::lfo_triangle_pitch(double freq, double time)
+{
+	double period = 1.0 /freq;
+	double half_period = period / 2.0;
+	double quater_period = half_period / 2.0;
+	time += quater_period;       // dephase to start at zero
+	time = lfo_cycle_remainder(freq, time);
+	if (time < half_period)
+		return linear_interpolate(0.0, -1.0, half_period, 1.0, time);
+	else
+		return linear_interpolate(half_period, 1.0, period, 1.0, time);
+}
+
+double Voice::lfo_downsaw_pitch(double freq, double time)
+{
+	double period = 1.0 /freq;
+	double half_period = period / 2.0;
+	time += half_period;       // dephase to start at zero
+	time = lfo_cycle_remainder(freq, time);
+	return linear_interpolate(0.0, 1.0, period, -1.0, time);
+}
+
+double Voice::lfo_upsaw_pitch(double freq, double time)
+{
+	double period = 1.0 /freq;
+	double half_period = period / 2.0;
+	time += half_period;       // dephase to start at zero
+	time = lfo_cycle_remainder(freq, time);
+	return linear_interpolate(0.0, -1.0, period, 1.0, time);
+}
+
+double Voice::lfo_square_pitch(double freq, double time)
+{
+	time = lfo_cycle_remainder(freq, time);
+	double period = 1.0 /freq;
+	double half_period = period / 2.0;
+	if (time < half_period)
+		return -1.0;
+	else
+		return 1.0;
+}
+
+double Voice::lfo_rand_pitch(double freq, double time)
+{
+	double period = 1.0 /freq;
+	double half_period = period / 2.0;
+	uint32_t index = std::floor(time / half_period);
+	uint32_t rnd = hash(index);
+	static const uint32_t uint32_t_max = std::numeric_limits<uint32_t>::max();
+	return linear_interpolate(0, -1.0, uint32_t_max, 1.0, rnd);
+}
+
+uint32_t Voice::hash(uint32_t a)
+{
+	a = (a ^ 61) ^ (a >> 16);
+	a = a + (a << 3);
+	a = a ^ (a >> 4);
+	a = a * 0x27d4eb2d;
+	a = a ^ (a >> 15);
+	return a;
 }

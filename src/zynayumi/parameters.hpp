@@ -327,7 +327,7 @@ enum ParameterIndex {
 	BUZZER_TRANSPOSE,
 
 	// Pitch LFO
-	LFO_SHAPE,                   // NEXT
+	LFO_SHAPE,
 	LFO_FREQ,
 	LFO_DELAY,
 	LFO_DEPTH,
