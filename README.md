@@ -97,7 +97,7 @@ but if it starts then it should run flawlessly.
 
 - **Emulation mode**:
   - 0: YM2149 (Atari ST)
-  - 1: AY-3-8910 (Amdstrad CPC, ZX Spectrum)
+  - 1: AY-3-8910 (Amdstrad CPC)
 
 - **Play mode**:
   - 0: Mono, always use the first voice of the YM2149.
@@ -372,15 +372,18 @@ avoid disabling the envelop you may use the ring modulator instead.
 
 ### Why can't I hear any difference between the YM2149 and AY-3-8910?
 
-The difference has to do with the mapping of the 16 possible volume
-levels to their corresponding dBs, and yes it is subtle.
+The difference is subtle and has to do with
 
-There is another difference having to do with the clock of the
-soundchip.  Unfortunately, for technical reasons within the ayumi code
-that I do not understand, I wasn't able to set the correct clock to
-the AY-3-8910 (4 MHz) or the YM2149 (8 MHz).  Instead the clock is the
-same for both modes and is set to 2 MHz.  A better solution is welcome
-if you have one.
+1. The mapping of the 16 possible volume levels to their corresponding
+   dBs.
+
+2. The frequency of the clock, 2MHz for the YM2149 (Atari ST) and 1MHz
+   for AY-3-8910 (Amdstrad CPC).  This affects the noise period and
+   the legacy mode tuning.
+
+The YM2149 (Atari ST) was mono while the AY-3-8910 (Amstrad CPC) was
+stereo, but here stereo is supported in both modes.  One can always
+disable stereo with the *Pan0* to *Pan2* parameters.
 
 ### Why do I hear a ringing in my ears?
 
@@ -395,6 +398,7 @@ harmful sounds and protect your hearing.
 ## TODO
 
 - [ ] Add amp and ringmod env sensitivity parameter
+- [ ] Add 8-step sequencer for controlling arp, noise and vol
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI

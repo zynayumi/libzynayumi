@@ -48,14 +48,12 @@ Engine::Engine(const Zynayumi& ref)
 	  // According to wikipedia
 	  // https://en.wikipedia.org/wiki/General_Instrument_AY-3-8910 the
 	  // clock rate should be 4MHz for the AY-3-8910 and 8MHz for the
-	  // YM2149.  However, it seems that ayumi only supports up to
-	  // 2MHz, and in http://sovietov.com/app/ayumi/ayumi.html the
-	  // possible clock rates are 1.75MHz to 2MHz.  Using higher clock
-	  // rates make ayumi generate terrible noise, so 2MHz is set and
-	  // fixed for now.  It should also be noted that in
-	  // http://users.rcn.com/carlott/ay3-8910.pdf they consistently
-	  // give 2MHz as example of clock rate.
-	  clock_rate(2000000),
+	  // YM2149.  However in http://users.rcn.com/carlott/ay3-8910.pdf
+	  // they consistently give 2MHz as example of clock rate.  Also,
+	  // from Arkos Tracker 2 http://www.julien-nevo.com/arkostracker/
+	  // the clock is set to 1MHz for the Amdstrad CPC and 2MHz for the
+	  // Atari ST, so we're going with that.
+	  clock_rate(YM2149_CLOCK_RATE),
 	  sample_rate(44100),        // Nornally redefined by the host
 	  bpm(120),                  // Normally redefined by the host
 	  pw_pitch(0),
@@ -88,8 +86,9 @@ void Engine::audio_process(float* left_out, float* right_out,
 {
 	// Switch to the correct emulation mode (YM2149 or YM8910)
 	if (_zynayumi.patch.emulmode != emulmode) {
-		ayumi_configure(&ay, emulmode == EmulMode::YM2149,
-		                clock_rate, sample_rate);
+		bool is_ym2149 = emulmode == EmulMode::YM2149;
+		clock_rate = is_ym2149 ? YM2149_CLOCK_RATE : AY8910_CLOCK_RATE;
+		ayumi_configure(&ay, is_ym2149, clock_rate, sample_rate);
 		emulmode = _zynayumi.patch.emulmode;
 	}
 

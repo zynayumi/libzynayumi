@@ -58,6 +58,13 @@ class Zynayumi;
 class Engine {
 public:
 
+	/////////////////
+   // Constants   //
+   /////////////////
+
+	static const int YM2149_CLOCK_RATE = 2000000;
+	static const int AY8910_CLOCK_RATE = 1000000;
+
 	///////////////////
 	// Attributes    //
 	///////////////////
