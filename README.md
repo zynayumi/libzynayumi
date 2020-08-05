@@ -379,7 +379,7 @@ The difference is subtle and has to do with
 
 2. The frequency of the clock, 2MHz for the YM2149 (Atari ST) and 1MHz
    for AY-3-8910 (Amdstrad CPC).  This affects the noise period and
-   the legacy mode tuning.
+   the legacy tuning.
 
 The YM2149 (Atari ST) was mono while the AY-3-8910 (Amstrad CPC) was
 stereo, but here stereo is supported in both modes.  One can always
