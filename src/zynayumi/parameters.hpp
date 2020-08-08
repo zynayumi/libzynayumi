@@ -273,7 +273,7 @@ enum ParameterIndex {
 
 	// Envelope
 	ENV_ATTACK_TIME,
-	ENV_HOLD1_LEVEL,
+	ENV_HOLD1_LEVEL,             // NEXT: 16
 	ENV_INTER1_TIME,
 	ENV_HOLD2_LEVEL,
 	ENV_INTER2_TIME,
@@ -282,25 +282,84 @@ enum ParameterIndex {
 	ENV_SUSTAIN_LEVEL,
 	ENV_RELEASE,
 
-	// Amplitude envelope depth
-	AMP_ENV_DEPTH,               // NEXT
-
 	// Pitch envelope
 	PITCH_ENV_ATTACK_PITCH,
 	PITCH_ENV_TIME,
 
 	// Arpegio
-	ARP_PITCH1,
-	ARP_PITCH2,
-	ARP_PITCH3,
-	ARP_TEMPO,
-	ARP_HOST_SYNC,
-	ARP_BEAT_DIVISOR,
-	ARP_BEAT_MULTIPLIER,
-	ARP_REPEAT,
+	SEQ_TONE_PITCH_0,
+	SEQ_NOISE_PERIOD_0,
+	SEQ_RINGMOD_DEPTH_0,
+	SEQ_LEVEL_0,
+	SEQ_TONE_PITCH_1,
+	SEQ_NOISE_PERIOD_1,
+	SEQ_RINGMOD_DEPTH_1,
+	SEQ_LEVEL_1,
+	SEQ_TONE_PITCH_2,
+	SEQ_NOISE_PERIOD_2,
+	SEQ_RINGMOD_DEPTH_2,
+	SEQ_LEVEL_2,
+	SEQ_TONE_PITCH_3,
+	SEQ_NOISE_PERIOD_3,
+	SEQ_RINGMOD_DEPTH_3,
+	SEQ_LEVEL_3,
+	SEQ_TONE_PITCH_4,
+	SEQ_NOISE_PERIOD_4,
+	SEQ_RINGMOD_DEPTH_4,
+	SEQ_LEVEL_4,
+	SEQ_TONE_PITCH_5,
+	SEQ_NOISE_PERIOD_5,
+	SEQ_RINGMOD_DEPTH_5,
+	SEQ_LEVEL_5,
+	SEQ_TONE_PITCH_6,
+	SEQ_NOISE_PERIOD_6,
+	SEQ_RINGMOD_DEPTH_6,
+	SEQ_LEVEL_6,
+	SEQ_TONE_PITCH_7,
+	SEQ_NOISE_PERIOD_7,
+	SEQ_RINGMOD_DEPTH_7,
+	SEQ_LEVEL_7,
+	SEQ_TONE_PITCH_8,
+	SEQ_NOISE_PERIOD_8,
+	SEQ_RINGMOD_DEPTH_8,
+	SEQ_LEVEL_8,
+	SEQ_TONE_PITCH_9,
+	SEQ_NOISE_PERIOD_9,
+	SEQ_RINGMOD_DEPTH_9,
+	SEQ_LEVEL_9,
+	SEQ_TONE_PITCH_10,
+	SEQ_NOISE_PERIOD_10,
+	SEQ_RINGMOD_DEPTH_10,
+	SEQ_LEVEL_10,
+	SEQ_TONE_PITCH_11,
+	SEQ_NOISE_PERIOD_11,
+	SEQ_RINGMOD_DEPTH_11,
+	SEQ_LEVEL_11,
+	SEQ_TONE_PITCH_12,
+	SEQ_NOISE_PERIOD_12,
+	SEQ_RINGMOD_DEPTH_12,
+	SEQ_LEVEL_12,
+	SEQ_TONE_PITCH_13,
+	SEQ_NOISE_PERIOD_13,
+	SEQ_RINGMOD_DEPTH_13,
+	SEQ_LEVEL_13,
+	SEQ_TONE_PITCH_14,
+	SEQ_NOISE_PERIOD_14,
+	SEQ_RINGMOD_DEPTH_14,
+	SEQ_LEVEL_14,
+	SEQ_TONE_PITCH_15,
+	SEQ_NOISE_PERIOD_15,
+	SEQ_RINGMOD_DEPTH_15,
+	SEQ_LEVEL_15,
+	SEQ_TEMPO,
+	SEQ_HOST_SYNC,
+	SEQ_BEAT_DIVISOR,
+	SEQ_BEAT_MULTIPLIER,
+	SEQ_LOOP,
+	SEQ_END,
 
 	// Ring modulation
-	RINGMOD_WAVEFORM_LEVEL1,
+	RINGMOD_WAVEFORM_LEVEL1,     // NEXT 16
 	RINGMOD_WAVEFORM_LEVEL2,
 	RINGMOD_WAVEFORM_LEVEL3,
 	RINGMOD_WAVEFORM_LEVEL4,
@@ -315,8 +374,7 @@ enum ParameterIndex {
 	RINGMOD_TRANSPOSE,
 	RINGMOD_FIXED_FREQUENCY,
 	RINGMOD_FIXED_VS_RELATIVE,
-	RINGMOD_DEPTH,
-	RINGMOD_ENV_DEPTH,           // NEXT
+	RINGMOD_DEPTH,               // NEXT: 16?
 
 	// Buzzer
 	BUZZER_SHAPE,
@@ -376,17 +434,78 @@ enum ParameterIndex {
 #define ENV_DECAY_TIME_NAME "Env decay time"
 #define ENV_SUSTAIN_LEVEL_NAME "Env sustain level"
 #define ENV_RELEASE_NAME "Env release"
-#define AMP_ENV_DEPTH_NAME "Amplitude env depth"
 #define PITCH_ENV_ATTACK_PITCH_NAME "Pitch env attack pitch"
 #define PITCH_ENV_TIME_NAME "Pitch env time"
-#define ARP_PITCH1_NAME "Arp pitch 1"
-#define ARP_PITCH2_NAME "Arp pitch 2"
-#define ARP_PITCH3_NAME "Arp pitch 3"
-#define ARP_TEMPO_NAME "Arp tempo"
-#define ARP_HOST_SYNC_NAME "Arp host sync"
-#define ARP_BEAT_DIVISOR_NAME "Arp beat divisor"
-#define ARP_BEAT_MULTIPLIER_NAME "Arp beat multiplier"
-#define ARP_REPEAT_NAME "Arp repeat"
+#define SEQ_TONE_PITCH_0_NAME "Seq tone pitch 0"
+#define SEQ_NOISE_PERIOD_0_NAME "Seq noise period 0"
+#define SEQ_RINGMOD_DEPTH_0_NAME "Seq ringmod depth 0"
+#define SEQ_LEVEL_0_NAME "Seq level 0"
+#define SEQ_TONE_PITCH_1_NAME "Seq tone pitch 1"
+#define SEQ_NOISE_PERIOD_1_NAME "Seq noise period 1"
+#define SEQ_RINGMOD_DEPTH_1_NAME "Seq ringmod depth 1"
+#define SEQ_LEVEL_1_NAME "Seq level 1"
+#define SEQ_TONE_PITCH_2_NAME "Seq tone pitch 2"
+#define SEQ_NOISE_PERIOD_2_NAME "Seq noise period 2"
+#define SEQ_RINGMOD_DEPTH_2_NAME "Seq ringmod depth 2"
+#define SEQ_LEVEL_2_NAME "Seq level 2"
+#define SEQ_TONE_PITCH_3_NAME "Seq tone pitch 3"
+#define SEQ_NOISE_PERIOD_3_NAME "Seq noise period 3"
+#define SEQ_RINGMOD_DEPTH_3_NAME "Seq ringmod depth 3"
+#define SEQ_LEVEL_3_NAME "Seq level 3"
+#define SEQ_TONE_PITCH_4_NAME "Seq tone pitch 4"
+#define SEQ_NOISE_PERIOD_4_NAME "Seq noise period 4"
+#define SEQ_RINGMOD_DEPTH_4_NAME "Seq ringmod depth 4"
+#define SEQ_LEVEL_4_NAME "Seq level 4"
+#define SEQ_TONE_PITCH_5_NAME "Seq tone pitch 5"
+#define SEQ_NOISE_PERIOD_5_NAME "Seq noise period 5"
+#define SEQ_RINGMOD_DEPTH_5_NAME "Seq ringmod depth 5"
+#define SEQ_LEVEL_5_NAME "Seq level 5"
+#define SEQ_TONE_PITCH_6_NAME "Seq tone pitch 6"
+#define SEQ_NOISE_PERIOD_6_NAME "Seq noise period 6"
+#define SEQ_RINGMOD_DEPTH_6_NAME "Seq ringmod depth 6"
+#define SEQ_LEVEL_6_NAME "Seq level 6"
+#define SEQ_TONE_PITCH_7_NAME "Seq tone pitch 7"
+#define SEQ_NOISE_PERIOD_7_NAME "Seq noise period 7"
+#define SEQ_RINGMOD_DEPTH_7_NAME "Seq ringmod depth 7"
+#define SEQ_LEVEL_7_NAME "Seq level 7"
+#define SEQ_TONE_PITCH_8_NAME "Seq tone pitch 8"
+#define SEQ_NOISE_PERIOD_8_NAME "Seq noise period 8"
+#define SEQ_RINGMOD_DEPTH_8_NAME "Seq ringmod depth 8"
+#define SEQ_LEVEL_8_NAME "Seq level 8"
+#define SEQ_TONE_PITCH_9_NAME "Seq tone pitch 9"
+#define SEQ_NOISE_PERIOD_9_NAME "Seq noise period 9"
+#define SEQ_RINGMOD_DEPTH_9_NAME "Seq ringmod depth 9"
+#define SEQ_LEVEL_9_NAME "Seq level 9"
+#define SEQ_TONE_PITCH_10_NAME "Seq tone pitch 10"
+#define SEQ_NOISE_PERIOD_10_NAME "Seq noise period 10"
+#define SEQ_RINGMOD_DEPTH_10_NAME "Seq ringmod depth 10"
+#define SEQ_LEVEL_10_NAME "Seq level 10"
+#define SEQ_TONE_PITCH_11_NAME "Seq tone pitch 11"
+#define SEQ_NOISE_PERIOD_11_NAME "Seq noise period 11"
+#define SEQ_RINGMOD_DEPTH_11_NAME "Seq ringmod depth 11"
+#define SEQ_LEVEL_11_NAME "Seq level 11"
+#define SEQ_TONE_PITCH_12_NAME "Seq tone pitch 12"
+#define SEQ_NOISE_PERIOD_12_NAME "Seq noise period 12"
+#define SEQ_RINGMOD_DEPTH_12_NAME "Seq ringmod depth 12"
+#define SEQ_LEVEL_12_NAME "Seq level 12"
+#define SEQ_TONE_PITCH_13_NAME "Seq tone pitch 13"
+#define SEQ_NOISE_PERIOD_13_NAME "Seq noise period 13"
+#define SEQ_RINGMOD_DEPTH_13_NAME "Seq ringmod depth 13"
+#define SEQ_LEVEL_13_NAME "Seq level 13"
+#define SEQ_TONE_PITCH_14_NAME "Seq tone pitch 14"
+#define SEQ_NOISE_PERIOD_14_NAME "Seq noise period 14"
+#define SEQ_RINGMOD_DEPTH_14_NAME "Seq ringmod depth 14"
+#define SEQ_LEVEL_14_NAME "Seq level 14"
+#define SEQ_TONE_PITCH_15_NAME "Seq tone pitch 15"
+#define SEQ_NOISE_PERIOD_15_NAME "Seq noise period 15"
+#define SEQ_RINGMOD_DEPTH_15_NAME "Seq ringmod depth 15"
+#define SEQ_LEVEL_15_NAME "Seq level 15"
+#define SEQ_TEMPO_NAME "Seq tempo"
+#define SEQ_HOST_SYNC_NAME "Seq host sync"
+#define SEQ_BEAT_DIVISOR_NAME "Seq beat divisor"
+#define SEQ_BEAT_MULTIPLIER_NAME "Seq beat multiplier"
+#define SEQ_LOOP_NAME "Seq loop"
+#define SEQ_END_NAME "Seq end"
 #define RINGMOD_WAVEFORM_LEVEL1_NAME "RingMod waveform level 1"
 #define RINGMOD_WAVEFORM_LEVEL2_NAME "RingMod waveform level 2"
 #define RINGMOD_WAVEFORM_LEVEL3_NAME "RingMod waveform level 3"
@@ -403,7 +522,6 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
 #define RINGMOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
 #define RINGMOD_DEPTH_NAME "RingMod depth"
-#define RINGMOD_ENV_DEPTH_NAME "RingMod env depth"
 #define BUZZER_SHAPE_NAME "Buzzer shape"
 #define BUZZER_SYNC_NAME "Buzzer sync"
 #define BUZZER_PHASE_NAME "Buzzer phase"
@@ -452,17 +570,18 @@ enum ParameterIndex {
 #define ENV_DECAY_TIME_UNIT SECOND
 #define ENV_SUSTAIN_LEVEL_UNIT EMPTY
 #define ENV_RELEASE_UNIT SECOND
-#define AMP_ENV_DEPTH_UNIT EMPTY
 #define PITCH_ENV_ATTACK_PITCH_UNIT SEMITONE
 #define PITCH_ENV_TIME_UNIT SECOND
-#define ARP_PITCH1_UNIT SEMITONE
-#define ARP_PITCH2_UNIT SEMITONE
-#define ARP_PITCH3_UNIT SEMITONE
-#define ARP_TEMPO_UNIT BPM
-#define ARP_HOST_SYNC_UNIT EMPTY
-#define ARP_BEAT_DIVISOR_UNIT EMPTY
-#define ARP_BEAT_MULTIPLIER_UNIT EMPTY
-#define ARP_REPEAT_UNIT EMPTY
+#define SEQ_TONE_PITCH_UNIT SEMITONE
+#define SEQ_NOISE_PERIOD_UNIT EMPTY
+#define SEQ_RINGMOD_DEPTH_UNIT EMPTY
+#define SEQ_LEVEL_UNIT EMPTY
+#define SEQ_TEMPO_UNIT BPM
+#define SEQ_HOST_SYNC_UNIT EMPTY
+#define SEQ_BEAT_DIVISOR_UNIT EMPTY
+#define SEQ_BEAT_MULTIPLIER_UNIT EMPTY
+#define SEQ_LOOP_UNIT EMPTY
+#define SEQ_END_UNIT EMPTY
 #define RINGMOD_WAVEFORM_LEVEL1_UNIT EMPTY
 #define RINGMOD_WAVEFORM_LEVEL2_UNIT EMPTY
 #define RINGMOD_WAVEFORM_LEVEL3_UNIT EMPTY
@@ -479,7 +598,6 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_UNIT HERTZ
 #define RINGMOD_FIXED_VS_RELATIVE_UNIT EMPTY
 #define RINGMOD_DEPTH_UNIT EMPTY
-#define RINGMOD_ENV_DEPTH_UNIT EMPTY
 #define BUZZER_SHAPE_UNIT EMPTY
 #define BUZZER_SYNC_UNIT EMPTY
 #define BUZZER_PHASE_UNIT EMPTY
@@ -524,17 +642,18 @@ enum ParameterIndex {
 #define ENV_DECAY_TIME_DFLT 0.0
 #define ENV_SUSTAIN_LEVEL_DFLT 1.0
 #define ENV_RELEASE_DFLT 0.0
-#define AMP_ENV_DEPTH_DFLT 1.0
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0
 #define PITCH_ENV_TIME_DFLT 0.0
-#define ARP_PITCH1_DFLT 0
-#define ARP_PITCH2_DFLT 0
-#define ARP_PITCH3_DFLT 0
-#define ARP_TEMPO_DFLT 120
-#define ARP_HOST_SYNC_DFLT true
-#define ARP_BEAT_DIVISOR_DFLT 9
-#define ARP_BEAT_MULTIPLIER_DFLT 1
-#define ARP_REPEAT_DFLT 0
+#define SEQ_TONE_PITCH_DFLT 0
+#define SEQ_NOISE_PERIOD_DFLT 0
+#define SEQ_RINGMOD_DEPTH_DFLT 1.0
+#define SEQ_LEVEL_DFLT 15
+#define SEQ_TEMPO_DFLT 120.0
+#define SEQ_HOST_SYNC_DFLT true
+#define SEQ_BEAT_DIVISOR_DFLT 9
+#define SEQ_BEAT_MULTIPLIER_DFLT 1
+#define SEQ_LOOP_DFLT 0
+#define SEQ_END_DFLT 0
 #define RINGMOD_WAVEFORM_LEVEL1_DFLT 1.0
 #define RINGMOD_WAVEFORM_LEVEL2_DFLT 1.0
 #define RINGMOD_WAVEFORM_LEVEL3_DFLT 1.0
@@ -551,7 +670,6 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_FREQUENCY_DFLT 1.0
 #define RINGMOD_FIXED_VS_RELATIVE_DFLT 1.0
 #define RINGMOD_DEPTH_DFLT 1.0
-#define RINGMOD_ENV_DEPTH_DFLT 0.0
 #define BUZZER_SHAPE_DFLT Buzzer::Shape::DownSaw
 #define BUZZER_SYNC_DFLT true
 #define BUZZER_PHASE_DFLT 0.0
@@ -617,30 +735,30 @@ enum ParameterIndex {
 #define ENV_SUSTAIN_LEVEL_U 1.0f
 #define ENV_RELEASE_L 0.0f
 #define ENV_RELEASE_U 10.0f
-#define AMP_ENV_DEPTH_L 0.0f
-#define AMP_ENV_DEPTH_U 1.0f
 #define PITCH_ENV_ATTACK_PITCH_L -96.0f
 #define PITCH_ENV_ATTACK_PITCH_U 96.0f
 #define PITCH_ENV_TIME_L 0.0f
 #define PITCH_ENV_TIME_U 10.0f
-#define ARP_PITCH1_L -48
-#define ARP_PITCH1_U 48
-#define ARP_PITCH2_L -48
-#define ARP_PITCH2_U 48
-#define ARP_PITCH3_L -48
-#define ARP_PITCH3_U 48
-#define ARP_TEMPO_L 30
-#define ARP_TEMPO_U 300
-#define ARP_HOST_SYNC_L 0
-#define ARP_HOST_SYNC_U 1
-#define ARP_BEAT_DIVISOR_L 1
-#define ARP_BEAT_DIVISOR_U 64
-#define ARP_BEAT_MULTIPLIER_L 1
-#define ARP_BEAT_MULTIPLIER_U 64
-#define ARP_FREQ_L 0.0f
-#define ARP_FREQ_U 50.0f
-#define ARP_REPEAT_L 0.0f
-#define ARP_REPEAT_U 2.0f
+#define SEQ_TONE_PITCH_L -48
+#define SEQ_TONE_PITCH_U 48
+#define SEQ_NOISE_PERIOD_L -32
+#define SEQ_NOISE_PERIOD_U 32
+#define SEQ_RINGMOD_DEPTH_L 0.0
+#define SEQ_RINGMOD_DEPTH_U 1.0
+#define SEQ_LEVEL_L 0
+#define SEQ_LEVEL_U 15
+#define SEQ_TEMPO_L 30.0
+#define SEQ_TEMPO_U 300.0
+#define SEQ_HOST_SYNC_L 0
+#define SEQ_HOST_SYNC_U 1
+#define SEQ_BEAT_DIVISOR_L 1
+#define SEQ_BEAT_DIVISOR_U 64
+#define SEQ_BEAT_MULTIPLIER_L 1
+#define SEQ_BEAT_MULTIPLIER_U 64
+#define SEQ_LOOP_L 0
+#define SEQ_LOOP_U 15
+#define SEQ_END_L 0
+#define SEQ_END_U 16
 #define RINGMOD_WAVEFORM_LEVEL1_L 0.0f
 #define RINGMOD_WAVEFORM_LEVEL1_U 1.0f
 #define RINGMOD_WAVEFORM_LEVEL2_L 0.0f
@@ -673,8 +791,6 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_U 1.0f
 #define RINGMOD_DEPTH_L 0.0f
 #define RINGMOD_DEPTH_U 1.0f
-#define RINGMOD_ENV_DEPTH_L -1.0f
-#define RINGMOD_ENV_DEPTH_U 1.0f
 #define BUZZER_SYNC_L 0.0f
 #define BUZZER_SYNC_U 1.0f
 #define BUZZER_PHASE_L 0.0f
@@ -752,8 +868,8 @@ public:
 	// to the user
 	float tone_detune;
 	int tone_transpose;
-	int arp_beat_divisor;
-	int arp_beat_multiplier;
+	int seq_beat_divisor;
+	int seq_beat_multiplier;
 	float ringmod_detune;
 	int ringmod_transpose;
 	float buzzer_detune;

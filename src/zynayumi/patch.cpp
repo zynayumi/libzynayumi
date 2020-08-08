@@ -45,8 +45,14 @@ Env::Env() : attack_time(0),
 
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
-Arp::Arp() : pitch1(0), pitch2(0), pitch3(0),
-             tempo(120), host_sync(1), freq(18.0), repeat(0) {}
+Seq::State::State() : tone_pitch(0),
+                      noise_period(0),
+                      ringmod_depth(1.0),
+                      level(MAX_LEVEL) {}
+
+Seq::Seq() : states(Seq::size),
+             tempo(120), host_sync(1), freq(18.0),
+             loop(0), end(0) {}
 
 RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
                      sync(true), phase(0.0), mirror(true), detune(0.0),

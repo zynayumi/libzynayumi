@@ -101,12 +101,12 @@ private:
 	// LFO
 	double _relative_lfo_pitch;        // Relative LFO pitch
 
-	// Arpeggio
-	unsigned _arp_step;                // Every time it increases the
+	// Sequencer
+	unsigned _seq_step;                // Every time it increases the
 	                                   // arp pitch changes
-	double _relative_arp_pitch;        // Relative Arpeggio pitch
-	unsigned _arp_rnd_offset_step;     // Random offset of the
-	                                   // arp_step to allow different
+	double _relative_seq_pitch;        // Relative Arpeggio pitch
+	unsigned _seq_rnd_offset_step;     // Random offset of the
+	                                   // seq_step to allow different
 	                                   // randomness cross voices
 	unsigned _index;                   // Store the current random
 	                                   // index to avoid repetition of
@@ -153,7 +153,7 @@ private:
 	void update_noise_period();
 	void update_pitchenv();
 	void update_lfo();
-	void update_arp();
+	void update_seq();
 	void update_port();
 	void update_final_pitch();
 	void update_env();

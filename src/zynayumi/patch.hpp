@@ -26,8 +26,11 @@
 #define __ZYNAYUMI_PATCH_HPP
 
 #include <string>
+#include <vector>
 
 namespace zynayumi {
+
+static const int MAX_LEVEL = 15;
 
 enum class EmulMode {
 	YM2149,
@@ -122,17 +125,26 @@ public:
 	                             // tone pitch.
 };
 
-class Arp {
+class Seq {
 public:
-	Arp();
+	struct State {
+		State();
 
-	int pitch1;                  // First pitch in semitone
-	int pitch2;                  // Second pitch in semitone
-	int pitch3;                  // Third pitch in semitone
+		int tone_pitch;           // Relative pitch in semitone
+		int noise_period;         // Relative noise period
+		float ringmod_depth;      // Depth of the ring modulator // NEXT: 16?
+		int level;                // Voice level
+	};
+
+	Seq();
+
+	static const unsigned size = 16;
+	std::vector<State> states;   // Array of sequencer states
 	float tempo;                 // Tempo used to calculate the frequency
 	bool host_sync;              // Where the tempo is determined by the host
 	float freq;                  // Pitch change frequency
-	int repeat;                  // Repeat point
+	int loop;                    // Looping point
+	int end;                     // End point
 };
 
 /**
@@ -279,7 +291,7 @@ public:
 	Env env;                    // Envelope
 	float amp_env_depth;        // Amplitude envolpe depth
 	PitchEnv pitchenv;          // Pitch envelope
-	Arp arp;                    // Arpeggio
+	Seq seq;                    // Sequencer
 	RingMod ringmod;            // Ring modulation
 	Buzzer buzzer;              // Buzzer
 	LFO lfo;                    // LFO

@@ -40,8 +40,8 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _engine(&engine)
 	, _patch(&pa)
 	, _initial_pitch(pi)
-	, _relative_arp_pitch(0)
-	, _arp_rnd_offset_step(rand())
+	, _relative_seq_pitch(0)
+	, _seq_rnd_offset_step(rand())
 	, _index(-1)
 	, _env_smp_count(0)
 	, _on_smp_count(0)
@@ -81,7 +81,7 @@ void Voice::update()
 	update_pitchenv();
 	update_port();
 	update_lfo();
-	update_arp();
+	update_seq();
 	update_final_pitch();
 	update_tone();
 
@@ -264,14 +264,14 @@ void Voice::update_lfo()
 	_relative_lfo_pitch = depth * lfo_pitch;
 }
 
-void Voice::update_arp()
+void Voice::update_seq()
 {
-	unsigned step = _on_smp_count * _patch->arp.freq / _engine->sample_rate;
-	bool step_change = _arp_step != step;
-	_arp_step = step;
+	unsigned step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
+	bool step_change = _seq_step != step;
+	_seq_step = step;
 
 	auto count2index = [&](size_t repeat, size_t size) -> unsigned {
-		unsigned index = _arp_step;
+		unsigned index = _seq_step;
 		if (size <= index)
 			index = repeat + (index % (size - repeat));
 		return index;
@@ -291,16 +291,16 @@ void Voice::update_arp()
 			unsigned new_index;
 			do {                   // Try the next random index if the
 				                    // note wouldn't changed.
-				new_index = hash(_arp_rnd_offset_step + _arp_step) % size;
+				new_index = hash(_seq_rnd_offset_step + _seq_step) % size;
 				same_index = new_index == _index;
 				if (same_index)
-					++_arp_rnd_offset_step;
+					++_seq_rnd_offset_step;
 			} while	(same_index);
 			_index = new_index;
 			return _index;
 		}
 		else {
-			_index = hash(_arp_rnd_offset_step + _arp_step) % size;
+			_index = hash(_seq_rnd_offset_step + _seq_step) % size;
 			return _index;
 		}
 	};
@@ -312,26 +312,26 @@ void Voice::update_arp()
 	switch (_patch->playmode) {
 	case PlayMode::MonoUpArp:
 	case PlayMode::UnisonUpArp:
-		_relative_arp_pitch = 1 < _engine->pitches.size() ?
+		_relative_seq_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(false) - _initial_pitch : 0.0;
 		break;
 	case PlayMode::MonoDownArp:
 	case PlayMode::UnisonDownArp:
-		_relative_arp_pitch = 1 < _engine->pitches.size() ?
+		_relative_seq_pitch = 1 < _engine->pitches.size() ?
 			count2pitch(true) - _initial_pitch : 0.0;
 		break;
 	case PlayMode::MonoRandArp:
 	case PlayMode::UnisonRandArp:
-		_relative_arp_pitch = 1 < _engine->pitches.size() ?
+		_relative_seq_pitch = 1 < _engine->pitches.size() ?
 			count2rndpitch() - _initial_pitch : 0.0;
 		break;
 	case PlayMode::Unison:
 	case PlayMode::Mono:
 	case PlayMode::Poly:
-		switch(count2index(_patch->arp.repeat, 3)) {
-		case 0: _relative_arp_pitch = _patch->arp.pitch1; break;
-		case 1: _relative_arp_pitch = _patch->arp.pitch2; break;
-		case 2: _relative_arp_pitch = _patch->arp.pitch3; break;
+		switch(count2index(_patch->seq.loop, 3)) {
+		case 0: _relative_seq_pitch = _patch->seq.states[0].tone_pitch; break;
+		case 1: _relative_seq_pitch = _patch->seq.states[1].tone_pitch; break;
+		case 2: _relative_seq_pitch = _patch->seq.states[2].tone_pitch; break;
 		}
 		break;
 	default:
@@ -348,7 +348,7 @@ void Voice::update_final_pitch()
 		+ _relative_port_pitch
 		+ _relative_lfo_pitch
 		+ _engine->pw_pitch
-		+ _relative_arp_pitch;
+		+ _relative_seq_pitch;
 }
 
 void Voice::update_env()

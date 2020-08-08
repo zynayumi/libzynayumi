@@ -187,33 +187,153 @@ void initialise_2() {
 	ports.add_port(c_desc, ENV_RELEASE_NAME, r_desc | d_0,
 	               ENV_RELEASE_L, ENV_RELEASE_U);
 
-	// Amplitude envelope depth
-	ports.add_port(c_desc, AMP_ENV_DEPTH_NAME, r_desc | d_1,
-	               AMP_ENV_DEPTH_L, AMP_ENV_DEPTH_U);
-
 	// Pitch envelope
 	ports.add_port(c_desc, PITCH_ENV_ATTACK_PITCH_NAME, r_desc | d_0,
 	               PITCH_ENV_ATTACK_PITCH_L, PITCH_ENV_ATTACK_PITCH_U);
 	ports.add_port(c_desc, PITCH_ENV_TIME_NAME, r_desc | d_0,
 	               PITCH_ENV_TIME_L, PITCH_ENV_TIME_U);
 
-	// Arpegio
-	ports.add_port(c_desc, ARP_PITCH1_NAME, i_desc | d_0,
-	               ARP_PITCH1_L - delta, ARP_PITCH1_U + delta);
-	ports.add_port(c_desc, ARP_PITCH2_NAME, i_desc | d_0,
-	               ARP_PITCH2_L - delta, ARP_PITCH2_U + delta);
-	ports.add_port(c_desc, ARP_PITCH3_NAME, i_desc | d_0,
-	               ARP_PITCH3_L - delta, ARP_PITCH3_U + delta);
-	ports.add_port(c_desc, ARP_TEMPO_NAME, r_desc | d_low,
-	               ARP_TEMPO_L, ARP_TEMPO_U);
-	ports.add_port(c_desc, ARP_HOST_SYNC_NAME, i_desc | d_1,
-	               ARP_HOST_SYNC_L - delta, ARP_HOST_SYNC_U + delta);
-	ports.add_port(c_desc, ARP_BEAT_DIVISOR_NAME, i_desc | d_low,
-	               ARP_BEAT_DIVISOR_L - delta, ARP_BEAT_DIVISOR_U + delta);
-	ports.add_port(c_desc, ARP_BEAT_MULTIPLIER_NAME, i_desc | d_1,
-	               ARP_BEAT_MULTIPLIER_L - delta, ARP_BEAT_MULTIPLIER_U + delta);
-	ports.add_port(c_desc, ARP_REPEAT_NAME, i_desc | d_0,
-	               ARP_REPEAT_L - delta, ARP_REPEAT_U + delta);
+	// Sequencer
+	ports.add_port(c_desc, SEQ_TONE_PITCH_0_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_0_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_0_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_0_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_1_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_1_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_1_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_1_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_2_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_2_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_2_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_2_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_3_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_3_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_3_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_3_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_4_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_4_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_4_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_4_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_5_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_5_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_5_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_5_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_6_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_6_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_6_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_6_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_7_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_7_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_7_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_7_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_8_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_8_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_8_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_8_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_9_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_9_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_9_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_9_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_10_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_10_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_10_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_10_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_11_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_11_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_11_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_11_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_12_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_12_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_12_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_12_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_13_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_13_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_13_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_13_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_14_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_14_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_14_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_14_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TONE_PITCH_15_NAME, i_desc | d_0,
+	               SEQ_TONE_PITCH_L - delta, SEQ_TONE_PITCH_U + delta);
+	ports.add_port(c_desc, SEQ_NOISE_PERIOD_15_NAME, i_desc | d_0,
+	               SEQ_NOISE_PERIOD_L - delta, SEQ_NOISE_PERIOD_U + delta);
+	ports.add_port(c_desc, SEQ_RINGMOD_DEPTH_15_NAME, r_desc | d_max,
+	               SEQ_RINGMOD_DEPTH_L - delta, SEQ_RINGMOD_DEPTH_U + delta);
+	ports.add_port(c_desc, SEQ_LEVEL_15_NAME, i_desc | d_max,
+	               SEQ_LEVEL_L - delta, SEQ_LEVEL_U + delta);
+	ports.add_port(c_desc, SEQ_TEMPO_NAME, r_desc | d_low,
+	               SEQ_TEMPO_L, SEQ_TEMPO_U);
+	ports.add_port(c_desc, SEQ_HOST_SYNC_NAME, i_desc | d_1,
+	               SEQ_HOST_SYNC_L - delta, SEQ_HOST_SYNC_U + delta);
+	ports.add_port(c_desc, SEQ_BEAT_DIVISOR_NAME, i_desc | d_low,
+	               SEQ_BEAT_DIVISOR_L - delta, SEQ_BEAT_DIVISOR_U + delta);
+	ports.add_port(c_desc, SEQ_BEAT_MULTIPLIER_NAME, i_desc | d_1,
+	               SEQ_BEAT_MULTIPLIER_L - delta, SEQ_BEAT_MULTIPLIER_U + delta);
+	ports.add_port(c_desc, SEQ_LOOP_NAME, i_desc | d_0,
+	               SEQ_LOOP_L - delta, SEQ_LOOP_U + delta);
+	ports.add_port(c_desc, SEQ_END_NAME, i_desc | d_0,
+	               SEQ_END_L - delta, SEQ_END_U + delta);
 
 	// Ring modulation
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL1_NAME, r_desc | d_1,
@@ -248,8 +368,6 @@ void initialise_2() {
 	               RINGMOD_FIXED_VS_RELATIVE_L, RINGMOD_FIXED_VS_RELATIVE_U);
 	ports.add_port(c_desc, RINGMOD_DEPTH_NAME, r_desc | d_1,
 	               RINGMOD_DEPTH_L, RINGMOD_DEPTH_U);
-	ports.add_port(c_desc, RINGMOD_ENV_DEPTH_NAME, r_desc | d_0,
-	               RINGMOD_ENV_DEPTH_L, RINGMOD_ENV_DEPTH_U);
 
 	// Buzzer
 	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,

@@ -12,9 +12,10 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
 - [X] Buzzer
-- [X] VST, DSSI
+- [ ] 16-step sequencer for parameter modulation
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
       Time, Volume, Pan, Expression and Sustain).
+- [X] VST, DSSI
 - [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
 - [ ] GUI.  Please help if you want one, I am no GUI guy.
 
@@ -146,35 +147,34 @@ but if it starts then it should run flawlessly.
 - **NoisePeriodEnv time**: time in second to go from noise period
   attack to noise attack.  Ranges from 0.0 to 5.0.
 
-- **Env attack time**: attack time of the envelope.  Ranges from 0.0
-  to 10.0.
+- **Env attack time**: attack time of the amplitude envelope.  Ranges
+  from 0.0 to 10.0.
 
-- **Env hold1 level**: level of the first hold of the envelope.
-  Ranges from 0.0 to 1.0.
+- **Env hold1 level**: level of the first hold of the amplitude
+  envelope.  Ranges from 0.0 to 1.0. NEXT: change range -> 0 to 15
 
 - **Env inter1 time**: time in second to go from the first hold to the
-  second hold level of the envelope.  Ranges from 0.0 to 10.0.
+  second hold level of the amplitude envelope.  Ranges from 0.0 to
+  10.0.
 
-- **Env hold2 level**: level of the second hold of the envelope.
-  Ranges from 0.0 to 1.0.
+- **Env hold2 level**: level of the second hold of the amplitude
+  envelope.  Ranges from 0.0 to 1.0.
 
 - **Env inter2 time**: time in second to go from the second hold to
-  the third hold level of the envelope.  Ranges from 0.0 to 10.0.
+  the third hold level of the amplitude envelope.  Ranges from 0.0 to
+  10.0.
 
-- **Env hold3 level**: level of the third hold of the envelope.
-  Ranges from 0.0 to 1.0.
+- **Env hold3 level**: level of the third hold of the amplitude
+  envelope.  Ranges from 0.0 to 1.0.
 
 - **Env decay time**: time in second to go from the third hold to the
-  sustain level of the envelope.  Range from 0.0 to 10.0.
+  sustain level of the amplitude envelope.  Range from 0.0 to 10.0.
 
-- **Env sustain level**: sustain level of the envelope.  Ranges from
-  0.0 to 1.0.
+- **Env sustain level**: sustain level of the amplitude envelope.
+  Ranges from 0.0 to 1.0.
   
 - **Env release**: time in second to go from sustain_level to 0.0 of
-  the envelope.  Ranges from 0.0 to 10.0.
-  
-- **Amp env depth**: Depth of the amplitude envelope.  Ranges from 0.0
-  (full amplitude) to 1.0 (envelope amplitude).
+  the amplitude envelope.  Ranges from 0.0 to 10.0.
 
 - **PitchEnv attack pitch**: attack pitch of the pitch envelope in
   semitone.  Ranges from -96 to +96.
@@ -182,30 +182,36 @@ but if it starts then it should run flawlessly.
 - **PitchEnv time**: time in second to go from attack_pitch to 0 of
   the pitch envelope.  Ranges from 0.0 to 10.0.
 
-- **Arp pitch1**: pitch in semitone of the first arpegio note.  Only
-  active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
+- **Seq tone pitch 0 to 15**: relative tone pitch in semitone.  Ranges
+  from -48 to +48.
 
-- **Arp pitch2**: pitch in semitone of the second arpegio note.  Only
-  active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
+- **Seq noise period 0 to 15**: relative noise period.  Ranges from
+  -32 to +32.
 
-- **Arp pitch3**: pitch in semitone of the third arpegio note.  Only
-  active for play mode 0 (Mono) and 1 (Poly).  Ranges from -48 to +48.
+- **Seq ringmod depth 0 to 15**: depth of the ring modulator.  The
+  final depth is obtained by multiplying it with *RingMod depth*.
+  Ranges from 0.0 to 1.0.
 
-- **Arp tempo**: tempo in bpm considered to calculate the frequency of
-  the arpegio.  Ranges from 30 to 300.
+- **Seq level 0 to 15**: level of the voice.  The final level is
+  obtained by multiplying it with the envelope level.  Ranges from 0.0
+  to 1.0.
 
-- **Arp host sync**: whether the tempo's host is used instead of *Arp
+- **Seq tempo**: tempo in bpm considered to calculate the frequency of
+  the sequencer.  Ranges from 30 to 300.
+
+- **Seq host sync**: whether the tempo's host is used instead of *Seq
   tempo*.  Note that the DSSI version cannot access the tempo's host
   which remains fixed at 120 bpm.
 
-- **Arp beat divisor**: arpegio period is measured in beat period (bpm
-  / 60) times the fraction arp beat multiplier / arp beat divisor.
-  Ranges from 1 to 64.
-
-- **Arp beat multiplier**: arpegio period is measured in host beat
-  period (bpm / 60) times the fraction arp beat multiplier / arp beat
+- **Seq beat divisor**: sequencer period is measured in beat period
+  (bpm / 60) times the fraction seq beat multiplier / seq beat
   divisor.  Ranges from 1 to 64.
 
+- **Seq beat multiplier**: sequencer period is measured in host beat
+  period (bpm / 60) times the fraction seq beat multiplier / seq beat
+  divisor.  Ranges from 1 to 64.
+
+NEXT
 - **Arp repeat**: select which pitch to repeat the arpegio.
   - 0: from pitch1, thus cycle through pitch1 to pitch3.
   - 1: from pitch2, thus cycle through pitch2 to pitch3.
@@ -391,14 +397,14 @@ Be careful, chip sounds tend to be rich in harmonics, if you expose
 yourself for too long at high volume you risk to loose your hearing
 permanently.
 
-Take plenty of sonic rest.  Use low pass filters, ear plugs, work at
+Take plenty of sonic rest.  Use low pass filters, earplugs, work at
 low volume, take any means necessary to reduce your exposure to
 harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Add amp and ringmod env sensitivity parameter
-- [ ] Add 8-step sequencer for controlling arp, noise and vol
+- [ ] Add 16-step sequencer for controlling tone pitch, noise period,
+      ringmod depth and volume.
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI

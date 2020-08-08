@@ -344,13 +344,6 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                ENV_RELEASE_L,
 	                                                ENV_RELEASE_U);
 
-	parameters[AMP_ENV_DEPTH] = new LinearFloatParameter(AMP_ENV_DEPTH_NAME,
-	                                                     AMP_ENV_DEPTH_UNIT,
-	                                                     &zynayumi.patch.amp_env_depth,
-	                                                     AMP_ENV_DEPTH_DFLT,
-	                                                     AMP_ENV_DEPTH_L,
-	                                                     AMP_ENV_DEPTH_U);
-
 	// Pitch envelope
 	parameters[PITCH_ENV_ATTACK_PITCH] = new LinearFloatParameter(PITCH_ENV_ATTACK_PITCH_NAME,
 	                                                              PITCH_ENV_ATTACK_PITCH_UNIT,
@@ -366,60 +359,487 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                   PITCH_ENV_TIME_L,
 	                                                   PITCH_ENV_TIME_U);
 
-	// Arpegio
-	parameters[ARP_PITCH1] = new IntParameter(ARP_PITCH1_NAME,
-	                                          ARP_PITCH1_UNIT,
-	                                          &zynayumi.patch.arp.pitch1,
-	                                          ARP_PITCH1_DFLT,
-	                                          ARP_PITCH1_L,
-	                                          ARP_PITCH1_U);
+	// Sequencer
+	parameters[SEQ_TONE_PITCH_0] = new IntParameter(SEQ_TONE_PITCH_0_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[0].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
 
-	parameters[ARP_PITCH2] = new IntParameter(ARP_PITCH2_NAME,
-	                                          ARP_PITCH2_UNIT,
-	                                          &zynayumi.patch.arp.pitch2,
-	                                          ARP_PITCH2_DFLT,
-	                                          ARP_PITCH2_L,
-	                                          ARP_PITCH2_U);
+	parameters[SEQ_NOISE_PERIOD_0] = new IntParameter(SEQ_NOISE_PERIOD_0_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[0].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
 
-	parameters[ARP_PITCH3] = new IntParameter(ARP_PITCH3_NAME,
-	                                          ARP_PITCH3_UNIT,
-	                                          &zynayumi.patch.arp.pitch3,
-	                                          ARP_PITCH3_DFLT,
-	                                          ARP_PITCH3_L,
-	                                          ARP_PITCH3_U);
+	parameters[SEQ_RINGMOD_DEPTH_0] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_0_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[0].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
 
-	parameters[ARP_TEMPO] = new LinearFloatParameter(ARP_TEMPO_NAME,
-	                                                 ARP_TEMPO_UNIT,
-	                                                 &zynayumi.patch.arp.tempo,
-	                                                 ARP_TEMPO_DFLT,
-	                                                 ARP_TEMPO_L,
-	                                                 ARP_TEMPO_U);
+	parameters[SEQ_LEVEL_0] = new IntParameter(SEQ_LEVEL_0_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[0].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
 
-	parameters[ARP_HOST_SYNC] = new BoolParameter(ARP_HOST_SYNC_NAME,
-	                                              ARP_HOST_SYNC_UNIT,
-	                                              &zynayumi.patch.arp.host_sync,
-	                                              ARP_HOST_SYNC_DFLT);
+	parameters[SEQ_TONE_PITCH_1] = new IntParameter(SEQ_TONE_PITCH_1_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[1].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
 
-	parameters[ARP_BEAT_DIVISOR] = new IntParameter(ARP_BEAT_DIVISOR_NAME,
-	                                                ARP_BEAT_DIVISOR_UNIT,
-	                                                &arp_beat_divisor,
-	                                                ARP_BEAT_DIVISOR_DFLT,
-	                                                ARP_BEAT_DIVISOR_L,
-	                                                ARP_BEAT_DIVISOR_U);
+	parameters[SEQ_NOISE_PERIOD_1] = new IntParameter(SEQ_NOISE_PERIOD_1_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[1].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
 
-	parameters[ARP_BEAT_MULTIPLIER] = new IntParameter(ARP_BEAT_MULTIPLIER_NAME,
-	                                                   ARP_BEAT_MULTIPLIER_UNIT,
-	                                                   &arp_beat_multiplier,
-	                                                   ARP_BEAT_MULTIPLIER_DFLT,
-	                                                   ARP_BEAT_MULTIPLIER_L,
-	                                                   ARP_BEAT_MULTIPLIER_U);
+	parameters[SEQ_RINGMOD_DEPTH_1] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_1_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[1].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
 
-	parameters[ARP_REPEAT] = new IntParameter(ARP_REPEAT_NAME,
-	                                          ARP_REPEAT_UNIT,
-	                                          &zynayumi.patch.arp.repeat,
-	                                          ARP_REPEAT_DFLT,
-	                                          ARP_REPEAT_L,
-	                                          ARP_REPEAT_U);
+	parameters[SEQ_TONE_PITCH_2] = new IntParameter(SEQ_TONE_PITCH_2_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[2].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_2] = new IntParameter(SEQ_NOISE_PERIOD_2_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[2].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_2] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_2_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[2].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_2] = new IntParameter(SEQ_LEVEL_2_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[2].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_3] = new IntParameter(SEQ_TONE_PITCH_3_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[3].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_3] = new IntParameter(SEQ_NOISE_PERIOD_3_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[3].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_3] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_3_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[3].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_3] = new IntParameter(SEQ_LEVEL_3_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[3].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_4] = new IntParameter(SEQ_TONE_PITCH_4_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[4].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_4] = new IntParameter(SEQ_NOISE_PERIOD_4_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[4].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_4] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_4_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[4].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_4] = new IntParameter(SEQ_LEVEL_4_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[4].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_5] = new IntParameter(SEQ_TONE_PITCH_5_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[5].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_5] = new IntParameter(SEQ_NOISE_PERIOD_5_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[5].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_5] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_5_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[5].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_5] = new IntParameter(SEQ_LEVEL_5_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[5].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_6] = new IntParameter(SEQ_TONE_PITCH_6_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[6].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_6] = new IntParameter(SEQ_NOISE_PERIOD_6_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[6].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_6] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_6_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[6].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_6] = new IntParameter(SEQ_LEVEL_6_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[6].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_7] = new IntParameter(SEQ_TONE_PITCH_7_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[7].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_7] = new IntParameter(SEQ_NOISE_PERIOD_7_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[7].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_7] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_7_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[7].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_7] = new IntParameter(SEQ_LEVEL_7_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[7].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_8] = new IntParameter(SEQ_TONE_PITCH_8_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[8].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_8] = new IntParameter(SEQ_NOISE_PERIOD_8_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[8].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_8] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_8_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[8].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_8] = new IntParameter(SEQ_LEVEL_8_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[8].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_9] = new IntParameter(SEQ_TONE_PITCH_9_NAME,
+	                                                SEQ_TONE_PITCH_UNIT,
+	                                                &zynayumi.patch.seq.states[9].tone_pitch,
+	                                                SEQ_TONE_PITCH_DFLT,
+	                                                SEQ_TONE_PITCH_L,
+	                                                SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_9] = new IntParameter(SEQ_NOISE_PERIOD_9_NAME,
+	                                                  SEQ_NOISE_PERIOD_UNIT,
+	                                                  &zynayumi.patch.seq.states[9].noise_period,
+	                                                  SEQ_NOISE_PERIOD_DFLT,
+	                                                  SEQ_NOISE_PERIOD_L,
+	                                                  SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_9] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_9_NAME,
+	                                                           SEQ_RINGMOD_DEPTH_UNIT,
+	                                                           &zynayumi.patch.seq.states[9].ringmod_depth,
+	                                                           SEQ_RINGMOD_DEPTH_DFLT,
+	                                                           SEQ_RINGMOD_DEPTH_L,
+	                                                           SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_9] = new IntParameter(SEQ_LEVEL_9_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[9].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_10] = new IntParameter(SEQ_TONE_PITCH_10_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[10].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_10] = new IntParameter(SEQ_NOISE_PERIOD_10_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[10].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_10] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_10_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[10].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_10] = new IntParameter(SEQ_LEVEL_10_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[10].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_11] = new IntParameter(SEQ_TONE_PITCH_11_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[11].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_11] = new IntParameter(SEQ_NOISE_PERIOD_11_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[11].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_11] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_11_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[11].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_11] = new IntParameter(SEQ_LEVEL_11_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[11].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_12] = new IntParameter(SEQ_TONE_PITCH_12_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[12].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_12] = new IntParameter(SEQ_NOISE_PERIOD_12_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[12].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_12] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_12_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[12].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_12] = new IntParameter(SEQ_LEVEL_12_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[12].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_13] = new IntParameter(SEQ_TONE_PITCH_13_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[13].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_13] = new IntParameter(SEQ_NOISE_PERIOD_13_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[13].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_13] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_13_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[13].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_13] = new IntParameter(SEQ_LEVEL_13_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[13].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_14] = new IntParameter(SEQ_TONE_PITCH_14_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[14].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_14] = new IntParameter(SEQ_NOISE_PERIOD_14_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[14].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_14] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_14_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[14].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_14] = new IntParameter(SEQ_LEVEL_14_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[14].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TONE_PITCH_15] = new IntParameter(SEQ_TONE_PITCH_15_NAME,
+	                                                 SEQ_TONE_PITCH_UNIT,
+	                                                 &zynayumi.patch.seq.states[15].tone_pitch,
+	                                                 SEQ_TONE_PITCH_DFLT,
+	                                                 SEQ_TONE_PITCH_L,
+	                                                 SEQ_TONE_PITCH_U);
+
+	parameters[SEQ_NOISE_PERIOD_15] = new IntParameter(SEQ_NOISE_PERIOD_15_NAME,
+	                                                   SEQ_NOISE_PERIOD_UNIT,
+	                                                   &zynayumi.patch.seq.states[15].noise_period,
+	                                                   SEQ_NOISE_PERIOD_DFLT,
+	                                                   SEQ_NOISE_PERIOD_L,
+	                                                   SEQ_NOISE_PERIOD_U);
+
+	parameters[SEQ_RINGMOD_DEPTH_15] = new LinearFloatParameter(SEQ_RINGMOD_DEPTH_15_NAME,
+	                                                            SEQ_RINGMOD_DEPTH_UNIT,
+	                                                            &zynayumi.patch.seq.states[15].ringmod_depth,
+	                                                            SEQ_RINGMOD_DEPTH_DFLT,
+	                                                            SEQ_RINGMOD_DEPTH_L,
+	                                                            SEQ_RINGMOD_DEPTH_U);
+
+	parameters[SEQ_LEVEL_15] = new IntParameter(SEQ_LEVEL_15_NAME,
+	                                            SEQ_LEVEL_UNIT,
+	                                            &zynayumi.patch.seq.states[15].level,
+	                                            SEQ_LEVEL_DFLT,
+	                                            SEQ_LEVEL_L,
+	                                            SEQ_LEVEL_U);
+
+	parameters[SEQ_TEMPO] = new LinearFloatParameter(SEQ_TEMPO_NAME,
+	                                                 SEQ_TEMPO_UNIT,
+	                                                 &zynayumi.patch.seq.tempo,
+	                                                 SEQ_TEMPO_DFLT,
+	                                                 SEQ_TEMPO_L,
+	                                                 SEQ_TEMPO_U);
+
+	parameters[SEQ_HOST_SYNC] = new BoolParameter(SEQ_HOST_SYNC_NAME,
+	                                              SEQ_HOST_SYNC_UNIT,
+	                                              &zynayumi.patch.seq.host_sync,
+	                                              SEQ_HOST_SYNC_DFLT);
+
+	parameters[SEQ_BEAT_DIVISOR] = new IntParameter(SEQ_BEAT_DIVISOR_NAME,
+	                                                SEQ_BEAT_DIVISOR_UNIT,
+	                                                &seq_beat_divisor,
+	                                                SEQ_BEAT_DIVISOR_DFLT,
+	                                                SEQ_BEAT_DIVISOR_L,
+	                                                SEQ_BEAT_DIVISOR_U);
+
+	parameters[SEQ_BEAT_MULTIPLIER] = new IntParameter(SEQ_BEAT_MULTIPLIER_NAME,
+	                                                   SEQ_BEAT_MULTIPLIER_UNIT,
+	                                                   &seq_beat_multiplier,
+	                                                   SEQ_BEAT_MULTIPLIER_DFLT,
+	                                                   SEQ_BEAT_MULTIPLIER_L,
+	                                                   SEQ_BEAT_MULTIPLIER_U);
+
+	parameters[SEQ_LOOP] = new IntParameter(SEQ_LOOP_NAME,
+	                                        SEQ_LOOP_UNIT,
+	                                        &zynayumi.patch.seq.loop,
+	                                        SEQ_LOOP_DFLT,
+	                                        SEQ_LOOP_L,
+	                                        SEQ_LOOP_U);
+
+	parameters[SEQ_END] = new IntParameter(SEQ_END_NAME,
+	                                       SEQ_END_UNIT,
+	                                       &zynayumi.patch.seq.end,
+	                                       SEQ_END_DFLT,
+	                                       SEQ_END_L,
+	                                       SEQ_END_U);
 
 	// Ring modulation
 	parameters[RINGMOD_WAVEFORM_LEVEL1] = new LinearFloatParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
@@ -529,13 +949,6 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                     RINGMOD_DEPTH_DFLT,
 	                                                     RINGMOD_DEPTH_L,
 	                                                     RINGMOD_DEPTH_U);
-
-	parameters[RINGMOD_ENV_DEPTH] = new LinearFloatParameter(RINGMOD_ENV_DEPTH_NAME,
-	                                                         RINGMOD_ENV_DEPTH_UNIT,
-	                                                         &zynayumi.patch.ringmod.env_depth,
-	                                                         RINGMOD_ENV_DEPTH_DFLT,
-	                                                         RINGMOD_ENV_DEPTH_L,
-	                                                         RINGMOD_ENV_DEPTH_U);
 
 	// Buzzer
 	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
@@ -736,15 +1149,15 @@ void Parameters::update(ParameterIndex pi)
 	case TONE_TRANSPOSE:
 		zynayumi.patch.tone.detune = tone_detune + tone_transpose;
 		break;
-	case ARP_TEMPO:
-	case ARP_HOST_SYNC:
-	case ARP_BEAT_DIVISOR:
-	case ARP_BEAT_MULTIPLIER:
-		zynayumi.patch.arp.freq = to_freq(zynayumi.patch.arp.host_sync ?
+	case SEQ_TEMPO:
+	case SEQ_HOST_SYNC:
+	case SEQ_BEAT_DIVISOR:
+	case SEQ_BEAT_MULTIPLIER:
+		zynayumi.patch.seq.freq = to_freq(zynayumi.patch.seq.host_sync ?
 		                                  zynayumi.get_bpm() :
-		                                  zynayumi.patch.arp.tempo,
-		                                  arp_beat_divisor,
-		                                  arp_beat_multiplier);
+		                                  zynayumi.patch.seq.tempo,
+		                                  seq_beat_divisor,
+		                                  seq_beat_multiplier);
 		break;
 	case RINGMOD_DETUNE:
 	case RINGMOD_TRANSPOSE:
