@@ -405,6 +405,8 @@ harmful sounds and protect your hearing.
 
 - [ ] Add 16-step sequencer for controlling tone pitch, noise period,
       ringmod depth and volume.
+- [ ] Add noise period pitch mapping
+- [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
 - [ ] Implement pitch wheel and CC for DSSI
