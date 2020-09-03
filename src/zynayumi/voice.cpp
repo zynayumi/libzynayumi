@@ -81,7 +81,7 @@ void Voice::update()
 	update_pitchenv();
 	update_port();
 	update_lfo();
-	update_seq();
+	update_arp();
 	update_final_pitch();
 	update_tone();
 
@@ -264,7 +264,7 @@ void Voice::update_lfo()
 	_relative_lfo_pitch = depth * lfo_pitch;
 }
 
-void Voice::update_seq()
+void Voice::update_arp()
 {
 	unsigned step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
 	bool step_change = _seq_step != step;
@@ -328,10 +328,15 @@ void Voice::update_seq()
 	case PlayMode::Unison:
 	case PlayMode::Mono:
 	case PlayMode::Poly:
-		switch(count2index(_patch->seq.loop, 3)) {
-		case 0: _relative_seq_pitch = _patch->seq.states[0].tone_pitch; break;
-		case 1: _relative_seq_pitch = _patch->seq.states[1].tone_pitch; break;
-		case 2: _relative_seq_pitch = _patch->seq.states[2].tone_pitch; break;
+		if (_patch->seq.loop <= _patch->seq.end) {
+			unsigned index = count2index(_patch->seq.loop, _patch->seq.end);
+			_relative_seq_pitch = _patch->seq.states[index].tone_pitch;
+		} else {
+			if (_seq_step < _patch->seq.end) {
+				_relative_seq_pitch = _patch->seq.states[_seq_step].tone_pitch;
+			} else {
+				_relative_seq_pitch = 0;
+			}
 		}
 		break;
 	default:

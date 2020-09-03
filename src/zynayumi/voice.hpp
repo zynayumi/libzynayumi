@@ -153,10 +153,11 @@ private:
 	void update_noise_period();
 	void update_pitchenv();
 	void update_lfo();
-	void update_seq();
+	void update_arp();
 	void update_port();
 	void update_final_pitch();
 	void update_env();
+	// NEXT update ringmod seq
 	void update_ringmod();
 	void update_ringmod_pitch();
 	void update_ringmod_smp_period();
@@ -168,6 +169,7 @@ private:
 	void update_buzzer_pitch();
 	void update_buzzer_period();
 	void update_buzzer_shape();
+	// NEXT update ringmod level
 	void update_final_level();
 	void sync_tone();
 	void sync_ringmod();
