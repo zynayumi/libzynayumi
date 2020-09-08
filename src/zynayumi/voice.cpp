@@ -97,7 +97,7 @@ void Voice::update()
 	update_env();
 	update_ringmod();
 	update_final_level();
-	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * MAX_LEVEL));
+	ayumi_set_volume(&_engine->ay, ym_channel, std::lround(_final_level * MAX_LEVEL));
 
 	// Update buzzer (TODO: no need to update ayumi level if buzzer is
 	// enabled)
@@ -576,7 +576,7 @@ void Voice::sync_buzzer()
 	update_buzzer_shape();
 	update_buzzer_pitch();
 	update_buzzer_period();
-	_engine->ay.envelope_counter = (int)std::round(_buzzer_period * _patch->buzzer.phase);
+	_engine->ay.envelope_counter = std::lround(_buzzer_period * _patch->buzzer.phase);
 }
 
 double Voice::lfo_cycle_remainder(double freq, double time)

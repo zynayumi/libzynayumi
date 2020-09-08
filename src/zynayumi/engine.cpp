@@ -366,7 +366,7 @@ int Engine::pitch2envperiod(double pitch) const
 	static const double coef1 = (clock_rate / lower_note_freq) / 256.0;
 	static const double coef2 = log(2.0) / 12.0;
 	double pym = coef1 * exp(-pitch * coef2);
-	return (int)std::round(pym);
+	return std::lround(pym);
 }
 
 double Engine::freq2pitch(double freq) const

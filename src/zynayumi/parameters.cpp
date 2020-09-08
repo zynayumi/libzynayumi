@@ -93,7 +93,7 @@ float IntParameter::float_value() const
 
 void IntParameter::set_value(float f)
 {
-	*value_ptr = (int)std::round(f);
+	*value_ptr = std::lround(f);
 }
 
 float IntParameter::norm_float_value() const
@@ -103,7 +103,7 @@ float IntParameter::norm_float_value() const
 
 void IntParameter::set_norm_value(float nf)
 {
-	*value_ptr = (int)std::round(affine(0.0f, 1.0f, low, up, nf));
+	*value_ptr = std::lround(affine(0.0f, 1.0f, low, up, nf));
 }
 
 FloatParameter::FloatParameter(const std::string& nm, const std::string& unt,

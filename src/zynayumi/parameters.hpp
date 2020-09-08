@@ -231,7 +231,7 @@ float EnumParameter<E>::float_value() const
 template<typename E>
 void EnumParameter<E>::set_value(float nf)
 {
-	*value_ptr = (E)std::round(nf);
+	*value_ptr = (E)std::lround(nf);
 }
 
 template<typename E>
@@ -243,7 +243,7 @@ float EnumParameter<E>::norm_float_value() const
 template<typename E>
 void EnumParameter<E>::set_norm_value(float nf)
 {
-	*value_ptr = (E)std::round(nf * (float)((int)E::Count - 1));
+	*value_ptr = (E)std::lround(nf * (float)((int)E::Count - 1));
 }
 
 // Parameter indices
