@@ -102,13 +102,13 @@ public:
 	Env();
 
 	float attack_time;           // Attack time
-	float hold1_level;           // Hold-1 level
+	int hold1_level;             // Hold-1 level (0-15)
 	float inter1_time;           // Duration between hold-1 and hold-2
-	float hold2_level;           // Hold-2 level
+	int hold2_level;             // Hold-2 level (0-15)
 	float inter2_time;           // Duration between hold-2 and hold-3
-	float hold3_level;           // Hold-3 level
+	int hold3_level;             // Hold-3 level (0-15)
 	float decay_time;            // Duration between hold-3 and sustain
-	float sustain_level;         // Sustain level
+	int sustain_level;           // Sustain level (0-15)
 	float release;               // Release
 };
 
@@ -132,7 +132,7 @@ public:
 
 		int tone_pitch;           // Relative pitch in semitone
 		int noise_period;         // Relative noise period
-		float ringmod_depth;      // Depth of the ring modulator // NEXT: 16?
+		int ringmod_depth;        // Depth of the ring modulator
 		int level;                // Voice level
 	};
 
@@ -160,7 +160,7 @@ class RingMod {
 public:
 	RingMod();
 
-	float waveform[RINGMOD_WAVEFORM_SIZE];  // Sample volume levels
+	int waveform[RINGMOD_WAVEFORM_SIZE];     // Sample volume levels
 
 	bool sync;                               // Whether ring
 	                                         // modulation is in sync
@@ -181,12 +181,8 @@ public:
                                             // fixed, 1.0 is all
                                             // relative)
 
-	float depth;                             // Ring modulation
+	int depth;                               // Ring modulation
                                             // intensity
-
-	float env_depth;                         // Ring modulation
-                                            // envelope depth, ranges
-                                            // from -1.0 to +1.0.
 };
 
 class Buzzer {
@@ -289,7 +285,6 @@ public:
 	Noise noise;                // Noise control
 	NoisePeriodEnv noise_period_env; // Noise period envelope
 	Env env;                    // Envelope
-	float amp_env_depth;        // Amplitude envolpe depth
 	PitchEnv pitchenv;          // Pitch envelope
 	Seq seq;                    // Sequencer
 	RingMod ringmod;            // Ring modulation

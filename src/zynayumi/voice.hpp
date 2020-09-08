@@ -184,6 +184,7 @@ private:
 	static double lfo_rand_pitch(double freq, double time);
 
 	static uint32_t hash(uint32_t a);
+	static int normalize_level(int level);
 };
 
 } // ~namespace zynayumi

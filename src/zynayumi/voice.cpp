@@ -97,7 +97,7 @@ void Voice::update()
 	update_env();
 	update_ringmod();
 	update_final_level();
-	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * 15));
+	ayumi_set_volume(&_engine->ay, ym_channel, (int)(_final_level * MAX_LEVEL));
 
 	// Update buzzer (TODO: no need to update ayumi level if buzzer is
 	// enabled)
@@ -370,32 +370,32 @@ void Voice::update_env()
 			x1 = 0;
 			y1 = 0;
 			x2 = ta;
-			y2 = _patch->env.hold1_level;
+			y2 = normalize_level(_patch->env.hold1_level);
 		} else if (env_time <= ta1) {
 			x1 = ta;
-			y1 = _patch->env.hold1_level;
+			y1 = normalize_level(_patch->env.hold1_level);
 			x2 = ta1;
-			y2 = _patch->env.hold2_level;
+			y2 = normalize_level(_patch->env.hold2_level);
 		} else if (env_time <= ta12) {
 			x1 = ta1;
-			y1 = _patch->env.hold2_level;
+			y1 = normalize_level(_patch->env.hold2_level);
 			x2 = ta12;
-			y2 = _patch->env.hold3_level;
+			y2 = normalize_level(_patch->env.hold3_level);
 		} else if (env_time <= ta123) {
 			x1 = ta12;
-			y1 = _patch->env.hold3_level;
+			y1 = normalize_level(_patch->env.hold3_level);
 			x2 = ta123;
-			y2 = _patch->env.sustain_level;
+			y2 = normalize_level(_patch->env.sustain_level);
 		} else {
 			x1 = ta123;
-			y1 = _patch->env.sustain_level;
+			y1 = normalize_level(_patch->env.sustain_level);
 			x2 = x1 + 1;
 			y2 = y1;
 		}
 	} else {                    // Note off
 		if (env_time <= _patch->env.release) {
 			x1 = 0;
-			y1 = _actual_sustain_level;
+			y1 = normalize_level(_actual_sustain_level);
 			x2 = _patch->env.release;
 			y2 = 0;
 		} else {
@@ -478,8 +478,9 @@ void Voice::update_ringmod_waveform_index()
 void Voice::update_ringmod_waveform_level()
 {
 	_ringmod_waveform_level =
-		linear_interpolate(0.0, (1.0 - _patch->ringmod.depth), 1.0, 1.0,
-		                   _patch->ringmod.waveform[_ringmod_waveform_index]);
+		linear_interpolate(0.0, (1.0 - normalize_level(_patch->ringmod.depth)),
+		                   1.0, 1.0,
+		                   normalize_level(_patch->ringmod.waveform[_ringmod_waveform_index]));
 }
 
 void Voice::update_buzzer()
@@ -651,4 +652,9 @@ uint32_t Voice::hash(uint32_t a)
 	a = a * 0x27d4eb2d;
 	a = a ^ (a >> 15);
 	return a;
+}
+
+int Voice::normalize_level(int level)
+{
+	return (double)level / (double)MAX_LEVEL;
 }

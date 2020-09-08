@@ -38,10 +38,10 @@ Noise::Noise() : time(0), period(1) {}
 NoisePeriodEnv::NoisePeriodEnv() : attack(1), time(0) {}
 
 Env::Env() : attack_time(0),
-             hold1_level(1), inter1_time(0),
-             hold2_level(1), inter2_time(0),
-             hold3_level(1), decay_time(0),
-             sustain_level(1), release(0) {}
+             hold1_level(MAX_LEVEL), inter1_time(0),
+             hold2_level(MAX_LEVEL), inter2_time(0),
+             hold3_level(MAX_LEVEL), decay_time(0),
+             sustain_level(MAX_LEVEL), release(0) {}
 
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
@@ -54,10 +54,10 @@ Seq::Seq() : states(Seq::size),
              tempo(120), host_sync(1), freq(18.0),
              loop(0), end(0) {}
 
-RingMod::RingMod() : waveform{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0},
+RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
                      sync(true), phase(0.0), mirror(true), detune(0.0),
-                     fixed_freq(1.0), fixed_vs_relative(1.0), depth(1.0),
-                     env_depth(0.0) {}
+                     fixed_freq(1.0), fixed_vs_relative(1.0),
+                     depth(MAX_LEVEL) {}
 
 Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
                    sync(true),
@@ -74,14 +74,11 @@ Pan::Pan() : ym_channel{0.5, 0.25, 0.75} {}
 
 Control::Control() : pitchwheel(2),
                      velocity_sensitivity(0.5),
-                     modulation_sensitivity(0.5)
-{}
+                     modulation_sensitivity(0.5) {}
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
                  playmode(PlayMode::Mono),
-                 amp_env_depth(1.0),
-                 gain(1)
-{}
+                 gain(1) {}
 
 std::string to_string(PlayMode pm)
 {
