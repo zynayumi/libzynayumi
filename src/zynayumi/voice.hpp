@@ -169,7 +169,7 @@ private:
 	void update_buzzer_pitch();
 	void update_buzzer_period();
 	void update_buzzer_shape();
-	// NEXT update ringmod level
+	// NEXT update seq level
 	void update_final_level();
 	void sync_tone();
 	void sync_ringmod();
