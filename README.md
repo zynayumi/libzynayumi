@@ -22,6 +22,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 ## Demo Songs
 
 * [Monstrosity by A-Lin](https://lbry.tv/@ngeiswei:d/A-Lin---Monstrosity---2020-06-09:f)
+* [Hudros Chiphony by A-Lin](https://lbry.tv/@ngeiswei:d/hudros-chiphony_2020-09-02---normalized:1)
 
 If you make a song with Zynayumi let me know so I can include it.
 
@@ -151,27 +152,27 @@ but if it starts then it should run flawlessly.
   from 0.0 to 10.0.
 
 - **Env hold1 level**: level of the first hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0. NEXT: change range -> 0 to 15
+  envelope.  Ranges from 0 to 15.
 
 - **Env inter1 time**: time in second to go from the first hold to the
   second hold level of the amplitude envelope.  Ranges from 0.0 to
   10.0.
 
 - **Env hold2 level**: level of the second hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0.
+  envelope.  Ranges from 0 to 15.
 
 - **Env inter2 time**: time in second to go from the second hold to
   the third hold level of the amplitude envelope.  Ranges from 0.0 to
   10.0.
 
 - **Env hold3 level**: level of the third hold of the amplitude
-  envelope.  Ranges from 0.0 to 1.0.
+  envelope.  Ranges from 0 to 15.
 
 - **Env decay time**: time in second to go from the third hold to the
   sustain level of the amplitude envelope.  Range from 0.0 to 10.0.
 
 - **Env sustain level**: sustain level of the amplitude envelope.
-  Ranges from 0.0 to 1.0.
+  Ranges from 0 to 15.
   
 - **Env release**: time in second to go from sustain_level to 0.0 of
   the amplitude envelope.  Ranges from 0.0 to 10.0.
@@ -190,11 +191,11 @@ but if it starts then it should run flawlessly.
 
 - **Seq ringmod depth 0 to 15**: depth of the ring modulator.  The
   final depth is obtained by multiplying it with *RingMod depth*.
-  Ranges from 0.0 to 1.0.
+  Ranges from 0 to 15.
 
 - **Seq level 0 to 15**: level of the voice.  The final level is
-  obtained by multiplying it with the envelope level.  Ranges from 0.0
-  to 1.0.
+  obtained by multiplying it with the envelope level.  Ranges from 0
+  to 15.
 
 - **Seq tempo**: tempo in bpm considered to calculate the frequency of
   the sequencer.  Ranges from 30 to 300.
@@ -211,16 +212,14 @@ but if it starts then it should run flawlessly.
   period (bpm / 60) times the fraction seq beat multiplier / seq beat
   divisor.  Ranges from 1 to 64.
 
-NEXT
-- **Arp repeat**: select which pitch to repeat the arpegio.
-  - 0: from pitch1, thus cycle through pitch1 to pitch3.
-  - 1: from pitch2, thus cycle through pitch2 to pitch3.
-  - 2: from pitch3, thus cycle through pitch3, that is no arpegio
-    expect for the first cycle.
+- **Seq loop**: sequencer loop point.  Ranges from 0 to 15.
+
+- **Seq end**: sequence end point.  Ranges from 0 to 16.
 
 - **RingMod waveform level1 to level8**: can define an 8 points
-  waveform.  That waveform is multipled with the YM2149 square
-  waveform, thus creating a ring modulation.  Ranges from 0.0 to 1.0.
+  waveform.  That normalized waveform is multipled with the YM2149
+  square waveform, thus creating a ring modulation.  Ranges from 0 to
+  15.
 
 - **RingMod sync**: whether the phase of the ring modulation is
   synchronized with the phase of the square tone when a new on note is
@@ -248,13 +247,8 @@ NEXT
   frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
   fixed) to 1.0 (completely determined by tone pitch).
 
-- **RingMod depth**: level of depth of ring modulation.  Ranges from
-  0.0 (no ring modulation) to 1.0 (full ring modulation).
-
-- **RingMod env depth**: level of ring modulation envelope depth.
-  Ranges from -1.0 (maximum ring modulation when the envelope is low),
-  0.0 (no ring modulation envelope), to 1.0 (maximum ring modulation
-  when the envelope is high).
+- **RingMod depth**: level of depth of ring modulation.  Ranges from 0
+  (no ring modulation) to 15 (full ring modulation).
 
 - **Buzzer shape**: oscillator shape of the buzzer.  Warning: the
   buzzer disactivates the envelope and the ring modulator.
