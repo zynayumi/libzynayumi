@@ -286,7 +286,7 @@ enum ParameterIndex {
 	PITCH_ENV_ATTACK_PITCH,
 	PITCH_ENV_TIME,
 
-	// Arpegio
+	// Sequencer
 	SEQ_TONE_PITCH_0,
 	SEQ_NOISE_PERIOD_0,
 	SEQ_RINGMOD_DEPTH_0,
@@ -396,7 +396,7 @@ enum ParameterIndex {
 
 	// Gain
 	GAIN,
-	
+
 	// Pan
 	PAN0,
 	PAN1,

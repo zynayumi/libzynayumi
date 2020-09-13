@@ -409,6 +409,13 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
+	parameters[SEQ_LEVEL_1] = new IntParameter(SEQ_LEVEL_1_NAME,
+	                                           SEQ_LEVEL_UNIT,
+	                                           &zynayumi.patch.seq.states[0].level,
+	                                           SEQ_LEVEL_DFLT,
+	                                           SEQ_LEVEL_L,
+	                                           SEQ_LEVEL_U);
+
 	parameters[SEQ_TONE_PITCH_2] = new IntParameter(SEQ_TONE_PITCH_2_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
 	                                                &zynayumi.patch.seq.states[2].tone_pitch,
