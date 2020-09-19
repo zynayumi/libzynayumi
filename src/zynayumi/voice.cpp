@@ -75,7 +75,7 @@ void Voice::update()
 	update_buzzer_off();
 	update_noise_period();
 	ayumi_set_noise(&_engine->ay, _noise_period);
-	ayumi_set_mixer(&_engine->ay, ym_channel, _tone_off, _noise_off, _buzzer_off);
+	ayumi_set_mixer(&_engine->ay, ym_channel, _tone_off, _noise_off, !_buzzer_off);
 
 	// Update pitch
 	update_pitchenv();
@@ -328,7 +328,7 @@ void Voice::update_arp()
 	case PlayMode::Unison:
 	case PlayMode::Mono:
 	case PlayMode::Poly:
-		if (_patch->seq.loop <= _patch->seq.end) {
+		if (_patch->seq.loop < _patch->seq.end) {
 			unsigned index = count2index(_patch->seq.loop, _patch->seq.end);
 			_relative_seq_pitch = _patch->seq.states[index].tone_pitch;
 		} else {
@@ -503,7 +503,7 @@ void Voice::update_buzzer_pitch()
 
 void Voice::update_buzzer_period()
 {
-	_buzzer_period = _engine->pitch2toneperiod(_buzzer_pitch);
+	_buzzer_period = _engine->pitch2envperiod(_buzzer_pitch);
 	if (_patch->buzzer.shape == Buzzer::Shape::DownTriangle or
 	    _patch->buzzer.shape == Buzzer::Shape::UpTriangle) {
 		_buzzer_period /= 2;
