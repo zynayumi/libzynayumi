@@ -397,6 +397,8 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Look into aliasing, find out whether it is due to the emulator
+      or the emulated chip.
 - [ ] Add 16-step sequencer for controlling tone pitch, noise period,
       ringmod depth and volume.
 - [ ] Add noise period pitch mapping
