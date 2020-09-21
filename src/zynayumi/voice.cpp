@@ -36,6 +36,7 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	: ym_channel(ych)
 	, pitch(pi)
 	, velocity(vel)
+	, velocity_level(velocity_to_level(pa.control.velocity_sensitivity, velocity))
 	, note_on(true)
 	, _engine(&engine)
 	, _patch(&pa)
@@ -93,15 +94,14 @@ void Voice::update()
 		_first_update = false;
 	}
 
+	// Update buzzer
+	update_buzzer();
+
 	// Update level, including ring modulation
 	update_env();
 	update_ringmod();
 	update_final_level();
 	ayumi_set_volume(&_engine->ay, ym_channel, std::lround(_final_level * MAX_LEVEL));
-
-	// Update buzzer (TODO: no need to update ayumi level if buzzer is
-	// enabled)
-	update_buzzer();
 
 	// Increment sample count since voice on or pitch change
 	_on_smp_count++;
@@ -358,63 +358,59 @@ void Voice::update_final_pitch()
 
 void Voice::update_env()
 {
-	// Determine portion of the envelope to interpolate
-	double env_time = _engine->smp2sec(_env_smp_count);
-	double x1, y1, x2, y2;
-	if (note_on) {
-		double ta = _patch->env.attack_time;
-		double ta1 = ta + _patch->env.inter1_time;
-		double ta12 = ta1 + _patch->env.inter2_time;
-		double ta123 = ta12 + _patch->env.decay_time;
-		if (env_time <= ta) {
-			x1 = 0;
-			y1 = 0;
-			x2 = ta;
-			y2 = normalize_level(_patch->env.hold1_level);
-		} else if (env_time <= ta1) {
-			x1 = ta;
-			y1 = normalize_level(_patch->env.hold1_level);
-			x2 = ta1;
-			y2 = normalize_level(_patch->env.hold2_level);
-		} else if (env_time <= ta12) {
-			x1 = ta1;
-			y1 = normalize_level(_patch->env.hold2_level);
-			x2 = ta12;
-			y2 = normalize_level(_patch->env.hold3_level);
-		} else if (env_time <= ta123) {
-			x1 = ta12;
-			y1 = normalize_level(_patch->env.hold3_level);
-			x2 = ta123;
-			y2 = normalize_level(_patch->env.sustain_level);
-		} else {
-			x1 = ta123;
-			y1 = normalize_level(_patch->env.sustain_level);
-			x2 = x1 + 1;
-			y2 = y1;
+	if (_buzzer_off) {
+		// Determine portion of the envelope to interpolate
+		double env_time = _engine->smp2sec(_env_smp_count);
+		double x1, y1, x2, y2;
+		if (note_on) {
+			double ta = _patch->env.attack_time;
+			double ta1 = ta + _patch->env.inter1_time;
+			double ta12 = ta1 + _patch->env.inter2_time;
+			double ta123 = ta12 + _patch->env.decay_time;
+			if (env_time <= ta) {
+				x1 = 0;
+				y1 = 0;
+				x2 = ta;
+				y2 = normalize_level(_patch->env.hold1_level);
+			} else if (env_time <= ta1) {
+				x1 = ta;
+				y1 = normalize_level(_patch->env.hold1_level);
+				x2 = ta1;
+				y2 = normalize_level(_patch->env.hold2_level);
+			} else if (env_time <= ta12) {
+				x1 = ta1;
+				y1 = normalize_level(_patch->env.hold2_level);
+				x2 = ta12;
+				y2 = normalize_level(_patch->env.hold3_level);
+			} else if (env_time <= ta123) {
+				x1 = ta12;
+				y1 = normalize_level(_patch->env.hold3_level);
+				x2 = ta123;
+				y2 = normalize_level(_patch->env.sustain_level);
+			} else {
+				x1 = ta123;
+				y1 = normalize_level(_patch->env.sustain_level);
+				x2 = x1 + 1;
+				y2 = y1;
+			}
+		} else {                    // Note off
+			if (env_time <= _patch->env.release) {
+				x1 = 0;
+				y1 = _actual_sustain_level;
+				x2 = _patch->env.release;
+				y2 = 0;
+			} else {
+				x1 = _patch->env.release;
+				y1 = 0;
+				x2 = x1 + 1;
+				y2 = 0;
+			}
 		}
-	} else {                    // Note off
-		if (env_time <= _patch->env.release) {
-			x1 = 0;
-			y1 = normalize_level(_actual_sustain_level);
-			x2 = _patch->env.release;
-			y2 = 0;
-		} else {
-			x1 = _patch->env.release;
-			y1 = 0;
-			x2 = x1 + 1;
-			y2 = 0;
-		}
+		// Calculate the envelope level
+		env_level = linear_interpolate(x1, y1, x2, y2, env_time);
+	} else {                     // Buzzer is on
+		env_level = note_on ? 1.0 : 0.0;
 	}
-
-	// Calculate the envelope level
-	env_level = linear_interpolate(x1, y1, x2, y2, env_time);
-
-	// Adjust according to key velocity
-	//
-	// NEXT: probably have velocity_sensitivity be taken into account
-	// outside of env_level.
-	env_level *= linear_interpolate(0.0, 1.0 - _patch->control.velocity_sensitivity,
-	                                127.0, 1.0, (double)velocity);
 
 	// Increment the envelope sample count
 	_env_smp_count++;
@@ -431,7 +427,7 @@ void Voice::update_ringmod()
 
 void Voice::update_ringmod_pitch()
 {
-	double fvr = _patch->ringmod.fixed_vs_relative;	
+	double fvr = _patch->ringmod.fixed_vs_relative;
 	double rp = _patch->ringmod.detune + _final_pitch;
 	if (fvr < 1.0) {
 		double fp = _engine->freq2pitch(_patch->ringmod.fixed_freq);
@@ -477,10 +473,11 @@ void Voice::update_ringmod_waveform_index()
 
 void Voice::update_ringmod_waveform_level()
 {
+	int wfm = _patch->ringmod.waveform[_ringmod_waveform_index];
 	_ringmod_waveform_level =
 		linear_interpolate(0.0, (1.0 - normalize_level(_patch->ringmod.depth)),
 		                   1.0, 1.0,
-		                   normalize_level(_patch->ringmod.waveform[_ringmod_waveform_index]));
+		                   normalize_level(wfm));
 }
 
 void Voice::update_buzzer()
@@ -493,7 +490,8 @@ void Voice::update_buzzer()
 
 void Voice::update_buzzer_off()
 {
-	_buzzer_off = 0 <= _patch->buzzer.time ? _patch->buzzer.time < on_time : false;
+	_buzzer_off = note_on ?
+	   (0 <= _patch->buzzer.time and _patch->buzzer.time < on_time) : true;
 }
 
 void Voice::update_buzzer_pitch()
@@ -538,7 +536,7 @@ void Voice::update_buzzer_shape()
 
 void Voice::update_final_level()
 {
-	_final_level = _ringmod_waveform_level * env_level;
+	_final_level = _ringmod_waveform_level * env_level * velocity_level;
 }
 
 void Voice::sync_tone()
@@ -579,11 +577,18 @@ void Voice::sync_buzzer()
 	_engine->ay.envelope_counter = std::lround(_buzzer_period * _patch->buzzer.phase);
 }
 
+double Voice::velocity_to_level(double velocity_sensitivity, unsigned char velocity)
+{
+	return linear_interpolate(0.0, 1.0 - velocity_sensitivity,
+	                          127.0, 1.0, (double)velocity);
+}
+
 double Voice::lfo_cycle_remainder(double freq, double time)
 {
 	// TODO: optimize by maintaining a lfo_time attribute instead.
-	if (freq < time)
-		time -= std::floor(time / freq);
+	double period = 1.0 / freq;
+	while (period < time)
+		time -= period;
 	return time;
 }
 
@@ -602,7 +607,7 @@ double Voice::lfo_triangle_pitch(double freq, double time)
 	if (time < half_period)
 		return linear_interpolate(0.0, -1.0, half_period, 1.0, time);
 	else
-		return linear_interpolate(half_period, 1.0, period, 1.0, time);
+		return linear_interpolate(half_period, 1.0, period, -1.0, time);
 }
 
 double Voice::lfo_downsaw_pitch(double freq, double time)

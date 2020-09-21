@@ -69,8 +69,9 @@ public:
 
 	int ym_channel;             // YM2149 channel
 	unsigned char velocity;     // Note velocity
+	double velocity_level;      // Corresponding velocity level
 	unsigned char pitch;        // Note pitch
-	bool note_on;
+	bool note_on;               // True iff key is pressed
 	double env_level;           // Current level, taking into account
 	                            // amplitude envelope and velocity
 	double on_time;             // Time in second since voice on
@@ -174,6 +175,9 @@ private:
 	void sync_tone();
 	void sync_ringmod();
 	void sync_buzzer();
+
+	static double velocity_to_level(double velocity_sensitivity,
+	                                unsigned char velocity);
 
 	static double lfo_cycle_remainder(double freq, double time);
 	static double lfo_sine_pitch(double freq, double time);
