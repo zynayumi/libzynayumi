@@ -1084,18 +1084,18 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                            VELOCITY_SENSITIVITY_U);
 
 	parameters[RINGMOD_VELOCITY_SENSITIVITY] = new LinearFloatParameter(RINGMOD_VELOCITY_SENSITIVITY_NAME,
-																							  RINGMOD_VELOCITY_SENSITIVITY_UNIT,
-																							  &zynayumi.patch.control.ringmod_velocity_sensitivity,
-																							  RINGMOD_VELOCITY_SENSITIVITY_DFLT,
-																							  RINGMOD_VELOCITY_SENSITIVITY_L,
-																							  RINGMOD_VELOCITY_SENSITIVITY_U);
+	                                                                    RINGMOD_VELOCITY_SENSITIVITY_UNIT,
+	                                                                    &zynayumi.patch.control.ringmod_velocity_sensitivity,
+	                                                                    RINGMOD_VELOCITY_SENSITIVITY_DFLT,
+	                                                                    RINGMOD_VELOCITY_SENSITIVITY_L,
+	                                                                    RINGMOD_VELOCITY_SENSITIVITY_U);
 
 	parameters[NOISE_PERIOD_PITCH_SENSITIVITY] = new LinearFloatParameter(NOISE_PERIOD_PITCH_SENSITIVITY_NAME,
-																								 NOISE_PERIOD_PITCH_SENSITIVITY_UNIT,
-																								 &zynayumi.patch.control.noise_period_pitch_sensitivity,
-																								 NOISE_PERIOD_PITCH_SENSITIVITY_DFLT,
-																								 NOISE_PERIOD_PITCH_SENSITIVITY_L,
-																								 NOISE_PERIOD_PITCH_SENSITIVITY_U);
+	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_UNIT,
+	                                                                      &zynayumi.patch.control.noise_period_pitch_sensitivity,
+	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_DFLT,
+	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_L,
+	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_U);
 
 	parameters[MODULATION_SENSITIVITY] = new TanFloatParameter(MODULATION_SENSITIVITY_NAME,
 	                                                           MODULATION_SENSITIVITY_UNIT,
@@ -1106,11 +1106,11 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	// Oversampling
 	parameters[OVERSAMPLING] = new IntParameter(OVERSAMPLING_NAME,
-															  OVERSAMPLING_UNIT,
-															  &zynayumi.engine.oversampling,
-															  OVERSAMPLING_DFLT,
-															  OVERSAMPLING_L,
-															  OVERSAMPLING_U);
+	                                            OVERSAMPLING_UNIT,
+	                                            &zynayumi.engine.oversampling,
+	                                            OVERSAMPLING_DFLT,
+	                                            OVERSAMPLING_L,
+	                                            OVERSAMPLING_U);
 }
 
 Parameters::~Parameters()
