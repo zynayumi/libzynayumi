@@ -474,10 +474,10 @@ void Voice::update_ringmod_waveform_index()
 void Voice::update_ringmod_waveform_level()
 {
 	int wfm = _patch->ringmod.waveform[_ringmod_waveform_index];
+	double depth = normalize_level(_patch->ringmod.depth);
+	depth *= velocity_to_depth(_patch->control.ringmod_velocity_sensitivity, velocity);
 	_ringmod_waveform_level =
-		linear_interpolate(0.0, (1.0 - normalize_level(_patch->ringmod.depth)),
-		                   1.0, 1.0,
-		                   normalize_level(wfm));
+		linear_interpolate(0.0, (1.0 - depth), 1.0, 1.0, normalize_level(wfm));
 }
 
 void Voice::update_buzzer()
@@ -579,8 +579,14 @@ void Voice::sync_buzzer()
 
 double Voice::velocity_to_level(double velocity_sensitivity, unsigned char velocity)
 {
-	return linear_interpolate(0.0, 1.0 - velocity_sensitivity,
+	return linear_interpolate(1.0, 1.0 - velocity_sensitivity,
 	                          127.0, 1.0, (double)velocity);
+}
+
+double Voice::velocity_to_depth(double velocity_sensitivity, unsigned char velocity)
+{
+	return linear_interpolate(1.0, 1.0 - velocity_sensitivity,
+	                          127.0 * 127.0, 1.0, (double)((int)velocity * (int)velocity));
 }
 
 double Voice::lfo_cycle_remainder(double freq, double time)
@@ -659,7 +665,7 @@ uint32_t Voice::hash(uint32_t a)
 	return a;
 }
 
-int Voice::normalize_level(int level)
+double Voice::normalize_level(int level)
 {
 	return (double)level / (double)MAX_LEVEL;
 }

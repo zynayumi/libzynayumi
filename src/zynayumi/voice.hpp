@@ -178,6 +178,8 @@ private:
 
 	static double velocity_to_level(double velocity_sensitivity,
 	                                unsigned char velocity);
+	static double velocity_to_depth(double velocity_sensitivity,
+	                                unsigned char velocity);
 
 	static double lfo_cycle_remainder(double freq, double time);
 	static double lfo_sine_pitch(double freq, double time);
@@ -188,7 +190,7 @@ private:
 	static double lfo_rand_pitch(double freq, double time);
 
 	static uint32_t hash(uint32_t a);
-	static int normalize_level(int level);
+	static double normalize_level(int level);
 };
 
 } // ~namespace zynayumi
