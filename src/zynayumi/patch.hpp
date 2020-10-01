@@ -266,6 +266,12 @@ public:
 	// Key press velocity sensitivity, ranges in [0, 1]
 	float velocity_sensitivity;
 
+	// Ringmod depth velocity sensitivity
+	float ringmod_velocity_sensitivity;
+
+	// Noise period pitch sensitivity
+	float noise_period_pitch_sensitivity;
+
 	// How the LFO is sensitive to modulation, in semitone, ranges in [0, 12]
 	float modulation_sensitivity;
 };

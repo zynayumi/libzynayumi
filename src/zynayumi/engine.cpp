@@ -62,6 +62,8 @@ Engine::Engine(const Zynayumi& ref)
 	  volume_gain(vol2gain(100)),
 	  pan(0.5),
 	  expression_gain(vol2gain(127)),
+	  sustain_pedal(false),
+	  oversampling(2),
 	  _max_voices(3)
 {
 	// TODO: probably unnecessary, as configured when setting the patch

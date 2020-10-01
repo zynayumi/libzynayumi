@@ -121,6 +121,9 @@ public:
 	// True iff the sustain pedal is on
 	bool sustain_pedal;
 
+	// Oversampling
+	int oversampling;
+
 	/////////////////////////////////
 	// Constructors/descructors    //
 	/////////////////////////////////

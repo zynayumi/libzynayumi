@@ -215,8 +215,8 @@ void Voice::update_port()
 	double end_time = _patch->portamento.time + _engine->portamento_time;
 
 	if (0.0 < end_time) {
-		const double scale_L = 0.1;
-		const double scale_U = 100;
+		const double scale_L = 0.05;
+		const double scale_U = 400;
 		double scale = end_time *
 			linear_interpolate(0.0, scale_U, 1.0, scale_L,
 			                   _patch->portamento.smoothness);

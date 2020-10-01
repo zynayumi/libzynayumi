@@ -304,10 +304,21 @@ but if it starts then it should run flawlessly.
 
 - **Pitch wheel range**: range [-pw, +pw] of the pitch wheel in
   semitones.  Ranges from 1 to 12.
-  
+
 - **Velocity sensitivity**: ranges from 0.0, no key velocity is taken
   into account, all notes are played at maximum volume, to 1.0,
   velocity is fully taken into account.
+
+- **Ringmod velocity sensitivity**: ranges from 0.0, key velocity has
+  no impact on ringmod depth, to 1.0, key velocity has maximum ringmod
+  depth defined by the *Ringmod depth* and *Seq ringmod depth*
+  parameters.
+
+- **Noise period pitch sensitivity**: ranges from 0.0, noise period is
+  unaffected by key pitch, to 1.0, noise period is maximally affected
+  by key pitch, meaning the period linearly decreases from its default
+  value in C4 when going to the higher keys, and similarily increases
+  when going to the lower keys.
 
 - **Modulation sensitivity**: ranges from 0.0, modulation wheel is
   ignored, to 12.0 modulation wheel is fully taken into account for
@@ -397,11 +408,10 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Look into aliasing, find out whether it is due to the emulator
-      or the emulated chip.
-- [ ] Add 16-step sequencer for controlling tone pitch, noise period,
-      ringmod depth and volume.
-- [ ] Add noise period pitch mapping
+- [ ] Complete 16-step sequencer
+- [ ] Implement *Oversampling*
+- [ ] Implement *Noise period pitch sensitivity*
+- [ ] Implement *Ringmod velocity sensitivity*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue
 - [ ] Update tempo when it has changed on the host
