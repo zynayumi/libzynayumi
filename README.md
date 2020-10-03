@@ -409,7 +409,6 @@ harmful sounds and protect your hearing.
 ## TODO
 
 - [ ] Complete 16-step sequencer
-- [ ] Implement *Noise period pitch sensitivity*
 - [ ] Implement *Oversampling*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue

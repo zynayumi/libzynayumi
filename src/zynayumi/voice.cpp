@@ -25,6 +25,7 @@
 #include <iostream>
 #include <cmath>
 #include <random>
+#include <algorithm>
 
 #include "voice.hpp"
 #include "engine.hpp"
@@ -199,6 +200,13 @@ void Voice::update_noise_period()
 	double fperiod = _patch->noise.period;
 	_noise_period = envtime < on_time ? fperiod
 		: std::round(linear_interpolate(0.0, aperiod, envtime, fperiod, on_time));
+	double npps = _patch->control.noise_period_pitch_sensitivity;
+	// TODO: optimize by putting in the constructor
+	int delta_period = (int)std::round(linear_interpolate(0.0, +31 * npps,
+	                                                      127.0, -31 * npps,
+	                                                      (double)pitch));
+	_noise_period += delta_period;
+	_noise_period = std::clamp(_noise_period, 0, 31);
 }
 
 void Voice::update_pitchenv()
