@@ -337,21 +337,21 @@ void initialise_2() {
 
 	// Ring modulation
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL1_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL1_L, RINGMOD_WAVEFORM_LEVEL1_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL2_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL2_L, RINGMOD_WAVEFORM_LEVEL2_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL3_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL3_L, RINGMOD_WAVEFORM_LEVEL3_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL4_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL4_L, RINGMOD_WAVEFORM_LEVEL4_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL5_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL5_L, RINGMOD_WAVEFORM_LEVEL5_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL6_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL6_L, RINGMOD_WAVEFORM_LEVEL6_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL7_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL7_L, RINGMOD_WAVEFORM_LEVEL7_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL8_NAME, i_desc | d_max,
-	               RINGMOD_WAVEFORM_LEVEL8_L, RINGMOD_WAVEFORM_LEVEL8_U);
+	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_SYNC_NAME, t_desc | d_1,
 	               RINGMOD_SYNC_L - delta, RINGMOD_SYNC_U + delta);
 	ports.add_port(c_desc, RINGMOD_PHASE_NAME, r_desc | d_0,

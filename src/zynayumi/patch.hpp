@@ -155,7 +155,7 @@ public:
  * samples mirroring the first 8. That is to obtain a smooth dephasing
  * effect when the tone is enabled.
  */
-#define RINGMOD_WAVEFORM_SIZE 8
+#define RINGMOD_WAVEFORM_SIZE 16
 class RingMod {
 public:
 	RingMod();
