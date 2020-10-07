@@ -772,7 +772,7 @@ enum ParameterIndex {
 #define SEQ_BEAT_MULTIPLIER_L 1
 #define SEQ_BEAT_MULTIPLIER_U 64
 #define SEQ_LOOP_L 0
-#define SEQ_LOOP_U 15
+#define SEQ_LOOP_U 16
 #define SEQ_END_L 0
 #define SEQ_END_U 16
 #define RINGMOD_WAVEFORM_LEVEL_L 0

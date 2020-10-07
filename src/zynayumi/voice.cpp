@@ -42,9 +42,12 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _engine(&engine)
 	, _patch(&pa)
 	, _initial_pitch(pi)
+	, _seq_step(-1)
+	, _seq_change(true)
+	, _seq_index(0)
 	, _relative_seq_pitch(0)
 	, _seq_rnd_offset_step(rand())
-	, _index(-1)
+	, _rnd_index(-1)
 	, _env_smp_count(0)
 	, _on_smp_count(0)
 	, _pitch_smp_count(0)
@@ -70,6 +73,9 @@ void Voice::update()
 
 	// Update pan
 	update_pan();
+
+	// Update seq
+	update_seq();
 
 	// Update tone and noise
 	update_tone_off();
@@ -177,6 +183,36 @@ void Voice::update_pan()
 	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
 }
 
+void Voice::update_seq()
+{
+	// Update _seq_step and _seq_index
+
+	unsigned step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
+	_seq_change = _seq_step != step;
+
+	if (!_seq_change)
+		return;
+
+	_seq_step = step;
+
+	auto step2index = [&](size_t repeat, size_t size) -> int {
+		int index = _seq_step;
+		if (size <= index)
+			index = repeat + (index % (size - repeat));
+		return index;
+	};
+
+	if (_patch->seq.loop < _patch->seq.end) {
+		_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
+	} else {
+		if (_seq_step < _patch->seq.end) {
+			_seq_index = (int)_seq_step;
+		} else {
+			_seq_index = -1;
+		}
+	}
+}
+
 void Voice::update_tone()
 {
 	double tp = _engine->pitch2toneperiod(_final_pitch);
@@ -274,9 +310,8 @@ void Voice::update_lfo()
 
 void Voice::update_arp()
 {
-	unsigned step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
-	bool step_change = _seq_step != step;
-	_seq_step = step;
+	if (!_seq_change)
+		return;
 
 	auto count2index = [&](size_t repeat, size_t size) -> unsigned {
 		unsigned index = _seq_step;
@@ -294,22 +329,22 @@ void Voice::update_arp()
 
 	// Like the above but return a random index and pitch
 	auto count2rndindex = [&](size_t size) -> unsigned {
-		if (step_change) {
+		if (_seq_change) {
 			bool same_index;
 			unsigned new_index;
 			do {                   // Try the next random index if the
 				                    // note wouldn't changed.
 				new_index = hash(_seq_rnd_offset_step + _seq_step) % size;
-				same_index = new_index == _index;
+				same_index = new_index == _rnd_index;
 				if (same_index)
 					++_seq_rnd_offset_step;
 			} while	(same_index);
-			_index = new_index;
-			return _index;
+			_rnd_index = new_index;
+			return _rnd_index;
 		}
 		else {
-			_index = hash(_seq_rnd_offset_step + _seq_step) % size;
-			return _index;
+			_rnd_index = hash(_seq_rnd_offset_step + _seq_step) % size;
+			return _rnd_index;
 		}
 	};
 	auto count2rndpitch = [&]() -> unsigned char {
@@ -317,6 +352,7 @@ void Voice::update_arp()
 		return *std::next(_engine->pitches.begin(), index);
 	};
 
+	// Take care of playmode arp
 	switch (_patch->playmode) {
 	case PlayMode::MonoUpArp:
 	case PlayMode::UnisonUpArp:
@@ -336,19 +372,15 @@ void Voice::update_arp()
 	case PlayMode::Unison:
 	case PlayMode::Mono:
 	case PlayMode::Poly:
-		if (_patch->seq.loop < _patch->seq.end) {
-			unsigned index = count2index(_patch->seq.loop, _patch->seq.end);
-			_relative_seq_pitch = _patch->seq.states[index].tone_pitch;
-		} else {
-			if (_seq_step < _patch->seq.end) {
-				_relative_seq_pitch = _patch->seq.states[_seq_step].tone_pitch;
-			} else {
-				_relative_seq_pitch = 0;
-			}
-		}
-		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;
+	}
+
+	// Take care of seq arp
+	if (_patch->seq.loop < _patch->seq.end) {
+		_relative_seq_pitch += _patch->seq.states[_seq_index].tone_pitch;
+	} else if (_seq_step < _patch->seq.end) {
+		_relative_seq_pitch += _patch->seq.states[_seq_step].tone_pitch;
 	}
 }
 

@@ -83,10 +83,14 @@ private:
 	const Patch* _patch;
 
 	double _initial_pitch;             // Initial note pitch
-	double _final_pitch;               // Final pitch after all pitch updates
+
+	double _final_pitch;               // Final pitch after all pitch
+												  // updates
 
 	bool _tone_off;                    // True iff the tone is off
+
 	bool _noise_off;                   // True iff the noise is off
+
 	bool _buzzer_off;                  // True iff the buzzer is off
 
 	int _noise_period;                 // Final noise period, after
@@ -103,19 +107,33 @@ private:
 	double _relative_lfo_pitch;        // Relative LFO pitch
 
 	// Sequencer
-	unsigned _seq_step;                // Every time it increases the
-	                                   // arp pitch changes
+	int _seq_step;                     // Total number of steps since
+	                                   // the note is on. Negative
+	                                   // means undefined.
+
+	bool _seq_change;                  // Whether step has incremented
+
+	int _seq_index;                    // Step index, range from -1 to
+	                                   // 15. Negative means undefined.
+
 	double _relative_seq_pitch;        // Relative Arpeggio pitch
+
 	unsigned _seq_rnd_offset_step;     // Random offset of the
 	                                   // seq_step to allow different
 	                                   // randomness cross voices
-	unsigned _index;                   // Store the current random
+
+	unsigned _rnd_index;               // Store the current random
 	                                   // index to avoid repetition of
 	                                   // 2 consecutive notes
 
-	unsigned _env_smp_count;           // Number of samples since note on or off
-	unsigned _on_smp_count;            // Number of samples since voice on
-	unsigned _pitch_smp_count;         // Number of samples since pitch change
+	unsigned _env_smp_count;           // Number of samples since note
+	                                   // on or off
+
+	unsigned _on_smp_count;            // Number of samples since voice
+	                                   // on
+
+	unsigned _pitch_smp_count;         // Number of samples since pitch
+	                                   // change
 
 	// Final level
 	double _final_level;               // Current level, taking into account
@@ -148,6 +166,7 @@ private:
 	double ym_channel_to_spread() const;
 
 	void update_pan();
+	void update_seq();
 	void update_tone();
 	void update_tone_off();
 	void update_noise_off();
