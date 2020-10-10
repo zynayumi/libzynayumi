@@ -174,7 +174,7 @@ private:
 	void update_pitchenv();
 	void update_lfo();
 	void update_arp();
-	void update_port();
+	void update_portamento();
 	void update_final_pitch();
 	void update_env();
 	// NEXT update ringmod seq

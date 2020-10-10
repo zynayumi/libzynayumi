@@ -87,7 +87,7 @@ void Voice::update()
 
 	// Update pitch
 	update_pitchenv();
-	update_port();
+	update_portamento();
 	update_lfo();
 	update_arp();
 	update_final_pitch();
@@ -231,6 +231,7 @@ void Voice::update_noise_off()
 
 void Voice::update_noise_period()
 {
+	// Calculate noise period from envelope
 	double aperiod = _patch->noise_period_env.attack;
 	double envtime = _patch->noise_period_env.time;
 	double fperiod = _patch->noise.period;
@@ -242,6 +243,12 @@ void Voice::update_noise_period()
 	                                                      127.0, -31 * npps,
 	                                                      (double)pitch));
 	_noise_period += delta_period;
+
+	// Calculate noise period from sequencer
+	if (0 <= _seq_index)
+		_noise_period +=  _patch->seq.states[_seq_index].noise_period;
+
+	// Clamp if out of bound
 	_noise_period = std::clamp(_noise_period, 0, 31);
 }
 
@@ -253,7 +260,7 @@ void Voice::update_pitchenv()
 		: linear_interpolate(0.0, apitch, ptime, 0.0, on_time);
 }
 
-void Voice::update_port()
+void Voice::update_portamento()
 {
 	double pitch_diff = _engine->previous_pitch - _initial_pitch;
 	double end_time = _patch->portamento.time + _engine->portamento_time;
@@ -518,6 +525,7 @@ void Voice::update_ringmod_waveform_level()
 	depth *= velocity_to_depth(_patch->control.ringmod_velocity_sensitivity, velocity);
 	_ringmod_waveform_level =
 		linear_interpolate(0.0, (1.0 - depth), 1.0, 1.0, normalize_level(wfm));
+	// NEXT: take care of seq rindmod depth
 }
 
 void Voice::update_buzzer()
@@ -576,6 +584,7 @@ void Voice::update_buzzer_shape()
 
 void Voice::update_final_level()
 {
+	// NEXT: take care of seq level
 	_final_level = _ringmod_waveform_level * env_level * velocity_level;
 }
 
