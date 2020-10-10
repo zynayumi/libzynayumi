@@ -246,7 +246,7 @@ void Voice::update_noise_period()
 
 	// Calculate noise period from sequencer
 	if (0 <= _seq_index)
-		_noise_period +=  _patch->seq.states[_seq_index].noise_period;
+		_noise_period += _patch->seq.states[_seq_index].noise_period;
 
 	// Clamp if out of bound
 	_noise_period = std::clamp(_noise_period, 0, 31);
@@ -520,12 +520,15 @@ void Voice::update_ringmod_waveform_index()
 
 void Voice::update_ringmod_waveform_level()
 {
-	int wfm = _patch->ringmod.waveform[_ringmod_waveform_index];
+	// Determine ringmod depth, according to fixed depth, velocity and sequencer
 	double depth = normalize_level(_patch->ringmod.depth);
 	depth *= velocity_to_depth(_patch->control.ringmod_velocity_sensitivity, velocity);
-	_ringmod_waveform_level =
-		linear_interpolate(0.0, (1.0 - depth), 1.0, 1.0, normalize_level(wfm));
-	// NEXT: take care of seq rindmod depth
+	if (0 <= _seq_index)
+		depth *= normalize_level(_patch->seq.states[_seq_index].ringmod_depth);
+
+	// Determine waveform level according to depth and waveform index
+	double wfl = normalize_level(_patch->ringmod.waveform[_ringmod_waveform_index]);
+	_ringmod_waveform_level = linear_interpolate(0.0, (1.0 - depth), 1.0, 1.0, wfl);
 }
 
 void Voice::update_buzzer()
