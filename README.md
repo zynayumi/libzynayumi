@@ -12,7 +12,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] Arpeggio
 - [X] Ring Modulation (SID and more)
 - [X] Buzzer
-- [ ] 16-step sequencer for parameter modulation
+- [X] 16-step sequencer for parameter modulation
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
       Time, Volume, Pan, Expression and Sustain).
 - [X] VST, DSSI
@@ -408,7 +408,6 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Complete 16-step sequencer
 - [ ] Implement *Oversampling*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue
