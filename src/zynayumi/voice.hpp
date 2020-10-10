@@ -116,6 +116,9 @@ private:
 	int _seq_index;                    // Step index, range from -1 to
 	                                   // 15. Negative means undefined.
 
+	double _seq_level;                 // Volume level determined by
+	                                   // the sequencer.
+
 	double _relative_seq_pitch;        // Relative Arpeggio pitch
 
 	unsigned _seq_rnd_offset_step;     // Random offset of the
@@ -177,7 +180,6 @@ private:
 	void update_portamento();
 	void update_final_pitch();
 	void update_env();
-	// NEXT update ringmod seq
 	void update_ringmod();
 	void update_ringmod_pitch();
 	void update_ringmod_smp_period();
@@ -189,7 +191,7 @@ private:
 	void update_buzzer_pitch();
 	void update_buzzer_period();
 	void update_buzzer_shape();
-	// NEXT update seq level
+   void update_seq_level();
 	void update_final_level();
 	void sync_tone();
 	void sync_ringmod();

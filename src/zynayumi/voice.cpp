@@ -585,10 +585,14 @@ void Voice::update_buzzer_shape()
 	}
 }
 
+void Voice::update_seq_level()
+{
+   _seq_level = 0 <= _seq_index ? normalize_level(_patch->seq.states[_seq_index].level) : 1.0;
+}
+
 void Voice::update_final_level()
 {
-	// NEXT: take care of seq level
-	_final_level = _ringmod_waveform_level * env_level * velocity_level;
+	_final_level = _ringmod_waveform_level * env_level * _seq_level * velocity_level;
 }
 
 void Voice::sync_tone()
