@@ -45,6 +45,7 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _seq_step(-1)
 	, _seq_change(true)
 	, _seq_index(0)
+	, _seq_level(1.0)
 	, _relative_seq_pitch(0)
 	, _seq_rnd_offset_step(rand())
 	, _rnd_index(-1)
@@ -107,6 +108,7 @@ void Voice::update()
 	// Update level, including ring modulation
 	update_env();
 	update_ringmod();
+	update_seq_level();
 	update_final_level();
 	ayumi_set_volume(&_engine->ay, ym_channel, std::lround(_final_level * MAX_LEVEL));
 

@@ -762,7 +762,7 @@ enum ParameterIndex {
 #define SEQ_RINGMOD_DEPTH_L 0
 #define SEQ_RINGMOD_DEPTH_U MAX_LEVEL
 #define SEQ_LEVEL_L 0
-#define SEQ_LEVEL_U 15
+#define SEQ_LEVEL_U MAX_LEVEL
 #define SEQ_TEMPO_L 30.0
 #define SEQ_TEMPO_U 300.0
 #define SEQ_HOST_SYNC_L 0
