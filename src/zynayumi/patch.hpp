@@ -120,7 +120,7 @@ class PitchEnv {
 public:
 	PitchEnv();
 
-	float attack_pitch;          // Relative pitch of the attack
+	int attack_pitch;            // Relative pitch of the attack
 	float time;                  // Duration to go from attack pitch to
 	                             // tone pitch.
 };

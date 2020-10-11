@@ -345,12 +345,12 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                ENV_RELEASE_U);
 
 	// Pitch envelope
-	parameters[PITCH_ENV_ATTACK_PITCH] = new LinearFloatParameter(PITCH_ENV_ATTACK_PITCH_NAME,
-	                                                              PITCH_ENV_ATTACK_PITCH_UNIT,
-	                                                              &zynayumi.patch.pitchenv.attack_pitch,
-	                                                              PITCH_ENV_ATTACK_PITCH_DFLT,
-	                                                              PITCH_ENV_ATTACK_PITCH_L,
-	                                                              PITCH_ENV_ATTACK_PITCH_U);
+	parameters[PITCH_ENV_ATTACK_PITCH] = new IntParameter(PITCH_ENV_ATTACK_PITCH_NAME,
+	                                                      PITCH_ENV_ATTACK_PITCH_UNIT,
+	                                                      &zynayumi.patch.pitchenv.attack_pitch,
+	                                                      PITCH_ENV_ATTACK_PITCH_DFLT,
+	                                                      PITCH_ENV_ATTACK_PITCH_L,
+	                                                      PITCH_ENV_ATTACK_PITCH_U);
 
 	parameters[PITCH_ENV_TIME] = new TanFloatParameter(PITCH_ENV_TIME_NAME,
 	                                                   PITCH_ENV_TIME_UNIT,
