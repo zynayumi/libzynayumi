@@ -292,9 +292,9 @@ public:
 	NoisePeriodEnv noise_period_env; // Noise period envelope
 	Env env;                    // Envelope
 	PitchEnv pitchenv;          // Pitch envelope
-	Seq seq;                    // Sequencer
 	RingMod ringmod;            // Ring modulation
 	Buzzer buzzer;              // Buzzer
+	Seq seq;                    // Sequencer
 	LFO lfo;                    // LFO
 	Portamento portamento;      // Portamento
 	float gain;                 // Output gain

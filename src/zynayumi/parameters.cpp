@@ -359,6 +359,210 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                   PITCH_ENV_TIME_L,
 	                                                   PITCH_ENV_TIME_U);
 
+	// Ring modulation
+	parameters[RINGMOD_WAVEFORM_LEVEL1] = new IntParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[0],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL2] = new IntParameter(RINGMOD_WAVEFORM_LEVEL2_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[1],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL3] = new IntParameter(RINGMOD_WAVEFORM_LEVEL3_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[2],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL4] = new IntParameter(RINGMOD_WAVEFORM_LEVEL4_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[3],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL5] = new IntParameter(RINGMOD_WAVEFORM_LEVEL5_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[4],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL6] = new IntParameter(RINGMOD_WAVEFORM_LEVEL6_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[5],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL7] = new IntParameter(RINGMOD_WAVEFORM_LEVEL7_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[6],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL8] = new IntParameter(RINGMOD_WAVEFORM_LEVEL8_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[7],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL9] = new IntParameter(RINGMOD_WAVEFORM_LEVEL9_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[8],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL10] = new IntParameter(RINGMOD_WAVEFORM_LEVEL10_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[9],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL11] = new IntParameter(RINGMOD_WAVEFORM_LEVEL11_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[10],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL12] = new IntParameter(RINGMOD_WAVEFORM_LEVEL12_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[11],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL13] = new IntParameter(RINGMOD_WAVEFORM_LEVEL13_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[12],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL14] = new IntParameter(RINGMOD_WAVEFORM_LEVEL14_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[13],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL15] = new IntParameter(RINGMOD_WAVEFORM_LEVEL15_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[14],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_WAVEFORM_LEVEL16] = new IntParameter(RINGMOD_WAVEFORM_LEVEL16_NAME,
+	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
+	                                                       &zynayumi.patch.ringmod.waveform[15],
+	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
+	                                                       RINGMOD_WAVEFORM_LEVEL_L,
+	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+
+	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
+	                                             RINGMOD_SYNC_UNIT,
+	                                             &zynayumi.patch.ringmod.sync,
+	                                             RINGMOD_SYNC_DFLT);
+
+	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
+	                                                     RINGMOD_PHASE_UNIT,
+	                                                     &zynayumi.patch.ringmod.phase,
+	                                                     RINGMOD_PHASE_DFLT,
+	                                                     RINGMOD_PHASE_L,
+	                                                     RINGMOD_PHASE_U);
+
+	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
+	                                               RINGMOD_MIRROR_UNIT,
+	                                               &zynayumi.patch.ringmod.mirror,
+	                                               RINGMOD_MIRROR_DFLT);
+
+	parameters[RINGMOD_DETUNE] = new TanFloatParameter(RINGMOD_DETUNE_NAME,
+	                                                   RINGMOD_DETUNE_UNIT,
+	                                                   &ringmod_detune,
+	                                                   RINGMOD_DETUNE_DFLT,
+	                                                   RINGMOD_DETUNE_L,
+	                                                   RINGMOD_DETUNE_U);
+
+	parameters[RINGMOD_TRANSPOSE] = new IntParameter(RINGMOD_TRANSPOSE_NAME,
+	                                                 RINGMOD_TRANSPOSE_UNIT,
+	                                                 &ringmod_transpose,
+	                                                 RINGMOD_TRANSPOSE_DFLT,
+	                                                 RINGMOD_TRANSPOSE_L,
+	                                                 RINGMOD_TRANSPOSE_U);
+
+	parameters[RINGMOD_FIXED_FREQUENCY] = new CubeFloatParameter(RINGMOD_FIXED_FREQUENCY_NAME,
+	                                                             RINGMOD_FIXED_FREQUENCY_UNIT,
+	                                                             &zynayumi.patch.ringmod.fixed_freq,
+	                                                             RINGMOD_FIXED_FREQUENCY_DFLT,
+	                                                             RINGMOD_FIXED_FREQUENCY_L,
+	                                                             RINGMOD_FIXED_FREQUENCY_U);
+
+	parameters[RINGMOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RINGMOD_FIXED_VS_RELATIVE_NAME,
+	                                                              RINGMOD_FIXED_VS_RELATIVE_UNIT,
+	                                                              &zynayumi.patch.ringmod.fixed_vs_relative,
+	                                                              RINGMOD_FIXED_VS_RELATIVE_DFLT,
+	                                                              RINGMOD_FIXED_VS_RELATIVE_L,
+	                                                              RINGMOD_FIXED_VS_RELATIVE_U);
+
+	parameters[RINGMOD_DEPTH] = new IntParameter(RINGMOD_DEPTH_NAME,
+	                                             RINGMOD_DEPTH_UNIT,
+	                                             &zynayumi.patch.ringmod.depth,
+	                                             RINGMOD_DEPTH_DFLT,
+	                                             RINGMOD_DEPTH_L,
+	                                             RINGMOD_DEPTH_U);
+
+	// Buzzer
+	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
+	                                                            BUZZER_SHAPE_UNIT,
+	                                                            &zynayumi.patch.buzzer.shape,
+	                                                            BUZZER_SHAPE_DFLT);
+
+	parameters[BUZZER_SYNC] = new BoolParameter(BUZZER_SYNC_NAME,
+	                                            BUZZER_SYNC_UNIT,
+	                                            &zynayumi.patch.buzzer.sync,
+	                                            BUZZER_SYNC_DFLT);
+
+	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
+	                                                    BUZZER_PHASE_UNIT,
+	                                                    &zynayumi.patch.buzzer.phase,
+	                                                    BUZZER_PHASE_DFLT,
+	                                                    BUZZER_PHASE_L,
+	                                                    BUZZER_PHASE_U);
+
+	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
+	                                                BUZZER_TIME_UNIT,
+	                                                &zynayumi.patch.buzzer.time,
+	                                                BUZZER_TIME_DFLT,
+	                                                BUZZER_TIME_L,
+	                                                BUZZER_TIME_U);
+
+	parameters[BUZZER_DETUNE] = new TanFloatParameter(BUZZER_DETUNE_NAME,
+	                                                  BUZZER_DETUNE_UNIT,
+	                                                  &buzzer_detune,
+	                                                  BUZZER_DETUNE_DFLT,
+	                                                  BUZZER_DETUNE_L,
+	                                                  BUZZER_DETUNE_U);
+
+	parameters[BUZZER_TRANSPOSE] = new IntParameter(BUZZER_TRANSPOSE_NAME,
+	                                                BUZZER_TRANSPOSE_UNIT,
+	                                                &buzzer_transpose,
+	                                                BUZZER_TRANSPOSE_DFLT,
+	                                                BUZZER_TRANSPOSE_L,
+	                                                BUZZER_TRANSPOSE_U);
+
 	// Sequencer
 	parameters[SEQ_TONE_PITCH_0] = new IntParameter(SEQ_TONE_PITCH_0_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
@@ -847,210 +1051,6 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                       SEQ_END_DFLT,
 	                                       SEQ_END_L,
 	                                       SEQ_END_U);
-
-	// Ring modulation
-	parameters[RINGMOD_WAVEFORM_LEVEL1] = new IntParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[0],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL2] = new IntParameter(RINGMOD_WAVEFORM_LEVEL2_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[1],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL3] = new IntParameter(RINGMOD_WAVEFORM_LEVEL3_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[2],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL4] = new IntParameter(RINGMOD_WAVEFORM_LEVEL4_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[3],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL5] = new IntParameter(RINGMOD_WAVEFORM_LEVEL5_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[4],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL6] = new IntParameter(RINGMOD_WAVEFORM_LEVEL6_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[5],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL7] = new IntParameter(RINGMOD_WAVEFORM_LEVEL7_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[6],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL8] = new IntParameter(RINGMOD_WAVEFORM_LEVEL8_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[7],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL9] = new IntParameter(RINGMOD_WAVEFORM_LEVEL9_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[8],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL10] = new IntParameter(RINGMOD_WAVEFORM_LEVEL10_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[9],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL11] = new IntParameter(RINGMOD_WAVEFORM_LEVEL11_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[10],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL12] = new IntParameter(RINGMOD_WAVEFORM_LEVEL12_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[11],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL13] = new IntParameter(RINGMOD_WAVEFORM_LEVEL13_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[12],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL14] = new IntParameter(RINGMOD_WAVEFORM_LEVEL14_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[13],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL15] = new IntParameter(RINGMOD_WAVEFORM_LEVEL15_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[14],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL16] = new IntParameter(RINGMOD_WAVEFORM_LEVEL16_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[15],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
-	                                             RINGMOD_SYNC_UNIT,
-	                                             &zynayumi.patch.ringmod.sync,
-	                                             RINGMOD_SYNC_DFLT);
-
-	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
-	                                                     RINGMOD_PHASE_UNIT,
-	                                                     &zynayumi.patch.ringmod.phase,
-	                                                     RINGMOD_PHASE_DFLT,
-	                                                     RINGMOD_PHASE_L,
-	                                                     RINGMOD_PHASE_U);
-
-	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
-	                                               RINGMOD_MIRROR_UNIT,
-	                                               &zynayumi.patch.ringmod.mirror,
-	                                               RINGMOD_MIRROR_DFLT);
-
-	parameters[RINGMOD_DETUNE] = new TanFloatParameter(RINGMOD_DETUNE_NAME,
-	                                                   RINGMOD_DETUNE_UNIT,
-	                                                   &ringmod_detune,
-	                                                   RINGMOD_DETUNE_DFLT,
-	                                                   RINGMOD_DETUNE_L,
-	                                                   RINGMOD_DETUNE_U);
-
-	parameters[RINGMOD_TRANSPOSE] = new IntParameter(RINGMOD_TRANSPOSE_NAME,
-	                                                 RINGMOD_TRANSPOSE_UNIT,
-	                                                 &ringmod_transpose,
-	                                                 RINGMOD_TRANSPOSE_DFLT,
-	                                                 RINGMOD_TRANSPOSE_L,
-	                                                 RINGMOD_TRANSPOSE_U);
-
-	parameters[RINGMOD_FIXED_FREQUENCY] = new CubeFloatParameter(RINGMOD_FIXED_FREQUENCY_NAME,
-	                                                             RINGMOD_FIXED_FREQUENCY_UNIT,
-	                                                             &zynayumi.patch.ringmod.fixed_freq,
-	                                                             RINGMOD_FIXED_FREQUENCY_DFLT,
-	                                                             RINGMOD_FIXED_FREQUENCY_L,
-	                                                             RINGMOD_FIXED_FREQUENCY_U);
-
-	parameters[RINGMOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RINGMOD_FIXED_VS_RELATIVE_NAME,
-	                                                              RINGMOD_FIXED_VS_RELATIVE_UNIT,
-	                                                              &zynayumi.patch.ringmod.fixed_vs_relative,
-	                                                              RINGMOD_FIXED_VS_RELATIVE_DFLT,
-	                                                              RINGMOD_FIXED_VS_RELATIVE_L,
-	                                                              RINGMOD_FIXED_VS_RELATIVE_U);
-
-	parameters[RINGMOD_DEPTH] = new IntParameter(RINGMOD_DEPTH_NAME,
-	                                             RINGMOD_DEPTH_UNIT,
-	                                             &zynayumi.patch.ringmod.depth,
-	                                             RINGMOD_DEPTH_DFLT,
-	                                             RINGMOD_DEPTH_L,
-	                                             RINGMOD_DEPTH_U);
-
-	// Buzzer
-	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
-	                                                            BUZZER_SHAPE_UNIT,
-	                                                            &zynayumi.patch.buzzer.shape,
-	                                                            BUZZER_SHAPE_DFLT);
-
-	parameters[BUZZER_SYNC] = new BoolParameter(BUZZER_SYNC_NAME,
-	                                            BUZZER_SYNC_UNIT,
-	                                            &zynayumi.patch.buzzer.sync,
-	                                            BUZZER_SYNC_DFLT);
-
-	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
-	                                                    BUZZER_PHASE_UNIT,
-	                                                    &zynayumi.patch.buzzer.phase,
-	                                                    BUZZER_PHASE_DFLT,
-	                                                    BUZZER_PHASE_L,
-	                                                    BUZZER_PHASE_U);
-
-	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
-	                                                BUZZER_TIME_UNIT,
-	                                                &zynayumi.patch.buzzer.time,
-	                                                BUZZER_TIME_DFLT,
-	                                                BUZZER_TIME_L,
-	                                                BUZZER_TIME_U);
-
-	parameters[BUZZER_DETUNE] = new TanFloatParameter(BUZZER_DETUNE_NAME,
-	                                                  BUZZER_DETUNE_UNIT,
-	                                                  &buzzer_detune,
-	                                                  BUZZER_DETUNE_DFLT,
-	                                                  BUZZER_DETUNE_L,
-	                                                  BUZZER_DETUNE_U);
-
-	parameters[BUZZER_TRANSPOSE] = new IntParameter(BUZZER_TRANSPOSE_NAME,
-	                                                BUZZER_TRANSPOSE_UNIT,
-	                                                &buzzer_transpose,
-	                                                BUZZER_TRANSPOSE_DFLT,
-	                                                BUZZER_TRANSPOSE_L,
-	                                                BUZZER_TRANSPOSE_U);
 
 	// Pitch LFO
 	parameters[LFO_SHAPE] = new EnumParameter<LFO::Shape>(LFO_SHAPE_NAME,
