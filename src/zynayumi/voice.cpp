@@ -189,7 +189,7 @@ void Voice::update_seq()
 {
 	// Update _seq_step and _seq_index
 
-	unsigned step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
+	int step = _on_smp_count * _patch->seq.freq / _engine->sample_rate;
 	_seq_change = _seq_step != step;
 
 	if (!_seq_change)
@@ -381,16 +381,15 @@ void Voice::update_arp()
 	case PlayMode::Unison:
 	case PlayMode::Mono:
 	case PlayMode::Poly:
+		_relative_seq_pitch = 0;
+		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;
 	}
 
 	// Take care of seq arp
-	if (_patch->seq.loop < _patch->seq.end) {
+	if (0 <= _seq_index)
 		_relative_seq_pitch += _patch->seq.states[_seq_index].tone_pitch;
-	} else if (_seq_step < _patch->seq.end) {
-		_relative_seq_pitch += _patch->seq.states[_seq_step].tone_pitch;
-	}
 }
 
 void Voice::update_final_pitch()
