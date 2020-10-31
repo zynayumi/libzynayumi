@@ -5,4 +5,4 @@ add_library(zynayumi STATIC
   engine
   presets
   parameters
-  ../../ayumi-lib/ayumi)
+  ../../ayumi/ayumi)

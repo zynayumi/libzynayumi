@@ -35,7 +35,7 @@
 
 extern "C"
 {
-#include "../../ayumi-lib/ayumi.h"
+#include "../../ayumi/ayumi.h"
 }
 
 namespace zynayumi {
