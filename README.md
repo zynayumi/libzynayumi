@@ -34,6 +34,18 @@ If you make a song with Zynayumi let me know so I can include it.
 
 ## Installation
 
+0. Clone that repo with the DPL submodule
+
+```bash
+$ git clone --recurse-submodules https://github.com/ngeiswei/zynayumi.git
+```
+
+then enter the zynayumi folder
+
+```bash
+$ cd zynayumi
+```
+
 1. Create build directory and run cmake
 ```bash
 $ mkdir build
