@@ -420,6 +420,10 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Add to seq
+  - [ ] Relative ringmod transpose
+  - [ ] On/off tone
+  - [ ] On/off noise
 - [ ] Implement *Oversampling*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue
