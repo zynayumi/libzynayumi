@@ -27,6 +27,8 @@
 #include <cmath>
 #include <sstream>
 
+#include <boost/algorithm/string.hpp>
+
 #include "patch.hpp"
 #include "zynayumi.hpp"
 
@@ -74,6 +76,16 @@ void BoolParameter::set_norm_value(float nf)
 	set_value(nf);
 }
 
+float BoolParameter::float_low() const
+{
+	return 0.0f;
+}
+
+float BoolParameter::float_up() const
+{
+	return 1.0f;
+}
+
 std::string IntParameter::value_to_string() const
 {
 	return std::to_string(*value_ptr);
@@ -106,6 +118,16 @@ void IntParameter::set_norm_value(float nf)
 	*value_ptr = std::lround(affine(0.0f, 1.0f, low, up, nf));
 }
 
+float IntParameter::float_low() const
+{
+	return (float)low;
+}
+
+float IntParameter::float_up() const
+{
+	return (float)up;
+}
+
 FloatParameter::FloatParameter(const std::string& nm, const std::string& unt,
                                float* v_ptr, float v_dflt, float l, float u)
 	: Parameter(nm, unt), value_ptr(v_ptr), low(l), up(u)
@@ -121,6 +143,16 @@ float FloatParameter::float_value() const
 void FloatParameter::set_value(float f)
 {
 	*value_ptr = f;
+}
+
+float FloatParameter::float_low() const
+{
+	return low;
+}
+
+float FloatParameter::float_up() const
+{
+	return up;
 }
 
 std::string FloatParameter::value_to_string() const
@@ -187,6 +219,21 @@ void TanFloatParameter::set_norm_value(float nf)
 		*value_ptr = up;
 	else
 		*value_ptr = tanf(affine(0.0f, 1.0f, atan_low, atan_up, nf));
+}
+
+BaseEnumParameter::BaseEnumParameter(const std::string& name, const std::string& unit, size_t cnt)
+	: Parameter(name, unit), count(cnt)
+{
+}
+
+float BaseEnumParameter::float_low() const
+{
+	return 0.0f;
+}
+
+float BaseEnumParameter::float_up() const
+{
+	return (float)count - 1.0f;
 }
 
 Parameters::Parameters(Zynayumi& zyn)
@@ -1182,6 +1229,14 @@ std::string Parameters::get_name(ParameterIndex pi) const
 	return "";
 }
 
+std::string Parameters::get_symbol(ParameterIndex pi) const
+{
+	std::string symbol = get_name(pi);
+	boost::algorithm::to_lower(symbol);
+	boost::algorithm::trim(symbol);
+	return symbol;
+}
+
 std::string Parameters::get_unit(ParameterIndex pi) const
 {
 	if (pi < parameters.size())
@@ -1225,6 +1280,38 @@ void Parameters::set_norm_value(ParameterIndex pi, float nf)
 {
 	parameters[pi]->set_norm_value(nf);
 	update(pi);
+}
+
+float Parameters::float_low(ParameterIndex pi) const
+{
+	return parameters[pi]->float_low();
+}
+
+float Parameters::float_up(ParameterIndex pi) const
+{
+	return parameters[pi]->float_up();
+}
+
+bool Parameters::is_int(ParameterIndex pi) const
+{
+	return dynamic_cast<IntParameter*>(parameters[pi]) or
+		dynamic_cast<BoolParameter*>(parameters[pi]) or
+		dynamic_cast<BaseEnumParameter*>(parameters[pi]);
+}
+
+bool Parameters::is_enum(ParameterIndex pi) const
+{
+	return dynamic_cast<BaseEnumParameter*>(parameters[pi]);
+}
+
+size_t Parameters::enum_count(ParameterIndex pi) const
+{
+	return dynamic_cast<BaseEnumParameter*>(parameters[pi])->count;
+}
+
+std::string Parameters::enum_value_name(ParameterIndex pi, size_t ei) const
+{
+	return dynamic_cast<BaseEnumParameter*>(parameters[pi])->enum_value_to_string(ei);
 }
 
 void Parameters::update(ParameterIndex pi)

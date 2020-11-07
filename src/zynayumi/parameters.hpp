@@ -71,6 +71,10 @@ public:
 	// Set value given normalized float within [0, 1]
 	virtual void set_norm_value(float nf) = 0;
 
+	// Lower/upper float bound
+	virtual float float_low() const = 0;
+	virtual float float_up() const = 0;
+
 	// Name exposed to the user
 	std::string name;
 
@@ -93,6 +97,10 @@ public:
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
 
+	// Lower/upper float bound
+	float float_low() const override;
+	float float_up() const override;
+
 	// Current value
 	bool* value_ptr;
 };
@@ -112,6 +120,10 @@ public:
 	void set_value(float f) override;
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
+
+	// Lower/upper float bound
+	float float_low() const override;
+	float float_up() const override;
 
 	// Current value
 	int* value_ptr;
@@ -134,6 +146,10 @@ public:
 	// Get/set methods
 	float float_value() const override;
 	void set_value(float f) override;
+
+	// Lower/upper float bound
+	float float_low() const override;
+	float float_up() const override;
 
 	// Current value
 	float* value_ptr;
@@ -187,8 +203,24 @@ public:
 	float atan_up;
 };
 
+class BaseEnumParameter : public Parameter {
+public:
+	// Ctor
+	BaseEnumParameter(const std::string& name, const std::string& unit, size_t cnt);
+
+	// Lower/upper float bound
+	float float_low() const override;
+	float float_up() const override;
+
+	// Return string representation of enum value
+	virtual std::string enum_value_to_string(size_t ei) const = 0;
+
+	// Number of enumerated values
+	size_t count;
+};
+
 template<typename E>
-class EnumParameter : public Parameter {
+class EnumParameter : public BaseEnumParameter {
 public:
 	// Ctor
 	EnumParameter(const std::string& name, const std::string& unit,
@@ -197,11 +229,18 @@ public:
 	// Convert value parameter into string
 	std::string value_to_string() const override;
 
+	// Return string representation of enum value
+	std::string enum_value_to_string(size_t ei) const override;
+
 	// Get/set methods
 	float float_value() const override;
 	void set_value(float f) override;
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
+
+	// Lower/upper float bound
+	float float_low() const override;
+	float float_up() const override;
 
 	// Current value
 	E* value_ptr;
@@ -211,7 +250,7 @@ template<typename E>
 EnumParameter<E>::EnumParameter(const std::string& n,
                                 const std::string& u,
                                 E* vl_ptr, E vl_dflt)
-	: Parameter(n, u), value_ptr(vl_ptr)
+	: BaseEnumParameter(n, u, (size_t)E::Count), value_ptr(vl_ptr)
 {
 	*value_ptr = vl_dflt;
 }
@@ -220,6 +259,12 @@ template<typename E>
 std::string EnumParameter<E>::value_to_string() const
 {
 	return zynayumi::to_string(*value_ptr); // defined in patch.{hpp,cpp}
+}
+
+template<typename E>
+std::string EnumParameter<E>::enum_value_to_string(size_t ei) const
+{
+	return zynayumi::to_string((E)ei); // defined in patch.{hpp,cpp}
 }
 
 template<typename E>
@@ -847,6 +892,10 @@ public:
 	// Get the parameter name at index pi
 	std::string get_name(ParameterIndex pi) const;
 
+	// Get the parameter symbol at index pi (the name in lower case
+	// and without space)
+	std::string get_symbol(ParameterIndex pi) const;
+
 	// Return a string of the unit: sec, dB, etc.
 	std::string get_unit(ParameterIndex pi) const;
 
@@ -860,6 +909,21 @@ public:
 	// Get (resp. set) normalized [0, 1] value at parameter index pi
 	float norm_float_value(ParameterIndex pi) const;
 	void set_norm_value(ParameterIndex pi, float nf);
+
+	// Get the non normalized lower/upper bound in float
+	float float_low(ParameterIndex pi) const;
+	float float_up(ParameterIndex pi) const;
+
+	// If the parameter is int/enum
+	bool is_int(ParameterIndex pi) const;
+	bool is_enum(ParameterIndex pi) const;
+
+	// If the parameter is an enum then return its count
+	size_t enum_count(ParameterIndex pi) const;
+
+	// If the parameter is an enum then return the name of its i_th
+	// element
+	std::string enum_value_name(ParameterIndex pi, size_t ei) const;
 
 	// Call after setting changing a value
 	void update(ParameterIndex pi);
