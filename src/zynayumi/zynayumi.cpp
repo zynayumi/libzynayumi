@@ -112,14 +112,6 @@ void Zynayumi::sustain_pedal_process(unsigned char channel, unsigned char value)
 	engine.sustain_pedal_process(channel, value);
 }
 
-void Zynayumi::sysex_process(unsigned length, unsigned char* data)
-{
-	unsigned char command_ID;
-	dbg_printf("Zynayumi::sysex_process\n");
-	for(unsigned i = 0; i < length; i++) dbg_printf("%x ", data[i]);
-	dbg_printf("\n");
-}
-
 //print method
 std::string Zynayumi::to_string(const std::string& indent) const
 {
