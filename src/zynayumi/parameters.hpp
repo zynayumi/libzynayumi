@@ -238,10 +238,6 @@ public:
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
 
-	// Lower/upper float bound
-	float float_low() const override;
-	float float_up() const override;
-
 	// Current value
 	E* value_ptr;
 };
