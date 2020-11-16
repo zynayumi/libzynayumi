@@ -87,6 +87,10 @@ public:
 	                   unsigned long sample_count);
 
 	// Process MIDI events
+	void raw_event_process(unsigned size, const unsigned char* data);
+	void midi_event_process(unsigned char status,
+	                        unsigned char byte1,
+	                        unsigned char byte2);
 	void note_on_process(unsigned char channel,
 	                     unsigned char pitch,
 	                     unsigned char velocity);
@@ -102,6 +106,23 @@ public:
 
 	// to_string method for debugging
 	std::string to_string(const std::string& indent) const;
+
+private:
+	// Midi status codes
+	static const unsigned char MSC_NOTE_ON = 0x90;
+	static const unsigned char MSC_NOTE_OFF = 0x80;
+	static const unsigned char MSC_CONTROL = 0xb0;
+	static const unsigned char MSC_PITCH_WHEEL = 0xe0;
+
+	// Control change codes (taken from /usr/include/linux/soundcard.h)
+	static const unsigned char CTL_MODWHEEL = 0x01;
+	static const unsigned char CTL_PORTAMENTO_TIME = 0x05;
+	static const unsigned char CTL_MAIN_VOLUME = 0x07;
+	static const unsigned char CTL_PAN = 0x0a;
+	static const unsigned char CTL_EXPRESSION = 0x0b;
+	static const unsigned char CTL_DAMPER_PEDAL = 0x40;
+	static const unsigned char CTL_ALL_NOTES_OFF = 0x7b;
+
 };
 
 } // ~namespace zynayumi

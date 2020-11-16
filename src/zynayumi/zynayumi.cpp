@@ -60,6 +60,74 @@ void Zynayumi::audio_process(float* left_out, float* right_out,
 	engine.audio_process(left_out, right_out, sample_count);
 }
 
+void Zynayumi::raw_event_process(unsigned size,
+                                 const unsigned char* data)
+{
+	// Only process seemingly midi events
+	if (size != 3)
+		return;
+
+	midi_event_process(data[0], data[1], data[2]);
+}
+
+void Zynayumi::midi_event_process(unsigned char status,
+                                  unsigned char byte1,
+                                  unsigned char byte2)
+{
+	// Ignore midi channel
+	status &= 0xf0;
+	switch (status) {
+	case MSC_NOTE_ON:
+	case MSC_NOTE_OFF: {
+		unsigned char pitch = byte1, velocity = byte2;
+		if (status == MSC_NOTE_ON and velocity > 0)
+			note_on_process(0, pitch, velocity);
+		else if (status == MSC_NOTE_OFF or
+		         (status == MSC_NOTE_ON and velocity == 0))
+			note_off_process(0, pitch);
+		break;
+	}
+	case MSC_PITCH_WHEEL:
+		pitch_wheel_process(0, ((short)byte2 << 7) + (short)byte1);
+		break;
+	case MSC_CONTROL: {
+		unsigned char cc = byte1;
+		unsigned char value = byte2;
+		switch (cc) {
+		case CTL_MODWHEEL:
+			modulation_process(0, value);
+			break;
+		case CTL_PORTAMENTO_TIME:
+			portamento_process(0, value);
+			break;
+		case CTL_MAIN_VOLUME:
+			volume_process(0, value);
+			break;
+		case CTL_PAN:
+			pan_process(0, value);
+			break;
+		case CTL_EXPRESSION:
+			expression_process(0, value);
+			break;
+		case CTL_DAMPER_PEDAL:
+			sustain_pedal_process(0, value);
+			break;
+		case CTL_ALL_NOTES_OFF:
+			all_notes_off_process();
+			break;
+		default:
+			std::cerr << "Control change " << (int)cc << " unsupported" << std::endl;
+		}
+		break;
+	}
+	default:
+		std::cerr << "Midi event (status=" << (int)status
+		          << ", byte1=" << (int)byte1
+		          << ", byte2=" << (int)byte2
+		          << ") not implemented" << std::endl;
+	}
+}
+
 void Zynayumi::note_on_process(unsigned char channel,
                                unsigned char pitch,
                                unsigned char velocity)
