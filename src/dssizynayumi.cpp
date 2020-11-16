@@ -59,11 +59,6 @@ void DSSIZynayumi::run_synth(unsigned long sample_count,
 			case SND_SEQ_EVENT_NOTEOFF :
 				zynayumi.note_off_process(0, events[e].data.note.note);
 				break;
-				//Sysex
-			case SND_SEQ_EVENT_SYSEX :
-				zynayumi.sysex_process(events[e].data.ext.len,
-				                       (unsigned char*) events[e].data.ext.ptr);
-				break;
 			default:
 				break;
 			}

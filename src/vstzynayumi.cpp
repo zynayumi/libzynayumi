@@ -81,11 +81,6 @@ void VSTZynayumi::processEvent(VstEvent* e) {
 		char* midiData = midi_e->midiData;
 		midi(midiData[0], midiData[1], midiData[2]);
 	}
-	else if (e->type == kVstSysExType) {
-		VstMidiSysexEvent* sysex_e = (VstMidiSysexEvent*) e;
-		zynayumi.sysex_process(sysex_e->dumpBytes,
-		                       (unsigned char*)sysex_e->sysexDump);
-	}
 	else std::cerr << "Vst event of type " << e->type
 	               << " is not implemented" << std::endl;
 }
