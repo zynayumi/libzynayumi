@@ -420,6 +420,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Fix octave low when switching to YM2149
 - [ ] Replace fixed ringmod freq by pitch
 - [ ] Add to seq
   - [ ] Relative ringmod transpose
