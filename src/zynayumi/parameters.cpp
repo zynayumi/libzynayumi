@@ -1233,7 +1233,7 @@ std::string Parameters::get_symbol(ParameterIndex pi) const
 {
 	std::string symbol = get_name(pi);
 	boost::algorithm::to_lower(symbol);
-	boost::algorithm::trim(symbol);
+	boost::algorithm::erase_all(symbol, " ");
 	return symbol;
 }
 
