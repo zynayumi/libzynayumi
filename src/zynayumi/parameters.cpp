@@ -195,10 +195,12 @@ void CubeFloatParameter::set_norm_value(float nf)
 }
 
 TanFloatParameter::TanFloatParameter(const std::string& nm, const std::string& unt,
-                                     float* v_ptr, float v_dflt, float l, float u)
+                                     float* v_ptr, float v_dflt, float l, float u,
+                                     bool prcnt)
 	: FloatParameter(nm, unt, v_ptr, v_dflt, l, u)
 	, atan_low(atanf(l))
 	, atan_up(atanf(u))
+	, percent(prcnt)
 {
 }
 
@@ -269,7 +271,8 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                              &zynayumi.patch.tone.time,
 	                                              TONE_TIME_DFLT,
 	                                              TONE_TIME_L,
-	                                              TONE_TIME_U);
+	                                              TONE_TIME_U,
+	                                              true);
 
 	parameters[TONE_DETUNE] = new TanFloatParameter(TONE_DETUNE_NAME,
 	                                                TONE_DETUNE_UNIT,
@@ -303,7 +306,8 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                               &zynayumi.patch.noise.time,
 	                                               NOISE_TIME_DFLT,
 	                                               NOISE_TIME_L,
-	                                               NOISE_TIME_U);
+	                                               NOISE_TIME_U,
+	                                               true);
 
 	parameters[NOISE_PERIOD] = new IntParameter(NOISE_PERIOD_NAME,
 	                                            NOISE_PERIOD_UNIT,
@@ -594,7 +598,8 @@ Parameters::Parameters(Zynayumi& zyn)
 	                                                &zynayumi.patch.buzzer.time,
 	                                                BUZZER_TIME_DFLT,
 	                                                BUZZER_TIME_L,
-	                                                BUZZER_TIME_U);
+	                                                BUZZER_TIME_U,
+	                                                true);
 
 	parameters[BUZZER_DETUNE] = new TanFloatParameter(BUZZER_DETUNE_NAME,
 	                                                  BUZZER_DETUNE_UNIT,
@@ -1239,8 +1244,11 @@ std::string Parameters::get_symbol(ParameterIndex pi) const
 
 std::string Parameters::get_unit(ParameterIndex pi) const
 {
-	if (pi < parameters.size())
+	if (pi < parameters.size()) {
+		if (is_percent(pi))
+			return "%";
 		return parameters[pi]->unit;
+	}
 	return "";
 }
 
@@ -1253,8 +1261,11 @@ std::string Parameters::get_value_str(ParameterIndex pi) const
 
 float Parameters::float_value(ParameterIndex pi) const
 {
-	if (pi < parameters.size())
+	if (pi < parameters.size()) {
+		if (is_percent(pi))
+			return 100.0f * parameters[pi]->norm_float_value();
 		return parameters[pi]->float_value();
+	}
 	return 0.0f;
 }
 
@@ -1265,8 +1276,14 @@ float to_freq(float bpm, float beat_divisor, float beat_multiplier)
 
 void Parameters::set_value(ParameterIndex pi, float f)
 {
-	parameters[pi]->set_value(f);
-	update(pi);
+	if (pi < parameters.size()) {
+		if (is_percent(pi)) {
+			return parameters[pi]->set_norm_value(f / 100.0f);
+		} else {
+			parameters[pi]->set_value(f);
+		}
+		update(pi);
+	}
 }
 
 float Parameters::norm_float_value(ParameterIndex pi) const
@@ -1284,11 +1301,15 @@ void Parameters::set_norm_value(ParameterIndex pi, float nf)
 
 float Parameters::float_low(ParameterIndex pi) const
 {
+	if (is_percent(pi))
+		 return 0.0f;
 	return parameters[pi]->float_low();
 }
 
 float Parameters::float_up(ParameterIndex pi) const
 {
+	if (is_percent(pi))
+		 return 100.0f;
 	return parameters[pi]->float_up();
 }
 
@@ -1302,6 +1323,12 @@ bool Parameters::is_int(ParameterIndex pi) const
 bool Parameters::is_enum(ParameterIndex pi) const
 {
 	return dynamic_cast<BaseEnumParameter*>(parameters[pi]);
+}
+
+bool Parameters::is_percent(ParameterIndex pi) const
+{
+	TanFloatParameter* tp = dynamic_cast<TanFloatParameter*>(parameters[pi]);
+	return tp and tp->percent;
 }
 
 size_t Parameters::enum_count(ParameterIndex pi) const

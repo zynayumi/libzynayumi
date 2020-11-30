@@ -192,7 +192,7 @@ public:
 	// Ctor
 	TanFloatParameter(const std::string& name, const std::string& unit,
 	                  float* value_ptr, float value_dflt,
-	                  float low, float up);
+	                  float low, float up, bool percent=false);
 
 	// Get/set methods
 	float norm_float_value() const override;
@@ -201,6 +201,12 @@ public:
 	// Arc tangent range [atan_low, atan_up]
 	float atan_low;
 	float atan_up;
+
+	// Whether the parameter should be expressed in percentage, in this
+	// case the unit is %.  This is to avoid having inf (which is
+	// possible with Tan mapping) involved in the range if the plugin
+	// format does not support it.
+	bool percent;
 };
 
 class BaseEnumParameter : public Parameter {
@@ -913,6 +919,7 @@ public:
 	// If the parameter is int/enum
 	bool is_int(ParameterIndex pi) const;
 	bool is_enum(ParameterIndex pi) const;
+	bool is_percent(ParameterIndex pi) const;
 
 	// If the parameter is an enum then return its count
 	size_t enum_count(ParameterIndex pi) const;
