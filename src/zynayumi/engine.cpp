@@ -353,7 +353,7 @@ double Engine::pitch2toneperiod(double pitch) const
 {
 	// We need to divide coef1 by 16.0, as explained in
 	// http://ym2149.com/ym2149.pdf page 5.
-	static const double coef1 = (clock_rate / lower_note_freq) / 16.0;
+	const double coef1 = (clock_rate / lower_note_freq) / 16.0;
 	static const double coef2 = log(2.0) / 12.0;
 	double pym = coef1 * exp(-pitch * coef2);
 	if (_zynayumi.patch.tone.legacy_tuning)
@@ -365,7 +365,7 @@ int Engine::pitch2envperiod(double pitch) const
 {
 	// We need to divide coef1 by 256.0, as explained in
 	// http://ym2149.com/ym2149.pdf page 7.
-	static const double coef1 = (clock_rate / lower_note_freq) / 256.0;
+	const double coef1 = (clock_rate / lower_note_freq) / 256.0;
 	static const double coef2 = log(2.0) / 12.0;
 	double pym = coef1 * exp(-pitch * coef2);
 	return std::lround(pym);
