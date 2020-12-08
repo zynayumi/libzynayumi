@@ -1,10 +1,10 @@
 /****************************************************************************
     
-    Presets for Zynayumi
+    Programs for Zynayumi
 
-    presets.cpp
+    programs.cpp
 
-    Copyleft (c) 2017 Nil Geisweiller
+    Copyleft (c) 2020 Nil Geisweiller
  
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,30 +22,24 @@
 
 ****************************************************************************/
 
-#include "presets.hpp"
+#ifndef __ZYNAYUMI_PROGRAMS_HPP
+#define __ZYNAYUMI_PROGRAMS_HPP
+
+#include "parameters.hpp"
 
 namespace zynayumi {
 
-Presets::Presets() {
-	{
-		// Power bass
-		Patch patch;
-		patch.name = "Power bass";
-		patch.env.inter2_time = 5.0;
-		patch.env.sustain_level = 0.5;
-		patch.env.release = 0.05;
-		patch.pitchenv.attack_pitch = 24.0;
-		patch.pitchenv.time = 0.1;
-		patch.ringmod.waveform[1] = 0.7;
-		patch.ringmod.waveform[5] = 0.5;
-		patch.ringmod.waveform[6] = 0.3;
-		patch.ringmod.waveform[7] = 0.0;
-		patch.ringmod.detune = 0.05;
-		patch.lfo.freq = 0.4;
-		patch.lfo.delay = 10.0;
-		patch.lfo.depth = 0.2;
-		patches.push_back(patch);
-	}
-}
+class Programs {
+public:
+	Programs();
+
+	std::vector<std::string> names;
+	std::vector<Patch> patches;
+	// NEXT: probably instantiate parameters_seq with patch_seq
+	// std::vector<Parameters> parameters_seq;
+	static const int count = 1;
+};
 
 } // ~namespace zynayumi
+
+#endif

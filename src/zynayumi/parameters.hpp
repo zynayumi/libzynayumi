@@ -244,6 +244,9 @@ public:
 	float norm_float_value() const override;
 	void set_norm_value(float nf) override;
 
+	// Overload assignment
+	EnumParameter<E>& operator=(E e);
+
 	// Current value
 	E* value_ptr;
 };
@@ -291,6 +294,13 @@ template<typename E>
 void EnumParameter<E>::set_norm_value(float nf)
 {
 	*value_ptr = (E)std::lround(nf * (float)((int)E::Count - 1));
+}
+
+template<typename E>
+EnumParameter<E>& EnumParameter<E>::operator=(E e)
+{
+	*value_ptr = e;
+	return *this;
 }
 
 // Parameter indices
@@ -888,7 +898,7 @@ class Zynayumi;
 class Parameters {
 public:
 	// CTor, DTor
-	Parameters(Zynayumi& zynayumi);
+	Parameters(Zynayumi& zynayumi, Patch& patch);
 	~Parameters();
 
 	// Get the parameter name at index pi
@@ -935,6 +945,7 @@ public:
 	std::string to_string(std::string indent=std::string()) const;
 
 	Zynayumi& zynayumi;
+	Patch& patch;
 
 	// Map parameter indices to Parameter
 	std::vector<Parameter*> parameters;

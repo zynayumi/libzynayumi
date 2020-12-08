@@ -30,7 +30,7 @@ using namespace zynayumi;
 using namespace std;
 
 DSSIZynayumi::DSSIZynayumi(unsigned long sample_rate)
-	: parameters(zynayumi)
+	: parameters(zynayumi, zynayumi.patch)
 {
 	zynayumi.set_sample_rate(sample_rate);
 }

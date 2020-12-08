@@ -1,10 +1,10 @@
 /****************************************************************************
     
-    Factory for Zynayumi
+    Programs for Zynayumi
 
-    factory.hpp
+    programs.cpp
 
-    Copyleft (c) 2019 Nil Geisweiller <ngeiswei@gmail.com>
+    Copyleft (c) 2020 Nil Geisweiller <ngeiswei@gmail.com>
  
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -22,15 +22,46 @@
 
 ****************************************************************************/
 
-#ifndef __ZYNAYUMI_FACTORY_HPP
-#define __ZYNAYUMI_FACTORY_HPP
+#include "programs.hpp"
+#include "parameters.hpp"
+#include "patch.hpp"
 
 namespace zynayumi {
 
-/**
- * Class holding factory presets
- */
-class Factory {
+Programs::Programs()
+	: names(count)
+	, patches(count)
+	// , parameters_seq(count)
+{
+	//Program 1
+	names[0] = "Program-1";
+
+	// NEXT
+	// *dynamic_cast<EnumParameter<EmulMode>*>(parameters_seq[0].parameters[EMUL_MODE]) = EmulMode::YM2149;
+
+	// Program 2
+	names[0] = "Program-2";
+	// *dynamic_cast<EnumParameter<EmulMode>*>(parameters_seq[0].parameters[EMUL_MODE]) = EmulMode::AY8910;
+}
+
+// Just to remember it
+
+// // Power bass
+// Patch patch;
+// patch.name = "Power bass";
+// patch.env.inter2_time = 5.0;
+// patch.env.sustain_level = 0.5;
+// patch.env.release = 0.05;
+// patch.pitchenv.attack_pitch = 24.0;
+// patch.pitchenv.time = 0.1;
+// patch.ringmod.waveform[1] = 0.7;
+// patch.ringmod.waveform[5] = 0.5;
+// patch.ringmod.waveform[6] = 0.3;
+// patch.ringmod.waveform[7] = 0.0;
+// patch.ringmod.detune = 0.05;
+// patch.lfo.freq = 0.4;
+// patch.lfo.delay = 10.0;
+// patch.lfo.depth = 0.2;
 
 // TODO: Space Snare
 //
@@ -79,8 +110,4 @@ class Factory {
 // Pitch wheel: 2
 // Emulation mode: YM2149
 
-};
-
 } // ~namespace zynayumi
-
-#endif

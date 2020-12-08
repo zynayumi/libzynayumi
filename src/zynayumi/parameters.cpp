@@ -238,37 +238,40 @@ float BaseEnumParameter::float_up() const
 	return (float)count - 1.0f;
 }
 
-Parameters::Parameters(Zynayumi& zyn)
-	: zynayumi(zyn), parameters(PARAMETERS_COUNT)
+Parameters::Parameters(Zynayumi& zyn, Patch& pat)
+	: zynayumi(zyn)
+	, patch(pat)
+	, parameters(PARAMETERS_COUNT)
 {
+	// NEXT: how to have it stored (i.e. not rely on zynayumi.patch)
 	// Emulation mode (YM2149 vs AY-3-8910)
 	parameters[EMUL_MODE] = new EnumParameter<EmulMode>(EMUL_MODE_NAME,
 	                                                    EMUL_MODE_UNIT,
-	                                                    &zynayumi.patch.emulmode,
+	                                                    &patch.emulmode,
 	                                                    EMUL_MODE_DFLT);
 
 	// Play mode
 	parameters[PLAY_MODE] = new EnumParameter<PlayMode>(PLAY_MODE_NAME,
 	                                                    PLAY_MODE_UNIT,
-	                                                    &zynayumi.patch.playmode,
+	                                                    &patch.playmode,
 	                                                    PLAY_MODE_DFLT);
 
 	// Tone
 	parameters[TONE_SYNC] = new BoolParameter(TONE_SYNC_NAME,
 	                                          TONE_SYNC_UNIT,
-	                                          &zynayumi.patch.tone.sync,
+	                                          &patch.tone.sync,
 	                                          TONE_SYNC_DFLT);
 
 	parameters[TONE_PHASE] = new LinearFloatParameter(TONE_PHASE_NAME,
 	                                                  TONE_PHASE_UNIT,
-	                                                  &zynayumi.patch.tone.phase,
+	                                                  &patch.tone.phase,
 	                                                  TONE_PHASE_DFLT,
 	                                                  TONE_PHASE_L,
 	                                                  TONE_PHASE_U);
 	
 	parameters[TONE_TIME] = new TanFloatParameter(TONE_TIME_NAME,
 	                                              TONE_TIME_UNIT,
-	                                              &zynayumi.patch.tone.time,
+	                                              &patch.tone.time,
 	                                              TONE_TIME_DFLT,
 	                                              TONE_TIME_L,
 	                                              TONE_TIME_U,
@@ -290,20 +293,20 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	parameters[TONE_SPREAD] = new LinearFloatParameter(TONE_SPREAD_NAME,
 	                                                   TONE_SPREAD_UNIT,
-	                                                   &zynayumi.patch.tone.spread,
+	                                                   &patch.tone.spread,
 	                                                   TONE_SPREAD_DFLT,
 	                                                   TONE_SPREAD_L,
 	                                                   TONE_SPREAD_U);
 
 	parameters[TONE_LEGACY_TUNING] = new BoolParameter(TONE_LEGACY_TUNING_NAME,
 	                                                   TONE_LEGACY_TUNING_UNIT,
-	                                                   &zynayumi.patch.tone.legacy_tuning,
+	                                                   &patch.tone.legacy_tuning,
 	                                                   TONE_LEGACY_TUNING_DFLT);
 
 	// Noise
 	parameters[NOISE_TIME] = new TanFloatParameter(NOISE_TIME_NAME,
 	                                               NOISE_TIME_UNIT,
-	                                               &zynayumi.patch.noise.time,
+	                                               &patch.noise.time,
 	                                               NOISE_TIME_DFLT,
 	                                               NOISE_TIME_L,
 	                                               NOISE_TIME_U,
@@ -311,7 +314,7 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	parameters[NOISE_PERIOD] = new IntParameter(NOISE_PERIOD_NAME,
 	                                            NOISE_PERIOD_UNIT,
-	                                            &zynayumi.patch.noise.period,
+	                                            &patch.noise.period,
 	                                            NOISE_PERIOD_DFLT,
 	                                            NOISE_PERIOD_L,
 	                                            NOISE_PERIOD_U);
@@ -319,14 +322,14 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Noise Period Envelope
 	parameters[NOISE_PERIOD_ENV_ATTACK] = new IntParameter(NOISE_PERIOD_ENV_ATTACK_NAME,
 	                                                       NOISE_PERIOD_ENV_ATTACK_UNIT,
-	                                                       &zynayumi.patch.noise_period_env.attack,
+	                                                       &patch.noise_period_env.attack,
 	                                                       NOISE_PERIOD_ENV_ATTACK_DFLT,
 	                                                       NOISE_PERIOD_ENV_ATTACK_L,
 	                                                       NOISE_PERIOD_ENV_ATTACK_U);
 
 	parameters[NOISE_PERIOD_ENV_TIME] = new TanFloatParameter(NOISE_PERIOD_ENV_TIME_NAME,
 	                                                          NOISE_PERIOD_ENV_TIME_UNIT,
-	                                                          &zynayumi.patch.noise_period_env.time,
+	                                                          &patch.noise_period_env.time,
 	                                                          NOISE_PERIOD_ENV_TIME_DFLT,
 	                                                          NOISE_PERIOD_ENV_TIME_L,
 	                                                          NOISE_PERIOD_ENV_TIME_U);
@@ -334,63 +337,63 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Amplitude envelope
 	parameters[ENV_ATTACK_TIME] = new TanFloatParameter(ENV_ATTACK_TIME_NAME,
 	                                                    ENV_ATTACK_TIME_UNIT,
-	                                                    &zynayumi.patch.env.attack_time,
+	                                                    &patch.env.attack_time,
 	                                                    ENV_ATTACK_TIME_DFLT,
 	                                                    ENV_ATTACK_TIME_L,
 	                                                    ENV_ATTACK_TIME_U);
 
 	parameters[ENV_HOLD1_LEVEL] = new IntParameter(ENV_HOLD1_LEVEL_NAME,
 	                                               ENV_HOLD1_LEVEL_UNIT,
-	                                               &zynayumi.patch.env.hold1_level,
+	                                               &patch.env.hold1_level,
 	                                               ENV_HOLD1_LEVEL_DFLT,
 	                                               ENV_HOLD1_LEVEL_L,
 	                                               ENV_HOLD1_LEVEL_U);
 
 	parameters[ENV_INTER1_TIME] = new TanFloatParameter(ENV_INTER1_TIME_NAME,
 	                                                    ENV_INTER1_TIME_UNIT,
-	                                                    &zynayumi.patch.env.inter1_time,
+	                                                    &patch.env.inter1_time,
 	                                                    ENV_INTER1_TIME_DFLT,
 	                                                    ENV_INTER1_TIME_L,
 	                                                    ENV_INTER1_TIME_U);
 
 	parameters[ENV_HOLD2_LEVEL] = new IntParameter(ENV_HOLD2_LEVEL_NAME,
 	                                               ENV_HOLD2_LEVEL_UNIT,
-	                                               &zynayumi.patch.env.hold2_level,
+	                                               &patch.env.hold2_level,
 	                                               ENV_HOLD2_LEVEL_DFLT,
 	                                               ENV_HOLD2_LEVEL_L,
 	                                               ENV_HOLD2_LEVEL_U);
 
 	parameters[ENV_INTER2_TIME] = new TanFloatParameter(ENV_INTER2_TIME_NAME,
 	                                                    ENV_INTER2_TIME_UNIT,
-	                                                    &zynayumi.patch.env.inter2_time,
+	                                                    &patch.env.inter2_time,
 	                                                    ENV_INTER2_TIME_DFLT,
 	                                                    ENV_INTER2_TIME_L,
 	                                                    ENV_INTER2_TIME_U);
 
 	parameters[ENV_HOLD3_LEVEL] = new IntParameter(ENV_HOLD3_LEVEL_NAME,
 	                                               ENV_HOLD3_LEVEL_UNIT,
-	                                               &zynayumi.patch.env.hold3_level,
+	                                               &patch.env.hold3_level,
 	                                               ENV_HOLD3_LEVEL_DFLT,
 	                                               ENV_HOLD3_LEVEL_L,
 	                                               ENV_HOLD3_LEVEL_U);
 
 	parameters[ENV_DECAY_TIME] = new TanFloatParameter(ENV_DECAY_TIME_NAME,
 	                                                   ENV_DECAY_TIME_UNIT,
-	                                                   &zynayumi.patch.env.decay_time,
+	                                                   &patch.env.decay_time,
 	                                                   ENV_DECAY_TIME_DFLT,
 	                                                   ENV_DECAY_TIME_L,
 	                                                   ENV_DECAY_TIME_U);
 
 	parameters[ENV_SUSTAIN_LEVEL] = new IntParameter(ENV_SUSTAIN_LEVEL_NAME,
 	                                                 ENV_SUSTAIN_LEVEL_UNIT,
-	                                                 &zynayumi.patch.env.sustain_level,
+	                                                 &patch.env.sustain_level,
 	                                                 ENV_SUSTAIN_LEVEL_DFLT,
 	                                                 ENV_SUSTAIN_LEVEL_L,
 	                                                 ENV_SUSTAIN_LEVEL_U);
 
 	parameters[ENV_RELEASE] = new TanFloatParameter(ENV_RELEASE_NAME,
 	                                                ENV_RELEASE_UNIT,
-	                                                &zynayumi.patch.env.release,
+	                                                &patch.env.release,
 	                                                ENV_RELEASE_DFLT,
 	                                                ENV_RELEASE_L,
 	                                                ENV_RELEASE_U);
@@ -398,14 +401,14 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Pitch envelope
 	parameters[PITCH_ENV_ATTACK_PITCH] = new IntParameter(PITCH_ENV_ATTACK_PITCH_NAME,
 	                                                      PITCH_ENV_ATTACK_PITCH_UNIT,
-	                                                      &zynayumi.patch.pitchenv.attack_pitch,
+	                                                      &patch.pitchenv.attack_pitch,
 	                                                      PITCH_ENV_ATTACK_PITCH_DFLT,
 	                                                      PITCH_ENV_ATTACK_PITCH_L,
 	                                                      PITCH_ENV_ATTACK_PITCH_U);
 
 	parameters[PITCH_ENV_TIME] = new TanFloatParameter(PITCH_ENV_TIME_NAME,
 	                                                   PITCH_ENV_TIME_UNIT,
-	                                                   &zynayumi.patch.pitchenv.time,
+	                                                   &patch.pitchenv.time,
 	                                                   PITCH_ENV_TIME_DFLT,
 	                                                   PITCH_ENV_TIME_L,
 	                                                   PITCH_ENV_TIME_U);
@@ -413,131 +416,131 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Ring modulation
 	parameters[RINGMOD_WAVEFORM_LEVEL1] = new IntParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[0],
+	                                                       &patch.ringmod.waveform[0],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL2] = new IntParameter(RINGMOD_WAVEFORM_LEVEL2_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[1],
+	                                                       &patch.ringmod.waveform[1],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL3] = new IntParameter(RINGMOD_WAVEFORM_LEVEL3_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[2],
+	                                                       &patch.ringmod.waveform[2],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL4] = new IntParameter(RINGMOD_WAVEFORM_LEVEL4_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[3],
+	                                                       &patch.ringmod.waveform[3],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL5] = new IntParameter(RINGMOD_WAVEFORM_LEVEL5_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[4],
+	                                                       &patch.ringmod.waveform[4],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL6] = new IntParameter(RINGMOD_WAVEFORM_LEVEL6_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[5],
+	                                                       &patch.ringmod.waveform[5],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL7] = new IntParameter(RINGMOD_WAVEFORM_LEVEL7_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[6],
+	                                                       &patch.ringmod.waveform[6],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL8] = new IntParameter(RINGMOD_WAVEFORM_LEVEL8_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[7],
+	                                                       &patch.ringmod.waveform[7],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL9] = new IntParameter(RINGMOD_WAVEFORM_LEVEL9_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[8],
+	                                                       &patch.ringmod.waveform[8],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL10] = new IntParameter(RINGMOD_WAVEFORM_LEVEL10_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[9],
+	                                                       &patch.ringmod.waveform[9],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL11] = new IntParameter(RINGMOD_WAVEFORM_LEVEL11_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[10],
+	                                                       &patch.ringmod.waveform[10],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL12] = new IntParameter(RINGMOD_WAVEFORM_LEVEL12_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[11],
+	                                                       &patch.ringmod.waveform[11],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL13] = new IntParameter(RINGMOD_WAVEFORM_LEVEL13_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[12],
+	                                                       &patch.ringmod.waveform[12],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL14] = new IntParameter(RINGMOD_WAVEFORM_LEVEL14_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[13],
+	                                                       &patch.ringmod.waveform[13],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL15] = new IntParameter(RINGMOD_WAVEFORM_LEVEL15_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[14],
+	                                                       &patch.ringmod.waveform[14],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_WAVEFORM_LEVEL16] = new IntParameter(RINGMOD_WAVEFORM_LEVEL16_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &zynayumi.patch.ringmod.waveform[15],
+	                                                       &patch.ringmod.waveform[15],
 	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
 	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
 	                                             RINGMOD_SYNC_UNIT,
-	                                             &zynayumi.patch.ringmod.sync,
+	                                             &patch.ringmod.sync,
 	                                             RINGMOD_SYNC_DFLT);
 
 	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
 	                                                     RINGMOD_PHASE_UNIT,
-	                                                     &zynayumi.patch.ringmod.phase,
+	                                                     &patch.ringmod.phase,
 	                                                     RINGMOD_PHASE_DFLT,
 	                                                     RINGMOD_PHASE_L,
 	                                                     RINGMOD_PHASE_U);
 
 	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
 	                                               RINGMOD_MIRROR_UNIT,
-	                                               &zynayumi.patch.ringmod.mirror,
+	                                               &patch.ringmod.mirror,
 	                                               RINGMOD_MIRROR_DFLT);
 
 	parameters[RINGMOD_DETUNE] = new TanFloatParameter(RINGMOD_DETUNE_NAME,
@@ -556,21 +559,21 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	parameters[RINGMOD_FIXED_FREQUENCY] = new CubeFloatParameter(RINGMOD_FIXED_FREQUENCY_NAME,
 	                                                             RINGMOD_FIXED_FREQUENCY_UNIT,
-	                                                             &zynayumi.patch.ringmod.fixed_freq,
+	                                                             &patch.ringmod.fixed_freq,
 	                                                             RINGMOD_FIXED_FREQUENCY_DFLT,
 	                                                             RINGMOD_FIXED_FREQUENCY_L,
 	                                                             RINGMOD_FIXED_FREQUENCY_U);
 
 	parameters[RINGMOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RINGMOD_FIXED_VS_RELATIVE_NAME,
 	                                                              RINGMOD_FIXED_VS_RELATIVE_UNIT,
-	                                                              &zynayumi.patch.ringmod.fixed_vs_relative,
+	                                                              &patch.ringmod.fixed_vs_relative,
 	                                                              RINGMOD_FIXED_VS_RELATIVE_DFLT,
 	                                                              RINGMOD_FIXED_VS_RELATIVE_L,
 	                                                              RINGMOD_FIXED_VS_RELATIVE_U);
 
 	parameters[RINGMOD_DEPTH] = new IntParameter(RINGMOD_DEPTH_NAME,
 	                                             RINGMOD_DEPTH_UNIT,
-	                                             &zynayumi.patch.ringmod.depth,
+	                                             &patch.ringmod.depth,
 	                                             RINGMOD_DEPTH_DFLT,
 	                                             RINGMOD_DEPTH_L,
 	                                             RINGMOD_DEPTH_U);
@@ -578,24 +581,24 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Buzzer
 	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
 	                                                            BUZZER_SHAPE_UNIT,
-	                                                            &zynayumi.patch.buzzer.shape,
+	                                                            &patch.buzzer.shape,
 	                                                            BUZZER_SHAPE_DFLT);
 
 	parameters[BUZZER_SYNC] = new BoolParameter(BUZZER_SYNC_NAME,
 	                                            BUZZER_SYNC_UNIT,
-	                                            &zynayumi.patch.buzzer.sync,
+	                                            &patch.buzzer.sync,
 	                                            BUZZER_SYNC_DFLT);
 
 	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
 	                                                    BUZZER_PHASE_UNIT,
-	                                                    &zynayumi.patch.buzzer.phase,
+	                                                    &patch.buzzer.phase,
 	                                                    BUZZER_PHASE_DFLT,
 	                                                    BUZZER_PHASE_L,
 	                                                    BUZZER_PHASE_U);
 
 	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
 	                                                BUZZER_TIME_UNIT,
-	                                                &zynayumi.patch.buzzer.time,
+	                                                &patch.buzzer.time,
 	                                                BUZZER_TIME_DFLT,
 	                                                BUZZER_TIME_L,
 	                                                BUZZER_TIME_U,
@@ -618,462 +621,462 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Sequencer
 	parameters[SEQ_TONE_PITCH_0] = new IntParameter(SEQ_TONE_PITCH_0_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[0].tone_pitch,
+	                                                &patch.seq.states[0].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_0] = new IntParameter(SEQ_NOISE_PERIOD_0_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[0].noise_period,
+	                                                  &patch.seq.states[0].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_0] = new IntParameter(SEQ_RINGMOD_DEPTH_0_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[0].ringmod_depth,
+	                                                   &patch.seq.states[0].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_0] = new IntParameter(SEQ_LEVEL_0_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[0].level,
+	                                           &patch.seq.states[0].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_1] = new IntParameter(SEQ_TONE_PITCH_1_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[1].tone_pitch,
+	                                                &patch.seq.states[1].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_1] = new IntParameter(SEQ_NOISE_PERIOD_1_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[1].noise_period,
+	                                                  &patch.seq.states[1].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_1] = new IntParameter(SEQ_RINGMOD_DEPTH_1_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[1].ringmod_depth,
+	                                                   &patch.seq.states[1].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_1] = new IntParameter(SEQ_LEVEL_1_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[0].level,
+	                                           &patch.seq.states[0].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_2] = new IntParameter(SEQ_TONE_PITCH_2_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[2].tone_pitch,
+	                                                &patch.seq.states[2].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_2] = new IntParameter(SEQ_NOISE_PERIOD_2_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[2].noise_period,
+	                                                  &patch.seq.states[2].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_2] = new IntParameter(SEQ_RINGMOD_DEPTH_2_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[2].ringmod_depth,
+	                                                   &patch.seq.states[2].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_2] = new IntParameter(SEQ_LEVEL_2_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[2].level,
+	                                           &patch.seq.states[2].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_3] = new IntParameter(SEQ_TONE_PITCH_3_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[3].tone_pitch,
+	                                                &patch.seq.states[3].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_3] = new IntParameter(SEQ_NOISE_PERIOD_3_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[3].noise_period,
+	                                                  &patch.seq.states[3].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_3] = new IntParameter(SEQ_RINGMOD_DEPTH_3_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[3].ringmod_depth,
+	                                                   &patch.seq.states[3].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_3] = new IntParameter(SEQ_LEVEL_3_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[3].level,
+	                                           &patch.seq.states[3].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_4] = new IntParameter(SEQ_TONE_PITCH_4_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[4].tone_pitch,
+	                                                &patch.seq.states[4].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_4] = new IntParameter(SEQ_NOISE_PERIOD_4_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[4].noise_period,
+	                                                  &patch.seq.states[4].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_4] = new IntParameter(SEQ_RINGMOD_DEPTH_4_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[4].ringmod_depth,
+	                                                   &patch.seq.states[4].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_4] = new IntParameter(SEQ_LEVEL_4_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[4].level,
+	                                           &patch.seq.states[4].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_5] = new IntParameter(SEQ_TONE_PITCH_5_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[5].tone_pitch,
+	                                                &patch.seq.states[5].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_5] = new IntParameter(SEQ_NOISE_PERIOD_5_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[5].noise_period,
+	                                                  &patch.seq.states[5].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_5] = new IntParameter(SEQ_RINGMOD_DEPTH_5_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[5].ringmod_depth,
+	                                                   &patch.seq.states[5].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_5] = new IntParameter(SEQ_LEVEL_5_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[5].level,
+	                                           &patch.seq.states[5].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_6] = new IntParameter(SEQ_TONE_PITCH_6_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[6].tone_pitch,
+	                                                &patch.seq.states[6].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_6] = new IntParameter(SEQ_NOISE_PERIOD_6_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[6].noise_period,
+	                                                  &patch.seq.states[6].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_6] = new IntParameter(SEQ_RINGMOD_DEPTH_6_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[6].ringmod_depth,
+	                                                   &patch.seq.states[6].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_6] = new IntParameter(SEQ_LEVEL_6_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[6].level,
+	                                           &patch.seq.states[6].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_7] = new IntParameter(SEQ_TONE_PITCH_7_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[7].tone_pitch,
+	                                                &patch.seq.states[7].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_7] = new IntParameter(SEQ_NOISE_PERIOD_7_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[7].noise_period,
+	                                                  &patch.seq.states[7].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_7] = new IntParameter(SEQ_RINGMOD_DEPTH_7_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[7].ringmod_depth,
+	                                                   &patch.seq.states[7].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_7] = new IntParameter(SEQ_LEVEL_7_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[7].level,
+	                                           &patch.seq.states[7].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_8] = new IntParameter(SEQ_TONE_PITCH_8_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[8].tone_pitch,
+	                                                &patch.seq.states[8].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_8] = new IntParameter(SEQ_NOISE_PERIOD_8_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[8].noise_period,
+	                                                  &patch.seq.states[8].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_8] = new IntParameter(SEQ_RINGMOD_DEPTH_8_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[8].ringmod_depth,
+	                                                   &patch.seq.states[8].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_8] = new IntParameter(SEQ_LEVEL_8_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[8].level,
+	                                           &patch.seq.states[8].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_9] = new IntParameter(SEQ_TONE_PITCH_9_NAME,
 	                                                SEQ_TONE_PITCH_UNIT,
-	                                                &zynayumi.patch.seq.states[9].tone_pitch,
+	                                                &patch.seq.states[9].tone_pitch,
 	                                                SEQ_TONE_PITCH_DFLT,
 	                                                SEQ_TONE_PITCH_L,
 	                                                SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_9] = new IntParameter(SEQ_NOISE_PERIOD_9_NAME,
 	                                                  SEQ_NOISE_PERIOD_UNIT,
-	                                                  &zynayumi.patch.seq.states[9].noise_period,
+	                                                  &patch.seq.states[9].noise_period,
 	                                                  SEQ_NOISE_PERIOD_DFLT,
 	                                                  SEQ_NOISE_PERIOD_L,
 	                                                  SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_9] = new IntParameter(SEQ_RINGMOD_DEPTH_9_NAME,
 	                                                   SEQ_RINGMOD_DEPTH_UNIT,
-	                                                   &zynayumi.patch.seq.states[9].ringmod_depth,
+	                                                   &patch.seq.states[9].ringmod_depth,
 	                                                   SEQ_RINGMOD_DEPTH_DFLT,
 	                                                   SEQ_RINGMOD_DEPTH_L,
 	                                                   SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_9] = new IntParameter(SEQ_LEVEL_9_NAME,
 	                                           SEQ_LEVEL_UNIT,
-	                                           &zynayumi.patch.seq.states[9].level,
+	                                           &patch.seq.states[9].level,
 	                                           SEQ_LEVEL_DFLT,
 	                                           SEQ_LEVEL_L,
 	                                           SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_10] = new IntParameter(SEQ_TONE_PITCH_10_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[10].tone_pitch,
+	                                                 &patch.seq.states[10].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_10] = new IntParameter(SEQ_NOISE_PERIOD_10_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[10].noise_period,
+	                                                   &patch.seq.states[10].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_10] = new IntParameter(SEQ_RINGMOD_DEPTH_10_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[10].ringmod_depth,
+	                                                    &patch.seq.states[10].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_10] = new IntParameter(SEQ_LEVEL_10_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[10].level,
+	                                            &patch.seq.states[10].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_11] = new IntParameter(SEQ_TONE_PITCH_11_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[11].tone_pitch,
+	                                                 &patch.seq.states[11].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_11] = new IntParameter(SEQ_NOISE_PERIOD_11_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[11].noise_period,
+	                                                   &patch.seq.states[11].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_11] = new IntParameter(SEQ_RINGMOD_DEPTH_11_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[11].ringmod_depth,
+	                                                    &patch.seq.states[11].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_11] = new IntParameter(SEQ_LEVEL_11_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[11].level,
+	                                            &patch.seq.states[11].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_12] = new IntParameter(SEQ_TONE_PITCH_12_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[12].tone_pitch,
+	                                                 &patch.seq.states[12].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_12] = new IntParameter(SEQ_NOISE_PERIOD_12_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[12].noise_period,
+	                                                   &patch.seq.states[12].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_12] = new IntParameter(SEQ_RINGMOD_DEPTH_12_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[12].ringmod_depth,
+	                                                    &patch.seq.states[12].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_12] = new IntParameter(SEQ_LEVEL_12_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[12].level,
+	                                            &patch.seq.states[12].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_13] = new IntParameter(SEQ_TONE_PITCH_13_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[13].tone_pitch,
+	                                                 &patch.seq.states[13].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_13] = new IntParameter(SEQ_NOISE_PERIOD_13_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[13].noise_period,
+	                                                   &patch.seq.states[13].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_13] = new IntParameter(SEQ_RINGMOD_DEPTH_13_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[13].ringmod_depth,
+	                                                    &patch.seq.states[13].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_13] = new IntParameter(SEQ_LEVEL_13_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[13].level,
+	                                            &patch.seq.states[13].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_14] = new IntParameter(SEQ_TONE_PITCH_14_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[14].tone_pitch,
+	                                                 &patch.seq.states[14].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_14] = new IntParameter(SEQ_NOISE_PERIOD_14_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[14].noise_period,
+	                                                   &patch.seq.states[14].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_14] = new IntParameter(SEQ_RINGMOD_DEPTH_14_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[14].ringmod_depth,
+	                                                    &patch.seq.states[14].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_14] = new IntParameter(SEQ_LEVEL_14_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[14].level,
+	                                            &patch.seq.states[14].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TONE_PITCH_15] = new IntParameter(SEQ_TONE_PITCH_15_NAME,
 	                                                 SEQ_TONE_PITCH_UNIT,
-	                                                 &zynayumi.patch.seq.states[15].tone_pitch,
+	                                                 &patch.seq.states[15].tone_pitch,
 	                                                 SEQ_TONE_PITCH_DFLT,
 	                                                 SEQ_TONE_PITCH_L,
 	                                                 SEQ_TONE_PITCH_U);
 
 	parameters[SEQ_NOISE_PERIOD_15] = new IntParameter(SEQ_NOISE_PERIOD_15_NAME,
 	                                                   SEQ_NOISE_PERIOD_UNIT,
-	                                                   &zynayumi.patch.seq.states[15].noise_period,
+	                                                   &patch.seq.states[15].noise_period,
 	                                                   SEQ_NOISE_PERIOD_DFLT,
 	                                                   SEQ_NOISE_PERIOD_L,
 	                                                   SEQ_NOISE_PERIOD_U);
 
 	parameters[SEQ_RINGMOD_DEPTH_15] = new IntParameter(SEQ_RINGMOD_DEPTH_15_NAME,
 	                                                    SEQ_RINGMOD_DEPTH_UNIT,
-	                                                    &zynayumi.patch.seq.states[15].ringmod_depth,
+	                                                    &patch.seq.states[15].ringmod_depth,
 	                                                    SEQ_RINGMOD_DEPTH_DFLT,
 	                                                    SEQ_RINGMOD_DEPTH_L,
 	                                                    SEQ_RINGMOD_DEPTH_U);
 
 	parameters[SEQ_LEVEL_15] = new IntParameter(SEQ_LEVEL_15_NAME,
 	                                            SEQ_LEVEL_UNIT,
-	                                            &zynayumi.patch.seq.states[15].level,
+	                                            &patch.seq.states[15].level,
 	                                            SEQ_LEVEL_DFLT,
 	                                            SEQ_LEVEL_L,
 	                                            SEQ_LEVEL_U);
 
 	parameters[SEQ_TEMPO] = new LinearFloatParameter(SEQ_TEMPO_NAME,
 	                                                 SEQ_TEMPO_UNIT,
-	                                                 &zynayumi.patch.seq.tempo,
+	                                                 &patch.seq.tempo,
 	                                                 SEQ_TEMPO_DFLT,
 	                                                 SEQ_TEMPO_L,
 	                                                 SEQ_TEMPO_U);
 
 	parameters[SEQ_HOST_SYNC] = new BoolParameter(SEQ_HOST_SYNC_NAME,
 	                                              SEQ_HOST_SYNC_UNIT,
-	                                              &zynayumi.patch.seq.host_sync,
+	                                              &patch.seq.host_sync,
 	                                              SEQ_HOST_SYNC_DFLT);
 
 	parameters[SEQ_BEAT_DIVISOR] = new IntParameter(SEQ_BEAT_DIVISOR_NAME,
@@ -1092,14 +1095,14 @@ Parameters::Parameters(Zynayumi& zyn)
 
 	parameters[SEQ_LOOP] = new IntParameter(SEQ_LOOP_NAME,
 	                                        SEQ_LOOP_UNIT,
-	                                        &zynayumi.patch.seq.loop,
+	                                        &patch.seq.loop,
 	                                        SEQ_LOOP_DFLT,
 	                                        SEQ_LOOP_L,
 	                                        SEQ_LOOP_U);
 
 	parameters[SEQ_END] = new IntParameter(SEQ_END_NAME,
 	                                       SEQ_END_UNIT,
-	                                       &zynayumi.patch.seq.end,
+	                                       &patch.seq.end,
 	                                       SEQ_END_DFLT,
 	                                       SEQ_END_L,
 	                                       SEQ_END_U);
@@ -1107,26 +1110,26 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Pitch LFO
 	parameters[LFO_SHAPE] = new EnumParameter<LFO::Shape>(LFO_SHAPE_NAME,
 	                                                      LFO_SHAPE_UNIT,
-	                                                      &zynayumi.patch.lfo.shape,
+	                                                      &patch.lfo.shape,
 	                                                      LFO_SHAPE_DFLT);
 
 	parameters[LFO_FREQ] = new LinearFloatParameter(LFO_FREQ_NAME,
 	                                                LFO_FREQ_UNIT,
-	                                                &zynayumi.patch.lfo.freq,
+	                                                &patch.lfo.freq,
 	                                                LFO_FREQ_DFLT,
 	                                                LFO_FREQ_L,
 	                                                LFO_FREQ_U);
 
 	parameters[LFO_DELAY] = new TanFloatParameter(LFO_DELAY_NAME,
 	                                              LFO_DELAY_UNIT,
-	                                              &zynayumi.patch.lfo.delay,
+	                                              &patch.lfo.delay,
 	                                              LFO_DELAY_DFLT,
 	                                              LFO_DELAY_L,
 	                                              LFO_DELAY_U);
 
 	parameters[LFO_DEPTH] = new TanFloatParameter(LFO_DEPTH_NAME,
 	                                              LFO_DEPTH_UNIT,
-	                                              &zynayumi.patch.lfo.depth,
+	                                              &patch.lfo.depth,
 	                                              LFO_DEPTH_DFLT,
 	                                              LFO_DEPTH_L,
 	                                              LFO_DEPTH_U);
@@ -1134,14 +1137,14 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Portamento
 	parameters[PORTAMENTO_TIME] = new TanFloatParameter(PORTAMENTO_TIME_NAME,
 	                                                    PORTAMENTO_TIME_UNIT,
-	                                                    &zynayumi.patch.portamento.time,
+	                                                    &patch.portamento.time,
 	                                                    PORTAMENTO_TIME_DFLT,
 	                                                    PORTAMENTO_TIME_L,
 	                                                    PORTAMENTO_TIME_U);
 
 	parameters[PORTAMENTO_SMOOTHNESS] = new LinearFloatParameter(PORTAMENTO_SMOOTHNESS_NAME,
 	                                                             PORTAMENTO_SMOOTHNESS_UNIT,
-	                                                             &zynayumi.patch.portamento.smoothness,
+	                                                             &patch.portamento.smoothness,
 	                                                             PORTAMENTO_SMOOTHNESS_DFLT,
 	                                                             PORTAMENTO_SMOOTHNESS_L,
 	                                                             PORTAMENTO_SMOOTHNESS_U);
@@ -1149,7 +1152,7 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Gain
 	parameters[GAIN] = new LinearFloatParameter(GAIN_NAME,
 	                                            GAIN_UNIT,
-	                                            &zynayumi.patch.gain,
+	                                            &patch.gain,
 	                                            GAIN_DFLT,
 	                                            GAIN_L,
 	                                            GAIN_U);
@@ -1157,21 +1160,21 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Pan
 	parameters[PAN0] = new LinearFloatParameter(PAN0_NAME,
 	                                            PAN0_UNIT,
-	                                            &zynayumi.patch.pan.ym_channel[0],
+	                                            &patch.pan.ym_channel[0],
 	                                            PAN0_DFLT,
 	                                            PAN0_L,
 	                                            PAN0_U);
 
 	parameters[PAN1] = new LinearFloatParameter(PAN1_NAME,
 	                                            PAN1_UNIT,
-	                                            &zynayumi.patch.pan.ym_channel[1],
+	                                            &patch.pan.ym_channel[1],
 	                                            PAN1_DFLT,
 	                                            PAN1_L,
 	                                            PAN1_U);
 
 	parameters[PAN2] = new LinearFloatParameter(PAN2_NAME,
 	                                            PAN2_UNIT,
-	                                            &zynayumi.patch.pan.ym_channel[2],
+	                                            &patch.pan.ym_channel[2],
 	                                            PAN2_DFLT,
 	                                            PAN2_L,
 	                                            PAN2_U);
@@ -1179,35 +1182,35 @@ Parameters::Parameters(Zynayumi& zyn)
 	// Control
 	parameters[PITCH_WHEEL] = new IntParameter(PITCH_WHEEL_NAME,
 	                                           PITCH_WHEEL_UNIT,
-	                                           &zynayumi.patch.control.pitchwheel,
+	                                           &patch.control.pitchwheel,
 	                                           PITCH_WHEEL_DFLT,
 	                                           PITCH_WHEEL_L,
 	                                           PITCH_WHEEL_U);
 
 	parameters[VELOCITY_SENSITIVITY] = new LinearFloatParameter(VELOCITY_SENSITIVITY_NAME,
 	                                                            VELOCITY_SENSITIVITY_UNIT,
-	                                                            &zynayumi.patch.control.velocity_sensitivity,
+	                                                            &patch.control.velocity_sensitivity,
 	                                                            VELOCITY_SENSITIVITY_DFLT,
 	                                                            VELOCITY_SENSITIVITY_L,
 	                                                            VELOCITY_SENSITIVITY_U);
 
 	parameters[RINGMOD_VELOCITY_SENSITIVITY] = new LinearFloatParameter(RINGMOD_VELOCITY_SENSITIVITY_NAME,
 	                                                                    RINGMOD_VELOCITY_SENSITIVITY_UNIT,
-	                                                                    &zynayumi.patch.control.ringmod_velocity_sensitivity,
+	                                                                    &patch.control.ringmod_velocity_sensitivity,
 	                                                                    RINGMOD_VELOCITY_SENSITIVITY_DFLT,
 	                                                                    RINGMOD_VELOCITY_SENSITIVITY_L,
 	                                                                    RINGMOD_VELOCITY_SENSITIVITY_U);
 
 	parameters[NOISE_PERIOD_PITCH_SENSITIVITY] = new LinearFloatParameter(NOISE_PERIOD_PITCH_SENSITIVITY_NAME,
 	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_UNIT,
-	                                                                      &zynayumi.patch.control.noise_period_pitch_sensitivity,
+	                                                                      &patch.control.noise_period_pitch_sensitivity,
 	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_DFLT,
 	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_L,
 	                                                                      NOISE_PERIOD_PITCH_SENSITIVITY_U);
 
 	parameters[MODULATION_SENSITIVITY] = new TanFloatParameter(MODULATION_SENSITIVITY_NAME,
 	                                                           MODULATION_SENSITIVITY_UNIT,
-	                                                           &zynayumi.patch.control.modulation_sensitivity,
+	                                                           &patch.control.modulation_sensitivity,
 	                                                           MODULATION_SENSITIVITY_DFLT,
 	                                                           MODULATION_SENSITIVITY_L,
 	                                                           MODULATION_SENSITIVITY_U);
@@ -1346,25 +1349,25 @@ void Parameters::update(ParameterIndex pi)
 	switch (pi) {
 	case TONE_DETUNE:
 	case TONE_TRANSPOSE:
-		zynayumi.patch.tone.detune = tone_detune + tone_transpose;
+		patch.tone.detune = tone_detune + tone_transpose;
 		break;
 	case SEQ_TEMPO:
 	case SEQ_HOST_SYNC:
 	case SEQ_BEAT_DIVISOR:
 	case SEQ_BEAT_MULTIPLIER:
-		zynayumi.patch.seq.freq = to_freq(zynayumi.patch.seq.host_sync ?
-		                                  zynayumi.get_bpm() :
-		                                  zynayumi.patch.seq.tempo,
-		                                  seq_beat_divisor,
-		                                  seq_beat_multiplier);
+		patch.seq.freq = to_freq(patch.seq.host_sync ?
+		                         zynayumi.get_bpm() :
+		                         patch.seq.tempo,
+		                         seq_beat_divisor,
+		                         seq_beat_multiplier);
 		break;
 	case RINGMOD_DETUNE:
 	case RINGMOD_TRANSPOSE:
-		zynayumi.patch.ringmod.detune = ringmod_detune + ringmod_transpose;
+		patch.ringmod.detune = ringmod_detune + ringmod_transpose;
 		break;
 	case BUZZER_DETUNE:
 	case BUZZER_TRANSPOSE:
-		zynayumi.patch.buzzer.detune = buzzer_detune + buzzer_transpose;
+		patch.buzzer.detune = buzzer_detune + buzzer_transpose;
 		break;
 	default:
 		break;

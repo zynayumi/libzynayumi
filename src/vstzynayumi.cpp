@@ -59,7 +59,7 @@ AudioEffect *createEffectInstance(audioMasterCallback audioMaster)
 VSTZynayumi::VSTZynayumi(audioMasterCallback audioMaster)
 	: AudioEffectX(audioMaster, 1, PARAMETERS_COUNT)
 	, events(nullptr)
-	, _parameters(zynayumi)
+	, _parameters(zynayumi, zynayumi.patch)
 {
 	// Plugin id
 	setUniqueID(CCONST('Z', 'y', 'N', 'a'));

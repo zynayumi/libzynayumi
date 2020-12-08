@@ -3,6 +3,6 @@ add_library(zynayumi STATIC
   patch
   voice
   engine
-  presets
   parameters
+  programs
   ../../ayumi/ayumi)
