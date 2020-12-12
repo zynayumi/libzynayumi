@@ -31,13 +31,12 @@ namespace zynayumi {
 
 class Programs {
 public:
-	Programs();
+	Programs(Zynayumi& zynayumi);
+	~Programs();
 
-	std::vector<std::string> names;
-	std::vector<Patch> patches;
-	// NEXT: probably instantiate parameters_seq with patch_seq
-	// std::vector<Parameters> parameters_seq;
-	static const int count = 1;
+	static const unsigned count = 2;
+	Patch patches[count];
+	Parameters* parameters_pts[count];
 };
 
 } // ~namespace zynayumi

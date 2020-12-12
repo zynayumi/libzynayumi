@@ -243,7 +243,6 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	, patch(pat)
 	, parameters(PARAMETERS_COUNT)
 {
-	// NEXT: how to have it stored (i.e. not rely on zynayumi.patch)
 	// Emulation mode (YM2149 vs AY-3-8910)
 	parameters[EMUL_MODE] = new EnumParameter<EmulMode>(EMUL_MODE_NAME,
 	                                                    EMUL_MODE_UNIT,

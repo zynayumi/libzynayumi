@@ -28,20 +28,28 @@
 
 namespace zynayumi {
 
-Programs::Programs()
-	: names(count)
-	, patches(count)
-	// , parameters_seq(count)
+Programs::Programs(Zynayumi& zynayumi)
 {
+	// Memory allocate programs
+	for (unsigned i = 0; i < count; i++)
+		parameters_pts[i] = new Parameters(zynayumi, patches[i]);
+
 	//Program 1
-	names[0] = "Program-1";
+	patches[0].name = "Program-1";
 
 	// NEXT
+	//
+	// Answer: init programs.parameters_seq[i].patch
+
 	// *dynamic_cast<EnumParameter<EmulMode>*>(parameters_seq[0].parameters[EMUL_MODE]) = EmulMode::YM2149;
 
 	// Program 2
-	names[0] = "Program-2";
+	patches[1].name = "Program-2";
 	// *dynamic_cast<EnumParameter<EmulMode>*>(parameters_seq[0].parameters[EMUL_MODE]) = EmulMode::AY8910;
+}
+
+Programs::~Programs()
+{
 }
 
 // Just to remember it
