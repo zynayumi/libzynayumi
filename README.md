@@ -420,7 +420,8 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Replace fixed ringmod freq by pitch
+- [ ] Add curviness pitch env parameter
+- [ ] Replace fixed ringmod freq by pitch (affected by detune and transpose)
 - [ ] Add to seq
   - [ ] Relative ringmod transpose
   - [ ] On/off tone
