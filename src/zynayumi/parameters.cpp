@@ -1230,6 +1230,37 @@ Parameters::~Parameters()
 		delete param;
 }
 
+Parameters& Parameters::operator=(const Parameters& other)
+{
+	patch = other.patch;
+	// NEXT: keep it for now in case it turns out to be useful
+	// patch.name = other.patch.name;
+	// patch.enummode = other.patch.emulmode;
+	// patch.playmode = other.patch.playmode;
+	// patch.tone = other.patch.tone;
+	// patch.noise = other.patch.noise;
+	// patch.noise_period_env = other.patch.noise_period_env;
+	// patch.env = other.patch.env;
+	// patch.pitchenv = other.patch.pitchenv;
+	// patch.ringmod = other.patch.ringmod;
+	// patch.buzzer = other.patch.buzzer;
+	// patch.seq = other.patch.seq;
+	// patch.lfo = other.patch.lfo;
+	// patch.portamento = other.patch.portamento;
+	// patch.gain = other.patch.gain;
+	// patch.pan = other.patch.pan;
+	// patch.control = other.patch.control;
+	tone_detune = other.tone_detune;
+	tone_transpose = other.tone_transpose;
+	seq_beat_divisor = other.seq_beat_divisor;
+	seq_beat_multiplier = other.seq_beat_multiplier;
+	ringmod_detune = other.ringmod_detune;
+	ringmod_transpose = other.ringmod_transpose;
+	buzzer_detune = other.buzzer_detune;
+	buzzer_transpose = other.buzzer_transpose;
+	return *this;
+}
+
 std::string Parameters::get_name(ParameterIndex pi) const
 {
 	if (pi < parameters.size())

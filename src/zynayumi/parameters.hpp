@@ -901,6 +901,8 @@ public:
 	Parameters(Zynayumi& zynayumi, Patch& patch);
 	~Parameters();
 
+	Parameters& operator=(const Parameters& other);
+
 	// Get the parameter name at index pi
 	std::string get_name(ParameterIndex pi) const;
 
