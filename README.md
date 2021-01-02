@@ -15,8 +15,7 @@ YM2149 http://sovietov.com/app/ayumi/ayumi.html.
 - [X] 16-step sequencer for parameter modulation
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
       Time, Volume, Pan, Expression and Sustain).
-- [X] VST, DSSI
-- [ ] LV2 (meanwhile you can use [NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges))
+- [X] VST, DSSI, LV2
 - [ ] GUI.  Please help if you want one, I am no GUI guy.
 
 ## Demo Songs
@@ -420,6 +419,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Fix Buzzer sync
 - [ ] Add curviness pitch env parameter
 - [ ] Replace fixed ringmod freq by pitch (affected by detune and transpose)
 - [ ] Add to seq
@@ -439,7 +439,6 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
 - [ ] Define presets
-- [ ] Add LV2 support
 
 ## Author
 
