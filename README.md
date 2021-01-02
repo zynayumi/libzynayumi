@@ -1,37 +1,26 @@
-# Zynayumi
+# LibZynayumi
 
-Synth based on ayumi, the highly precise emulator of AY-8910 and
-YM2149 http://sovietov.com/app/ayumi/ayumi.html.
+Library for Zynayumi https://github.com/zynayumi/zynayumi
+
+It provides the engine and presets for Zynayumi.
 
 ## Features
 
-- [X] Amplitude Envelope
-- [X] Tone and Noise Pitch Envelope
+- [X] Amplitude envelope
+- [X] Tone and noise pitch envelope
 - [X] Portamento
 - [X] Vibrato
-- [X] Arpeggio
-- [X] Ring Modulation (SID and more)
+- [X] Ring Modulation (SID-like and more)
 - [X] Buzzer
-- [X] 16-step sequencer for parameter modulation
+- [X] 16-step sequencer for arpegio and other modulation
 - [X] MIDI controls assigned to parameters (Modulation, Portamento
-      Time, Volume, Pan, Expression and Sustain).
-- [X] VST, DSSI, LV2
-- [ ] GUI.  Please help if you want one, I am no GUI guy.
-
-## Demo Songs
-
-* [Monstrosity by A-Lin](https://lbry.tv/@ngeiswei:d/A-Lin---Monstrosity---2020-06-09:f)
-* [Hudros Chiphony by A-Lin](https://lbry.tv/@ngeiswei:d/hudros-chiphony_2020-09-02---normalized:1)
-
-If you make a song with Zynayumi let me know so I can include it.
+      Time, Volume, Pan, Expression and Sustain)
 
 ## Requirements
 
 - Boost (version 1.54 minimum) http://www.boost.org/
-- DSSI SDK http://dssi.sourceforge.net/ (optional)
-- VST SDK http://www.steinberg.net/en/company/developers.html (optional)
 
-## Installation
+## Install
 
 0. Clone that repo with the DPL submodule
 
@@ -59,52 +48,6 @@ $ make
 ```bash
 $ sudo make install
 ```
-
-## DSSI Support
-
-Just install the DSSI SDK.  You likely have a package in your
-distribution, otherwise, have a look at http://dssi.sourceforge.net/.
-
-Note that the DSSI version has been left behind a little bit.  The VST
-version is more complete as of today.
-
-## VST Support
-
-For VST2 support, you need a copy of the old VST36 SDK as recent ones don't come with VST2 headers anymore.
-
-[vstsdk367_03_03_2017_build_352](https://www.steinberg.net/sdk_downloads/vstsdk367_03_03_2017_build_352.zip) is the last known one still available.
-
-Just unzip the VST2_SDK folder to the Zynayumi root folder.
-
-Under GNU/Linux 64-bit, you may need to do this patch first:
-
-```diff
---- VST2_SDK/pluginterfaces/vst2.x/aeffect.h
-+++ VST2_SDK/pluginterfaces/vst2.x/aeffect.h
-@@ -66,7 +66,11 @@
-        #pragma options push -a8
- #elif defined(__GNUC__)
-     #pragma pack(push,8)
--    #define VSTCALLBACK __cdecl
-+    #if defined(__linux__)
-+        #define VSTCALLBACK
-+    #else
-+        #define VSTCALLBACK __cdecl
-+    #endif
- #elif defined(WIN32) || defined(__FLAT__) || defined CBUILDER
-        #pragma pack(push)
-        #pragma pack(8)
-```
-
-## LV2 Support
-
-LV2 is not supported yet.  If for some reason you can only compile the
-DSSI version and your host does not support DSSI, such as
-[Ardour](https://ardour.org/), you can use
-[NASPRO](http://naspro.sourceforge.net/plugins.html#naspro-bridges)
-which will expose Zynayumi as if it were an LV2 plugin.  It is not
-completely stable however, it can crash the DAW during initialization,
-but if it starts then it should run flawlessly.
 
 ## Parameters
 
@@ -441,10 +384,10 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Delay
 - [ ] Define presets
 
-## Author
+## Author(s)
 
-Nil Geisweiller
+- Nil Geisweiller
 
 ## Contributor(s)
 
-Teteros
+- Teteros
