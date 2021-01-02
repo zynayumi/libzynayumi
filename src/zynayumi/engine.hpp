@@ -81,6 +81,12 @@ public:
 	// Current buzzer shape
 	Buzzer::Shape buzzershape;
 
+	// Current ringmod loop
+	RingMod::Loop ringmodloop;
+
+	// Current ayumi envelope shape
+	int ayenvshape;
+
 	// Current pitches. Useful for handling chord based arp.
 	std::multiset<unsigned char> pitches;
 

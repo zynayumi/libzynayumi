@@ -541,6 +541,11 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                              &patch.ringmod.reset,
 	                                              RINGMOD_RESET_DFLT);
 
+	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
+	                                             RINGMOD_SYNC_UNIT,
+	                                             &patch.ringmod.sync,
+	                                             RINGMOD_SYNC_DFLT);
+
 	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
 	                                                     RINGMOD_PHASE_UNIT,
 	                                                     &patch.ringmod.phase,
@@ -548,10 +553,10 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                     RINGMOD_PHASE_L,
 	                                                     RINGMOD_PHASE_U);
 
-	parameters[RINGMOD_MIRROR] = new BoolParameter(RINGMOD_MIRROR_NAME,
-	                                               RINGMOD_MIRROR_UNIT,
-	                                               &patch.ringmod.mirror,
-	                                               RINGMOD_MIRROR_DFLT);
+	parameters[RINGMOD_LOOP] = new EnumParameter<RingMod::Loop>(RINGMOD_LOOP_NAME,
+	                                                            RINGMOD_LOOP_UNIT,
+	                                                            &patch.ringmod.loop,
+	                                                            RINGMOD_LOOP_DFLT);
 
 	parameters[RINGMOD_DETUNE] = new TanFloatParameter(RINGMOD_DETUNE_NAME,
 	                                                   RINGMOD_DETUNE_UNIT,
@@ -589,44 +594,15 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                             RINGMOD_DEPTH_U);
 
 	// Buzzer
+	parameters[BUZZER_ENABLED] = new BoolParameter(BUZZER_ENABLED_NAME,
+	                                               BUZZER_ENABLED_UNIT,
+	                                               &patch.buzzer.enabled,
+	                                               BUZZER_ENABLED_DFLT);
+
 	parameters[BUZZER_SHAPE] = new EnumParameter<Buzzer::Shape>(BUZZER_SHAPE_NAME,
 	                                                            BUZZER_SHAPE_UNIT,
 	                                                            &patch.buzzer.shape,
 	                                                            BUZZER_SHAPE_DFLT);
-
-	parameters[BUZZER_RESET] = new BoolParameter(BUZZER_RESET_NAME,
-	                                             BUZZER_RESET_UNIT,
-	                                             &patch.buzzer.reset,
-	                                             BUZZER_RESET_DFLT);
-
-	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
-	                                                    BUZZER_PHASE_UNIT,
-	                                                    &patch.buzzer.phase,
-	                                                    BUZZER_PHASE_DFLT,
-	                                                    BUZZER_PHASE_L,
-	                                                    BUZZER_PHASE_U);
-
-	parameters[BUZZER_TIME] = new TanFloatParameter(BUZZER_TIME_NAME,
-	                                                BUZZER_TIME_UNIT,
-	                                                &patch.buzzer.time,
-	                                                BUZZER_TIME_DFLT,
-	                                                BUZZER_TIME_L,
-	                                                BUZZER_TIME_U,
-	                                                true);
-
-	parameters[BUZZER_DETUNE] = new TanFloatParameter(BUZZER_DETUNE_NAME,
-	                                                  BUZZER_DETUNE_UNIT,
-	                                                  &buzzer_detune,
-	                                                  BUZZER_DETUNE_DFLT,
-	                                                  BUZZER_DETUNE_L,
-	                                                  BUZZER_DETUNE_U);
-
-	parameters[BUZZER_TRANSPOSE] = new IntParameter(BUZZER_TRANSPOSE_NAME,
-	                                                BUZZER_TRANSPOSE_UNIT,
-	                                                &buzzer_transpose,
-	                                                BUZZER_TRANSPOSE_DFLT,
-	                                                BUZZER_TRANSPOSE_L,
-	                                                BUZZER_TRANSPOSE_U);
 
 	// Sequencer
 	parameters[SEQ_TONE_PITCH_0] = new IntParameter(SEQ_TONE_PITCH_0_NAME,
@@ -1243,31 +1219,12 @@ Parameters::~Parameters()
 Parameters& Parameters::operator=(const Parameters& other)
 {
 	patch = other.patch;
-	// NEXT: keep it for now in case it turns out to be useful
-	// patch.name = other.patch.name;
-	// patch.enummode = other.patch.emulmode;
-	// patch.playmode = other.patch.playmode;
-	// patch.tone = other.patch.tone;
-	// patch.noise = other.patch.noise;
-	// patch.noise_period_env = other.patch.noise_period_env;
-	// patch.env = other.patch.env;
-	// patch.pitchenv = other.patch.pitchenv;
-	// patch.ringmod = other.patch.ringmod;
-	// patch.buzzer = other.patch.buzzer;
-	// patch.seq = other.patch.seq;
-	// patch.lfo = other.patch.lfo;
-	// patch.portamento = other.patch.portamento;
-	// patch.gain = other.patch.gain;
-	// patch.pan = other.patch.pan;
-	// patch.control = other.patch.control;
 	tone_detune = other.tone_detune;
 	tone_transpose = other.tone_transpose;
 	seq_beat_divisor = other.seq_beat_divisor;
 	seq_beat_multiplier = other.seq_beat_multiplier;
 	ringmod_detune = other.ringmod_detune;
 	ringmod_transpose = other.ringmod_transpose;
-	buzzer_detune = other.buzzer_detune;
-	buzzer_transpose = other.buzzer_transpose;
 	return *this;
 }
 
@@ -1406,10 +1363,6 @@ void Parameters::update(ParameterIndex pi)
 	case RINGMOD_TRANSPOSE:
 		patch.ringmod.detune = ringmod_detune + ringmod_transpose;
 		break;
-	case BUZZER_DETUNE:
-	case BUZZER_TRANSPOSE:
-		patch.buzzer.detune = buzzer_detune + buzzer_transpose;
-		break;
 	default:
 		break;
 	}
@@ -1424,7 +1377,6 @@ void Parameters::update()
 									 seq_beat_divisor,
 									 seq_beat_multiplier);
 	patch.ringmod.detune = ringmod_detune + ringmod_transpose;
-	patch.buzzer.detune = buzzer_detune + buzzer_transpose;
 }
 
 std::string bool_to_string(bool b)
@@ -1480,19 +1432,15 @@ std::string Parameters::to_string(std::string indent) const
 		ss << indent << "prmtrs->patch.ringmod.waveform[" << i << "] = " << patch.ringmod.waveform[i] << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.reset = " << bool_to_string(patch.ringmod.reset) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.phase = " << patch.ringmod.phase << ";" << std::endl;
-	ss << indent << "prmtrs->patch.ringmod.mirror = " << bool_to_string(patch.ringmod.mirror) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.loop = zynayumi::RingMod::Loop::" << zynayumi::to_string(patch.ringmod.loop) << ";" << std::endl;
 	ss << indent << "prmtrs->ringmod_detune = " << ringmod_detune << ";" << std::endl;
 	ss << indent << "prmtrs->ringmod_transpose = " << ringmod_transpose << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.fixed_freq = " << patch.ringmod.fixed_freq << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.fixed_vs_relative = " << patch.ringmod.fixed_vs_relative << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.depth = " << patch.ringmod.depth << ";" << std::endl;
 	// Buzzer
+	ss << indent << "prmtrs->patch.buzzer.enabled = " << bool_to_string(patch.buzzer.enabled) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.buzzer.shape = zynayumi::Buzzer::Shape::" << zynayumi::to_string(patch.buzzer.shape) << ";" << std::endl;
-	ss << indent << "prmtrs->patch.buzzer.reset = " << bool_to_string(patch.buzzer.reset) << ";" << std::endl;
-	ss << indent << "prmtrs->patch.buzzer.phase = " << patch.buzzer.phase << ";" << std::endl;
-	ss << indent << "prmtrs->patch.buzzer.time = " << float_to_string(patch.buzzer.time) << ";" << std::endl;
-	ss << indent << "prmtrs->buzzer_detune = " << buzzer_detune << ";" << std::endl;
-	ss << indent << "prmtrs->buzzer_transpose = " << buzzer_transpose << ";" << std::endl;
 	// Seq
 	for (unsigned i = 0; i < Seq::size; i++) {
 		ss << indent << "prmtrs->patch.seq.states[" << i << "].tone_pitch = " << patch.seq.states[i].tone_pitch << ";" << std::endl;

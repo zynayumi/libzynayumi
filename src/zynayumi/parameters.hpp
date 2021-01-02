@@ -351,8 +351,9 @@ enum ParameterIndex {
 	RINGMOD_WAVEFORM_LEVEL15,
 	RINGMOD_WAVEFORM_LEVEL16,
 	RINGMOD_RESET,
+	RINGMOD_SYNC,
 	RINGMOD_PHASE,
-	RINGMOD_MIRROR,
+	RINGMOD_LOOP,
 	RINGMOD_DETUNE,
 	RINGMOD_TRANSPOSE,
 	RINGMOD_FIXED_FREQUENCY,
@@ -360,12 +361,8 @@ enum ParameterIndex {
 	RINGMOD_DEPTH,
 
 	// Buzzer
+	BUZZER_ENABLED,
 	BUZZER_SHAPE,
-	BUZZER_RESET,
-	BUZZER_PHASE,
-	BUZZER_TIME,
-	BUZZER_DETUNE,
-	BUZZER_TRANSPOSE,
 
 	// Sequencer
 	SEQ_TONE_PITCH_0,
@@ -513,19 +510,16 @@ enum ParameterIndex {
 #define RINGMOD_WAVEFORM_LEVEL15_NAME "RingMod waveform level 15"
 #define RINGMOD_WAVEFORM_LEVEL16_NAME "RingMod waveform level 16"
 #define RINGMOD_RESET_NAME "RingMod reset"
+#define RINGMOD_SYNC_NAME "RingMod sync"
 #define RINGMOD_PHASE_NAME "RingMod phase"
-#define RINGMOD_MIRROR_NAME "RingMod mirror"
+#define RINGMOD_LOOP_NAME "RingMod loop"
 #define RINGMOD_DETUNE_NAME "RingMod detune"
 #define RINGMOD_TRANSPOSE_NAME "RingMod transpose"
 #define RINGMOD_FIXED_FREQUENCY_NAME "RingMod fixed frequency"
 #define RINGMOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
 #define RINGMOD_DEPTH_NAME "RingMod depth"
+#define BUZZER_ENABLED_NAME "Buzzer enabled"
 #define BUZZER_SHAPE_NAME "Buzzer shape"
-#define BUZZER_RESET_NAME "Buzzer reset"
-#define BUZZER_PHASE_NAME "Buzzer phase"
-#define BUZZER_TIME_NAME "Buzzer time"
-#define BUZZER_DETUNE_NAME "Buzzer detune"
-#define BUZZER_TRANSPOSE_NAME "Buzzer transpose"
 #define SEQ_TONE_PITCH_0_NAME "Seq tone pitch 0"
 #define SEQ_NOISE_PERIOD_0_NAME "Seq noise period 0"
 #define SEQ_RINGMOD_DEPTH_0_NAME "Seq ringmod depth 0"
@@ -645,19 +639,16 @@ enum ParameterIndex {
 #define PITCH_ENV_TIME_UNIT SECOND
 #define RINGMOD_WAVEFORM_LEVEL_UNIT EMPTY
 #define RINGMOD_RESET_UNIT EMPTY
+#define RINGMOD_SYNC_UNIT EMPTY
 #define RINGMOD_PHASE_UNIT EMPTY
-#define RINGMOD_MIRROR_UNIT EMPTY
+#define RINGMOD_LOOP_UNIT EMPTY
 #define RINGMOD_DETUNE_UNIT SEMITONE
 #define RINGMOD_TRANSPOSE_UNIT SEMITONE
 #define RINGMOD_FIXED_FREQUENCY_UNIT HERTZ
 #define RINGMOD_FIXED_VS_RELATIVE_UNIT EMPTY
 #define RINGMOD_DEPTH_UNIT EMPTY
+#define BUZZER_ENABLED_UNIT EMPTY
 #define BUZZER_SHAPE_UNIT EMPTY
-#define BUZZER_RESET_UNIT EMPTY
-#define BUZZER_PHASE_UNIT EMPTY
-#define BUZZER_TIME_UNIT SECOND
-#define BUZZER_DETUNE_UNIT SEMITONE
-#define BUZZER_TRANSPOSE_UNIT SEMITONE
 #define SEQ_TONE_PITCH_UNIT SEMITONE
 #define SEQ_NOISE_PERIOD_UNIT EMPTY
 #define SEQ_RINGMOD_DEPTH_UNIT EMPTY
@@ -713,8 +704,9 @@ enum ParameterIndex {
 #define PITCH_ENV_TIME_DFLT 0.0f
 #define RINGMOD_WAVEFORM_LEVEL_DFLT MAX_LEVEL
 #define RINGMOD_RESET_DFLT true
+#define RINGMOD_SYNC_DFLT false
 #define RINGMOD_PHASE_DFLT 0.0f
-#define RINGMOD_MIRROR_DFLT true
+#define RINGMOD_LOOP_DFLT RingMod::Loop::PingPong
 #define RINGMOD_DETUNE_DFLT 0.0f
 #define RINGMOD_TRANSPOSE_DFLT 0
 #define RINGMOD_FIXED_FREQUENCY_DFLT 1.0f
@@ -730,12 +722,8 @@ enum ParameterIndex {
 #define SEQ_BEAT_MULTIPLIER_DFLT 1
 #define SEQ_LOOP_DFLT 0
 #define SEQ_END_DFLT 0
+#define BUZZER_ENABLED_DFLT false
 #define BUZZER_SHAPE_DFLT Buzzer::Shape::DownSaw
-#define BUZZER_RESET_DFLT true
-#define BUZZER_PHASE_DFLT 0.0f
-#define BUZZER_TIME_DFLT 0.0f
-#define BUZZER_DETUNE_DFLT 0.0f
-#define BUZZER_TRANSPOSE_DFLT 0
 #define LFO_SHAPE_DFLT LFO::Shape::Sine
 #define LFO_FREQ_DFLT 4.5f
 #define LFO_DELAY_DFLT 0.0f
@@ -806,10 +794,10 @@ enum ParameterIndex {
 #define RINGMOD_WAVEFORM_LEVEL_U MAX_LEVEL
 #define RINGMOD_RESET_L 0.0f
 #define RINGMOD_RESET_U 1.0f
+#define RINGMOD_SYNC_L 0.0f
+#define RINGMOD_SYNC_U 1.0f
 #define RINGMOD_PHASE_L 0.0f
 #define RINGMOD_PHASE_U 1.0f
-#define RINGMOD_MIRROR_L 0.0f
-#define RINGMOD_MIRROR_U 1.0f
 #define RINGMOD_DETUNE_L -0.5f
 #define RINGMOD_DETUNE_U 0.5f
 #define RINGMOD_TRANSPOSE_L -36
@@ -820,18 +808,8 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_U 1.0f
 #define RINGMOD_DEPTH_L 0
 #define RINGMOD_DEPTH_U MAX_LEVEL
-#define BUZZER_RESET_L 0.0f
-#define BUZZER_RESET_U 1.0f
-#define BUZZER_PHASE_L 0.0f
-#define BUZZER_PHASE_U 1.0f
-#define BUZZER_TIME_L 0.0f
-#define BUZZER_TIME_L_ALT -1.0f   // In case infinity isn't supported
-#define BUZZER_TIME_U std::numeric_limits<float>::infinity()
-#define BUZZER_TIME_U_ALT 10.0f   // In case infinity isn't supported
-#define BUZZER_DETUNE_L -0.5f
-#define BUZZER_DETUNE_U 0.5f
-#define BUZZER_TRANSPOSE_L -36
-#define BUZZER_TRANSPOSE_U 36
+#define BUZZER_ENABLED_L 0.0f
+#define BUZZER_ENABLED_U 1.0f
 #define SEQ_TONE_PITCH_L -48
 #define SEQ_TONE_PITCH_U 48
 #define SEQ_NOISE_PERIOD_L -15
@@ -949,8 +927,6 @@ public:
 	int tone_transpose;
 	float ringmod_detune;
 	int ringmod_transpose;
-	float buzzer_detune;
-	int buzzer_transpose;
 	int seq_beat_divisor;
 	int seq_beat_multiplier;
 };

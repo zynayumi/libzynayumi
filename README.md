@@ -137,6 +137,59 @@ $ sudo make install
 - **PitchEnv time**: time in second to go from attack_pitch to 0 of
   the pitch envelope.  Ranges from 0.0 to 10.0.
 
+- **RingMod waveform level1 to level8**: can define an 8 points
+  waveform.  That normalized waveform is multipled with the YM2149
+  square waveform, thus creating a ring modulation.  Ranges from 0 to
+  15.
+
+- **RingMod reset**: whether the phase of the ring modulation is
+  synchronized with the phase of the square tone when a new on note is
+  created.
+
+- **RingMod sync**: whether the ring modulator wave is restarted at
+  every tone cycle.
+
+- **RingMod phase**: phase of the ring modulator.  Ranges from 0.0 to
+  1.0.
+
+- **RingMod loop**: how the waveform (drawn or provided by the buzzer)
+  must be looped.  Options are:
+  - 0: Off
+  - 1: Forward
+  - 2: PingPong
+
+- **RingMod detune**: detune in semitone of the ring modulation
+  waveform relative to the square waveform.  The famous SID phaser
+  effect can be obtained by setting a value difference than, though
+  close to, zero.  Ranges from -0.5 to +0.5.
+
+- **RingMod transpose**: transposition in semitone of the ring
+  modulation waveform relative the square waveform.  Ranges from -36
+  to +36.
+
+- **RingMod fixed frequency**: fixed frequency of the ring modulation.
+  Ranges from 1Hz to 5000Hz.
+
+- **RingMod fixed vs relative**: how much of the ring modulation
+  frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
+  fixed) to 1.0 (completely determined by tone pitch).
+
+- **RingMod depth**: level of depth of ring modulation.  Ranges from 0
+  (no ring modulation) to 15 (full ring modulation).
+
+- **Buzzer enabled**: replace software ring modulator by hardward
+  envelope (buzzer).  When enabled all attributes (except the
+  waveform) from the software ring modulator are transferred to the
+  buzzer, with some important limitations, such as innacurate pitch
+  and lack of amplitude envelope.
+
+- **Buzzer shape**: oscillator shape of the buzzer.  Only the shapes:
+  - 0: DownSaw
+  - 1: UpSaw
+  are offered here.  The remaining shapes can be obtained by setting
+  the *RingMod loop* parameter to *Off* and *PingPong* to respectively
+  obtain the remaining shapes.
+  
 - **Seq tone pitch 0 to 15**: relative tone pitch in semitone.  Ranges
   from -48 to +48.
 
@@ -169,61 +222,6 @@ $ sudo make install
 - **Seq loop**: sequencer loop point.  Ranges from 0 to 15.
 
 - **Seq end**: sequence end point.  Ranges from 0 to 16.
-
-- **RingMod waveform level1 to level8**: can define an 8 points
-  waveform.  That normalized waveform is multipled with the YM2149
-  square waveform, thus creating a ring modulation.  Ranges from 0 to
-  15.
-
-- **RingMod reset**: whether the phase of the ring modulation is
-  synchronized with the phase of the square tone when a new on note is
-  created.
-
-- **RingMod phase**: phase of the ring modulator.  Ranges from 0.0 to
-  1.0.
-
-- **RingMod mirror**: whether the ring modulation waveform is
-  mirrored.  This can soften the ring modulation.
-
-- **RingMod detune**: detune in semitone of the ring modulation
-  waveform relative to the square waveform.  The famous SID phaser
-  effect can be obtained by setting a value difference than, though
-  close to, zero.  Ranges from -0.5 to +0.5.
-
-- **RingMod transpose**: transposition in semitone of the ring
-  modulation waveform relative the square waveform.  Ranges from -36
-  to +36.
-
-- **RingMod fixed frequency**: fixed frequency of the ring modulation.
-  Ranges from 1Hz to 5000Hz.
-
-- **RingMode fixed vs relative**: how much of the ring modulation
-  frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
-  fixed) to 1.0 (completely determined by tone pitch).
-
-- **RingMod depth**: level of depth of ring modulation.  Ranges from 0
-  (no ring modulation) to 15 (full ring modulation).
-
-- **Buzzer shape**: oscillator shape of the buzzer.  Warning: the
-  buzzer disactivates the envelope and the ring modulator.
-  - 0: DownSaw
-  - 1: DownTriangle
-  - 2: UpSaw
-  - 3: UpTriangle
-  
-- **Buzzer reset**: whether the phase of the buzzer gets reset to
-  *Buzzer phase* when a new on note is created.
-
-- **Buzzer phase**: phase of the buzzer.  Ranges from 0.0 to 1.0.
-
-- **Buzzer time**: buzzer duration in second.  Ranges from 0.0 to
-  +inf.
-
-- **Buzzer detune**: buzzer detune in semitone.  Ranges from -0.5 to
-  +0.5.
-
-- **Buzzer transpose**: buzzer transpose in semitone.  Ranges from
-  -36 to +36.
 
 - **LFO shape**: shape of the LFO
   - 0: Sine
@@ -362,6 +360,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Support all buzzer shapes
 - [ ] Add ringmod and buzzer sync parameters
 - [ ] Fix Buzzer reset
 - [ ] Add curviness pitch env parameter

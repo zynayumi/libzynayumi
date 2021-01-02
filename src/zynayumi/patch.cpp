@@ -48,15 +48,13 @@ Env::Env() : attack_time(0),
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
 RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
-                     reset(true), phase(0.0), mirror(true), detune(0.0),
+                     reset(true), sync(false), phase(0.0),
+							loop(RingMod::Loop::PingPong), detune(0.0),
                      fixed_freq(1.0), fixed_vs_relative(1.0),
                      depth(MAX_LEVEL) {}
 
-Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
-                   reset(true),
-                   phase(0.0),
-                   time(0.0),
-                   detune(0.0) {}
+Buzzer::Buzzer() : enabled(false),
+                   shape(Buzzer::Shape::DownSaw) {}
 
 Seq::State::State() : tone_pitch(0),
                       noise_period(0),
@@ -120,17 +118,27 @@ std::string to_string(EmulMode em)
 	}
 }
 
+std::string to_string(RingMod::Loop lp)
+{
+	switch(lp) {
+	case RingMod::Loop::Off:
+		return "Off";
+	case RingMod::Loop::Forward:
+		return "Forward";
+	case RingMod::Loop::PingPong:
+		return "PingPong";
+	default:
+		return "";
+	}
+}
+
 std::string to_string(Buzzer::Shape sh)
 {
 	switch(sh) {
 	case Buzzer::Shape::DownSaw:
 		return "DownSaw";
-	case Buzzer::Shape::DownTriangle:
-		return "DownTriangle";
 	case Buzzer::Shape::UpSaw:
 		return "UpSaw";
-	case Buzzer::Shape::UpTriangle:
-		return "UpTriangle";
 	default:
 		return "";
 	}

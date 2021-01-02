@@ -488,7 +488,7 @@ void Voice::update_ringmod_pitch()
 void Voice::update_ringmod_smp_period()
 {
 	_ringmod_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch)
-		/ (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1));
+		/ (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1));
 }
 
 void Voice::update_ringmod_smp_count()
@@ -506,11 +506,12 @@ void Voice::update_ringmod_waveform_index()
 	static unsigned last_index = RINGMOD_WAVEFORM_SIZE - 1;
 	if (_ringmod_waveform_index == 0 and _ringmod_back) {
 		_ringmod_back = false;
-	} else if (_ringmod_waveform_index == last_index and _patch->ringmod.mirror
+	} else if (_ringmod_waveform_index == last_index and
+				  _patch->ringmod.loop == RingMod::Loop::PingPong
 	           and not _ringmod_back) {
 		_ringmod_back = true;
 	} else if (_ringmod_waveform_index == last_index
-	           and not _patch->ringmod.mirror) {
+	           and _patch->ringmod.loop != RingMod::Loop::PingPong) {
 		_ringmod_waveform_index = 0;
 	} else if (_ringmod_back) {
 		_ringmod_waveform_index--;
@@ -542,47 +543,62 @@ void Voice::update_buzzer()
 
 void Voice::update_buzzer_off()
 {
-	_buzzer_off = note_on ?
-	   (0 <= _patch->buzzer.time and _patch->buzzer.time < on_time) : true;
+	_buzzer_off = note_on ? (not _patch->buzzer.enabled) : true;
 }
 
 void Voice::update_buzzer_pitch()
 {
-	_buzzer_pitch = _patch->buzzer.detune + _final_pitch;
+	_buzzer_pitch = _ringmod_pitch;
 }
 
 void Voice::update_buzzer_period()
 {
-	_buzzer_period = _engine->pitch2envperiod(_buzzer_pitch);
-	if (_patch->buzzer.shape == Buzzer::Shape::DownTriangle or
-	    _patch->buzzer.shape == Buzzer::Shape::UpTriangle) {
-		_buzzer_period /= 2;
-	}
+	double tbp = _buzzer_pitch;
+	if (_patch->ringmod.loop == RingMod::Loop::PingPong)
+		tbp += 12.0;
+	_buzzer_period = _engine->pitch2envperiod(tbp);
 }
 
 void Voice::update_buzzer_shape()
 {
-	if (_patch->buzzer.shape != _engine->buzzershape) {
+	if (_patch->buzzer.shape != _engine->buzzershape
+	    or _patch->ringmod.loop != _engine->ringmodloop) {
 		int ym_shape = 0;
 		switch(_patch->buzzer.shape) {
 		case Buzzer::Shape::DownSaw:
-			ym_shape = 8;
-			break;
-		case Buzzer::Shape::DownTriangle:
-			ym_shape = 10;
+			switch(_patch->ringmod.loop) {
+			case RingMod::Loop::Off:
+				ym_shape = 8;		  // NEXT
+				break;
+			case RingMod::Loop::Forward:
+				ym_shape = 8;
+				break;
+			case RingMod::Loop::PingPong:
+				ym_shape = 10;
+				break;
+			}
 			break;
 		case Buzzer::Shape::UpSaw:
-			ym_shape = 12;
-			break;
-		case Buzzer::Shape::UpTriangle:
-			ym_shape = 14;
+			switch(_patch->ringmod.loop) {
+			case RingMod::Loop::Off:
+				ym_shape = 12;		  // NEXT
+				break;
+			case RingMod::Loop::Forward:
+				ym_shape = 12;
+				break;
+			case RingMod::Loop::PingPong:
+				ym_shape = 14;
+				break;
+			}
 			break;
 		default:
 			std::cerr << "Case not implemented, there's likely a bug" << std::endl;
 			break;
 		}
 		ayumi_set_envelope_shape(&_engine->ay, ym_shape);
+		_engine->ayenvshape = ym_shape;
 		_engine->buzzershape = _patch->buzzer.shape;
+		_engine->ringmodloop = _patch->ringmod.loop;
 	}
 }
 
@@ -622,7 +638,7 @@ void Voice::reset_ringmod()
 
 	// Whole ringmod period
 	double wrp = _ringmod_smp_period
-		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
+		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1);
 
 	// Update ringmod count to be in sync
 	float phase = _patch->ringmod.reset ? _patch->ringmod.phase
@@ -632,14 +648,14 @@ void Voice::reset_ringmod()
 
 void Voice::reset_buzzer()
 {
-	if (not _patch->buzzer.reset)
+	if (not _patch->ringmod.reset)
 		return;
 
 	// Make sure the buzzer period is correct
 	update_buzzer_shape();
 	update_buzzer_pitch();
 	update_buzzer_period();
-	_engine->ay.envelope_counter = std::lround(_buzzer_period * _patch->buzzer.phase);
+	_engine->ay.envelope_counter = std::lround(_buzzer_period * _patch->ringmod.phase);
 }
 
 double Voice::velocity_to_level(double velocity_sensitivity, unsigned char velocity)

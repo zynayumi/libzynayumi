@@ -42,6 +42,8 @@ Engine::Engine(const Zynayumi& ref)
 	  emulmode(EmulMode::YM2149),
 	  playmode(PlayMode::Mono),
 	  buzzershape(Buzzer::Shape::Count),
+	  ringmodloop(RingMod::Loop::Count),
+	  ayenvshape(0),
 	  previous_pitch(-1),
 	  last_pitch(-1),
 	  lower_note_freq(8.1757989156),
@@ -91,6 +93,7 @@ void Engine::audio_process(float* left_out, float* right_out,
 		bool is_ym2149 = emulmode == EmulMode::YM2149;
 		clock_rate = is_ym2149 ? YM2149_CLOCK_RATE : AY8910_CLOCK_RATE;
 		ayumi_configure(&ay, is_ym2149, clock_rate, sample_rate);
+		ayumi_set_envelope_shape(&ay, ayenvshape);
 		emulmode = _zynayumi.patch.emulmode;
 	}
 

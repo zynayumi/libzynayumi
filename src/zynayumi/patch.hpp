@@ -138,15 +138,28 @@ class RingMod {
 public:
 	RingMod();
 
+	enum class Loop {
+		Off,
+		Forward,
+		PingPong,
+
+		Count
+	};
+
 	int waveform[RINGMOD_WAVEFORM_SIZE];     // Sample volume levels
 
 	bool reset;                              // Whether ring modulation
 	                                         // is reset at each key
 	                                         // stroke
 
-	float phase;                             // Initial phase, from 0.0 to 1.0
-	
-	bool mirror;                             // Add 8 mirroring samples
+	bool sync;                               // Whether it is synced
+														  // with tone wave cycle
+
+	float phase;                             // Initial phase, from 0.0
+	                                         // to 1.0
+
+	Loop loop;                               // Waveform (or buzzer)
+	                                         // loop mode
 
 	float detune;                            // Relative detune in
 	                                         // semitone compared to
@@ -169,24 +182,17 @@ public:
 
 	enum class Shape {
 		DownSaw,                  // 8
-		DownTriangle,             // 10
 		UpSaw,                    // 12
-		UpTriangle,               // 14
 
 		Count
 	};
 
+	bool enabled;					  // Whether the buzzer is enabled. If
+	                             // so it inherits all attributes of
+	                             // the ring modulator (reset, sync,
+	                             // detune, etc).
+
 	Shape shape;                 // Buzzer shape
-
-	bool reset;                   // Whether to reset the phase at each
-                                // on note
-
-	float phase;                 // Initial phase, from 0.0 to 1.0
-	
-	float time;                  // Buzzer duration in second, inf if
-                                // negative.
-
-	float detune;                // Detune in semitone.
 };
 
 class Seq {
@@ -304,6 +310,7 @@ public:
 
 std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
+std::string to_string(RingMod::Loop lp);
 std::string to_string(Buzzer::Shape sh);
 std::string to_string(LFO::Shape sh);
 
