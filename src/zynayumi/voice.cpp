@@ -96,9 +96,9 @@ void Voice::update()
 
 	// Sync
 	if (_first_update) {
-		if (_patch->tone.sync) sync_tone();
-		if (_patch->ringmod.sync) sync_ringmod();
-		if (_patch->buzzer.sync) sync_buzzer();
+		sync_tone();
+		sync_ringmod();
+		sync_buzzer();
 		_first_update = false;
 	}
 
@@ -598,6 +598,9 @@ void Voice::update_final_level()
 
 void Voice::sync_tone()
 {
+	if (not _patch->tone.sync)
+		return;
+
 	struct tone_channel& ch = _engine->ay.channels[ym_channel];
 	double tp = ch.tone_period;
 	double wtp = 2 * tp;            // Whole tone period
@@ -622,11 +625,16 @@ void Voice::sync_ringmod()
 		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.mirror ? 2 : 1);
 
 	// Update ringmod count to be in sync
-	_ringmod_smp_count = _patch->ringmod.phase * wrp;
+	float phase = _patch->ringmod.sync ? _patch->ringmod.phase
+		: ((float)rand() / (float)RAND_MAX);
+	_ringmod_smp_count = phase * wrp;
 }
 
 void Voice::sync_buzzer()
 {
+	if (not _patch->buzzer.sync)
+		return;
+
 	// Make sure the buzzer period is correct
 	update_buzzer_shape();
 	update_buzzer_pitch();
