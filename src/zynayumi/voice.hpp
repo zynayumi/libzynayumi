@@ -193,9 +193,9 @@ private:
 	void update_buzzer_shape();
    void update_seq_level();
 	void update_final_level();
-	void sync_tone();
-	void sync_ringmod();
-	void sync_buzzer();
+	void reset_tone();
+	void reset_ringmod();
+	void reset_buzzer();
 
 	static double velocity_to_level(double velocity_sensitivity,
 	                                unsigned char velocity);

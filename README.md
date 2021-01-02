@@ -125,7 +125,7 @@ but if it starts then it should run flawlessly.
   - 7: UnisonRandArp, like MonoRandArp with all voices in unison.
   - 8: Poly, alternate between the three voices of the YM2149.
 
-- **Tone sync**: whether the phase of the tone oscillator gets reset
+- **Tone reset**: whether the phase of the tone oscillator gets reset
   to *Tone phase* when a new on note is created.
 
 - **Tone phase**: phase of the tone oscillator.  Ranges from 0.0 to
@@ -232,7 +232,7 @@ but if it starts then it should run flawlessly.
   square waveform, thus creating a ring modulation.  Ranges from 0 to
   15.
 
-- **RingMod sync**: whether the phase of the ring modulation is
+- **RingMod reset**: whether the phase of the ring modulation is
   synchronized with the phase of the square tone when a new on note is
   created.
 
@@ -268,7 +268,7 @@ but if it starts then it should run flawlessly.
   - 2: UpSaw
   - 3: UpTriangle
   
-- **Buzzer sync**: whether the phase of the buzzer gets reset to
+- **Buzzer reset**: whether the phase of the buzzer gets reset to
   *Buzzer phase* when a new on note is created.
 
 - **Buzzer phase**: phase of the buzzer.  Ranges from 0.0 to 1.0.
@@ -419,7 +419,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Fix Buzzer sync
+- [ ] Fix Buzzer reset
 - [ ] Add curviness pitch env parameter
 - [ ] Replace fixed ringmod freq by pitch (affected by detune and transpose)
 - [ ] Add to seq

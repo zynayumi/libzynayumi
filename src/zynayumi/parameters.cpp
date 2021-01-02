@@ -267,10 +267,10 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                    PLAY_MODE_DFLT);
 
 	// Tone
-	parameters[TONE_SYNC] = new BoolParameter(TONE_SYNC_NAME,
-	                                          TONE_SYNC_UNIT,
-	                                          &patch.tone.sync,
-	                                          TONE_SYNC_DFLT);
+	parameters[TONE_RESET] = new BoolParameter(TONE_RESET_NAME,
+	                                           TONE_RESET_UNIT,
+	                                           &patch.tone.reset,
+	                                           TONE_RESET_DFLT);
 
 	parameters[TONE_PHASE] = new LinearFloatParameter(TONE_PHASE_NAME,
 	                                                  TONE_PHASE_UNIT,
@@ -536,10 +536,10 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                       RINGMOD_WAVEFORM_LEVEL_L,
 	                                                       RINGMOD_WAVEFORM_LEVEL_U);
 
-	parameters[RINGMOD_SYNC] = new BoolParameter(RINGMOD_SYNC_NAME,
-	                                             RINGMOD_SYNC_UNIT,
-	                                             &patch.ringmod.sync,
-	                                             RINGMOD_SYNC_DFLT);
+	parameters[RINGMOD_RESET] = new BoolParameter(RINGMOD_RESET_NAME,
+	                                              RINGMOD_RESET_UNIT,
+	                                              &patch.ringmod.reset,
+	                                              RINGMOD_RESET_DFLT);
 
 	parameters[RINGMOD_PHASE] = new LinearFloatParameter(RINGMOD_PHASE_NAME,
 	                                                     RINGMOD_PHASE_UNIT,
@@ -594,10 +594,10 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                            &patch.buzzer.shape,
 	                                                            BUZZER_SHAPE_DFLT);
 
-	parameters[BUZZER_SYNC] = new BoolParameter(BUZZER_SYNC_NAME,
-	                                            BUZZER_SYNC_UNIT,
-	                                            &patch.buzzer.sync,
-	                                            BUZZER_SYNC_DFLT);
+	parameters[BUZZER_RESET] = new BoolParameter(BUZZER_RESET_NAME,
+	                                             BUZZER_RESET_UNIT,
+	                                             &patch.buzzer.reset,
+	                                             BUZZER_RESET_DFLT);
 
 	parameters[BUZZER_PHASE] = new LinearFloatParameter(BUZZER_PHASE_NAME,
 	                                                    BUZZER_PHASE_UNIT,
@@ -1449,7 +1449,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.emulmode = zynayumi::EmulMode::" << zynayumi::to_string(patch.emulmode) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.playmode = zynayumi::PlayMode::" << zynayumi::to_string(patch.playmode) << ";" << std::endl;
 	// Tone
-	ss << indent << "prmtrs->patch.tone.sync = " << bool_to_string(patch.tone.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.tone.reset = " << bool_to_string(patch.tone.reset) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.tone.phase = " << patch.tone.phase << ";" << std::endl;
 	ss << indent << "prmtrs->patch.tone.time = " << float_to_string(patch.tone.time) << ";" << std::endl;
 	ss << indent << "prmtrs->tone_detune = " << tone_detune << ";" << std::endl;
@@ -1478,7 +1478,7 @@ std::string Parameters::to_string(std::string indent) const
 	// Ring Mod
 	for (unsigned i = 0; i < RINGMOD_WAVEFORM_SIZE; i++)
 		ss << indent << "prmtrs->patch.ringmod.waveform[" << i << "] = " << patch.ringmod.waveform[i] << ";" << std::endl;
-	ss << indent << "prmtrs->patch.ringmod.sync = " << bool_to_string(patch.ringmod.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.reset = " << bool_to_string(patch.ringmod.reset) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.phase = " << patch.ringmod.phase << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.mirror = " << bool_to_string(patch.ringmod.mirror) << ";" << std::endl;
 	ss << indent << "prmtrs->ringmod_detune = " << ringmod_detune << ";" << std::endl;
@@ -1488,7 +1488,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.ringmod.depth = " << patch.ringmod.depth << ";" << std::endl;
 	// Buzzer
 	ss << indent << "prmtrs->patch.buzzer.shape = zynayumi::Buzzer::Shape::" << zynayumi::to_string(patch.buzzer.shape) << ";" << std::endl;
-	ss << indent << "prmtrs->patch.buzzer.sync = " << bool_to_string(patch.buzzer.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.buzzer.reset = " << bool_to_string(patch.buzzer.reset) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.buzzer.phase = " << patch.buzzer.phase << ";" << std::endl;
 	ss << indent << "prmtrs->patch.buzzer.time = " << float_to_string(patch.buzzer.time) << ";" << std::endl;
 	ss << indent << "prmtrs->buzzer_detune = " << buzzer_detune << ";" << std::endl;

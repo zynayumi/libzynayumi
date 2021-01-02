@@ -57,7 +57,7 @@ class Tone {
 public:
 	Tone();
 
-	bool sync;                   // Whether the tone phase is reset at
+	bool reset;                   // Whether the tone phase is reset at
                                 // each new on note.
 
 	float phase;                 // Phase, from 0.0 to 1.0
@@ -140,9 +140,9 @@ public:
 
 	int waveform[RINGMOD_WAVEFORM_SIZE];     // Sample volume levels
 
-	bool sync;                               // Whether ring
-	                                         // modulation is in sync
-	                                         // with YM2149 oscilator
+	bool reset;                              // Whether ring modulation
+	                                         // is reset at each key
+	                                         // stroke
 
 	float phase;                             // Initial phase, from 0.0 to 1.0
 	
@@ -178,7 +178,7 @@ public:
 
 	Shape shape;                 // Buzzer shape
 
-	bool sync;                   // Whether to reset the phase at each
+	bool reset;                   // Whether to reset the phase at each
                                 // on note
 
 	float phase;                 // Initial phase, from 0.0 to 1.0

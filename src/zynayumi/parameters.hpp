@@ -302,7 +302,7 @@ enum ParameterIndex {
 	PLAY_MODE,
 
 	// Tone
-	TONE_SYNC,
+	TONE_RESET,
 	TONE_PHASE,
 	TONE_TIME,
 	TONE_DETUNE,
@@ -350,7 +350,7 @@ enum ParameterIndex {
 	RINGMOD_WAVEFORM_LEVEL14,
 	RINGMOD_WAVEFORM_LEVEL15,
 	RINGMOD_WAVEFORM_LEVEL16,
-	RINGMOD_SYNC,
+	RINGMOD_RESET,
 	RINGMOD_PHASE,
 	RINGMOD_MIRROR,
 	RINGMOD_DETUNE,
@@ -361,7 +361,7 @@ enum ParameterIndex {
 
 	// Buzzer
 	BUZZER_SHAPE,
-	BUZZER_SYNC,
+	BUZZER_RESET,
 	BUZZER_PHASE,
 	BUZZER_TIME,
 	BUZZER_DETUNE,
@@ -474,7 +474,7 @@ enum ParameterIndex {
 // Parameter names
 #define EMUL_MODE_NAME "Emulation mode"
 #define PLAY_MODE_NAME "Play mode"
-#define TONE_SYNC_NAME "Tone sync"
+#define TONE_RESET_NAME "Tone reset"
 #define TONE_PHASE_NAME "Tone phase"
 #define TONE_TIME_NAME "Tone time"
 #define TONE_DETUNE_NAME "Tone detune"
@@ -512,7 +512,7 @@ enum ParameterIndex {
 #define RINGMOD_WAVEFORM_LEVEL14_NAME "RingMod waveform level 14"
 #define RINGMOD_WAVEFORM_LEVEL15_NAME "RingMod waveform level 15"
 #define RINGMOD_WAVEFORM_LEVEL16_NAME "RingMod waveform level 16"
-#define RINGMOD_SYNC_NAME "RingMod sync"
+#define RINGMOD_RESET_NAME "RingMod reset"
 #define RINGMOD_PHASE_NAME "RingMod phase"
 #define RINGMOD_MIRROR_NAME "RingMod mirror"
 #define RINGMOD_DETUNE_NAME "RingMod detune"
@@ -521,7 +521,7 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_NAME "RingMod fixed vs relative"
 #define RINGMOD_DEPTH_NAME "RingMod depth"
 #define BUZZER_SHAPE_NAME "Buzzer shape"
-#define BUZZER_SYNC_NAME "Buzzer sync"
+#define BUZZER_RESET_NAME "Buzzer reset"
 #define BUZZER_PHASE_NAME "Buzzer phase"
 #define BUZZER_TIME_NAME "Buzzer time"
 #define BUZZER_DETUNE_NAME "Buzzer detune"
@@ -621,7 +621,7 @@ enum ParameterIndex {
 #define EMPTY ""
 #define EMUL_MODE_UNIT EMPTY
 #define PLAY_MODE_UNIT EMPTY
-#define TONE_SYNC_UNIT EMPTY
+#define TONE_RESET_UNIT EMPTY
 #define TONE_PHASE_UNIT EMPTY
 #define TONE_TIME_UNIT SECOND
 #define TONE_DETUNE_UNIT SEMITONE
@@ -644,7 +644,7 @@ enum ParameterIndex {
 #define PITCH_ENV_ATTACK_PITCH_UNIT SEMITONE
 #define PITCH_ENV_TIME_UNIT SECOND
 #define RINGMOD_WAVEFORM_LEVEL_UNIT EMPTY
-#define RINGMOD_SYNC_UNIT EMPTY
+#define RINGMOD_RESET_UNIT EMPTY
 #define RINGMOD_PHASE_UNIT EMPTY
 #define RINGMOD_MIRROR_UNIT EMPTY
 #define RINGMOD_DETUNE_UNIT SEMITONE
@@ -653,7 +653,7 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_UNIT EMPTY
 #define RINGMOD_DEPTH_UNIT EMPTY
 #define BUZZER_SHAPE_UNIT EMPTY
-#define BUZZER_SYNC_UNIT EMPTY
+#define BUZZER_RESET_UNIT EMPTY
 #define BUZZER_PHASE_UNIT EMPTY
 #define BUZZER_TIME_UNIT SECOND
 #define BUZZER_DETUNE_UNIT SEMITONE
@@ -688,7 +688,7 @@ enum ParameterIndex {
 // Parameter defaults
 #define EMUL_MODE_DFLT EmulMode::YM2149
 #define PLAY_MODE_DFLT PlayMode::Mono
-#define TONE_SYNC_DFLT true
+#define TONE_RESET_DFLT true
 #define TONE_PHASE_DFLT 0.0f
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()
 #define TONE_TIME_DFLT_ALT -1.0f // In case infinity isn't supported
@@ -712,7 +712,7 @@ enum ParameterIndex {
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0f
 #define PITCH_ENV_TIME_DFLT 0.0f
 #define RINGMOD_WAVEFORM_LEVEL_DFLT MAX_LEVEL
-#define RINGMOD_SYNC_DFLT true
+#define RINGMOD_RESET_DFLT true
 #define RINGMOD_PHASE_DFLT 0.0f
 #define RINGMOD_MIRROR_DFLT true
 #define RINGMOD_DETUNE_DFLT 0.0f
@@ -731,7 +731,7 @@ enum ParameterIndex {
 #define SEQ_LOOP_DFLT 0
 #define SEQ_END_DFLT 0
 #define BUZZER_SHAPE_DFLT Buzzer::Shape::DownSaw
-#define BUZZER_SYNC_DFLT true
+#define BUZZER_RESET_DFLT true
 #define BUZZER_PHASE_DFLT 0.0f
 #define BUZZER_TIME_DFLT 0.0f
 #define BUZZER_DETUNE_DFLT 0.0f
@@ -754,8 +754,8 @@ enum ParameterIndex {
 #define OVERSAMPLING_DFLT 2
 
 // Parameter ranges
-#define TONE_SYNC_L 0.0f
-#define TONE_SYNC_U 1.0f
+#define TONE_RESET_L 0.0f
+#define TONE_RESET_U 1.0f
 #define TONE_PHASE_L 0.0f
 #define TONE_PHASE_U 1.0f
 #define TONE_TIME_L 0.0f
@@ -804,8 +804,8 @@ enum ParameterIndex {
 #define PITCH_ENV_TIME_U 10.0f
 #define RINGMOD_WAVEFORM_LEVEL_L 0
 #define RINGMOD_WAVEFORM_LEVEL_U MAX_LEVEL
-#define RINGMOD_SYNC_L 0.0f
-#define RINGMOD_SYNC_U 1.0f
+#define RINGMOD_RESET_L 0.0f
+#define RINGMOD_RESET_U 1.0f
 #define RINGMOD_PHASE_L 0.0f
 #define RINGMOD_PHASE_U 1.0f
 #define RINGMOD_MIRROR_L 0.0f
@@ -820,8 +820,8 @@ enum ParameterIndex {
 #define RINGMOD_FIXED_VS_RELATIVE_U 1.0f
 #define RINGMOD_DEPTH_L 0
 #define RINGMOD_DEPTH_U MAX_LEVEL
-#define BUZZER_SYNC_L 0.0f
-#define BUZZER_SYNC_U 1.0f
+#define BUZZER_RESET_L 0.0f
+#define BUZZER_RESET_U 1.0f
 #define BUZZER_PHASE_L 0.0f
 #define BUZZER_PHASE_U 1.0f
 #define BUZZER_TIME_L 0.0f

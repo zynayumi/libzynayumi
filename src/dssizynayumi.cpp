@@ -135,8 +135,8 @@ void initialise_2() {
 	               -delta, (double)PlayMode::Count -1.0 + delta);
 
 	// Tone
-	ports.add_port(c_desc, TONE_SYNC_NAME, t_desc | d_1,
-	               TONE_SYNC_L - delta, TONE_SYNC_U + delta);
+	ports.add_port(c_desc, TONE_RESET_NAME, t_desc | d_1,
+	               TONE_RESET_L - delta, TONE_RESET_U + delta);
 	ports.add_port(c_desc, TONE_PHASE_NAME, r_desc | d_0,
 	               TONE_PHASE_L - delta, TONE_PHASE_U + delta);
 	ports.add_port(c_desc, TONE_TIME_NAME, r_desc | d_min,
@@ -347,8 +347,8 @@ void initialise_2() {
 	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
 	ports.add_port(c_desc, RINGMOD_WAVEFORM_LEVEL8_NAME, i_desc | d_max,
 	               RINGMOD_WAVEFORM_LEVEL_L, RINGMOD_WAVEFORM_LEVEL_U);
-	ports.add_port(c_desc, RINGMOD_SYNC_NAME, t_desc | d_1,
-	               RINGMOD_SYNC_L - delta, RINGMOD_SYNC_U + delta);
+	ports.add_port(c_desc, RINGMOD_RESET_NAME, t_desc | d_1,
+	               RINGMOD_RESET_L - delta, RINGMOD_RESET_U + delta);
 	ports.add_port(c_desc, RINGMOD_PHASE_NAME, r_desc | d_0,
 	               RINGMOD_PHASE_L - delta, RINGMOD_PHASE_U + delta);
 	ports.add_port(c_desc, RINGMOD_MIRROR_NAME, t_desc | d_1,
@@ -367,8 +367,8 @@ void initialise_2() {
 	// Buzzer
 	ports.add_port(c_desc, BUZZER_SHAPE_NAME, i_desc | d_0,
 	               -delta, (double)Buzzer::Shape::Count -1.0 + delta);
-	ports.add_port(c_desc, BUZZER_SYNC_NAME, t_desc | d_1,
-	               BUZZER_SYNC_L - delta, BUZZER_SYNC_U + delta);
+	ports.add_port(c_desc, BUZZER_RESET_NAME, t_desc | d_1,
+	               BUZZER_RESET_L - delta, BUZZER_RESET_U + delta);
 	ports.add_port(c_desc, BUZZER_PHASE_NAME, r_desc | d_0,
 	               BUZZER_PHASE_L - delta, BUZZER_PHASE_U + delta);
 	ports.add_port(c_desc, BUZZER_TIME_NAME, r_desc | d_0,

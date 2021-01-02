@@ -42,7 +42,7 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.name = "Heu Bass";
 	prmtrs->patch.emulmode = zynayumi::EmulMode::YM2149;
 	prmtrs->patch.playmode = zynayumi::PlayMode::Mono;
-	prmtrs->patch.tone.sync = true;
+	prmtrs->patch.tone.reset = true;
 	prmtrs->patch.tone.phase = 0;
 	prmtrs->patch.tone.time = std::numeric_limits<float>::infinity();
 	prmtrs->tone_detune = 0;
@@ -80,7 +80,7 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.ringmod.waveform[13] = 10;
 	prmtrs->patch.ringmod.waveform[14] = 15;
 	prmtrs->patch.ringmod.waveform[15] = 15;
-	prmtrs->patch.ringmod.sync = true;
+	prmtrs->patch.ringmod.reset = true;
 	prmtrs->patch.ringmod.phase = 0;
 	prmtrs->patch.ringmod.mirror = true;
 	prmtrs->ringmod_detune = 0;
@@ -89,7 +89,7 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.ringmod.fixed_vs_relative = 1;
 	prmtrs->patch.ringmod.depth = 15;
 	prmtrs->patch.buzzer.shape = zynayumi::Buzzer::Shape::DownSaw;
-	prmtrs->patch.buzzer.sync = true;
+	prmtrs->patch.buzzer.reset = true;
 	prmtrs->patch.buzzer.phase = 0;
 	prmtrs->patch.buzzer.time = 0.000000;
 	prmtrs->buzzer_detune = 0;
@@ -240,7 +240,7 @@ Programs::~Programs()
 // RingMod waveform level7: 1.000000
 // RingMod waveform level8: 1.000000
 // RingMod mirror: 1
-// RingMod sync: 1
+// RingMod reset: 1
 // RingMod detune: 0.000000
 // RingMod transpose: 0
 // LFO freq: 1.000000

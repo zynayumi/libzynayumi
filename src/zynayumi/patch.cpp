@@ -28,7 +28,7 @@
 
 namespace zynayumi {
 
-Tone::Tone() : sync(true),
+Tone::Tone() : reset(true),
                phase(0.0),
                time(std::numeric_limits<float>::infinity()),
                detune(0),
@@ -47,6 +47,17 @@ Env::Env() : attack_time(0),
 
 PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
 
+RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
+                     reset(true), phase(0.0), mirror(true), detune(0.0),
+                     fixed_freq(1.0), fixed_vs_relative(1.0),
+                     depth(MAX_LEVEL) {}
+
+Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
+                   reset(true),
+                   phase(0.0),
+                   time(0.0),
+                   detune(0.0) {}
+
 Seq::State::State() : tone_pitch(0),
                       noise_period(0),
                       ringmod_depth(1.0),
@@ -55,17 +66,6 @@ Seq::State::State() : tone_pitch(0),
 Seq::Seq() : states(Seq::size),
              tempo(120), host_sync(1), freq(18.0),
              loop(0), end(0) {}
-
-RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
-                     sync(true), phase(0.0), mirror(true), detune(0.0),
-                     fixed_freq(1.0), fixed_vs_relative(1.0),
-                     depth(MAX_LEVEL) {}
-
-Buzzer::Buzzer() : shape(Buzzer::Shape::DownSaw),
-                   sync(true),
-                   phase(0.0),
-                   time(0.0),
-                   detune(0.0) {}
 
 LFO::LFO() : shape(LFO::Shape::Sine),
              freq(1), delay(0), depth(0) {}
