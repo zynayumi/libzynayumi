@@ -24,11 +24,13 @@
 
 #include "patch.hpp"
 
+#include <limits>
+
 namespace zynayumi {
 
 Tone::Tone() : sync(true),
                phase(0.0),
-               time(-1),
+               time(std::numeric_limits<float>::infinity()),
                detune(0),
                spread(0),
                legacy_tuning(false) {}

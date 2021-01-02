@@ -34,6 +34,17 @@
 
 namespace zynayumi {
 
+/**
+ * Affine transformation, based on the equality
+ *
+ * (y - miny) / (maxy - miny) = (x - minx) / (maxx - minx)
+ * y = ((x - minx) / (maxx - minx)) * (maxy - miny) + miny
+ */
+float affine(float minx, float maxx, float miny, float maxy, float x)
+{
+	return ((x - minx) / (maxx - minx)) * (maxy - miny) + miny;
+}
+
 Parameter::Parameter(const std::string& nm, const std::string& unt)
 	: name(nm), unit(unt)
 {
@@ -1404,14 +1415,117 @@ void Parameters::update(ParameterIndex pi)
 	}
 }
 
+void Parameters::update()
+{
+	patch.tone.detune = tone_detune + tone_transpose;
+	patch.seq.freq = to_freq(patch.seq.host_sync ?
+									 zynayumi.get_bpm() :
+									 patch.seq.tempo,
+									 seq_beat_divisor,
+									 seq_beat_multiplier);
+	patch.ringmod.detune = ringmod_detune + ringmod_transpose;
+	patch.buzzer.detune = buzzer_detune + buzzer_transpose;
+}
+
+std::string bool_to_string(bool b)
+{
+	return b ? "true" : "false";
+}
+
+std::string float_to_string(float f)
+{
+	if (f == std::numeric_limits<float>::infinity())
+		return "std::numeric_limits<float>::infinity()";
+	return std::to_string(f);
+}
+
 std::string Parameters::to_string(std::string indent) const
 {
+	// NEXT: use Parameters attributes when available
 	std::stringstream ss;
-	for (std::size_t i = 0; i < parameters.size(); i++) {
-		if (i != 0)
-			ss << std::endl;
-		ss << parameters[i]->to_string(indent);
+	// Name
+	ss << indent << "prmtrs->patch.name = " << patch.name << ";" << std::endl;
+	// Modes
+	ss << indent << "prmtrs->patch.emulmode = zynayumi::EmulMode::" << zynayumi::to_string(patch.emulmode) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.playmode = zynayumi::PlayMode::" << zynayumi::to_string(patch.playmode) << ";" << std::endl;
+	// Tone
+	ss << indent << "prmtrs->patch.tone.sync = " << bool_to_string(patch.tone.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.tone.phase = " << patch.tone.phase << ";" << std::endl;
+	ss << indent << "prmtrs->patch.tone.time = " << float_to_string(patch.tone.time) << ";" << std::endl;
+	ss << indent << "prmtrs->tone_detune = " << tone_detune << ";" << std::endl;
+	ss << indent << "prmtrs->tone_transpose = " << tone_transpose << ";" << std::endl;
+	ss << indent << "prmtrs->patch.tone.spread = " << patch.tone.spread << ";" << std::endl;
+	ss << indent << "prmtrs->patch.tone.legacy_tuning = " << bool_to_string(patch.tone.legacy_tuning) << ";" << std::endl;
+	// Noise
+	ss << indent << "prmtrs->patch.noise.time = " << float_to_string(patch.noise.time) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.noise.period = " << patch.noise.period << ";" << std::endl;
+	// Noise Period Envelop
+	ss << indent << "prmtrs->patch.noise_period_env.attack = " << patch.noise_period_env.attack << ";" << std::endl;
+	ss << indent << "prmtrs->patch.noise_period_env.time = " << patch.noise_period_env.time << ";" << std::endl;
+	// Env
+	ss << indent << "prmtrs->patch.env.attack_time = " << patch.env.attack_time << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.hold1_level = " << patch.env.hold1_level << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.inter1_time = " << patch.env.inter1_time << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.hold2_level = " << patch.env.hold2_level << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.inter2_time = " << patch.env.inter2_time << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.hold3_level = " << patch.env.hold3_level << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.decay_time = " << patch.env.decay_time << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.sustain_level = " << patch.env.sustain_level << ";" << std::endl;
+	ss << indent << "prmtrs->patch.env.release = " << patch.env.release << ";" << std::endl;
+	// Pitch Env
+	ss << indent << "prmtrs->patch.pitchenv.attack_pitch = " << patch.pitchenv.attack_pitch << ";" << std::endl;
+	ss << indent << "prmtrs->patch.pitchenv.time = " << patch.pitchenv.time << ";" << std::endl;
+	// Ring Mod
+	for (unsigned i = 0; i < RINGMOD_WAVEFORM_SIZE; i++)
+		ss << indent << "prmtrs->patch.ringmod.waveform[" << i << "] = " << patch.ringmod.waveform[i] << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.sync = " << bool_to_string(patch.ringmod.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.phase = " << patch.ringmod.phase << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.mirror = " << bool_to_string(patch.ringmod.mirror) << ";" << std::endl;
+	ss << indent << "prmtrs->ringmod_detune = " << ringmod_detune << ";" << std::endl;
+	ss << indent << "prmtrs->ringmod_transpose = " << ringmod_transpose << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.fixed_freq = " << patch.ringmod.fixed_freq << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.fixed_vs_relative = " << patch.ringmod.fixed_vs_relative << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.depth = " << patch.ringmod.depth << ";" << std::endl;
+	// Buzzer
+	ss << indent << "prmtrs->patch.buzzer.shape = zynayumi::Buzzer::Shape::" << zynayumi::to_string(patch.buzzer.shape) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.buzzer.sync = " << bool_to_string(patch.buzzer.sync) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.buzzer.phase = " << patch.buzzer.phase << ";" << std::endl;
+	ss << indent << "prmtrs->patch.buzzer.time = " << float_to_string(patch.buzzer.time) << ";" << std::endl;
+	ss << indent << "prmtrs->buzzer_detune = " << buzzer_detune << ";" << std::endl;
+	ss << indent << "prmtrs->buzzer_transpose = " << buzzer_transpose << ";" << std::endl;
+	// Seq
+	for (unsigned i = 0; i < Seq::size; i++) {
+		ss << indent << "prmtrs->patch.seq.states[" << i << "].tone_pitch = " << patch.seq.states[i].tone_pitch << ";" << std::endl;
+		ss << indent << "prmtrs->patch.seq.states[" << i << "].noise_period = " << patch.seq.states[i].noise_period << ";" << std::endl;
+		ss << indent << "prmtrs->patch.seq.states[" << i << "].ringmod_depth = " << patch.seq.states[i].ringmod_depth << ";" << std::endl;
+		ss << indent << "prmtrs->patch.seq.states[" << i << "].level = " << patch.seq.states[i].level << ";" << std::endl;
 	}
+	ss << indent << "prmtrs->patch.seq.tempo = " << patch.seq.tempo << ";" << std::endl;
+	ss << indent << "prmtrs->patch.seq.host_sync = " << bool_to_string(patch.seq.host_sync) << ";" << std::endl;
+	ss << indent << "prmtrs->seq_beat_divisor = " << seq_beat_divisor << ";" << std::endl;
+	ss << indent << "prmtrs->seq_beat_multiplier = " << seq_beat_multiplier << ";" << std::endl;
+	ss << indent << "prmtrs->patch.seq.loop = " << patch.seq.loop << ";" << std::endl;
+	ss << indent << "prmtrs->patch.seq.end = " << patch.seq.end << ";" << std::endl;
+	// LFO
+	ss << indent << "prmtrs->patch.lfo.shape = zynayumi::LFO::Shape::" << zynayumi::to_string(patch.lfo.shape) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.lfo.freq = " << patch.lfo.freq << ";" << std::endl;
+	ss << indent << "prmtrs->patch.lfo.delay = " << patch.lfo.delay << ";" << std::endl;
+	ss << indent << "prmtrs->patch.lfo.depth = " << patch.lfo.depth << ";" << std::endl;
+	// Portamento
+	ss << indent << "prmtrs->patch.portamento.time = " << patch.portamento.time << ";" << std::endl;
+	ss << indent << "prmtrs->patch.portamento.smoothness = " << patch.portamento.smoothness << ";" << std::endl;
+	// Gain
+	ss << indent << "prmtrs->patch.gain = " << patch.gain << ";" << std::endl;
+	// Pan
+	for (unsigned i = 0; i < 3; i++)
+		ss << indent << "prmtrs->patch.pan.ym_channel[" << i << "] = " << patch.pan.ym_channel[i] << ";" << std::endl;
+	// Control
+	ss << indent << "prmtrs->patch.control.pitchwheel = " << patch.control.pitchwheel << ";" << std::endl;
+	ss << indent << "prmtrs->patch.control.velocity_sensitivity = " << patch.control.velocity_sensitivity << ";" << std::endl;
+	ss << indent << "prmtrs->patch.control.ringmod_velocity_sensitivity = " << patch.control.ringmod_velocity_sensitivity << ";" << std::endl;
+	ss << indent << "prmtrs->patch.control.noise_period_pitch_sensitivity = " << patch.control.noise_period_pitch_sensitivity << ";" << std::endl;
+	ss << indent << "prmtrs->patch.control.modulation_sensitivity = " << patch.control.modulation_sensitivity << ";";
+
 	return ss.str();
 }
 

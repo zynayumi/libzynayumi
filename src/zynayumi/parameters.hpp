@@ -35,16 +35,6 @@
 namespace zynayumi {
 
 /**
- * Affine transformation, based on the equality
- *
- * (y - miny) / (maxy - miny) = (x - minx) / (maxx - minx)
- * y = ((x - minx) / (maxx - minx)) * (maxy - miny) + miny
- */
-static float affine(float minx, float maxx, float miny, float maxy, float x) {
-	return ((x - minx) / (maxx - minx)) * (maxy - miny) + miny;
-}
-
-/**
  * Class to hold user parameter, name, value and other features
  * depending on the parameter type.
  */
@@ -942,6 +932,7 @@ public:
 
 	// Call after setting changing a value
 	void update(ParameterIndex pi);
+	void update();
 
 	// Convert parameters into string (useful for creating presets)
 	std::string to_string(std::string indent=std::string()) const;
@@ -956,12 +947,12 @@ public:
 	// to the user
 	float tone_detune;
 	int tone_transpose;
-	int seq_beat_divisor;
-	int seq_beat_multiplier;
 	float ringmod_detune;
 	int ringmod_transpose;
 	float buzzer_detune;
 	int buzzer_transpose;
+	int seq_beat_divisor;
+	int seq_beat_multiplier;
 };
 
 } // ~namespace zynayumi

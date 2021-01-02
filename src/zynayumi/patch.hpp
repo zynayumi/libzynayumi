@@ -94,8 +94,8 @@ public:
 };
 
 /**
- * Envelope. Durations are in second and levels are between
- * 0.0 and 1.0.
+ * Amplitude Envelope. Durations are in second and levels are between
+ * 0 and 15.
  */
 class Env {
 public:
@@ -123,28 +123,6 @@ public:
 	int attack_pitch;            // Relative pitch of the attack
 	float time;                  // Duration to go from attack pitch to
 	                             // tone pitch.
-};
-
-class Seq {
-public:
-	struct State {
-		State();
-
-		int tone_pitch;           // Relative pitch in semitone
-		int noise_period;         // Relative noise period
-		int ringmod_depth;        // Depth of the ring modulator
-		int level;                // Voice level
-	};
-
-	Seq();
-
-	static const unsigned size = 16;
-	std::vector<State> states;   // Array of sequencer states
-	float tempo;                 // Tempo used to calculate the frequency
-	bool host_sync;              // Where the tempo is determined by the host
-	float freq;                  // Pitch change frequency
-	int loop;                    // Looping point
-	int end;                     // End point
 };
 
 /**
@@ -209,6 +187,28 @@ public:
                                 // negative.
 
 	float detune;                // Detune in semitone.
+};
+
+class Seq {
+public:
+	struct State {
+		State();
+
+		int tone_pitch;           // Relative pitch in semitone
+		int noise_period;         // Relative noise period
+		int ringmod_depth;        // Depth of the ring modulator
+		int level;                // Voice level
+	};
+
+	Seq();
+
+	static const unsigned size = 16;
+	std::vector<State> states;   // Array of sequencer states
+	float tempo;                 // Tempo used to calculate the frequency
+	bool host_sync;              // Where the tempo is determined by the host
+	float freq;                  // Pitch change frequency
+	int loop;                    // Looping point
+	int end;                     // End point
 };
 
 /**
