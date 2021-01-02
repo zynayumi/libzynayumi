@@ -93,8 +93,6 @@ std::string to_string(PlayMode pm)
 		return "MonoDownArp";
 	case PlayMode::MonoRandArp:
 		return "MonoRandArp";
-	case PlayMode::Poly:
-		return "Poly";
 	case PlayMode::Unison:
 		return "Unison";
 	case PlayMode::UnisonUpArp:
@@ -103,6 +101,8 @@ std::string to_string(PlayMode pm)
 		return "UnisonDownArp";
 	case PlayMode::UnisonRandArp:
 		return "UnisonRandArp";
+	case PlayMode::Poly:
+		return "Poly";
 	default:
 		return "";
 	}
