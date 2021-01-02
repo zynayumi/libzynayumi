@@ -419,6 +419,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Add ringmod and buzzer sync parameters
 - [ ] Fix Buzzer reset
 - [ ] Add curviness pitch env parameter
 - [ ] Replace fixed ringmod freq by pitch (affected by detune and transpose)
