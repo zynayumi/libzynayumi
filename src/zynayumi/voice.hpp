@@ -152,8 +152,10 @@ private:
 	unsigned _ringmod_waveform_index;  // Current waveform index
 	double _ringmod_waveform_level;    // Current waveform level
 	double _ringmod_pitch;             // Pitch of ringmod
-	double _ringmod_smp_period;        // Number of samples to make an
-	                                   // entire cycle
+	double _ringmod_smp_period;        // Number of samples to make a
+	                                   // ringmod waveform segment
+	double _ringmod_whole_smp_period;  // Number of samples to make the
+												  // whole ringmod waveform
 
 	double _buzzer_pitch;              // Pitch of the buzzer
 	int _buzzer_period;                // Period of the buzzer

@@ -360,6 +360,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Support phase change during on note
 - [ ] Support all buzzer shapes
 - [ ] Add ringmod and buzzer sync parameters
 - [ ] Fix Buzzer reset

@@ -487,15 +487,18 @@ void Voice::update_ringmod_pitch()
 
 void Voice::update_ringmod_smp_period()
 {
-	_ringmod_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch)
-		/ (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1));
+	_ringmod_whole_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch);
+	int nsegs = (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1));
+	_ringmod_smp_period = _ringmod_whole_smp_period	/ nsegs;
 }
 
 void Voice::update_ringmod_smp_count()
 {
 	// Update ringmod sample count and waveform index
 	_ringmod_smp_count += _engine->ay.step * DECIMATE_FACTOR;
-	while (_ringmod_smp_period <= _ringmod_smp_count) {
+	double smp_phase = _patch->ringmod.phase * _ringmod_whole_smp_period;
+	// NEXT fix phase during on note
+	while (_ringmod_smp_period <= _ringmod_smp_count /*(_ringmod_smp_count + smp_phase)*/) {
 		_ringmod_smp_count -= _ringmod_smp_period;
 		update_ringmod_waveform_index();
 	}
@@ -568,7 +571,7 @@ void Voice::update_buzzer_shape()
 		case Buzzer::Shape::DownSaw:
 			switch(_patch->ringmod.loop) {
 			case RingMod::Loop::Off:
-				ym_shape = 8;		  // NEXT
+				ym_shape = 8;		  // TODO
 				break;
 			case RingMod::Loop::Forward:
 				ym_shape = 8;
@@ -581,7 +584,7 @@ void Voice::update_buzzer_shape()
 		case Buzzer::Shape::UpSaw:
 			switch(_patch->ringmod.loop) {
 			case RingMod::Loop::Off:
-				ym_shape = 12;		  // NEXT
+				ym_shape = 12;		  // TODO
 				break;
 			case RingMod::Loop::Forward:
 				ym_shape = 12;
@@ -622,12 +625,17 @@ void Voice::reset_tone()
 	double wtp = 2 * tp;            // Whole tone period
 	double counter = std::round(_patch->tone.phase * wtp);
 	if (counter < tp) {
-		ch.tone = 0;
-	} else {
 		ch.tone = 1;
+	} else {
+		ch.tone = 0;
 		counter -= std::floor(tp);
 	}
 	ch.tone_counter = counter;
+}
+
+float floatrand()
+{
+	return ((float)rand() / (float)RAND_MAX);
 }
 
 void Voice::reset_ringmod()
@@ -636,14 +644,9 @@ void Voice::reset_ringmod()
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 
-	// Whole ringmod period
-	double wrp = _ringmod_smp_period
-		* RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1);
-
 	// Update ringmod count to be in sync
-	float phase = _patch->ringmod.reset ? _patch->ringmod.phase
-		: ((float)rand() / (float)RAND_MAX);
-	_ringmod_smp_count = phase * wrp;
+	float init_phase = _patch->ringmod.reset ? _patch->ringmod.phase : floatrand();
+	_ringmod_smp_count = init_phase * _ringmod_whole_smp_period;
 }
 
 void Voice::reset_buzzer()
