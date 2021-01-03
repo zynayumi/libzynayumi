@@ -90,7 +90,7 @@ void Engine::audio_process(float* left_out, float* right_out,
 {
 	// Switch to the correct emulation mode (YM2149 or YM8910)
 	if (_zynayumi.patch.emulmode != emulmode) {
-		bool is_ym2149 = emulmode == EmulMode::YM2149;
+		bool is_ym2149 = _zynayumi.patch.emulmode == EmulMode::YM2149;
 		clock_rate = is_ym2149 ? YM2149_CLOCK_RATE : AY8910_CLOCK_RATE;
 		ayumi_configure(&ay, is_ym2149, clock_rate, sample_rate);
 		ayumi_set_envelope_shape(&ay, ayenvshape);
