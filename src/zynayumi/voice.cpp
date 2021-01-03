@@ -497,8 +497,7 @@ void Voice::update_ringmod_smp_count()
 	// Update ringmod sample count and waveform index
 	_ringmod_smp_count += _engine->ay.step * DECIMATE_FACTOR;
 	double smp_phase = _patch->ringmod.phase * _ringmod_whole_smp_period;
-	// NEXT fix phase during on note
-	while (_ringmod_smp_period <= _ringmod_smp_count /*(_ringmod_smp_count + smp_phase)*/) {
+	while (_ringmod_smp_period <= (_ringmod_smp_count + smp_phase)) {
 		_ringmod_smp_count -= _ringmod_smp_period;
 		update_ringmod_waveform_index();
 	}
@@ -645,7 +644,7 @@ void Voice::reset_ringmod()
 	update_ringmod_smp_period();
 
 	// Update ringmod count to be in sync
-	float init_phase = _patch->ringmod.reset ? _patch->ringmod.phase : floatrand();
+	float init_phase = _patch->ringmod.reset ? 0 : floatrand();
 	_ringmod_smp_count = init_phase * _ringmod_whole_smp_period;
 }
 
