@@ -85,7 +85,7 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.ringmod.loop = zynayumi::RingMod::Loop::PingPong;
 	prmtrs->ringmod_detune = 0;
 	prmtrs->ringmod_transpose = 0;
-	prmtrs->patch.ringmod.fixed_freq = 1;
+	prmtrs->patch.ringmod.fixed_pitch = 0;
 	prmtrs->patch.ringmod.fixed_vs_relative = 1;
 	prmtrs->patch.ringmod.depth = 15;
 	prmtrs->patch.buzzer.enabled = false;

@@ -165,7 +165,7 @@ public:
 	                                         // semitone compared to
 	                                         // the tone
 
-	float fixed_freq;                        // Fixed frequency
+	float fixed_pitch;                       // Fixed pitch
 
 	float fixed_vs_relative;                 // How much fixed vs
                                             // relative (0.0 is all

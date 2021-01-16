@@ -478,7 +478,7 @@ void Voice::update_ringmod_pitch()
 	double fvr = _patch->ringmod.fixed_vs_relative;
 	double rp = _patch->ringmod.detune + _final_pitch;
 	if (fvr < 1.0) {
-		double fp = _engine->freq2pitch(_patch->ringmod.fixed_freq);
+		double fp = _patch->ringmod.detune + _patch->ringmod.fixed_pitch;
 		_ringmod_pitch = linear_interpolate(0.0, fp, 1.0, rp, fvr);
 	} else {
 		_ringmod_pitch = rp;

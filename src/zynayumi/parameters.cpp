@@ -572,12 +572,12 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                 RINGMOD_TRANSPOSE_L,
 	                                                 RINGMOD_TRANSPOSE_U);
 
-	parameters[RINGMOD_FIXED_FREQUENCY] = new CubeFloatParameter(RINGMOD_FIXED_FREQUENCY_NAME,
-	                                                             RINGMOD_FIXED_FREQUENCY_UNIT,
-	                                                             &patch.ringmod.fixed_freq,
-	                                                             RINGMOD_FIXED_FREQUENCY_DFLT,
-	                                                             RINGMOD_FIXED_FREQUENCY_L,
-	                                                             RINGMOD_FIXED_FREQUENCY_U);
+	parameters[RINGMOD_FIXED_PITCH] = new LinearFloatParameter(RINGMOD_FIXED_PITCH_NAME,
+	                                                           RINGMOD_FIXED_PITCH_UNIT,
+	                                                           &patch.ringmod.fixed_pitch,
+	                                                           RINGMOD_FIXED_PITCH_DFLT,
+	                                                           RINGMOD_FIXED_PITCH_L,
+	                                                           RINGMOD_FIXED_PITCH_U);
 
 	parameters[RINGMOD_FIXED_VS_RELATIVE] = new TanFloatParameter(RINGMOD_FIXED_VS_RELATIVE_NAME,
 	                                                              RINGMOD_FIXED_VS_RELATIVE_UNIT,
@@ -1435,7 +1435,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.ringmod.loop = zynayumi::RingMod::Loop::" << zynayumi::to_string(patch.ringmod.loop) << ";" << std::endl;
 	ss << indent << "prmtrs->ringmod_detune = " << ringmod_detune << ";" << std::endl;
 	ss << indent << "prmtrs->ringmod_transpose = " << ringmod_transpose << ";" << std::endl;
-	ss << indent << "prmtrs->patch.ringmod.fixed_freq = " << patch.ringmod.fixed_freq << ";" << std::endl;
+	ss << indent << "prmtrs->patch.ringmod.fixed_pitch = " << patch.ringmod.fixed_pitch << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.fixed_vs_relative = " << patch.ringmod.fixed_vs_relative << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.depth = " << patch.ringmod.depth << ";" << std::endl;
 	// Buzzer

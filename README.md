@@ -167,12 +167,14 @@ $ sudo make install
   modulation waveform relative the square waveform.  Ranges from -36
   to +36.
 
-- **RingMod fixed frequency**: fixed frequency of the ring modulation.
-  Ranges from 1Hz to 5000Hz.
+- **RingMod fixed pitch**: fixed pitch of the ring modulation.  Ranges
+  from 0.0 to 127.0, corresponding respectively to the lowest and
+  highest pitches of the midi standard.  That paramater is also
+  affected by *RingMod detune* and *RingMod transpose*.
 
-- **RingMod fixed vs relative**: how much of the ring modulation
-  frequency is fixed versus tone pitch.  Ranges from 0.0 (completely
-  fixed) to 1.0 (completely determined by tone pitch).
+- **RingMod fixed vs relative**: how much of the ring modulation pitch
+  is fixed versus tone pitch.  Ranges from 0.0 (completely fixed) to
+  1.0 (completely determined by tone pitch).
 
 - **RingMod depth**: level of depth of ring modulation.  Ranges from 0
   (no ring modulation) to 15 (full ring modulation).
@@ -364,7 +366,6 @@ harmful sounds and protect your hearing.
 - [ ] Add ringmod and buzzer sync parameters
 - [ ] Fix Buzzer reset
 - [ ] Add curviness pitch env parameter
-- [ ] (Maybe?) replace fixed ringmod freq by pitch (affected by detune and transpose)
 - [ ] Add to seq
   - [ ] Relative ringmod transpose
   - [ ] On/off tone
