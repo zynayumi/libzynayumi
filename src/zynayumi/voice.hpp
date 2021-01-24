@@ -164,6 +164,9 @@ private:
 
 	bool _first_update;
 
+	bool _tone_trigger;                // True iff tone goes from 0 to 1
+	int _last_tone;
+
 	/**
 	 * Return the spread, null for the first channel, negative for the
 	 * second, positive for the third.
@@ -198,6 +201,8 @@ private:
 	void reset_tone();
 	void reset_ringmod();
 	void reset_buzzer();
+	void sync_ringmod();
+	void sync_buzzer();
 
 	static double velocity_to_level(double velocity_sensitivity,
 	                                unsigned char velocity);

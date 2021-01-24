@@ -363,8 +363,8 @@ harmful sounds and protect your hearing.
 ## TODO
 
 - [ ] Support all buzzer shapes
-- [ ] Add ringmod and buzzer sync parameters
 - [ ] Fix Buzzer reset
+- [ ] Fix buzzer sync
 - [ ] Add curviness pitch env parameter
 - [ ] Add to seq
   - [ ] Relative ringmod transpose

@@ -56,6 +56,8 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _ringmod_back(false)
 	, _ringmod_waveform_index(0)
 	, _first_update(true)
+	, _tone_trigger(false)
+	, _last_tone(_engine->ay.channels[ym_channel].tone)
 {
 }
 
@@ -100,6 +102,28 @@ void Voice::update()
 		reset_ringmod();
 		reset_buzzer();
 		_first_update = false;
+		if (_patch->tone.reset and not _tone_off)
+			_tone_trigger = true;
+	}
+
+	// Sync
+	if (_patch->ringmod.sync) {
+		// Update tone trigger
+		struct tone_channel& ch = _engine->ay.channels[ym_channel];
+		if (_last_tone != ch.tone) {
+			_tone_trigger = true;//(ch.tone == 1);
+			_last_tone = ch.tone;
+		}
+
+		// Sync upon tone trigger
+		if (_tone_trigger) {
+			if (_buzzer_off) {
+				sync_ringmod();
+			} else {
+				sync_buzzer();
+			}
+			_tone_trigger = false;
+		}
 	}
 
 	// Update buzzer
@@ -639,12 +663,12 @@ float floatrand()
 
 void Voice::reset_ringmod()
 {
-	// Make the ring modulation period is correct
+	// Make sure the ring modulation period is correct
 	update_ringmod_pitch();
 	update_ringmod_smp_period();
 
 	// Update ringmod count to be in sync
-	float init_phase = _patch->ringmod.reset ? 0 : floatrand();
+	float init_phase = _patch->ringmod.reset ? 0.0f : floatrand();
 	_ringmod_smp_count = init_phase * _ringmod_whole_smp_period;
 }
 
@@ -653,6 +677,27 @@ void Voice::reset_buzzer()
 	if (not _patch->ringmod.reset)
 		return;
 
+	// Make sure the buzzer period is correct
+	update_buzzer_shape();
+	update_buzzer_pitch();
+	update_buzzer_period();
+	_engine->ay.envelope_counter = std::lround(_buzzer_period * _patch->ringmod.phase);
+}
+
+void Voice::sync_ringmod()
+{
+	// Make sure the ring modulation period is correct
+	update_ringmod_pitch();
+	update_ringmod_smp_period();
+
+	// Update ringmod count to be in sync
+	_ringmod_smp_count = 0;
+	_ringmod_back = false;
+	_ringmod_waveform_index = 0;
+}
+
+void Voice::sync_buzzer()
+{
 	// Make sure the buzzer period is correct
 	update_buzzer_shape();
 	update_buzzer_pitch();
