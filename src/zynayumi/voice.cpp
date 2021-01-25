@@ -530,18 +530,43 @@ void Voice::update_ringmod_smp_count()
 void Voice::update_ringmod_waveform_index()
 {
 	static unsigned last_index = RINGMOD_WAVEFORM_SIZE - 1;
+
+	// Deal with extremities
 	if (_ringmod_waveform_index == 0 and _ringmod_back) {
+		// Inverse backward to forward
 		_ringmod_back = false;
-	} else if (_ringmod_waveform_index == last_index and
-				  _patch->ringmod.loop == RingMod::Loop::PingPong
-	           and not _ringmod_back) {
-		_ringmod_back = true;
-	} else if (_ringmod_waveform_index == last_index
-	           and _patch->ringmod.loop != RingMod::Loop::PingPong) {
-		_ringmod_waveform_index = 0;
-	} else if (_ringmod_back) {
+		return;
+	}
+	if (_ringmod_waveform_index == last_index) {
+		switch(_patch->ringmod.loop) {
+		case RingMod::Loop::Off:
+			// Remain on the last index indefinitely
+			return;
+		case RingMod::Loop::Forward:
+			// Loop back to beginning
+			_ringmod_waveform_index = 0;
+			return;
+		case RingMod::Loop::PingPong:
+			if (not _ringmod_back) {
+				// Inverse forward to backward
+				_ringmod_back = true;
+			} else {
+				// Go back
+				_ringmod_waveform_index--;
+			}
+			return;
+		default:
+			std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+			break;
+		}
+	}
+
+	// Deal with between extremities
+	if (_ringmod_back) {
+		// Go backward
 		_ringmod_waveform_index--;
 	} else {
+		// Go forward
 		_ringmod_waveform_index++;
 	}
 }
