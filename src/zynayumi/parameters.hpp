@@ -332,6 +332,7 @@ enum ParameterIndex {
 	// Pitch envelope
 	PITCH_ENV_ATTACK_PITCH,
 	PITCH_ENV_TIME,
+	PITCH_ENV_SMOOTHNESS,
 
 	// Ring modulation
 	RINGMOD_WAVEFORM_LEVEL1,
@@ -491,8 +492,9 @@ enum ParameterIndex {
 #define ENV_DECAY_TIME_NAME "Env decay time"
 #define ENV_SUSTAIN_LEVEL_NAME "Env sustain level"
 #define ENV_RELEASE_NAME "Env release"
-#define PITCH_ENV_ATTACK_PITCH_NAME "Pitch env attack pitch"
-#define PITCH_ENV_TIME_NAME "Pitch env time"
+#define PITCH_ENV_ATTACK_PITCH_NAME "PitchEnv attack pitch"
+#define PITCH_ENV_TIME_NAME "PitchEnv time"
+#define PITCH_ENV_SMOOTHNESS_NAME "PitchEnv smoothness"
 #define RINGMOD_WAVEFORM_LEVEL1_NAME "RingMod waveform level 1"
 #define RINGMOD_WAVEFORM_LEVEL2_NAME "RingMod waveform level 2"
 #define RINGMOD_WAVEFORM_LEVEL3_NAME "RingMod waveform level 3"
@@ -637,6 +639,7 @@ enum ParameterIndex {
 #define ENV_RELEASE_UNIT SECOND
 #define PITCH_ENV_ATTACK_PITCH_UNIT SEMITONE
 #define PITCH_ENV_TIME_UNIT SECOND
+#define PITCH_ENV_SMOOTHNESS_UNIT EMPTY
 #define RINGMOD_WAVEFORM_LEVEL_UNIT EMPTY
 #define RINGMOD_RESET_UNIT EMPTY
 #define RINGMOD_SYNC_UNIT EMPTY
@@ -702,6 +705,7 @@ enum ParameterIndex {
 #define ENV_RELEASE_DFLT 0.0f
 #define PITCH_ENV_ATTACK_PITCH_DFLT 0.0f
 #define PITCH_ENV_TIME_DFLT 0.0f
+#define PITCH_ENV_SMOOTHNESS_DFLT 0.5f
 #define RINGMOD_WAVEFORM_LEVEL_DFLT MAX_LEVEL
 #define RINGMOD_RESET_DFLT true
 #define RINGMOD_SYNC_DFLT false
@@ -790,6 +794,8 @@ enum ParameterIndex {
 #define PITCH_ENV_ATTACK_PITCH_U 96.0f
 #define PITCH_ENV_TIME_L 0.0f
 #define PITCH_ENV_TIME_U 10.0f
+#define PITCH_ENV_SMOOTHNESS_L 0.0f
+#define PITCH_ENV_SMOOTHNESS_U 1.0f
 #define RINGMOD_WAVEFORM_LEVEL_L 0
 #define RINGMOD_WAVEFORM_LEVEL_U MAX_LEVEL
 #define RINGMOD_RESET_L 0.0f

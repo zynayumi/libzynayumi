@@ -137,6 +137,9 @@ $ sudo make install
 - **PitchEnv time**: time in second to go from attack_pitch to 0 of
   the pitch envelope.  Ranges from 0.0 to 10.0.
 
+- **PitchEnv smoothness**: how smoothly the destination is reached.
+  Ranges from 0.0 (linear and sharp) to 1.0 (smooth).
+
 - **RingMod waveform level1 to level8**: can define an 8 points
   waveform.  That normalized waveform is multipled with the YM2149
   square waveform, thus creating a ring modulation.  Ranges from 0 to

@@ -423,6 +423,13 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                   PITCH_ENV_TIME_L,
 	                                                   PITCH_ENV_TIME_U);
 
+	parameters[PITCH_ENV_SMOOTHNESS] = new LinearFloatParameter(PITCH_ENV_SMOOTHNESS_NAME,
+	                                                            PITCH_ENV_SMOOTHNESS_UNIT,
+	                                                            &patch.pitchenv.smoothness,
+	                                                            PITCH_ENV_SMOOTHNESS_DFLT,
+	                                                            PITCH_ENV_SMOOTHNESS_L,
+	                                                            PITCH_ENV_SMOOTHNESS_U);
+
 	// Ring modulation
 	parameters[RINGMOD_WAVEFORM_LEVEL1] = new IntParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
 	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,

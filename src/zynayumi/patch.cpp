@@ -45,7 +45,7 @@ Env::Env() : attack_time(0),
              hold3_level(MAX_LEVEL), decay_time(0),
              sustain_level(MAX_LEVEL), release(0) {}
 
-PitchEnv::PitchEnv() : attack_pitch(0), time(0) {}
+PitchEnv::PitchEnv() : attack_pitch(0), time(0), smoothness(0.5) {}
 
 RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
                      reset(true), sync(false), phase(0.0),

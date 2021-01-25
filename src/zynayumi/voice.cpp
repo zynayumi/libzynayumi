@@ -280,6 +280,7 @@ void Voice::update_noise_period()
 
 void Voice::update_pitchenv()
 {
+	// NEXT support smoothness
 	double apitch = _patch->pitchenv.attack_pitch;
 	double ptime = _patch->pitchenv.time;
 	_relative_pitchenv_pitch = _patch->pitchenv.time < on_time ? 0.0

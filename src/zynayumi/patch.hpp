@@ -123,6 +123,7 @@ public:
 	int attack_pitch;            // Relative pitch of the attack
 	float time;                  // Duration to go from attack pitch to
 	                             // tone pitch.
+	float smoothness;            // Smoothly reaches the destination pitch
 };
 
 /**
