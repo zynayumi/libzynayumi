@@ -368,11 +368,11 @@ harmful sounds and protect your hearing.
 - [ ] Support all buzzer shapes
 - [ ] Fix Buzzer reset
 - [ ] Fix buzzer sync
-- [ ] Add curviness pitch env parameter
 - [ ] Add to seq
   - [ ] Relative ringmod transpose
   - [ ] On/off tone
   - [ ] On/off noise
+- [ ] Add support for digi drums
 - [ ] Implement *Oversampling*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
 - [ ] Fix ringmod phase issue
