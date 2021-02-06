@@ -165,8 +165,13 @@ double Voice::logistic_interpolate(double x1, double y1,
                                    double x2, double y2,
                                    double x, double scale)
 {
+	// Expedient case, no need to interpolate
+	static const double epsilon = 1e-6;
+	if (std::abs(y1 - y2) <= epsilon or scale <= epsilon)
+		return y2;
+
 	// mu is the x-axis coordinate of the inflection point
-	double mu = (x2 - x1) / 2.0;
+	double mu = ((x2 - x1) / 2.0) + x1;
 
 	// We resolve the following equations, by adding and subtracting
 	//
