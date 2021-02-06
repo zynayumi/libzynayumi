@@ -209,6 +209,32 @@ double Voice::ym_channel_to_spread() const
 	}
 }
 
+double Voice::exponential_decay_interpolate(double x1, double y1,
+                                            double x2, double y2,
+                                            double x, double e)
+{
+	// Let's calculate a and b by solving the following equations
+	//
+	// y1 = a+b*e^(-x1)
+	// y2 = a+b*e^(-x2)
+	//
+	// or alternatively by using maxima with the command
+	//
+	// solve([y1 = a+b*e^(-x1), y2 = a+b*e^(-x2)], [a, b]);
+	//
+	// to obtain
+	//
+	// a = (y1*e^x1 - y2*e^x2) / (e^x1 - e^x2)
+	// b = -e^(x1+x2) * (y1 - y2) / (e^x1 - e^x2)
+	double epx1 = std::pow(e, x1);
+	double epx2 = std::pow(e, x2);
+	double epx12 = std::pow(e, x1 + x2);
+	double num = epx1 - epx2;
+	double a = (y1*epx1 - y2*epx2) / num;
+	double b = -epx12*(y1 - y2) / num;
+	return a + b*std::pow(e, -x);
+}
+
 void Voice::update_pan()
 {
 	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);

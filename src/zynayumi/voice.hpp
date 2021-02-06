@@ -63,6 +63,10 @@ public:
 	                                   double x2, double y2,
 	                                   double x, double scale);
 
+	static double exponential_decay_interpolate(double x1, double y1,
+	                                            double x2, double y2,
+	                                            double x, double exponent);
+
 	///////////////////
 	// Attributes    //
 	///////////////////
