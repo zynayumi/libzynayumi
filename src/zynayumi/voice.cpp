@@ -311,11 +311,16 @@ void Voice::update_noise_period()
 
 void Voice::update_pitchenv()
 {
-	// NEXT support smoothness
 	double apitch = _patch->pitchenv.attack_pitch;
 	double ptime = _patch->pitchenv.time;
+	const double scale_L = 0.1;
+	const double scale_U = 1.0;
+	const double exponential = 2.0;
+	double scale = ptime *
+		exponential_decay_interpolate(0.0, scale_U, 1.0, scale_L,
+		                              _patch->pitchenv.smoothness, exponential);
 	_relative_pitchenv_pitch = _patch->pitchenv.time < on_time ? 0.0
-		: linear_interpolate(0.0, apitch, ptime, 0.0, on_time);
+		: logistic_interpolate(-ptime, 2.0*apitch, ptime, 0.0, on_time, scale);
 }
 
 void Voice::update_portamento()
