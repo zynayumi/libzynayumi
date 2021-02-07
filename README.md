@@ -201,6 +201,9 @@ $ sudo make install
 - **Seq noise period 0 to 15**: relative noise period.  Ranges from
   -32 to +32.
 
+- **Seq ringmod pitch 0 to 15**: relative ringmod pitch in semitone.  Ranges
+  from -48 to +48.
+
 - **Seq ringmod depth 0 to 15**: depth of the ring modulator.  The
   final depth is obtained by multiplying it with *RingMod depth*.
   Ranges from 0 to 15.
@@ -208,6 +211,12 @@ $ sudo make install
 - **Seq level 0 to 15**: level of the voice.  The final level is
   obtained by multiplying it with the envelope level.  Ranges from 0
   to 15.
+
+- **Seq tone on 0 to 15**: whether the tone is on or off. Only valid
+  during the tone duration time as set by the *Tone time* parameter.
+
+- **Seq noise on 0 to 15**: whether the noise is on or off. Only valid
+  during the noise duration time as set by the *Noise time* parameter.
 
 - **Seq tempo**: tempo in bpm considered to calculate the frequency of
   the sequencer.  Ranges from 30 to 300.
