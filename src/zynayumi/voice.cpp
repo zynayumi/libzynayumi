@@ -278,12 +278,26 @@ void Voice::update_tone()
 
 void Voice::update_tone_off()
 {
-	_tone_off = 0 <= _patch->tone.time ? _patch->tone.time < on_time : false;
+	// Take care of tone time
+	bool tone_on = 0 <= _patch->tone.time ? on_time <= _patch->tone.time : true;
+
+	// Take care of seq tone on
+	if (tone_on and 0 <= _seq_index)
+		tone_on = _patch->seq.states[_seq_index].tone_on;
+
+	_tone_off = not tone_on;
 }
 
 void Voice::update_noise_off()
 {
-	_noise_off = 0 <= _patch->noise.time ? _patch->noise.time < on_time : false;
+	// Take care of noise time
+	bool noise_on = 0 <= _patch->noise.time ? on_time <= _patch->noise.time : true;
+
+	// Take care of seq noise on
+	if (noise_on and 0 <= _seq_index)
+		noise_on = _patch->seq.states[_seq_index].noise_on;
+
+	_noise_off = not noise_on;
 }
 
 void Voice::update_noise_period()

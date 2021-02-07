@@ -376,9 +376,8 @@ harmful sounds and protect your hearing.
 
 - [ ] Fix Buzzer reset
 - [ ] Fix buzzer sync
-- [ ] Add to seq
-  - [ ] On/off tone
-  - [ ] On/off noise
+- [ ] Have unison decrease gain by the proper amount (or not)
+- [ ] Have seq ringmod depth also affects buzzer if enabled
 - [ ] Add support for digi drums
 - [ ] Implement *Oversampling*
 - [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
