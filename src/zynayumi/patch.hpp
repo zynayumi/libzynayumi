@@ -201,10 +201,13 @@ public:
 	struct State {
 		State();
 
-		int tone_pitch;           // Relative pitch in semitone
+		int tone_pitch;           // Relative tone pitch in semitone
 		int noise_period;         // Relative noise period
+		int ringmod_pitch;        // Relative ringmod pitch in semitone
 		int ringmod_depth;        // Depth of the ring modulator
 		int level;                // Voice level
+		bool tone_on;             // Enable tone
+		bool noise_on;            // Enable noise
 	};
 
 	Seq();

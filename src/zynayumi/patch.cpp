@@ -58,8 +58,12 @@ Buzzer::Buzzer() : enabled(false),
 
 Seq::State::State() : tone_pitch(0),
                       noise_period(0),
-                      ringmod_depth(1.0),
-                      level(MAX_LEVEL) {}
+                      ringmod_pitch(0),
+                      ringmod_depth(MAX_LEVEL),
+                      level(MAX_LEVEL),
+                      tone_on(true),
+                      noise_on(true)
+{}
 
 Seq::Seq() : states(Seq::size),
              tempo(120), host_sync(1), freq(18.0),

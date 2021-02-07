@@ -537,6 +537,18 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	}
 
 	for (unsigned i = 0; i < Seq::size; i++) {
+		std::string srp_name = SEQ_RINGMOD_PITCH_NAME;
+		srp_name += " ";
+		srp_name += std::to_string(i);
+		parameters[SEQ_RINGMOD_PITCH_0 + i] = new IntParameter(srp_name,
+		                                                       SEQ_RINGMOD_PITCH_UNIT,
+		                                                       &patch.seq.states[i].ringmod_pitch,
+		                                                       SEQ_RINGMOD_PITCH_DFLT,
+		                                                       SEQ_RINGMOD_PITCH_L,
+		                                                       SEQ_RINGMOD_PITCH_U);
+	}
+
+	for (unsigned i = 0; i < Seq::size; i++) {
 		std::string srd_name = SEQ_RINGMOD_DEPTH_NAME;
 		srd_name += " ";
 		srd_name += std::to_string(i);
@@ -558,6 +570,26 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 		                                               SEQ_LEVEL_DFLT,
 		                                               SEQ_LEVEL_L,
 		                                               SEQ_LEVEL_U);
+	}
+
+	for (unsigned i = 0; i < Seq::size; i++) {
+		std::string sto_name = SEQ_TONE_ON_NAME;
+		sto_name += " ";
+		sto_name += std::to_string(i);
+		parameters[SEQ_TONE_ON_0 + i] = new BoolParameter(sto_name,
+		                                                  SEQ_TONE_ON_UNIT,
+		                                                  &patch.seq.states[i].tone_on,
+		                                                  SEQ_TONE_ON_DFLT);
+	}
+
+	for (unsigned i = 0; i < Seq::size; i++) {
+		std::string sno_name = SEQ_NOISE_ON_NAME;
+		sno_name += " ";
+		sno_name += std::to_string(i);
+		parameters[SEQ_NOISE_ON_0 + i] = new BoolParameter(sno_name,
+		                                                   SEQ_NOISE_ON_UNIT,
+		                                                   &patch.seq.states[i].noise_on,
+		                                                   SEQ_NOISE_ON_DFLT);
 	}
 
 	parameters[SEQ_TEMPO] = new LinearFloatParameter(SEQ_TEMPO_NAME,
