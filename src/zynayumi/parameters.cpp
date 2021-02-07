@@ -431,117 +431,17 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                            PITCH_ENV_SMOOTHNESS_U);
 
 	// Ring modulation
-	parameters[RINGMOD_WAVEFORM_LEVEL1] = new IntParameter(RINGMOD_WAVEFORM_LEVEL1_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[0],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL2] = new IntParameter(RINGMOD_WAVEFORM_LEVEL2_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[1],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL3] = new IntParameter(RINGMOD_WAVEFORM_LEVEL3_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[2],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL4] = new IntParameter(RINGMOD_WAVEFORM_LEVEL4_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[3],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL5] = new IntParameter(RINGMOD_WAVEFORM_LEVEL5_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[4],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL6] = new IntParameter(RINGMOD_WAVEFORM_LEVEL6_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[5],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL7] = new IntParameter(RINGMOD_WAVEFORM_LEVEL7_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[6],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL8] = new IntParameter(RINGMOD_WAVEFORM_LEVEL8_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[7],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL9] = new IntParameter(RINGMOD_WAVEFORM_LEVEL9_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[8],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL10] = new IntParameter(RINGMOD_WAVEFORM_LEVEL10_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[9],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL11] = new IntParameter(RINGMOD_WAVEFORM_LEVEL11_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[10],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL12] = new IntParameter(RINGMOD_WAVEFORM_LEVEL12_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[11],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL13] = new IntParameter(RINGMOD_WAVEFORM_LEVEL13_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[12],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL14] = new IntParameter(RINGMOD_WAVEFORM_LEVEL14_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[13],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL15] = new IntParameter(RINGMOD_WAVEFORM_LEVEL15_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[14],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
-
-	parameters[RINGMOD_WAVEFORM_LEVEL16] = new IntParameter(RINGMOD_WAVEFORM_LEVEL16_NAME,
-	                                                       RINGMOD_WAVEFORM_LEVEL_UNIT,
-	                                                       &patch.ringmod.waveform[15],
-	                                                       RINGMOD_WAVEFORM_LEVEL_DFLT,
-	                                                       RINGMOD_WAVEFORM_LEVEL_L,
-	                                                       RINGMOD_WAVEFORM_LEVEL_U);
+	for (unsigned i = 0; i < RINGMOD_WAVEFORM_SIZE; i++) {
+		std::string rwl_name = RINGMOD_WAVEFORM_LEVEL_NAME;
+		rwl_name += " ";
+		rwl_name += std::to_string(i);
+		parameters[RINGMOD_WAVEFORM_LEVEL1 + i] = new IntParameter(rwl_name,
+		                                                           RINGMOD_WAVEFORM_LEVEL_UNIT,
+		                                                           &patch.ringmod.waveform[i],
+		                                                           RINGMOD_WAVEFORM_LEVEL_DFLT,
+		                                                           RINGMOD_WAVEFORM_LEVEL_L,
+		                                                           RINGMOD_WAVEFORM_LEVEL_U);
+	}
 
 	parameters[RINGMOD_RESET] = new BoolParameter(RINGMOD_RESET_NAME,
 	                                              RINGMOD_RESET_UNIT,
