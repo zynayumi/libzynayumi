@@ -522,7 +522,9 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 		                                                    SEQ_TONE_PITCH_DFLT,
 		                                                    SEQ_TONE_PITCH_L,
 		                                                    SEQ_TONE_PITCH_U);
+	}
 
+	for (unsigned i = 0; i < Seq::size; i++) {
 		std::string snp_name = SEQ_NOISE_PERIOD_NAME;
 		snp_name += " ";
 		snp_name += std::to_string(i);
@@ -532,7 +534,9 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 		                                                      SEQ_NOISE_PERIOD_DFLT,
 		                                                      SEQ_NOISE_PERIOD_L,
 		                                                      SEQ_NOISE_PERIOD_U);
+	}
 
+	for (unsigned i = 0; i < Seq::size; i++) {
 		std::string srd_name = SEQ_RINGMOD_DEPTH_NAME;
 		srd_name += " ";
 		srd_name += std::to_string(i);
@@ -542,7 +546,9 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 		                                                       SEQ_RINGMOD_DEPTH_DFLT,
 		                                                       SEQ_RINGMOD_DEPTH_L,
 		                                                       SEQ_RINGMOD_DEPTH_U);
+	}
 
+	for (unsigned i = 0; i < Seq::size; i++) {
 		std::string sl_name = SEQ_LEVEL_NAME;
 		sl_name += " ";
 		sl_name += std::to_string(i);
