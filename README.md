@@ -365,7 +365,6 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Support all buzzer shapes
 - [ ] Fix Buzzer reset
 - [ ] Fix buzzer sync
 - [ ] Add to seq

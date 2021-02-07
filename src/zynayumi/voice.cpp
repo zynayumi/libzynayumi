@@ -656,7 +656,7 @@ void Voice::update_buzzer_shape()
 		case Buzzer::Shape::DownSaw:
 			switch(_patch->ringmod.loop) {
 			case RingMod::Loop::Off:
-				ym_shape = 8;		  // TODO
+				ym_shape = 9;
 				break;
 			case RingMod::Loop::Forward:
 				ym_shape = 8;
@@ -669,7 +669,7 @@ void Voice::update_buzzer_shape()
 		case Buzzer::Shape::UpSaw:
 			switch(_patch->ringmod.loop) {
 			case RingMod::Loop::Off:
-				ym_shape = 12;		  // TODO
+				ym_shape = 13;
 				break;
 			case RingMod::Loop::Forward:
 				ym_shape = 12;
