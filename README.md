@@ -368,7 +368,6 @@ harmful sounds and protect your hearing.
 - [ ] Fix Buzzer reset
 - [ ] Fix buzzer sync
 - [ ] Add to seq
-  - [ ] Relative ringmod transpose
   - [ ] On/off tone
   - [ ] On/off noise
 - [ ] Add support for digi drums

@@ -448,7 +448,7 @@ void Voice::update_arp()
 		std::cerr << "Not implemented" << std::endl;
 	}
 
-	// Take care of seq arp
+	// Take care of seq tone pitch
 	if (0 <= _seq_index)
 		_relative_seq_pitch += _patch->seq.states[_seq_index].tone_pitch;
 }
@@ -544,6 +544,10 @@ void Voice::update_ringmod_pitch()
 	} else {
 		_ringmod_pitch = rp;
 	}
+
+	// Take care of seq ringmod pitch
+	if (0 <= _seq_index)
+		_ringmod_pitch += _patch->seq.states[_seq_index].ringmod_pitch;
 }
 
 void Voice::update_ringmod_smp_period()
