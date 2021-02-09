@@ -237,7 +237,7 @@ double Voice::exponential_decay_interpolate(double x1, double y1,
 
 void Voice::update_pan()
 {
-	ayumi_set_pan(&_engine->ay, ym_channel, _patch->pan.ym_channel[ym_channel], 0);
+	ayumi_set_pan(&_engine->ay, ym_channel, _patch->mixer.pan[ym_channel], 0);
 }
 
 void Voice::update_seq()

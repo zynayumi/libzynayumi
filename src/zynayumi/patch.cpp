@@ -74,11 +74,15 @@ LFO::LFO() : shape(LFO::Shape::Sine),
 
 Portamento::Portamento() : time(0.0), smoothness(0.5) {}
 
-Pan::Pan() : ym_channel{0.5, 0.25, 0.75} {}
+Mixer::Mixer() : enabled{true, true, true},
+                 pan{0.5, 0.25, 0.75} {}
 
 Control::Control() : pitchwheel(2),
                      velocity_sensitivity(0.5),
-                     modulation_sensitivity(0.5) {}
+                     modulation_sensitivity(0.5),
+                     midi_ch{Control::MidiChannel::Any,
+                             Control::MidiChannel::Any,
+                             Control::MidiChannel::Any} {}
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
                  playmode(PlayMode::Mono),

@@ -684,25 +684,25 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 
 	// Pan
 	parameters[PAN0] = new LinearFloatParameter(PAN0_NAME,
-	                                            PAN0_UNIT,
-	                                            &patch.pan.ym_channel[0],
+	                                            PAN_UNIT,
+	                                            &patch.mixer.pan[0],
 	                                            PAN0_DFLT,
-	                                            PAN0_L,
-	                                            PAN0_U);
+	                                            PAN_L,
+	                                            PAN_U);
 
 	parameters[PAN1] = new LinearFloatParameter(PAN1_NAME,
-	                                            PAN1_UNIT,
-	                                            &patch.pan.ym_channel[1],
+	                                            PAN_UNIT,
+	                                            &patch.mixer.pan[1],
 	                                            PAN1_DFLT,
-	                                            PAN1_L,
-	                                            PAN1_U);
+	                                            PAN_L,
+	                                            PAN_U);
 
 	parameters[PAN2] = new LinearFloatParameter(PAN2_NAME,
-	                                            PAN2_UNIT,
-	                                            &patch.pan.ym_channel[2],
+	                                            PAN_UNIT,
+	                                            &patch.mixer.pan[2],
 	                                            PAN2_DFLT,
-	                                            PAN2_L,
-	                                            PAN2_U);
+	                                            PAN_L,
+	                                            PAN_U);
 
 	// Control
 	parameters[PITCH_WHEEL] = new IntParameter(PITCH_WHEEL_NAME,
@@ -1005,7 +1005,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.gain = " << patch.gain << ";" << std::endl;
 	// Pan
 	for (unsigned i = 0; i < 3; i++)
-		ss << indent << "prmtrs->patch.pan.ym_channel[" << i << "] = " << patch.pan.ym_channel[i] << ";" << std::endl;
+		ss << indent << "prmtrs->patch.mixer.pan[" << i << "] = " << patch.mixer.pan[i] << ";" << std::endl;
 	// Control
 	ss << indent << "prmtrs->patch.control.pitchwheel = " << patch.control.pitchwheel << ";" << std::endl;
 	ss << indent << "prmtrs->patch.control.velocity_sensitivity = " << patch.control.velocity_sensitivity << ";" << std::endl;

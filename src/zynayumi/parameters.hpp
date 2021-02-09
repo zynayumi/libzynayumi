@@ -648,9 +648,7 @@ enum ParameterIndex {
 #define PORTAMENTO_TIME_UNIT SECOND
 #define PORTAMENTO_SMOOTHNESS_UNIT EMPTY
 #define GAIN_UNIT EMPTY
-#define PAN0_UNIT EMPTY
-#define PAN1_UNIT EMPTY
-#define PAN2_UNIT EMPTY
+#define PAN_UNIT EMPTY
 #define PITCH_WHEEL_UNIT EMPTY
 #define VELOCITY_SENSITIVITY_UNIT EMPTY
 #define RINGMOD_VELOCITY_SENSITIVITY_UNIT EMPTY
@@ -832,12 +830,8 @@ enum ParameterIndex {
 #define PORTAMENTO_SMOOTHNESS_U 1.0f
 #define GAIN_L 0.0f
 #define GAIN_U 2.0f
-#define PAN0_L 0.0f
-#define PAN0_U 1.0f
-#define PAN1_L 0.0f
-#define PAN1_U 1.0f
-#define PAN2_L 0.0f
-#define PAN2_U 1.0f
+#define PAN_L 0.0f
+#define PAN_U 1.0f
 #define PITCH_WHEEL_L 1
 #define PITCH_WHEEL_U 12
 #define VELOCITY_SENSITIVITY_L 0.0f

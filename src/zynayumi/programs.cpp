@@ -167,9 +167,9 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.portamento.time = 0;
 	prmtrs->patch.portamento.smoothness = 0.5;
 	prmtrs->patch.gain = 1;
-	prmtrs->patch.pan.ym_channel[0] = 0.5;
-	prmtrs->patch.pan.ym_channel[1] = 0.25;
-	prmtrs->patch.pan.ym_channel[2] = 0.75;
+	prmtrs->patch.mixer.pan[0] = 0.5;
+	prmtrs->patch.mixer.pan[1] = 0.25;
+	prmtrs->patch.mixer.pan[2] = 0.75;
 	prmtrs->patch.control.pitchwheel = 2;
 	prmtrs->patch.control.velocity_sensitivity = 0.5;
 	prmtrs->patch.control.ringmod_velocity_sensitivity = 0;

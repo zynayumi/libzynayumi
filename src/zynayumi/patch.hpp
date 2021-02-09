@@ -256,11 +256,15 @@ public:
 	float smoothness;
 };
 
-class Pan {
+class Mixer {
 public:
-	Pan();
+	Mixer();
 
-	float ym_channel[3];
+	// Whether each ym channel is disabled
+	bool enabled[3];
+
+	// Pan associated to each ym channel
+	float pan[3];
 };
 
 /**
@@ -269,6 +273,28 @@ public:
 class Control {
 public:
 	Control();
+
+	enum class MidiChannel {
+		Any,
+		c1,
+		c2,
+		c3,
+		c4,
+		c5,
+		c6,
+		c7,
+		c8,
+		c9,
+		c10,
+		c11,
+		c12,
+		c13,
+		c14,
+		c15,
+		c16,
+
+		Count
+	};
 
 	// Range in semitone of the pitch wheel
 	int pitchwheel;
@@ -284,6 +310,9 @@ public:
 
 	// How the LFO is sensitive to modulation, in semitone, ranges in [0, 12]
 	float modulation_sensitivity;
+
+	// Input midi channel associated to each ym channel
+	MidiChannel midi_ch[3];
 };
 	
 /**
@@ -308,7 +337,7 @@ public:
 	LFO lfo;                    // LFO
 	Portamento portamento;      // Portamento
 	float gain;                 // Output gain
-	Pan pan;                    // Channels panning
+	Mixer mixer;                // YM Channels panning and such
 	Control control;            // Pitchwheel, velocity sensitivity, etc
 };
 
