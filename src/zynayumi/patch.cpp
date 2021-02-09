@@ -75,7 +75,8 @@ LFO::LFO() : shape(LFO::Shape::Sine),
 Portamento::Portamento() : time(0.0), smoothness(0.5) {}
 
 Mixer::Mixer() : enabled{true, true, true},
-                 pan{0.5, 0.25, 0.75} {}
+                 pan{0.5, 0.25, 0.75},
+                 gain(1.0) {}
 
 Control::Control() : pitchwheel(2),
                      velocity_sensitivity(0.5),
@@ -85,8 +86,7 @@ Control::Control() : pitchwheel(2),
                              Control::MidiChannel::Any} {}
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
-                 playmode(PlayMode::Mono),
-                 gain(1) {}
+                 playmode(PlayMode::Mono) {}
 
 std::string to_string(PlayMode pm)
 {

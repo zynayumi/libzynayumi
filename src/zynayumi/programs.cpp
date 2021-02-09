@@ -166,7 +166,7 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs->patch.lfo.depth = 1;
 	prmtrs->patch.portamento.time = 0;
 	prmtrs->patch.portamento.smoothness = 0.5;
-	prmtrs->patch.gain = 1;
+	prmtrs->patch.mixer.gain = 1;
 	prmtrs->patch.mixer.pan[0] = 0.5;
 	prmtrs->patch.mixer.pan[1] = 0.25;
 	prmtrs->patch.mixer.pan[2] = 0.75;

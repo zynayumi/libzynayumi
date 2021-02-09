@@ -265,6 +265,9 @@ public:
 
 	// Pan associated to each ym channel
 	float pan[3];
+
+	// Output gain
+	float gain;
 };
 
 /**
@@ -336,7 +339,6 @@ public:
 	Seq seq;                    // Sequencer
 	LFO lfo;                    // LFO
 	Portamento portamento;      // Portamento
-	float gain;                 // Output gain
 	Mixer mixer;                // YM Channels panning and such
 	Control control;            // Pitchwheel, velocity sensitivity, etc
 };

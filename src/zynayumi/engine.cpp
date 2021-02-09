@@ -127,9 +127,9 @@ void Engine::audio_process(float* left_out, float* right_out,
 
 		// Update outputs
 		left_out[i] = (float)ay.left * (1.0f - pan) *
-			_zynayumi.patch.gain * volume_gain * expression_gain;
+			_zynayumi.patch.mixer.gain * volume_gain * expression_gain;
 		right_out[i] = (float)ay.right * pan *
-			_zynayumi.patch.gain * volume_gain * expression_gain;
+			_zynayumi.patch.mixer.gain * volume_gain * expression_gain;
 	}
 }
 

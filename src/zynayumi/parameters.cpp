@@ -674,14 +674,6 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                             PORTAMENTO_SMOOTHNESS_L,
 	                                                             PORTAMENTO_SMOOTHNESS_U);
 
-	// Gain
-	parameters[GAIN] = new LinearFloatParameter(GAIN_NAME,
-	                                            GAIN_UNIT,
-	                                            &patch.gain,
-	                                            GAIN_DFLT,
-	                                            GAIN_L,
-	                                            GAIN_U);
-
 	// Pan
 	parameters[PAN0] = new LinearFloatParameter(PAN0_NAME,
 	                                            PAN_UNIT,
@@ -703,6 +695,14 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                            PAN2_DFLT,
 	                                            PAN_L,
 	                                            PAN_U);
+
+	// Gain
+	parameters[GAIN] = new LinearFloatParameter(GAIN_NAME,
+	                                            GAIN_UNIT,
+	                                            &patch.mixer.gain,
+	                                            GAIN_DFLT,
+	                                            GAIN_L,
+	                                            GAIN_U);
 
 	// Control
 	parameters[PITCH_WHEEL] = new IntParameter(PITCH_WHEEL_NAME,
@@ -1002,7 +1002,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.portamento.time = " << patch.portamento.time << ";" << std::endl;
 	ss << indent << "prmtrs->patch.portamento.smoothness = " << patch.portamento.smoothness << ";" << std::endl;
 	// Gain
-	ss << indent << "prmtrs->patch.gain = " << patch.gain << ";" << std::endl;
+	ss << indent << "prmtrs->patch.mixer.gain = " << patch.mixer.gain << ";" << std::endl;
 	// Pan
 	for (unsigned i = 0; i < 3; i++)
 		ss << indent << "prmtrs->patch.mixer.pan[" << i << "] = " << patch.mixer.pan[i] << ";" << std::endl;
