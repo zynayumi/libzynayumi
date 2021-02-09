@@ -374,16 +374,8 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Fix Buzzer reset
-- [ ] Fix buzzer sync
-- [ ] Have unison decrease gain by the proper amount (or not)
-- [ ] Have seq ringmod depth also affects buzzer if enabled
-- [ ] Add support for digi drums
-- [ ] Implement *Oversampling*
-- [ ] Map midi channel 0 to auto, then channel 1-3 to voice 1-3
-- [ ] Fix ringmod phase issue
-- [ ] Update tempo when it has changed on the host
-- [ ] Implement pitch wheel and CC for DSSI
+- [ ] Add enable/disable voice
+- [ ] Add midi voice receive, Any, 1..16
 - [ ] Implement CC:
   - [ ] Release Time
   - [ ] Attack Time
@@ -391,6 +383,14 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Rate
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
+- [ ] Maybe have unison decrease gain by the proper amount
+- [ ] Fix Buzzer reset
+- [ ] Fix buzzer sync
+- [ ] Have seq ringmod depth also affects buzzer if enabled
+- [ ] Add support for digi drums
+- [ ] Implement *Oversampling*
+- [ ] Fix ringmod phase issue
+- [ ] Update tempo when it has changed on the host
 - [ ] Define presets
 
 ## Author(s)
