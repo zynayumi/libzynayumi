@@ -495,13 +495,18 @@ enum ParameterIndex {
 	PORTAMENTO_TIME,
 	PORTAMENTO_SMOOTHNESS,
 
-	// Gain
-	GAIN,
+	// Enabled YM Channel
+	YM_CHANNEL_ENABLED_0,
+	YM_CHANNEL_ENABLED_1,
+	YM_CHANNEL_ENABLED_2,
 
 	// Pan
-	PAN0,
-	PAN1,
-	PAN2,
+	PAN_0,
+	PAN_1,
+	PAN_2,
+
+	// Gain
+	GAIN,
 
 	// Control
 	PITCH_WHEEL,
@@ -509,6 +514,9 @@ enum ParameterIndex {
 	RINGMOD_VELOCITY_SENSITIVITY,
 	NOISE_PERIOD_PITCH_SENSITIVITY,
 	MODULATION_SENSITIVITY,
+	MIDI_CHANNEL_0,
+	MIDI_CHANNEL_1,
+	MIDI_CHANNEL_2,
 
 	// Oversampling
 	OVERSAMPLING,
@@ -575,14 +583,16 @@ enum ParameterIndex {
 #define PORTAMENTO_TIME_NAME "Portamento time"
 #define PORTAMENTO_SMOOTHNESS_NAME "Portamento smoothness"
 #define GAIN_NAME "Gain"
-#define PAN0_NAME "Pan 1"
-#define PAN1_NAME "Pan 2"
-#define PAN2_NAME "Pan 3"
+#define YM_CHANNEL_ENABLED_NAME "YM channel enabled"
+#define PAN_0_NAME "Pan 1"
+#define PAN_1_NAME "Pan 2"
+#define PAN_2_NAME "Pan 3"
 #define PITCH_WHEEL_NAME "Pitch wheel"
 #define VELOCITY_SENSITIVITY_NAME "Velocity sensitivity"
 #define RINGMOD_VELOCITY_SENSITIVITY_NAME "Ringmod velocity sensitivity"
 #define NOISE_PERIOD_PITCH_SENSITIVITY_NAME "Noise period pitch sensitivity"
 #define MODULATION_SENSITIVITY_NAME "Modulation sensitivity"
+#define MIDI_CHANNEL_NAME "MIDI channel"
 #define OVERSAMPLING_NAME "Oversampling"
 
 // Parameter units
@@ -648,12 +658,14 @@ enum ParameterIndex {
 #define PORTAMENTO_TIME_UNIT SECOND
 #define PORTAMENTO_SMOOTHNESS_UNIT EMPTY
 #define GAIN_UNIT EMPTY
+#define YM_CHANNEL_ENABLED_UNIT EMPTY
 #define PAN_UNIT EMPTY
 #define PITCH_WHEEL_UNIT EMPTY
 #define VELOCITY_SENSITIVITY_UNIT EMPTY
 #define RINGMOD_VELOCITY_SENSITIVITY_UNIT EMPTY
 #define NOISE_PERIOD_PITCH_SENSITIVITY_UNIT EMPTY
 #define MODULATION_SENSITIVITY_UNIT EMPTY
+#define MIDI_CHANNEL_UNIT EMPTY
 #define OVERSAMPLING_UNIT EMPTY
 
 // Parameter defaults
@@ -715,14 +727,16 @@ enum ParameterIndex {
 #define PORTAMENTO_TIME_DFLT 0.0f
 #define PORTAMENTO_SMOOTHNESS_DFLT 0.5f
 #define GAIN_DFLT 1.0f
-#define PAN0_DFLT 0.5f
-#define PAN1_DFLT 0.25f
-#define PAN2_DFLT 0.75f
+#define YM_CHANNEL_ENABLED_DFLT true
+#define PAN_0_DFLT 0.5f
+#define PAN_1_DFLT 0.25f
+#define PAN_2_DFLT 0.75f
 #define PITCH_WHEEL_DFLT 2
 #define VELOCITY_SENSITIVITY_DFLT 0.5f
 #define RINGMOD_VELOCITY_SENSITIVITY_DFLT 0.0f
 #define NOISE_PERIOD_PITCH_SENSITIVITY_DFLT 0.0f
 #define MODULATION_SENSITIVITY_DFLT 0.5f
+#define MIDI_CHANNEL_DFLT Control::MidiChannel::Any
 #define OVERSAMPLING_DFLT 2
 
 // Parameter ranges

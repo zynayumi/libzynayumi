@@ -674,27 +674,38 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                             PORTAMENTO_SMOOTHNESS_L,
 	                                                             PORTAMENTO_SMOOTHNESS_U);
 
+	// YM Channel Enabled
+	for (unsigned i = 0; i < 3; i++) {
+		std::string e_name = YM_CHANNEL_ENABLED_NAME;
+		e_name += " ";
+		e_name += std::to_string(i);
+		parameters[YM_CHANNEL_ENABLED_0 + i] = new BoolParameter(e_name,
+		                                                         YM_CHANNEL_ENABLED_UNIT,
+		                                                         &patch.mixer.enabled[i],
+		                                                         YM_CHANNEL_ENABLED_DFLT);
+	}
+
 	// Pan
-	parameters[PAN0] = new LinearFloatParameter(PAN0_NAME,
-	                                            PAN_UNIT,
-	                                            &patch.mixer.pan[0],
-	                                            PAN0_DFLT,
-	                                            PAN_L,
-	                                            PAN_U);
+	parameters[PAN_0] = new LinearFloatParameter(PAN_0_NAME,
+	                                             PAN_UNIT,
+	                                             &patch.mixer.pan[0],
+	                                             PAN_0_DFLT,
+	                                             PAN_L,
+	                                             PAN_U);
 
-	parameters[PAN1] = new LinearFloatParameter(PAN1_NAME,
-	                                            PAN_UNIT,
-	                                            &patch.mixer.pan[1],
-	                                            PAN1_DFLT,
-	                                            PAN_L,
-	                                            PAN_U);
+	parameters[PAN_1] = new LinearFloatParameter(PAN_1_NAME,
+	                                             PAN_UNIT,
+	                                             &patch.mixer.pan[1],
+	                                             PAN_1_DFLT,
+	                                             PAN_L,
+	                                             PAN_U);
 
-	parameters[PAN2] = new LinearFloatParameter(PAN2_NAME,
-	                                            PAN_UNIT,
-	                                            &patch.mixer.pan[2],
-	                                            PAN2_DFLT,
-	                                            PAN_L,
-	                                            PAN_U);
+	parameters[PAN_2] = new LinearFloatParameter(PAN_2_NAME,
+	                                             PAN_UNIT,
+	                                             &patch.mixer.pan[2],
+	                                             PAN_2_DFLT,
+	                                             PAN_L,
+	                                             PAN_U);
 
 	// Gain
 	parameters[GAIN] = new LinearFloatParameter(GAIN_NAME,
@@ -739,6 +750,17 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                           MODULATION_SENSITIVITY_DFLT,
 	                                                           MODULATION_SENSITIVITY_L,
 	                                                           MODULATION_SENSITIVITY_U);
+
+	// MIDI channel per YM channel
+	for (unsigned i = 0; i < 3; i++) {
+		std::string mc_name = MIDI_CHANNEL_NAME;
+		mc_name += " ";
+		mc_name += std::to_string(i);
+		parameters[MIDI_CHANNEL_0 + i] = new EnumParameter<Control::MidiChannel>(mc_name,
+		                                                                         MIDI_CHANNEL_UNIT,
+		                                                                         &patch.control.midi_ch[i],
+		                                                                         MIDI_CHANNEL_DFLT);
+	}
 
 	// Oversampling
 	parameters[OVERSAMPLING] = new IntParameter(OVERSAMPLING_NAME,

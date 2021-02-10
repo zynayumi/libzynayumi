@@ -397,6 +397,7 @@ float Engine::vol2gain(short value)
 
 int Engine::select_ym_channel() const
 {
+	// NEXT: implement control.midi_ch
 	std::set<int> free_channels{0, 1, 2};
 	for (const auto& v : _voices)
 		free_channels.erase(v.ym_channel);

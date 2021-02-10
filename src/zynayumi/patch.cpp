@@ -171,5 +171,47 @@ std::string to_string(LFO::Shape sh)
 		return "";
 	}
 }
-	
+
+std::string to_string(Control::MidiChannel mc)
+{
+	switch(mc) {
+	case Control::MidiChannel::Any:
+		return "Any";
+	case Control::MidiChannel::c1:
+		return "1";
+	case Control::MidiChannel::c2:
+		return "2";
+	case Control::MidiChannel::c3:
+		return "3";
+	case Control::MidiChannel::c4:
+		return "4";
+	case Control::MidiChannel::c5:
+		return "5";
+	case Control::MidiChannel::c6:
+		return "6";
+	case Control::MidiChannel::c7:
+		return "7";
+	case Control::MidiChannel::c8:
+		return "8";
+	case Control::MidiChannel::c9:
+		return "9";
+	case Control::MidiChannel::c10:
+		return "10";
+	case Control::MidiChannel::c11:
+		return "11";
+	case Control::MidiChannel::c12:
+		return "12";
+	case Control::MidiChannel::c13:
+		return "13";
+	case Control::MidiChannel::c14:
+		return "14";
+	case Control::MidiChannel::c15:
+		return "15";
+	case Control::MidiChannel::c16:
+		return "16";
+	default:
+		return "";
+	}
+}
+
 } // ~namespace zynayumi
