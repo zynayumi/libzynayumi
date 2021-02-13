@@ -182,11 +182,11 @@ public:
 	static float vol2gain(short value);
 
 private:
-	int select_ym_channel() const;
+	int select_ym_channel(bool rnd=true) const;
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void free_voice();
+	void free_least_significant_voice();
 	void free_all_voices();
 	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);
@@ -202,7 +202,7 @@ private:
 	typedef std::vector<Voice> Voices;
 	Voices _voices;
 
-	const unsigned char _max_voices;
+	std::set<unsigned char> _enabled_ym_channels;
 };
 
 } // ~namespace zynayumi

@@ -29,6 +29,7 @@
 
 #include <boost/range/algorithm/find.hpp>
 #include <boost/range/algorithm/min_element.hpp>
+#include <boost/range/algorithm/count.hpp>
 #include <boost/range/algorithm_ext/erase.hpp>
 
 #include "engine.hpp"
@@ -66,7 +67,7 @@ Engine::Engine(const Zynayumi& ref)
 	  expression_gain(vol2gain(127)),
 	  sustain_pedal(false),
 	  oversampling(2),
-	  _max_voices(3)
+	  _enabled_ym_channels{0, 1, 2}
 {
 	// TODO: probably unnecessary, as configured when setting the patch
 	// or the sample rate.
@@ -146,7 +147,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 	case PlayMode::Mono:
 		if (pitch_stack.size() == 1) {
 			// We go from 0 to 1 on note
-			free_voice();
+			free_least_significant_voice();
 			add_voice(pitch, velocity);
 		} else {
 			// There is already an on note, merely change its pitch
@@ -159,13 +160,13 @@ void Engine::note_on_process(unsigned char /* channel */,
 	case PlayMode::MonoRandArp:
 		if (pitches.size() == 1) {
 			// We go from 0 to 1 on note
-			free_voice();
+			free_least_significant_voice();
 			add_voice(pitch, velocity);
 		};
 		break;
 	case PlayMode::Poly:
-		if ((size_t)_max_voices <= _voices.size())
-			free_voice();
+		if (_enabled_ym_channels.size() <= _voices.size())
+			free_least_significant_voice();
 		add_voice(pitch, velocity);
 		break;
 	case PlayMode::Unison:
@@ -395,13 +396,13 @@ float Engine::vol2gain(short value)
 	return ((float)value*(float)value) / (127.0f*127.0f);
 }
 
-int Engine::select_ym_channel() const
+int Engine::select_ym_channel(bool rnd) const
 {
 	// NEXT: implement control.midi_ch
-	std::set<int> free_channels{0, 1, 2};
+	std::set<unsigned char> free_channels = _enabled_ym_channels;
 	for (const auto& v : _voices)
 		free_channels.erase(v.ym_channel);
-	int chi = rand() % free_channels.size();
+	int chi = rnd ? rand() % free_channels.size() : 0;
 	return *std::next(free_channels.begin(), chi);
 }
 
@@ -425,7 +426,7 @@ void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
 	_voices.emplace_back(*this, _zynayumi.patch, 2, pitch, velocity);
 }
 
-void Engine::free_voice()
+void Engine::free_least_significant_voice()
 {
 	auto lt = [](const Voice& v1, const Voice& v2) {
 		if (v1.note_on) {
