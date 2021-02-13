@@ -115,12 +115,12 @@ void Engine::audio_process(float* left_out, float* right_out,
 		for (auto& v : _voices)
 			v.update();
 
-		// Remove off voices
-		for (auto it = _voices.begin(); it != _voices.end();) {
-			if (it->is_silent())
-				it = _voices.erase(it);
-			else ++it;
-		}
+		// // Remove silent voices
+		// for (auto it = _voices.begin(); it != _voices.end();) {
+		// 	if (it->is_silent())
+		// 		it = _voices.erase(it);
+		// 	else ++it;
+		// }
 
 		// Process ayumi
 		ayumi_process(&ay);

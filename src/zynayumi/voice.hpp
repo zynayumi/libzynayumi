@@ -45,6 +45,7 @@ public:
 
 	Voice(Engine& engine, const Patch& patch,
 	      unsigned char ym_channel, unsigned char pitch, unsigned char velocity);
+	~Voice();
 
 	////////////////
 	// Methods    //

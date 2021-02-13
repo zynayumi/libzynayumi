@@ -61,6 +61,12 @@ Voice::Voice(Engine& engine, const Patch& pa,
 {
 }
 
+Voice::~Voice()
+{
+	// // Make sure to inactivate the YM channel
+	// ayumi_set_mixer(&_engine->ay, ym_channel, true, true, false);
+}
+
 void Voice::set_note_off()
 {
 	note_on = false;
@@ -148,17 +154,9 @@ void Voice::set_note_pitch(unsigned char pi)
 	_pitch_smp_count = 0;
 }
 
-void Voice::set_silent()
-{
-	std::cout << "Voice::set_silent()" << std::endl;
-	set_note_off();
-	env_level = 0.0;
-	_final_level = 0.0;
-}
-
 bool Voice::is_silent() const
 {
-	const static double EPSILON = 0.0;//1e-200;
+	const static double EPSILON = 0.0;
 	return not note_on and env_level <= EPSILON;
 }
 
