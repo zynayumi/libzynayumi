@@ -339,7 +339,7 @@ void Engine::enable_ym_channel(unsigned char ym_channel)
 
 void Engine::disable_ym_channel(unsigned char ym_channel)
 {
-	set_silent(ym_channel);
+	free_voice(ym_channel);
 	_enabled_ym_channels.erase(_enabled_ym_channels.find(ym_channel));
 }
 
@@ -455,12 +455,11 @@ void Engine::free_least_significant_voice()
 		_voices.erase(boost::min_element(_voices, lt));
 }
 
-void Engine::set_silent(unsigned char ym_channel)
+void Engine::free_voice(unsigned char ym_channel)
 {
-	std::cout << "Engine::set_silent(ym_channel=" << (int)ym_channel << ")" << std::endl;
 	for (auto it = _voices.begin(); it != _voices.end(); ++it) {
 		if (it->ym_channel == (int)ym_channel) {
-			it->set_silent();
+			_voices.erase(it);
 			return;
 		}
 	}
