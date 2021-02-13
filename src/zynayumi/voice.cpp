@@ -70,6 +70,13 @@ void Voice::set_note_off()
 
 void Voice::update()
 {
+	// NEXT: why there is no sound?
+	if (is_silent()) {
+		std::cout << "Voice::update() ultimate silence, note_on = " << note_on << ", env_level = " << env_level << std::endl;
+		ayumi_set_mixer(&_engine->ay, ym_channel, true, true, false);
+		return;
+	}
+
 	// Update time
 	on_time = _engine->smp2sec(_on_smp_count);
 	pitch_time = _engine->smp2sec(_pitch_smp_count);
@@ -146,6 +153,20 @@ void Voice::set_note_pitch(unsigned char pi)
 	pitch = pi;
 	_initial_pitch = pi;
 	_pitch_smp_count = 0;
+}
+
+void Voice::set_silent()
+{
+	std::cout << "Voice::set_silent()" << std::endl;
+	set_note_off();
+	env_level = 0.0;
+	_final_level = 0.0;
+}
+
+bool Voice::is_silent() const
+{
+	const static double EPSILON = 0.0;//1e-200;
+	return not note_on and env_level <= EPSILON;
 }
 
 double Voice::linear_interpolate(double x1, double y1,

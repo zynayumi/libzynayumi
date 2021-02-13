@@ -187,6 +187,7 @@ private:
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
 	void free_least_significant_voice();
+	void set_silent(unsigned char ym_channel);
 	void free_all_voices();
 	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);

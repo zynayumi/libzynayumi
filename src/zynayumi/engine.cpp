@@ -117,7 +117,7 @@ void Engine::audio_process(float* left_out, float* right_out,
 
 		// Remove off voices
 		for (auto it = _voices.begin(); it != _voices.end();) {
-			if (not it->note_on and it->env_level == 0.0)
+			if (it->is_silent())
 				it = _voices.erase(it);
 			else ++it;
 		}
@@ -414,8 +414,7 @@ void Engine::set_last_pitch(unsigned char pitch)
 
 void Engine::add_voice(unsigned char pitch, unsigned char velocity)
 {
-	int ym_channel = _zynayumi.patch.playmode == PlayMode::Poly ?
-		select_ym_channel() : 0;
+	int ym_channel = select_ym_channel(_zynayumi.patch.playmode == PlayMode::Poly);
 	_voices.emplace_back(*this, _zynayumi.patch, ym_channel, pitch, velocity);
 }
 

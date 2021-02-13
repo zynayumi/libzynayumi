@@ -54,6 +54,8 @@ public:
 	void set_note_off();
 	void update();              // Update the voice state
 	void set_note_pitch(unsigned char pitch);
+	void set_silent();
+	bool is_silent() const;
 
 	static double linear_interpolate(double x1, double y1,
 	                                 double x2, double y2,
