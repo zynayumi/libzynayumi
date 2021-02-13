@@ -169,6 +169,8 @@ public:
 	void pan_process(unsigned char channel, unsigned char value);
 	void expression_process(unsigned char channel, unsigned char value);
 	void sustain_pedal_process(unsigned char channel, unsigned char value);
+	void enable_ym_channel(unsigned char ym_channel);
+	void disable_ym_channel(unsigned char ym_channel);
 
 	// Render to string the state of the engine. Convenient for
 	// debugging.

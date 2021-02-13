@@ -332,6 +332,17 @@ void Engine::sustain_pedal_process(unsigned char channel, unsigned char value)
 	}
 }
 
+void Engine::enable_ym_channel(unsigned char ym_channel)
+{
+	_enabled_ym_channels.insert(ym_channel);
+}
+
+void Engine::disable_ym_channel(unsigned char ym_channel)
+{
+	set_silent(ym_channel);
+	_enabled_ym_channels.erase(_enabled_ym_channels.find(ym_channel));
+}
+
 std::string Engine::to_string(const std::string& indent) const
 {
 	std::string di = indent + indent;
@@ -442,6 +453,17 @@ void Engine::free_least_significant_voice()
 	auto it = boost::min_element(_voices, lt);
 	if (it != _voices.end())
 		_voices.erase(boost::min_element(_voices, lt));
+}
+
+void Engine::set_silent(unsigned char ym_channel)
+{
+	std::cout << "Engine::set_silent(ym_channel=" << (int)ym_channel << ")" << std::endl;
+	for (auto it = _voices.begin(); it != _voices.end(); ++it) {
+		if (it->ym_channel == (int)ym_channel) {
+			it->set_silent();
+			return;
+		}
+	}
 }
 
 void Engine::free_all_voices()

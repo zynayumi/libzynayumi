@@ -924,6 +924,24 @@ void Parameters::update(ParameterIndex pi)
 	case RINGMOD_TRANSPOSE:
 		patch.ringmod.detune = ringmod_detune + ringmod_transpose;
 		break;
+	case YM_CHANNEL_ENABLED_0:
+		if (patch.mixer.enabled[0])
+			zynayumi.engine.enable_ym_channel(0);
+		else
+			zynayumi.engine.disable_ym_channel(0);
+		break;
+	case YM_CHANNEL_ENABLED_1:
+		if (patch.mixer.enabled[1])
+			zynayumi.engine.enable_ym_channel(1);
+		else
+			zynayumi.engine.disable_ym_channel(1);
+		break;
+	case YM_CHANNEL_ENABLED_2:
+		if (patch.mixer.enabled[2])
+			zynayumi.engine.enable_ym_channel(2);
+		else
+			zynayumi.engine.disable_ym_channel(2);
+		break;
 	default:
 		break;
 	}
