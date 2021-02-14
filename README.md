@@ -261,12 +261,14 @@ $ sudo make install
   portamento pitch curve is.  Ranges from 0.0 (linear) to 1.0
   (sigmoidal).
 
-- **Gain**: gain coefficient of the output signal.  Ranges from 0.0 to
-  2.0.
+- **YM channel enabled 0 to 2**: whether the YM channel is enabled.
 
-- **Pan0 to Pan2**: panning level of the 3 voices of the YM2149.
+- **Pan 0 to 2**: panning level of the 3 voices of the YM2149.
   Ranges from 0.0 to 1.0.  Can be to set to hard left, 0.0, hard
   right, 1.0, or any value in between.
+
+- **Gain**: gain coefficient of the output signal.  Ranges from 0.0 to
+  2.0.
 
 - **Pitch wheel range**: range [-pw, +pw] of the pitch wheel in
   semitones.  Ranges from 1 to 12.
@@ -374,7 +376,6 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Add enable/disable voice
 - [ ] Add midi voice receive, Any, 1..16
 - [ ] Implement CC:
   - [ ] Release Time
