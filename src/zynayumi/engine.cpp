@@ -66,11 +66,11 @@ Engine::Engine(const Zynayumi& ref)
 	  pan(0.5),
 	  expression_gain(vol2gain(127)),
 	  sustain_pedal(false),
-	  oversampling(2),
-	  _enabled_ym_channels{0, 1, 2}
+	  oversampling(2)
 {
-	// TODO: probably unnecessary, as configured when setting the patch
-	// or the sample rate.
+	_voices.emplace_back(*this, _zynayumi.patch, 0);
+	_voices.emplace_back(*this, _zynayumi.patch, 1);
+	_voices.emplace_back(*this, _zynayumi.patch, 2);
 	ayumi_configure(&ay, 1, clock_rate, sample_rate);
 }
 
@@ -101,8 +101,15 @@ void Engine::audio_process(float* left_out, float* right_out,
 	// Send off notes in case playmode went from poly to mono
 	if (_zynayumi.patch.playmode != playmode) {
 		if (playmode == PlayMode::Poly) {
+			bool skip_first_enabled = true;
 			for (Voice& v : _voices) {
-				if (0 < v.ym_channel and v.note_on) {
+				// Skip the note on the first enabled ym channel since it
+				// should still be on in mono playmode.
+				if (v.enabled and skip_first_enabled) {
+					skip_first_enabled = false;
+					break;
+				}
+				if (v.enabled and v.note_on) {
 					v.set_note_off();
 				}
 			}
@@ -112,15 +119,8 @@ void Engine::audio_process(float* left_out, float* right_out,
 
 	for (unsigned long i = 0; i < sample_count; i++) {
 		// Update voice states (which modulates the ayumi state)
-		for (auto& v : _voices)
+		for (Voice& v : _voices)
 			v.update();
-
-		// // Remove silent voices
-		// for (auto it = _voices.begin(); it != _voices.end();) {
-		// 	if (it->is_silent())
-		// 		it = _voices.erase(it);
-		// 	else ++it;
-		// }
 
 		// Process ayumi
 		ayumi_process(&ay);
@@ -147,32 +147,29 @@ void Engine::note_on_process(unsigned char /* channel */,
 	case PlayMode::Mono:
 		if (pitch_stack.size() == 1) {
 			// We go from 0 to 1 on note
-			free_least_significant_voice();
 			add_voice(pitch, velocity);
 		} else {
 			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
-			_voices.front().set_note_pitch(pitch);
-		}	
+			int first_enabled_ym_channel = select_ym_channel(false);
+			if (0 <= first_enabled_ym_channel)
+				_voices[first_enabled_ym_channel].set_note_pitch(pitch);
+		}
 		break;
 	case PlayMode::MonoUpArp:
 	case PlayMode::MonoDownArp:
 	case PlayMode::MonoRandArp:
 		if (pitches.size() == 1) {
 			// We go from 0 to 1 on note
-			free_least_significant_voice();
 			add_voice(pitch, velocity);
 		};
 		break;
 	case PlayMode::Poly:
-		if (_enabled_ym_channels.size() <= _voices.size())
-			free_least_significant_voice();
 		add_voice(pitch, velocity);
 		break;
 	case PlayMode::Unison:
 		if (pitch_stack.size() == 1) {
 			// We go from 0 to 1 on note
-			free_all_voices();
 			add_all_voices(pitch, velocity);
 		} else {
 			// There is already an on note, merely change its pitch
@@ -185,7 +182,6 @@ void Engine::note_on_process(unsigned char /* channel */,
 	case PlayMode::UnisonRandArp:
 		if (pitches.size() == 1) {
 			// We go from 0 to 1 on note
-			free_all_voices();
 			add_all_voices(pitch, velocity);
 		};
 		break;
@@ -215,7 +211,9 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
 			set_last_pitch(prev_pitch);
-			_voices.front().set_note_pitch(prev_pitch);
+			int first_enabled_ym_channel = select_ym_channel(false);
+			if (0 <= first_enabled_ym_channel)
+				_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
 		} else {
 			set_note_off_with_pitch(pitch);
 		}
@@ -334,13 +332,12 @@ void Engine::sustain_pedal_process(unsigned char channel, unsigned char value)
 
 void Engine::enable_ym_channel(unsigned char ym_channel)
 {
-	_enabled_ym_channels.insert(ym_channel);
+	_voices[ym_channel].enable();
 }
 
 void Engine::disable_ym_channel(unsigned char ym_channel)
 {
-	free_voice(ym_channel);
-	_enabled_ym_channels.erase(_enabled_ym_channels.find(ym_channel));
+	_voices[ym_channel].disable();
 }
 
 std::string Engine::to_string(const std::string& indent) const
@@ -410,11 +407,52 @@ float Engine::vol2gain(short value)
 int Engine::select_ym_channel(bool rnd) const
 {
 	// NEXT: implement control.midi_ch
-	std::set<unsigned char> free_channels = _enabled_ym_channels;
-	for (const auto& v : _voices)
-		free_channels.erase(v.ym_channel);
-	int chi = rnd ? rand() % free_channels.size() : 0;
-	return *std::next(free_channels.begin(), chi);
+
+	// Determine all available ym channels
+	std::set<unsigned char> available_channels;
+	bool no_enabled = true;
+	int first_enabled = -1;
+	for (const Voice& v : _voices) {
+		if (v.enabled) {
+			no_enabled = false;
+			if (first_enabled < 0)
+				first_enabled = v.ym_channel;
+			if (v.is_silent())
+				available_channels.insert(v.ym_channel);
+		}
+	}
+	size_t fcs = available_channels.size();
+
+	// If all ym channels are disabled return -1
+	if (no_enabled)
+		return -1;
+
+	// If no available ym channel find the least significant one
+	if (fcs == 0) {
+		auto lt = [](const Voice& v1, const Voice& v2) {
+			if (v1.note_on) {
+				if (v2.note_on)
+					return v1.on_time > v2.on_time;
+				return false;
+			}
+			else {
+				if (v2.note_on)
+					return true;
+				return v1.env_level < v2.env_level;
+			}
+		};
+		int least_significant_channel = first_enabled;
+		for (int i = first_enabled + 1; i < 3; i++) {
+			if (lt(_voices[i], _voices[least_significant_channel]))
+				least_significant_channel = i;
+		}
+		available_channels.insert(least_significant_channel);
+		fcs = 1;
+	}
+
+	// Select among the available ones
+	int chi = (rnd and 1 < fcs)? rand() % fcs : 0;
+	return *std::next(available_channels.begin(), chi);
 }
 
 void Engine::set_last_pitch(unsigned char pitch)
@@ -426,53 +464,19 @@ void Engine::set_last_pitch(unsigned char pitch)
 void Engine::add_voice(unsigned char pitch, unsigned char velocity)
 {
 	int ym_channel = select_ym_channel(_zynayumi.patch.playmode == PlayMode::Poly);
-	_voices.emplace_back(*this, _zynayumi.patch, ym_channel, pitch, velocity);
+	if (0 <= ym_channel)
+		_voices[ym_channel].set_note_on(pitch, velocity);
 }
 
 void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
 {
-	_voices.emplace_back(*this, _zynayumi.patch, 0, pitch, velocity);
-	_voices.emplace_back(*this, _zynayumi.patch, 1, pitch, velocity);
-	_voices.emplace_back(*this, _zynayumi.patch, 2, pitch, velocity);
-}
-
-void Engine::free_least_significant_voice()
-{
-	auto lt = [](const Voice& v1, const Voice& v2) {
-		if (v1.note_on) {
-			if (v2.note_on)
-				return v1.on_time > v2.on_time;
-			return false;
-		}
-		else {
-			if (v2.note_on)
-				return true;
-			return v1.env_level < v2.env_level;
-		}
-	};
-	auto it = boost::min_element(_voices, lt);
-	if (it != _voices.end())
-		_voices.erase(boost::min_element(_voices, lt));
-}
-
-void Engine::free_voice(unsigned char ym_channel)
-{
-	for (auto it = _voices.begin(); it != _voices.end(); ++it) {
-		if (it->ym_channel == (int)ym_channel) {
-			_voices.erase(it);
-			return;
-		}
-	}
-}
-
-void Engine::free_all_voices()
-{
-	_voices.clear();
+	for (size_t i = 0; i < 3; i++)
+		_voices[i].set_note_on(pitch, velocity);
 }
 
 void Engine::set_all_voices_with_pitch(unsigned char pitch)
 {
-	for (auto& voice : _voices)
+	for (Voice& voice : _voices)
 		voice.set_note_pitch(pitch);
 }
 
@@ -490,7 +494,7 @@ void Engine::set_note_off_with_pitch(unsigned char pitch)
 
 void Engine::set_note_off_all_voices()
 {
-	for (auto& v : _voices)
+	for (Voice& v : _voices)
 		if (v.note_on)
 			v.set_note_off();
 }

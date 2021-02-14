@@ -32,16 +32,15 @@
 
 using namespace zynayumi;
 
-Voice::Voice(Engine& engine, const Patch& pa,
-             unsigned char ych, unsigned char pi, unsigned char vel)
+Voice::Voice(Engine& engine, const Patch& pa, unsigned char ych)
 	: ym_channel(ych)
-	, pitch(pi)
-	, velocity(vel)
+	, pitch(0)
+	, velocity(0)
 	, velocity_level(velocity_to_level(pa.control.velocity_sensitivity, velocity))
 	, note_on(true)
 	, _engine(&engine)
 	, _patch(&pa)
-	, _initial_pitch(pi)
+	, _initial_pitch(0)
 	, _seq_step(-1)
 	, _seq_change(true)
 	, _seq_index(0)
@@ -59,12 +58,43 @@ Voice::Voice(Engine& engine, const Patch& pa,
 	, _tone_trigger(false)
 	, _last_tone(_engine->ay.channels[ym_channel].tone)
 {
+	silence();
 }
 
 Voice::~Voice()
 {
-	// // Make sure to inactivate the YM channel
-	// ayumi_set_mixer(&_engine->ay, ym_channel, true, true, false);
+	silence();
+}
+
+void Voice::set_note_on(unsigned char pi, unsigned char vel)
+{
+	velocity = vel;
+	velocity_level = velocity_to_level(_patch->control.velocity_sensitivity, velocity);
+	pitch = pi;
+	note_on = true;
+	_initial_pitch = pi;
+	_seq_step = -1;
+	_seq_change = true;
+	_seq_index = 0;
+	_relative_seq_pitch = 0;
+	_seq_rnd_offset_step = rand();
+	_rnd_index = -1;
+	_env_smp_count = 0;
+	_on_smp_count = 0;
+	_pitch_smp_count = 0;
+	_ringmod_smp_count = 0;
+	_ringmod_back = false;
+	_ringmod_waveform_index = 0;
+	_first_update = true;
+	_tone_trigger = false;
+	_last_tone = _engine->ay.channels[ym_channel].tone;
+}
+
+void Voice::set_note_pitch(unsigned char pi)
+{
+	pitch = pi;
+	_initial_pitch = pi;
+	_pitch_smp_count = 0;
 }
 
 void Voice::set_note_off()
@@ -74,8 +104,35 @@ void Voice::set_note_off()
 	_actual_sustain_level = env_level;
 }
 
+void Voice::enable()
+{
+	enabled = true;
+}
+
+void Voice::disable()
+{
+	enabled = false;
+	silence();
+}
+
+void Voice::silence()
+{
+	note_on = false;
+	env_level = 0.0;
+	ayumi_set_mixer(&_engine->ay, ym_channel, true, true, false);
+}
+
+bool Voice::is_silent() const
+{
+	const static double EPSILON = 0.0;
+	return not note_on and env_level <= EPSILON;
+}
+
 void Voice::update()
 {
+	if (is_silent())
+		return;
+
 	// Update time
 	on_time = _engine->smp2sec(_on_smp_count);
 	pitch_time = _engine->smp2sec(_pitch_smp_count);
@@ -145,19 +202,6 @@ void Voice::update()
 	// Increment sample count since voice on or pitch change
 	_on_smp_count++;
 	_pitch_smp_count++;
-}
-
-void Voice::set_note_pitch(unsigned char pi)
-{
-	pitch = pi;
-	_initial_pitch = pi;
-	_pitch_smp_count = 0;
-}
-
-bool Voice::is_silent() const
-{
-	const static double EPSILON = 0.0;
-	return not note_on and env_level <= EPSILON;
 }
 
 double Voice::linear_interpolate(double x1, double y1,
@@ -542,7 +586,7 @@ void Voice::update_env()
 			}
 		}
 		// Calculate the envelope level
-		env_level = linear_interpolate(x1, y1, x2, y2, env_time);
+		env_level = std::clamp(linear_interpolate(x1, y1, x2, y2, env_time), 0.0, 1.0);
 	} else {                     // Buzzer is on
 		env_level = note_on ? 1.0 : 0.0;
 	}

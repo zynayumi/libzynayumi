@@ -43,8 +43,7 @@ public:
 	// Constructors/descructors    //
 	/////////////////////////////////
 
-	Voice(Engine& engine, const Patch& patch,
-	      unsigned char ym_channel, unsigned char pitch, unsigned char velocity);
+	Voice(Engine& engine, const Patch& patch, unsigned char ym_channel);
 	~Voice();
 
 	////////////////
@@ -52,10 +51,14 @@ public:
 	////////////////
 
 	// Modifiers
-	void set_note_off();
-	void update();              // Update the voice state
+	void set_note_on(unsigned char pitch, unsigned char velocity);
 	void set_note_pitch(unsigned char pitch);
+	void set_note_off();
+	void enable();
+	void disable();
+	void silence();
 	bool is_silent() const;
+	void update();              // Update the voice state
 
 	static double linear_interpolate(double x1, double y1,
 	                                 double x2, double y2,
@@ -73,6 +76,7 @@ public:
 	// Attributes    //
 	///////////////////
 
+	bool enabled;               // Whether the voice is enabled
 	int ym_channel;             // YM2149 channel
 	unsigned char velocity;     // Note velocity
 	double velocity_level;      // Corresponding velocity level

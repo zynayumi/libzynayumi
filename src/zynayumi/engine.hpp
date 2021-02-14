@@ -188,9 +188,6 @@ private:
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void free_least_significant_voice();
-	void free_voice(unsigned char ym_channel);
-	void free_all_voices();
 	void set_all_voices_with_pitch(unsigned char pitch);
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
@@ -201,11 +198,9 @@ private:
 
 	const Zynayumi& _zynayumi;
 
-	// Map pitch (possibly several times the same) to a voice
+	// Vector of voices, one per ym channel
 	typedef std::vector<Voice> Voices;
 	Voices _voices;
-
-	std::set<unsigned char> _enabled_ym_channels;
 };
 
 } // ~namespace zynayumi
