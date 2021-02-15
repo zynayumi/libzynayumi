@@ -360,6 +360,9 @@ The difference is subtle and has to do with
    for AY-3-8910 (Amdstrad CPC).  This affects the noise period and
    the legacy tuning.
 
+3. The envelop (buzzer) of the YM2149 (Atari ST) offers 32 possible
+   volume levels instead of 16 for the AY-3-8910 (Amdstrad CPC).
+
 The YM2149 (Atari ST) was mono while the AY-3-8910 (Amstrad CPC) was
 stereo, but here stereo is supported in both modes.  One can always
 disable stereo with the *Pan0* to *Pan2* parameters.
