@@ -34,7 +34,7 @@ public:
 	Programs(Zynayumi& zynayumi);
 	~Programs();
 
-	static const unsigned count = 2;
+	static const unsigned count = 3;
 	Patch patches[count];
 	Parameters* parameters_pts[count];
 };
