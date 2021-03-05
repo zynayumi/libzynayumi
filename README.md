@@ -379,14 +379,18 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Add midi voice receive, Any, 1..16
 - [ ] Implement CC:
+  - [ ] Volume
+  - [ ] Pan
+  - [ ] Expression
   - [ ] Release Time
   - [ ] Attack Time
   - [ ] Decay Time
   - [ ] Vibrato Rate
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
+- [ ] Support midi voice receive, Any, 1..16
+- [ ] Improve parameter scaling
 - [ ] Maybe have unison decrease gain by the proper amount
 - [ ] Fix Buzzer reset
 - [ ] Fix buzzer sync
