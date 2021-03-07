@@ -184,7 +184,8 @@ public:
 	static float vol2gain(short value);
 
 private:
-	int select_ym_channel(bool rnd=true) const;
+	int select_ym_channel(bool poly) const;
+	std::set<unsigned char> get_enabled_ym_channels() const;
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);

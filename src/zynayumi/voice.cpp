@@ -33,7 +33,8 @@
 using namespace zynayumi;
 
 Voice::Voice(Engine& engine, const Patch& pa, unsigned char ych)
-	: ym_channel(ych)
+	: enabled(true)
+	, ym_channel(ych)
 	, pitch(0)
 	, velocity(0)
 	, velocity_level(velocity_to_level(pa.control.velocity_sensitivity, velocity))

@@ -404,31 +404,29 @@ float Engine::vol2gain(short value)
 	return ((float)value*(float)value) / (127.0f*127.0f);
 }
 
-int Engine::select_ym_channel(bool rnd) const
+int Engine::select_ym_channel(bool poly) const
 {
 	// NEXT: implement control.midi_ch
+	std::set<unsigned char> enabled_ym_channels = get_enabled_ym_channels();
 
-	// Determine all available ym channels
-	std::set<unsigned char> available_channels;
-	bool no_enabled = true;
-	int first_enabled = -1;
-	for (const Voice& v : _voices) {
-		if (v.enabled) {
-			no_enabled = false;
-			if (first_enabled < 0)
-				first_enabled = v.ym_channel;
-			if (v.is_silent())
-				available_channels.insert(v.ym_channel);
-		}
-	}
-	size_t fcs = available_channels.size();
-
-	// If all ym channels are disabled return -1
-	if (no_enabled)
+	// No available ym channel, selection failed.
+	if (enabled_ym_channels.empty())
 		return -1;
 
-	// If no available ym channel find the least significant one
-	if (fcs == 0) {
+	// Not polyphonic, return the first enabled one
+	unsigned char first_enabled_ym_channel = *enabled_ym_channels.begin();
+	if (not poly)
+		return first_enabled_ym_channel;
+
+	// Determine silent ym channels for poly selection
+	std::set<unsigned char> silent_channels;
+	for (unsigned char ymch : enabled_ym_channels)
+		if (_voices[ymch].is_silent())
+			silent_channels.insert(ymch);
+
+	// If no silent channel are available then select the least
+	// significant one
+	if (silent_channels.empty()) {
 		auto lt = [](const Voice& v1, const Voice& v2) {
 			if (v1.note_on) {
 				if (v2.note_on)
@@ -441,18 +439,25 @@ int Engine::select_ym_channel(bool rnd) const
 				return v1.env_level < v2.env_level;
 			}
 		};
-		int least_significant_channel = first_enabled;
-		for (int i = first_enabled + 1; i < 3; i++) {
+		unsigned char least_significant_channel = first_enabled_ym_channel;
+		for (unsigned char i : enabled_ym_channels)
 			if (lt(_voices[i], _voices[least_significant_channel]))
 				least_significant_channel = i;
-		}
-		available_channels.insert(least_significant_channel);
-		fcs = 1;
+		return least_significant_channel;
+	} else {
+		// Otherwise select randomly among the silent ones
+		int rchi = rand() % silent_channels.size();
+		return *std::next(silent_channels.begin(), rchi);
 	}
+}
 
-	// Select among the available ones
-	int chi = (rnd and 1 < fcs)? rand() % fcs : 0;
-	return *std::next(available_channels.begin(), chi);
+std::set<unsigned char> Engine::get_enabled_ym_channels() const
+{
+	std::set<unsigned char> enabled_ym_channels;
+	for (const Voice& v : _voices)
+		if (v.enabled)
+			enabled_ym_channels.insert((unsigned char)v.ym_channel);
+	return enabled_ym_channels;
 }
 
 void Engine::set_last_pitch(unsigned char pitch)
