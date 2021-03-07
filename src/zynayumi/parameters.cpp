@@ -1057,7 +1057,7 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.control.velocity_sensitivity = " << patch.control.velocity_sensitivity << ";" << std::endl;
 	ss << indent << "prmtrs->patch.control.ringmod_velocity_sensitivity = " << patch.control.ringmod_velocity_sensitivity << ";" << std::endl;
 	ss << indent << "prmtrs->patch.control.noise_period_pitch_sensitivity = " << patch.control.noise_period_pitch_sensitivity << ";" << std::endl;
-	ss << indent << "prmtrs->patch.control.modulation_sensitivity = " << patch.control.modulation_sensitivity << ";";
+	ss << indent << "prmtrs->patch.control.modulation_sensitivity = " << patch.control.modulation_sensitivity << ";" << std::endl;
 	for (unsigned i = 0; i < 3; i++)
 		ss << indent << "prmtrs->patch.control.midi_ch[" << i << "] = zynayumi::Control::MidiChannel::" << zynayumi::to_string(patch.control.midi_ch[i]) << ";" << std::endl;
 
