@@ -65,7 +65,7 @@ Seq::State::State() : tone_pitch(0),
                       noise_on(true)
 {}
 
-Seq::Seq() : states(Seq::size), seqmode(Seq::SeqMode::Forward),
+Seq::Seq() : states(Seq::size), mode(Seq::Mode::Forward),
              tempo(120), host_sync(1), freq(18.0),
              loop(0), end(0) {}
 

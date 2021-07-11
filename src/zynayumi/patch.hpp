@@ -210,7 +210,7 @@ public:
 		bool noise_on;            // Enable noise
 	};
 
-	enum class SeqMode {
+	enum class Mode {
 		Off,
 		Forward,
 		Backward,
@@ -224,7 +224,7 @@ public:
 
 	static const unsigned size = 16;
 	std::vector<State> states;   // Array of sequencer states
-	SeqMode seqmode;             // Sequencer mode
+	Mode mode;                   // Sequencer mode
 	float tempo;                 // Tempo used to calculate the frequency
 	bool host_sync;              // Where the tempo is determined by the host
 	float freq;                  // Pitch change frequency
@@ -328,7 +328,7 @@ public:
 	// Input midi channel associated to each ym channel
 	MidiChannel midi_ch[3];
 };
-	
+
 /**
  * Complete patch
  */
