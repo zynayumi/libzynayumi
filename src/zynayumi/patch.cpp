@@ -152,6 +152,24 @@ std::string to_string(Buzzer::Shape sh)
 	}
 }
 
+std::string to_string(Seq::Mode md)
+{
+	switch(md) {
+	case Seq::Mode::Off:
+		return "Off";
+	case Seq::Mode::Forward:
+		return "Forward";
+	case Seq::Mode::Backward:
+		return "Backward";
+	case Seq::Mode::PingPong:
+		return "PingPong";
+	case Seq::Mode::Random:
+		return "Random";
+	default:
+		return "";
+	}
+}
+
 std::string to_string(LFO::Shape sh)
 {
 	switch(sh) {

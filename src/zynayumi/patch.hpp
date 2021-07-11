@@ -358,6 +358,7 @@ std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
 std::string to_string(RingMod::Loop lp);
 std::string to_string(Buzzer::Shape sh);
+std::string to_string(Seq::Mode md);
 std::string to_string(LFO::Shape sh);
 std::string to_string(Control::MidiChannel mc);
 
