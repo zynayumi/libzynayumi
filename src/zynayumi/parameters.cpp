@@ -951,10 +951,10 @@ void Parameters::update()
 {
 	patch.tone.detune = tone_detune + tone_transpose;
 	patch.seq.freq = to_freq(patch.seq.host_sync ?
-									 zynayumi.get_bpm() :
-									 patch.seq.tempo,
-									 seq_beat_divisor,
-									 seq_beat_multiplier);
+	                         zynayumi.get_bpm() :
+	                         patch.seq.tempo,
+	                         seq_beat_divisor,
+	                         seq_beat_multiplier);
 	patch.ringmod.detune = ringmod_detune + ringmod_transpose;
 }
 
