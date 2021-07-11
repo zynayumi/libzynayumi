@@ -245,7 +245,7 @@ public:
 		DownSaw,
 		UpSaw,
 		Square,
-		Rand,
+		Random,
 
 		Count
 	};

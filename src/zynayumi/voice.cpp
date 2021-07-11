@@ -442,7 +442,7 @@ void Voice::update_lfo()
 	case LFO::Shape::Square:
 		lfo_pitch = lfo_square_pitch(_patch->lfo.freq, on_time);
 		break;
-	case LFO::Shape::Rand:
+	case LFO::Shape::Random:
 		lfo_pitch = lfo_rand_pitch(_patch->lfo.freq, on_time);
 		break;
 	}

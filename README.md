@@ -243,7 +243,7 @@ $ sudo make install
   - 2: DownSaw
   - 3: UpSaw
   - 4: Square
-  - 5: Rand
+  - 5: Random
 
 - **LFO freq**: frequency of the low frequency oscillation to create a
   vibrato effect.  Ranges from 0.0 to 20.0.

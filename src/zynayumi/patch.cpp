@@ -183,8 +183,8 @@ std::string to_string(LFO::Shape sh)
 		return "UpSaw";
 	case LFO::Shape::Square:
 		return "Square";
-	case LFO::Shape::Rand:
-		return "Rand";
+	case LFO::Shape::Random:
+		return "Random";
 	default:
 		return "";
 	}
