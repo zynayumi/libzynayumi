@@ -194,7 +194,7 @@ $ sudo make install
   are offered here.  The remaining shapes can be obtained by setting
   the *RingMod loop* parameter to *Off* and *PingPong* to respectively
   obtain the remaining shapes.
-  
+
 - **Seq tone pitch 0 to 15**: relative tone pitch in semitone.  Ranges
   from -48 to +48.
 
@@ -217,6 +217,13 @@ $ sudo make install
 
 - **Seq noise on 0 to 15**: whether the noise is on or off. Only valid
   during the noise duration time as set by the *Noise time* parameter.
+
+- **Seq mode**: Sequencer mode
+  - 0: Off
+  - 1: Forward
+  - 2: Backward
+  - 3: PingPong
+  - 4: Random
 
 - **Seq tempo**: tempo in bpm considered to calculate the frequency of
   the sequencer.  Ranges from 30 to 300.
@@ -379,6 +386,9 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
+- [ ] Fix issue https://github.com/zynayumi/zynayumi/issues/5
+- [ ] Implement the modes suggested in
+      https://github.com/zynayumi/zynayumi/issues/5#issuecomment-869054663
 - [ ] Implement CC:
   - [ ] Volume
   - [ ] Pan
