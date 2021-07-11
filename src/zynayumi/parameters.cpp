@@ -592,6 +592,11 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 		                                                   SEQ_NOISE_ON_DFLT);
 	}
 
+	parameters[SEQ_MODE] = new EnumParameter<Seq::Mode>(SEQ_MODE_NAME,
+	                                                    SEQ_MODE_UNIT,
+	                                                    &patch.seq.mode,
+	                                                    SEQ_MODE_DFLT);
+
 	parameters[SEQ_TEMPO] = new LinearFloatParameter(SEQ_TEMPO_NAME,
 	                                                 SEQ_TEMPO_UNIT,
 	                                                 &patch.seq.tempo,

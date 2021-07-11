@@ -478,6 +478,7 @@ enum ParameterIndex {
 	SEQ_NOISE_ON_13,
 	SEQ_NOISE_ON_14,
 	SEQ_NOISE_ON_15,
+	SEQ_MODE,
 	SEQ_TEMPO,
 	SEQ_HOST_SYNC,
 	SEQ_BEAT_DIVISOR,
@@ -570,6 +571,7 @@ enum ParameterIndex {
 #define SEQ_LEVEL_NAME "Seq level"
 #define SEQ_TONE_ON_NAME "Seq tone on"
 #define SEQ_NOISE_ON_NAME "Seq noise on"
+#define SEQ_MODE_NAME "Seq mode"
 #define SEQ_TEMPO_NAME "Seq tempo"
 #define SEQ_HOST_SYNC_NAME "Seq host sync"
 #define SEQ_BEAT_DIVISOR_NAME "Seq beat divisor"
@@ -645,6 +647,7 @@ enum ParameterIndex {
 #define SEQ_LEVEL_UNIT EMPTY
 #define SEQ_TONE_ON_UNIT EMPTY
 #define SEQ_NOISE_ON_UNIT EMPTY
+#define SEQ_MODE_UNIT EMPTY
 #define SEQ_TEMPO_UNIT BPM
 #define SEQ_HOST_SYNC_UNIT EMPTY
 #define SEQ_BEAT_DIVISOR_UNIT EMPTY
@@ -712,6 +715,7 @@ enum ParameterIndex {
 #define SEQ_LEVEL_DFLT MAX_LEVEL
 #define SEQ_TONE_ON_DFLT true
 #define SEQ_NOISE_ON_DFLT true
+#define SEQ_MODE_DFLT Seq::Mode::Forward
 #define SEQ_TEMPO_DFLT 120.0f
 #define SEQ_HOST_SYNC_DFLT true
 #define SEQ_BEAT_DIVISOR_DFLT 9
