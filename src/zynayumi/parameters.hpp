@@ -673,7 +673,7 @@ enum ParameterIndex {
 
 // Parameter defaults
 #define EMUL_MODE_DFLT EmulMode::YM2149
-#define PLAY_MODE_DFLT PlayMode::Mono
+#define PLAY_MODE_DFLT PlayMode::MonoLegato
 #define TONE_RESET_DFLT true
 #define TONE_PHASE_DFLT 0.0f
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()

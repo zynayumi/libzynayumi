@@ -86,21 +86,25 @@ Control::Control() : pitchwheel(2),
                              Control::MidiChannel::Any} {}
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
-                 playmode(PlayMode::Mono) {}
+                 playmode(PlayMode::MonoLegato) {}
 
 std::string to_string(PlayMode pm)
 {
 	switch(pm) {
-	case PlayMode::Mono:
-		return "Mono";
+	case PlayMode::MonoLegato:
+		return "MonoLegato";
+	case PlayMode::MonoRetrig:
+		return "MonoRetrig";
 	case PlayMode::MonoUpArp:
 		return "MonoUpArp";
 	case PlayMode::MonoDownArp:
 		return "MonoDownArp";
 	case PlayMode::MonoRandArp:
 		return "MonoRandArp";
-	case PlayMode::Unison:
-		return "Unison";
+	case PlayMode::UnisonLegato:
+		return "UnisonLegato";
+	case PlayMode::UnisonRetrig:
+		return "UnisonRetrig";
 	case PlayMode::UnisonUpArp:
 		return "UnisonUpArp";
 	case PlayMode::UnisonDownArp:

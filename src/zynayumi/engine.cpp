@@ -41,7 +41,7 @@ namespace zynayumi {
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
 	  emulmode(EmulMode::YM2149),
-	  playmode(PlayMode::Mono),
+	  playmode(PlayMode::MonoLegato),
 	  buzzershape(Buzzer::Shape::Count),
 	  ringmodloop(RingMod::Loop::Count),
 	  ayenvshape(0),
@@ -144,7 +144,8 @@ void Engine::note_on_process(unsigned char /* channel */,
 		erase_sustain_pitch(pitch);
 
 	switch(_zynayumi.patch.playmode) {
-	case PlayMode::Mono:
+	case PlayMode::MonoLegato:
+	case PlayMode::MonoRetrig:
 		if (pitch_stack.size() == 1) {
 			// We go from 0 to 1 on note
 			add_voice(pitch, velocity);
@@ -152,8 +153,13 @@ void Engine::note_on_process(unsigned char /* channel */,
 			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
 			int first_enabled_ym_channel = select_ym_channel(false);
-			if (0 <= first_enabled_ym_channel)
+			if (0 <= first_enabled_ym_channel) {
 				_voices[first_enabled_ym_channel].set_note_pitch(pitch);
+				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
+					// NEXT: what about velocity?
+					_voices[first_enabled_ym_channel].retrig();
+				}
+			}
 		}
 		break;
 	case PlayMode::MonoUpArp:
@@ -164,10 +170,8 @@ void Engine::note_on_process(unsigned char /* channel */,
 			add_voice(pitch, velocity);
 		};
 		break;
-	case PlayMode::Poly:
-		add_voice(pitch, velocity);
-		break;
-	case PlayMode::Unison:
+	case PlayMode::UnisonLegato:
+	case PlayMode::UnisonRetrig:
 		if (pitch_stack.size() == 1) {
 			// We go from 0 to 1 on note
 			add_all_voices(pitch, velocity);
@@ -175,6 +179,10 @@ void Engine::note_on_process(unsigned char /* channel */,
 			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
 			set_all_voices_with_pitch(pitch);
+			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
+				// NEXT: what about velocity?
+				retrig_all_voices();
+			}
 		}
 		break;
 	case PlayMode::UnisonUpArp:
@@ -184,6 +192,9 @@ void Engine::note_on_process(unsigned char /* channel */,
 			// We go from 0 to 1 on note
 			add_all_voices(pitch, velocity);
 		};
+		break;
+	case PlayMode::Poly:
+		add_voice(pitch, velocity);
 		break;
 	default:
 		break;
@@ -204,7 +215,8 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.playmode) {
-	case PlayMode::Mono:
+	case PlayMode::MonoLegato:
+	case PlayMode::MonoRetrig:
 	{
 		// If the pitch stack is not empty, get the previous pitch and
 		// the set the voice with it.
@@ -212,8 +224,12 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 			unsigned char prev_pitch = pitch_stack.back();
 			set_last_pitch(prev_pitch);
 			int first_enabled_ym_channel = select_ym_channel(false);
-			if (0 <= first_enabled_ym_channel)
+			if (0 <= first_enabled_ym_channel) {
 				_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
+				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
+					_voices[first_enabled_ym_channel].retrig();
+				}
+			}
 		} else {
 			set_note_off_with_pitch(pitch);
 		}
@@ -234,12 +250,8 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 			}
 		}
 		break;
-	case PlayMode::Poly:
-	{
-		set_note_off_with_pitch(pitch);
-		break;
-	}
-	case PlayMode::Unison:
+	case PlayMode::UnisonLegato:
+	case PlayMode::UnisonRetrig:
 	{
 		// If the pitch stack is not empty, get the previous pitch and
 		// the set the voice with it.
@@ -247,6 +259,9 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 			unsigned char prev_pitch = pitch_stack.back();
 			set_last_pitch(prev_pitch);
 			set_all_voices_with_pitch(prev_pitch);
+			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
+				retrig_all_voices();
+			}
 		} else {
 			set_note_off_all_voices();
 		}
@@ -267,6 +282,11 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 			}
 		}
 		break;
+	case PlayMode::Poly:
+	{
+		set_note_off_with_pitch(pitch);
+		break;
+	}
 	default:
 		break;
 	}
@@ -483,6 +503,12 @@ void Engine::set_all_voices_with_pitch(unsigned char pitch)
 {
 	for (Voice& voice : _voices)
 		voice.set_note_pitch(pitch);
+}
+
+void Engine::retrig_all_voices()
+{
+	for (Voice& voice : _voices)
+		voice.retrig();
 }
 
 void Engine::set_note_off_with_pitch(unsigned char pitch)

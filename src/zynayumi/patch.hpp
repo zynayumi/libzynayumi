@@ -40,11 +40,13 @@ enum class EmulMode {
 };
 
 enum class PlayMode {
-	Mono,
+	MonoLegato,
+	MonoRetrig,
 	MonoUpArp,
 	MonoDownArp,
 	MonoRandArp,
-	Unison,
+	UnisonLegato,
+	UnisonRetrig,
 	UnisonUpArp,
 	UnisonDownArp,
 	UnisonRandArp,

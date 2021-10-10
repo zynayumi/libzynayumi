@@ -105,6 +105,11 @@ void Voice::set_note_off()
 	_actual_sustain_level = env_level;
 }
 
+void Voice::retrig()
+{
+	// NEXT
+}
+
 void Voice::enable()
 {
 	enabled = true;
@@ -510,8 +515,10 @@ void Voice::update_arp()
 		_relative_seq_pitch = 1 < _engine->pitches.size() ?
 			count2rndpitch() - _initial_pitch : 0.0;
 		break;
-	case PlayMode::Unison:
-	case PlayMode::Mono:
+	case PlayMode::MonoLegato:
+	case PlayMode::MonoRetrig:
+	case PlayMode::UnisonLegato:
+	case PlayMode::UnisonRetrig:
 	case PlayMode::Poly:
 		_relative_seq_pitch = 0;
 		break;

@@ -190,6 +190,7 @@ private:
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
 	void set_all_voices_with_pitch(unsigned char pitch);
+	void retrig_all_voices();
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
 	void insert_pitch(unsigned char pitch);
