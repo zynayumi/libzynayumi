@@ -53,6 +53,7 @@ public:
 	// Modifiers
 	void set_note_on(unsigned char pitch, unsigned char velocity);
 	void set_note_pitch(unsigned char pitch);
+	void set_velocity(unsigned char velocity);
 	void set_note_off();
 	void retrig();
 	void enable();

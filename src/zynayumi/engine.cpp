@@ -139,7 +139,7 @@ void Engine::note_on_process(unsigned char /* channel */,
                              unsigned char velocity)
 {
 	set_last_pitch(pitch);
-	insert_pitch(pitch);
+	insert_pitch(pitch, velocity);
 	if (sustain_pedal)
 		erase_sustain_pitch(pitch);
 
@@ -155,8 +155,8 @@ void Engine::note_on_process(unsigned char /* channel */,
 			int first_enabled_ym_channel = select_ym_channel(false);
 			if (0 <= first_enabled_ym_channel) {
 				_voices[first_enabled_ym_channel].set_note_pitch(pitch);
+				_voices[first_enabled_ym_channel].set_velocity(pitch);
 				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
-					// NEXT: what about velocity?
 					_voices[first_enabled_ym_channel].retrig();
 				}
 			}
@@ -178,9 +178,8 @@ void Engine::note_on_process(unsigned char /* channel */,
 		} else {
 			// There is already an on note, merely change its pitch
 			unsigned char pitch = pitch_stack.back();
-			set_all_voices_with_pitch(pitch);
+			set_all_voices_with_pitch_and_velocity(pitch, velocity);
 			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
-				// NEXT: what about velocity?
 				retrig_all_voices();
 			}
 		}
@@ -222,10 +221,12 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 		// the set the voice with it.
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
+			unsigned char prev_vel = velocity_stack.back();
 			set_last_pitch(prev_pitch);
 			int first_enabled_ym_channel = select_ym_channel(false);
 			if (0 <= first_enabled_ym_channel) {
 				_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
+				_voices[first_enabled_ym_channel].set_velocity(prev_vel);
 				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
 					_voices[first_enabled_ym_channel].retrig();
 				}
@@ -257,8 +258,9 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 		// the set the voice with it.
 		if (not pitch_stack.empty()) {
 			unsigned char prev_pitch = pitch_stack.back();
+			unsigned char prev_vel = velocity_stack.back();
 			set_last_pitch(prev_pitch);
-			set_all_voices_with_pitch(prev_pitch);
+			set_all_voices_with_pitch_and_velocity(prev_pitch, prev_vel);
 			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
 				retrig_all_voices();
 			}
@@ -296,6 +298,7 @@ void Engine::all_notes_off_process()
 {
 	pitches.clear();
 	pitch_stack.clear();
+	velocity_stack.clear();
 	sustain_pitches.clear();
 	set_note_off_all_voices();
 }
@@ -371,6 +374,10 @@ std::string Engine::to_string(const std::string& indent) const
 	ss << indent << "pitch_stack:";
 	for (unsigned char p : pitch_stack)
 		ss << " " << (int)p;
+	ss << std::endl;
+	ss << indent << "velocity_stack:";
+	for (unsigned char v : velocity_stack)
+		ss << " " << (int)v;
 	ss << std::endl;
 	ss << indent << "sustain pitches:";
 	for (unsigned char p : sustain_pitches)
@@ -499,10 +506,13 @@ void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
 		_voices[i].set_note_on(pitch, velocity);
 }
 
-void Engine::set_all_voices_with_pitch(unsigned char pitch)
+void Engine::set_all_voices_with_pitch_and_velocity(unsigned char pitch,
+                                                    unsigned char velocity)
 {
-	for (Voice& voice : _voices)
+	for (Voice& voice : _voices) {
 		voice.set_note_pitch(pitch);
+		voice.set_velocity(velocity);
+	}
 }
 
 void Engine::retrig_all_voices()
@@ -530,10 +540,11 @@ void Engine::set_note_off_all_voices()
 			v.set_note_off();
 }
 
-void Engine::insert_pitch(unsigned char pitch)
+void Engine::insert_pitch(unsigned char pitch, unsigned char velocity)
 {
 	pitches.insert(pitch);
 	pitch_stack.push_back(pitch);
+	velocity_stack.push_back(velocity);
 }
 
 void Engine::erase_pitch(unsigned char pitch)
@@ -541,6 +552,11 @@ void Engine::erase_pitch(unsigned char pitch)
 	auto range = pitches.equal_range(pitch);
 	pitches.erase(range.first, range.second);
 	boost::remove_erase(pitch_stack, pitch);
+	if (not velocity_stack.empty()) {
+		velocity_stack.pop_back();
+	} else {
+		std::cerr << "Can erase from empty stack, there must be a bug" << std::endl;
+	}
 }
 
 void Engine::insert_sustain_pitch(unsigned char pitch)

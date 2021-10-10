@@ -69,8 +69,7 @@ Voice::~Voice()
 
 void Voice::set_note_on(unsigned char pi, unsigned char vel)
 {
-	velocity = vel;
-	velocity_level = velocity_to_level(_patch->control.velocity_sensitivity, velocity);
+	set_velocity(vel);
 	pitch = pi;
 	note_on = true;
 	_initial_pitch = pi;
@@ -96,6 +95,12 @@ void Voice::set_note_pitch(unsigned char pi)
 	pitch = pi;
 	_initial_pitch = pi;
 	_pitch_smp_count = 0;
+}
+
+void Voice::set_velocity(unsigned char vel)
+{
+	velocity = vel;
+	velocity_level = velocity_to_level(_patch->control.velocity_sensitivity, velocity);
 }
 
 void Voice::set_note_off()

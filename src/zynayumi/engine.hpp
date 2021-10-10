@@ -90,8 +90,9 @@ public:
 	// Current pitches. Useful for handling chord based arp.
 	std::multiset<unsigned char> pitches;
 
-	// Stack of pitches, for mono mode
+	// Stack of pitches and velocities, for mono and unison mode
 	std::vector<unsigned char> pitch_stack;
+	std::vector<unsigned char> velocity_stack;
 
 	// Pitches hold by the sustain pedal
 	std::multiset<unsigned char> sustain_pitches;
@@ -189,11 +190,12 @@ private:
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void set_all_voices_with_pitch(unsigned char pitch);
+	void set_all_voices_with_pitch_and_velocity(unsigned char pitch,
+	                                            unsigned char velocity);
 	void retrig_all_voices();
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
-	void insert_pitch(unsigned char pitch);
+	void insert_pitch(unsigned char pitch, unsigned char vel);
 	void erase_pitch(unsigned char pitch);
 	void insert_sustain_pitch(unsigned char pitch);
 	std::multiset<unsigned char>::iterator erase_sustain_pitch(unsigned char pitch);
