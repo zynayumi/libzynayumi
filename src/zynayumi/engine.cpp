@@ -155,7 +155,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 			int first_enabled_ym_channel = select_ym_channel(false);
 			if (0 <= first_enabled_ym_channel) {
 				_voices[first_enabled_ym_channel].set_note_pitch(pitch);
-				_voices[first_enabled_ym_channel].set_velocity(pitch);
+				_voices[first_enabled_ym_channel].set_velocity(velocity);
 				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
 					_voices[first_enabled_ym_channel].retrig();
 				}
@@ -552,11 +552,8 @@ void Engine::erase_pitch(unsigned char pitch)
 	auto range = pitches.equal_range(pitch);
 	pitches.erase(range.first, range.second);
 	boost::remove_erase(pitch_stack, pitch);
-	if (not velocity_stack.empty()) {
+	if (not velocity_stack.empty())
 		velocity_stack.pop_back();
-	} else {
-		std::cerr << "Can erase from empty stack, there must be a bug" << std::endl;
-	}
 }
 
 void Engine::insert_sustain_pitch(unsigned char pitch)
