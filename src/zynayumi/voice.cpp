@@ -487,7 +487,7 @@ void Voice::update_arp()
 				same_index = new_index == _rnd_index;
 				if (same_index)
 					++_seq_rnd_offset_step;
-			} while	(same_index);
+			} while (same_index);
 			_rnd_index = new_index;
 			return _rnd_index;
 		}
@@ -627,7 +627,7 @@ void Voice::update_ringmod_smp_period()
 {
 	_ringmod_whole_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch);
 	int nsegs = (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1));
-	_ringmod_smp_period = _ringmod_whole_smp_period	/ nsegs;
+	_ringmod_smp_period = _ringmod_whole_smp_period / nsegs;
 }
 
 void Voice::update_ringmod_smp_count()
@@ -769,7 +769,7 @@ void Voice::update_buzzer_shape()
 
 void Voice::update_seq_level()
 {
-   _seq_level = 0 <= _seq_index ? normalize_level(_patch->seq.states[_seq_index].level) : 1.0;
+	_seq_level = 0 <= _seq_index ? normalize_level(_patch->seq.states[_seq_index].level) : 1.0;
 }
 
 void Voice::update_final_level()

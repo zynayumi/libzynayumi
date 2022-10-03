@@ -49,7 +49,7 @@ PitchEnv::PitchEnv() : attack_pitch(0), time(0), smoothness(0.5) {}
 
 RingMod::RingMod() : waveform{MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL, MAX_LEVEL},
                      reset(true), sync(false), phase(0.0),
-							loop(RingMod::Loop::PingPong), detune(0.0),
+                     loop(RingMod::Loop::PingPong), detune(0.0),
                      fixed_pitch(0.0), fixed_vs_relative(1.0),
                      depth(MAX_LEVEL) {}
 

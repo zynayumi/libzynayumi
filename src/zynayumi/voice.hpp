@@ -97,7 +97,7 @@ private:
 	double _initial_pitch;             // Initial note pitch
 
 	double _final_pitch;               // Final pitch after all pitch
-												  // updates
+	                                   // updates
 
 	bool _tone_off;                    // True iff the tone is off
 
@@ -167,7 +167,7 @@ private:
 	double _ringmod_smp_period;        // Number of samples to make a
 	                                   // ringmod waveform segment
 	double _ringmod_whole_smp_period;  // Number of samples to make the
-												  // whole ringmod waveform
+	                                   // whole ringmod waveform
 
 	double _buzzer_pitch;              // Pitch of the buzzer
 	int _buzzer_period;                // Period of the buzzer
@@ -208,7 +208,7 @@ private:
 	void update_buzzer_pitch();
 	void update_buzzer_period();
 	void update_buzzer_shape();
-   void update_seq_level();
+	void update_seq_level();
 	void update_final_level();
 	void reset_tone();
 	void reset_ringmod();
