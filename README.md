@@ -390,6 +390,7 @@ harmful sounds and protect your hearing.
 - [ ] Fix issue https://github.com/zynayumi/zynayumi/issues/5
 - [ ] Implement the modes suggested in
       https://github.com/zynayumi/zynayumi/issues/5#issuecomment-869054663
+- [ ] Implement Retrig
 - [ ] Implement CC:
   - [ ] Volume
   - [ ] Pan
