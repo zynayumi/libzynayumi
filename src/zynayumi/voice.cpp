@@ -320,7 +320,7 @@ void Voice::update_seq()
 	auto step2index = [&](size_t repeat, size_t size) -> int {
 		int index = _seq_step;
 		if (size <= index)
-			index = repeat + (index % (size - repeat));
+			index = repeat + ((index + 1) % (size - repeat));
 		return index;
 	};
 
