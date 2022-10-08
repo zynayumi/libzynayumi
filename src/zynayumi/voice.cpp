@@ -317,6 +317,7 @@ void Voice::update_seq()
 
 	_seq_step = step;
 
+	// NEXT: implement Forward, Backward, PingPong and Random
 	auto step2index = [&](size_t repeat, size_t size) -> int {
 		int index = _seq_step;
 		if (size <= index)
@@ -333,6 +334,8 @@ void Voice::update_seq()
 			_seq_index = -1;
 		}
 	}
+
+	std::cout << "Voice::update_seq() _seq_step = " << _seq_step << ", _seq_index = " << _seq_index << std::endl;
 }
 
 void Voice::update_tone()
