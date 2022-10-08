@@ -317,22 +317,44 @@ void Voice::update_seq()
 
 	_seq_step = step;
 
-	// NEXT: implement Forward, Backward, PingPong and Random
-	auto step2index = [&](size_t repeat, size_t size) -> int {
-		int index = _seq_step;
-		if (size <= index)
-			index = repeat + ((index + 1) % (size - repeat));
-		return index;
-	};
+	switch (_patch->seq.mode) {
+	case Seq::Mode::Off:
+		_seq_index = -1;
+		break;
+	case Seq::Mode::Forward: {
+		auto step2index = [&](size_t repeat, size_t size) -> int {
+			int index = _seq_step;
+			if (size <= index)
+				index = repeat + ((index + 1) % (size - repeat));
+			return index;
+		};
 
-	if (_patch->seq.loop < _patch->seq.end) {
-		_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
-	} else {
-		if (_seq_step < _patch->seq.end) {
-			_seq_index = (int)_seq_step;
+		if (_patch->seq.loop < _patch->seq.end) {
+			_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
 		} else {
-			_seq_index = -1;
+			if (_seq_step < _patch->seq.end) {
+				_seq_index = (int)_seq_step;
+			} else {
+				_seq_index = -1;
+			}
 		}
+		break;
+	}
+	case Seq::Mode::Backward: {
+		// NEXT
+		break;
+	}
+	case Seq::Mode::PingPong: {
+		// NEXT
+		break;
+	}
+	case Seq::Mode::Random: {
+		// NEXT
+		break;
+	}
+	default:
+		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+		break;
 	}
 
 	std::cout << "Voice::update_seq() _seq_step = " << _seq_step << ", _seq_index = " << _seq_index << std::endl;
@@ -521,7 +543,8 @@ void Voice::update_arp()
 		_relative_seq_pitch = enable_arp ? count2rndpitch() - _initial_pitch : 0.0;
 		break;
 	default:
-		std::cerr << "Not implemented" << std::endl;
+		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+		break;
 	}
 
 	// Take care of seq tone pitch
