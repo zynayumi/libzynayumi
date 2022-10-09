@@ -126,7 +126,7 @@ private:
 	bool _seq_change;                  // Whether step has incremented
 
 	int _seq_index;                    // Step index, range from -1 to
-	                                   // 15. Negative means undefined.
+	                                   // 15. Negative means inactive.
 
 	double _seq_level;                 // Volume level determined by
 	                                   // the sequencer.
