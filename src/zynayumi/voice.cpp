@@ -355,11 +355,19 @@ void Voice::update_seq()
 		break;
 	}
 	case Seq::Mode::PingPong: {
-		// NEXT
+		if (_patch->seq.loop < _patch->seq.end) {
+			// NEXT: Pingpong loop
+		} else {
+			// NEXT: Pingpong once
+		}
 		break;
 	}
 	case Seq::Mode::Random: {
-		// NEXT
+		if (_patch->seq.loop < _patch->seq.end) {
+			// NEXT: randomly loop
+		} else {
+			// NEXT: randomly traverse once
+		}
 		break;
 	}
 	default:
