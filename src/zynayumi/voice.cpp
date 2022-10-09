@@ -341,7 +341,17 @@ void Voice::update_seq()
 		break;
 	}
 	case Seq::Mode::Backward: {
-		// NEXT
+		if (_patch->seq.loop < _patch->seq.end) {
+			// Loop backward
+			int loop_length = _patch->seq.end - _patch->seq.loop;
+			_seq_index = _patch->seq.loop + loop_length - (_seq_step % loop_length);
+		} else {
+			if (-1 < _seq_index) {
+				// Go backward once.  Will be set to -1 as soon as it has
+				// passed the beginning.
+				_seq_index = _patch->seq.end - _seq_step;
+			}
+		}
 		break;
 	}
 	case Seq::Mode::PingPong: {
