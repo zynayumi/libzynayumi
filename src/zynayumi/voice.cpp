@@ -330,8 +330,10 @@ void Voice::update_seq()
 		};
 
 		if (_patch->seq.loop < _patch->seq.end) {
+			// Forward loop
 			_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
 		} else {
+			// Forward once.  Set to -1 as soon as it has passed the end.
 			if (_seq_step < _patch->seq.end) {
 				_seq_index = (int)_seq_step;
 			} else {
@@ -342,13 +344,13 @@ void Voice::update_seq()
 	}
 	case Seq::Mode::Backward: {
 		if (_patch->seq.loop < _patch->seq.end) {
-			// Loop backward
+			// Backward loop
 			int loop_length = _patch->seq.end - _patch->seq.loop;
 			_seq_index = _patch->seq.loop + loop_length - (_seq_step % loop_length);
 		} else {
 			if (-1 < _seq_index) {
-				// Go backward once.  Will be set to -1 as soon as it has
-				// passed the beginning.
+				// Backward once.  Set to -1 as soon as it has passed the
+				// beginning.
 				_seq_index = _patch->seq.end - _seq_step;
 			}
 		}
