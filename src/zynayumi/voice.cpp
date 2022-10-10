@@ -357,11 +357,16 @@ void Voice::update_seq()
 		break;
 	}
 	case Seq::Mode::PingPong: {
-		if (_patch->seq.loop < _patch->seq.end) {
-			// NEXT: Pingpong loop
-		} else {
-			// NEXT: Pingpong once
-		}
+		bool loop_lt_end = _patch->seq.loop < _patch->seq.end;
+		int loop = loop_lt_end ? _patch->seq.loop : 0;
+		int len = _patch->seq.end - loop - 1;
+		if (loop_lt_end)
+			if (_seq_step < loop) {
+				_seq_index = _seq_step < loop ? _seq_step
+					: loop + std::abs(((_seq_step + len - loop) % (2 * len)) - len);
+			} else {
+				// NEXT pingpong once
+			}
 		break;
 	}
 	case Seq::Mode::Random: {
