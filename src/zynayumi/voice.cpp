@@ -360,20 +360,24 @@ void Voice::update_seq()
 		bool loop_lt_end = _patch->seq.loop < _patch->seq.end;
 		int loop = loop_lt_end ? _patch->seq.loop : 0;
 		int len = _patch->seq.end - loop - 1;
-		if (loop_lt_end)
-			if (_seq_step < loop) {
-				_seq_index = _seq_step < loop ? _seq_step
-					: loop + std::abs(((_seq_step + len - loop) % (2 * len)) - len);
-			} else {
-				// NEXT pingpong once
-			}
+		if (loop_lt_end) {
+			// PingPong loop
+			_seq_index = _seq_step < loop ? _seq_step
+				: loop + std::abs(((_seq_step + len - loop) % (2 * len)) - len);
+		} else {
+			// PingPong once
+			_seq_index = _seq_step < 2*len ?
+				std::abs(((_seq_step + len) % (2 * len)) - len) : -1;
+		}
 		break;
 	}
 	case Seq::Mode::Random: {
 		if (_patch->seq.loop < _patch->seq.end) {
-			// NEXT: randomly loop
+			// Random loop
+			NEXT
 		} else {
-			// NEXT: randomly traverse once
+			// Randomly traverse once
+			_seq_index = seq_step < _patch->seq.end ? NEXT : -1;
 		}
 		break;
 	}
