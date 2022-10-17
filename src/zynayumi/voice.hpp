@@ -229,7 +229,14 @@ private:
 	static double lfo_square_pitch(double freq, double time);
 	static double lfo_rand_pitch(double freq, double time);
 
-	static uint32_t hash(uint32_t a);
+	// Map a seed to a pseudo random number
+	static uint32_t hash(uint32_t x);
+
+	// Map a seed to a pseudo random number within [lo, up).  It is
+	// assumed that lo < up, otherwise behavior is undefined.
+	static uint32_t range_rand(uint32_t lo, uint32_t up, uint32_t x);
+
+	// Normalize a level, i.e. a value within [0, MAX_LEVEL]
 	static double normalize_level(int level);
 };
 

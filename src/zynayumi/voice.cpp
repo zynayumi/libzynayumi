@@ -987,6 +987,12 @@ uint32_t Voice::hash(uint32_t a)
 	return a;
 }
 
+uint32_t Voice::range_rand(uint32_t lo, uint32_t up, uint32_t x)
+{
+	uint32_t length = up - lo;
+	return lo + (hash(x) % length);
+}
+
 double Voice::normalize_level(int level)
 {
 	return (double)level / (double)MAX_LEVEL;
