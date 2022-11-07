@@ -374,10 +374,13 @@ void Voice::update_seq()
 	case Seq::Mode::Random: {
 		if (_patch->seq.loop < _patch->seq.end) {
 			// Random loop
-			NEXT
+			_seq_index = _seq_step < _patch->seq.loop ?
+				range_rand(0 , _patch->seq.end, _seq_step)
+				: range_rand(_patch->seq.loop, _patch->seq.end, _seq_step);
 		} else {
 			// Randomly traverse once
-			_seq_index = seq_step < _patch->seq.end ? NEXT : -1;
+			_seq_index = _seq_step < _patch->seq.end ?
+				range_rand(0, _patch->seq.end, _seq_step) : -1;
 		}
 		break;
 	}
@@ -537,7 +540,7 @@ void Voice::update_arp()
 			unsigned new_index;
 			do {                   // Try the next random index if the
 				                    // note wouldn't changed.
-				new_index = hash(_seq_rnd_offset_step + _seq_step) % size;
+				new_index = range_rand(0, size, _seq_rnd_offset_step + _seq_step);
 				same_index = new_index == _rnd_index;
 				if (same_index)
 					++_seq_rnd_offset_step;
@@ -546,7 +549,7 @@ void Voice::update_arp()
 			return _rnd_index;
 		}
 		else {
-			_rnd_index = hash(_seq_rnd_offset_step + _seq_step) % size;
+			_rnd_index = range_rand(0, size, _seq_rnd_offset_step + _seq_step);
 			return _rnd_index;
 		}
 	};
