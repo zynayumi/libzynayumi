@@ -40,6 +40,7 @@ enum class EmulMode {
 };
 
 enum class PlayMode {
+	// NEXT: split into submodes Legato, Retrig, UpArp, DownArp, RandArp
 	MonoLegato,
 	MonoRetrig,
 	MonoUpArp,
