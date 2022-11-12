@@ -5,7 +5,7 @@
     patch.hpp
 
     Copyleft (c) 2016 Nil Geisweiller
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -157,7 +157,7 @@ public:
 	                                         // stroke
 
 	bool sync;                               // Whether it is synced
-														  // with tone wave cycle
+	                                         // with tone wave cycle
 
 	float phase;                             // Initial phase, from 0.0
 	                                         // to 1.0
@@ -191,7 +191,7 @@ public:
 		Count
 	};
 
-	bool enabled;					  // Whether the buzzer is enabled. If
+	bool enabled;                // Whether the buzzer is enabled. If
 	                             // so it inherits all attributes of
 	                             // the ring modulator (reset, sync,
 	                             // detune, etc).
