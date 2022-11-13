@@ -158,8 +158,8 @@ void Engine::note_on_process(unsigned char /* channel */,
 				int first_enabled_ym_channel = select_ym_channel(false);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(pitch);
-					_voices[first_enabled_ym_channel].set_velocity(velocity);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+						_voices[first_enabled_ym_channel].set_velocity(velocity);
 						_voices[first_enabled_ym_channel].retrig();
 					}
 				}
@@ -187,8 +187,9 @@ void Engine::note_on_process(unsigned char /* channel */,
 			} else {
 				// There is already an on note, merely change its pitch
 				unsigned char pitch = pitch_stack.back();
-				set_all_voices_with_pitch_and_velocity(pitch, velocity);
+				set_all_voices_pitch(pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+					set_all_voices_velocity(velocity);
 					retrig_all_voices();
 				}
 			}
@@ -241,8 +242,8 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 				int first_enabled_ym_channel = select_ym_channel(false);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
-					_voices[first_enabled_ym_channel].set_velocity(prev_vel);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+						_voices[first_enabled_ym_channel].set_velocity(prev_vel);
 						_voices[first_enabled_ym_channel].retrig();
 					}
 				}
@@ -281,8 +282,9 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 				unsigned char prev_pitch = pitch_stack.back();
 				unsigned char prev_vel = velocity_stack.back();
 				set_last_pitch(prev_pitch);
-				set_all_voices_with_pitch_and_velocity(prev_pitch, prev_vel);
+				set_all_voices_pitch(prev_pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+					set_all_voices_velocity(prev_vel);
 					retrig_all_voices();
 				}
 			} else {
@@ -531,11 +533,16 @@ void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
 		_voices[i].set_note_on(pitch, velocity);
 }
 
-void Engine::set_all_voices_with_pitch_and_velocity(unsigned char pitch,
-                                                    unsigned char velocity)
+void Engine::set_all_voices_pitch(unsigned char pitch)
 {
 	for (Voice& voice : _voices) {
 		voice.set_note_pitch(pitch);
+	}
+}
+
+void Engine::set_all_voices_velocity(unsigned char velocity)
+{
+	for (Voice& voice : _voices) {
 		voice.set_velocity(velocity);
 	}
 }

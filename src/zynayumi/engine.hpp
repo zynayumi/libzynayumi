@@ -193,8 +193,8 @@ private:
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void set_all_voices_with_pitch_and_velocity(unsigned char pitch,
-	                                            unsigned char velocity);
+	void set_all_voices_pitch(unsigned char pitch);
+	void set_all_voices_velocity(unsigned char velocity);
 	void retrig_all_voices();
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
