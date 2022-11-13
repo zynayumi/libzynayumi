@@ -1,21 +1,21 @@
 /****************************************************************************
-    
+
     Parameters for Zynayumi
 
     parameters.hpp
 
     Copyleft (c) 2016-2019 Nil Geisweiller <ngeiswei@gmail.com>
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 01222-1307  USA
@@ -298,6 +298,9 @@ enum ParameterIndex {
 	// Emulation mode (YM2149 vs AY-3-8910)
 	EMUL_MODE,
 
+	// Cantus mode
+	CANTUS_MODE,
+
 	// Play mode
 	PLAY_MODE,
 
@@ -528,6 +531,7 @@ enum ParameterIndex {
 
 // Parameter names
 #define EMUL_MODE_NAME "Emulation mode"
+#define CANTUS_MODE_NAME "Cantus mode"
 #define PLAY_MODE_NAME "Play mode"
 #define TONE_RESET_NAME "Tone reset"
 #define TONE_PHASE_NAME "Tone phase"
@@ -604,6 +608,7 @@ enum ParameterIndex {
 #define BPM "bpm"
 #define EMPTY ""
 #define EMUL_MODE_UNIT EMPTY
+#define CANTUS_MODE_UNIT EMPTY
 #define PLAY_MODE_UNIT EMPTY
 #define TONE_RESET_UNIT EMPTY
 #define TONE_PHASE_UNIT EMPTY
@@ -673,7 +678,8 @@ enum ParameterIndex {
 
 // Parameter defaults
 #define EMUL_MODE_DFLT EmulMode::YM2149
-#define PLAY_MODE_DFLT PlayMode::MonoLegato
+#define CANTUS_MODE_DFLT CantusMode::Mono
+#define PLAY_MODE_DFLT PlayMode::Legato
 #define TONE_RESET_DFLT true
 #define TONE_PHASE_DFLT 0.0f
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()

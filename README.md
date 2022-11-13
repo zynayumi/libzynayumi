@@ -55,22 +55,19 @@ $ sudo make install
   - 0: YM2149 (Atari ST)
   - 1: AY-3-8910 (Amdstrad CPC)
 
+- **Cantus mode**:
+  - 0: Mono, use the first voice of the YM2149.
+  - 1: Unison, use all voices of the YM2149 to play the same note.
+  - 2: Poly, alternate between the three voices of the YM2149.
+
 - **Play mode**:
-  - 0: MonoLegato, always use the first voice of the YM2149 in legato
-    mode.
-  - 1: MonoRetrig, always use the first voice of the YM2149 in retrig
-    mode.
-  - 2: MonoUpArp, create arpegio with all pressed keys, going from
-       lowest to highest pitch.
-  - 3: MonoDownArp, like UpArp but goes from higest to lowest pitch.
-  - 4: MonoRandArp, like UpArp or DownArp but the pitch is randomly
+  - 0: Legato, play mono or unison mode in legato mode.
+  - 1: Retrig, play mono or unison mode in retrig mode.
+  - 2: UpArp, in mono or unison mode, create arpegio with all pressed
+       keys, going from lowest to highest pitch.
+  - 3: DownArp, like UpArp but goes from higest to lowest pitch.
+  - 4: RandArp, like UpArp or DownArp but the pitch is randomly
        selected amongst the pressed keys.
-  - 5: UnisonLegato, all voices play the same note in legato mode.
-  - 6: UnisonRetrig, all voices play the same note in retrig mode.
-  - 7: UnisonUpArp, like MonoUpArp with all voices in unison.
-  - 8: UnisonDownArp, like MonoDownArp with all voices in unison.
-  - 9: UnisonRandArp, like MonoRandArp with all voices in unison.
-  - 10: Poly, alternate between the three voices of the YM2149.
 
 - **Tone reset**: whether the phase of the tone oscillator gets reset
   to *Tone phase* when a new on note is created.
@@ -131,7 +128,7 @@ $ sudo make install
 
 - **Env sustain level**: sustain level of the amplitude envelope.
   Ranges from 0 to 15.
-  
+
 - **Env release**: time in second to go from sustain_level to 0.0 of
   the amplitude envelope.  Ranges from 0.0 to 10.0.
 

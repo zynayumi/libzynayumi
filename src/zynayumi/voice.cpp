@@ -70,24 +70,8 @@ Voice::~Voice()
 void Voice::set_note_on(unsigned char pi, unsigned char vel)
 {
 	set_velocity(vel);
-	pitch = pi;
-	note_on = true;
-	_initial_pitch = pi;
-	_seq_step = -1;
-	_seq_change = true;
-	_seq_index = 0;
-	_relative_seq_pitch = 0;
-	_seq_rnd_offset_step = rand();
-	_rnd_index = -1;
-	_env_smp_count = 0;
-	_on_smp_count = 0;
-	_pitch_smp_count = 0;
-	_ringmod_smp_count = 0;
-	_ringmod_back = false;
-	_ringmod_waveform_index = 0;
-	_first_update = true;
-	_tone_trigger = false;
-	_last_tone = _engine->ay.channels[ym_channel].tone;
+	set_note_pitch(pi);
+	retrig();
 }
 
 void Voice::set_note_pitch(unsigned char pi)
@@ -112,7 +96,22 @@ void Voice::set_note_off()
 
 void Voice::retrig()
 {
-	// NEXT
+	note_on = true;
+	_seq_step = -1;
+	_seq_change = true;
+	_seq_index = 0;
+	_relative_seq_pitch = 0;
+	_seq_rnd_offset_step = rand(); // NEXT: replace all instances of
+	                               // rand() by hash or such
+	_rnd_index = -1;
+	_env_smp_count = 0;
+	_on_smp_count = 0;
+	_ringmod_smp_count = 0;
+	_ringmod_back = false;
+	_ringmod_waveform_index = 0;
+	_first_update = true;
+	_tone_trigger = false;
+	_last_tone = _engine->ay.channels[ym_channel].tone;
 }
 
 void Voice::enable()
@@ -504,28 +503,20 @@ void Voice::update_arp()
 	};
 
 	// Take care of playmode arp
+	bool enable_arp = _patch->cantusmode != CantusMode::Poly and 1 < _engine->pitches.size();
 	switch (_patch->playmode) {
-	case PlayMode::MonoUpArp:
-	case PlayMode::UnisonUpArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2pitch(false) - _initial_pitch : 0.0;
+	case PlayMode::Legato:
+	case PlayMode::Retrig:
+		_relative_seq_pitch = 0.0;
 		break;
-	case PlayMode::MonoDownArp:
-	case PlayMode::UnisonDownArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2pitch(true) - _initial_pitch : 0.0;
+	case PlayMode::UpArp:
+		_relative_seq_pitch = enable_arp ? count2pitch(false) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::MonoRandArp:
-	case PlayMode::UnisonRandArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2rndpitch() - _initial_pitch : 0.0;
+	case PlayMode::DownArp:
+		_relative_seq_pitch = enable_arp ? count2pitch(true) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::MonoLegato:
-	case PlayMode::MonoRetrig:
-	case PlayMode::UnisonLegato:
-	case PlayMode::UnisonRetrig:
-	case PlayMode::Poly:
-		_relative_seq_pitch = 0;
+	case PlayMode::RandArp:
+		_relative_seq_pitch = enable_arp ? count2rndpitch() - _initial_pitch : 0.0;
 		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;

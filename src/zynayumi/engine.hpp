@@ -1,21 +1,21 @@
 /****************************************************************************
-    
+
     Zynayumi Synth based on ayumi, a highly precise emulation of the YM2149
 
     engine.hpp
 
     Copyleft (c) 2016 Nil Geisweiller
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 01222-1307  USA
@@ -74,6 +74,9 @@ public:
 
 	// Current emulation mode (YM2149 or AY8910)
 	EmulMode emulmode;
+
+	// Current cantus mode
+	CantusMode cantusmode;
 
 	// Current play mode
 	PlayMode playmode;
@@ -190,8 +193,8 @@ private:
 	void set_last_pitch(unsigned char pitch);
 	void add_voice(unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void set_all_voices_with_pitch_and_velocity(unsigned char pitch,
-	                                            unsigned char velocity);
+	void set_all_voices_pitch(unsigned char pitch);
+	void set_all_voices_velocity(unsigned char velocity);
 	void retrig_all_voices();
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();

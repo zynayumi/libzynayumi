@@ -5,7 +5,7 @@
     patch.hpp
 
     Copyleft (c) 2016 Nil Geisweiller
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
@@ -39,18 +39,20 @@ enum class EmulMode {
 	Count
 };
 
-enum class PlayMode {
-	MonoLegato,
-	MonoRetrig,
-	MonoUpArp,
-	MonoDownArp,
-	MonoRandArp,
-	UnisonLegato,
-	UnisonRetrig,
-	UnisonUpArp,
-	UnisonDownArp,
-	UnisonRandArp,
+enum class CantusMode {
+	Mono,
+	Unison,
 	Poly,
+
+	Count
+};
+
+enum class PlayMode {
+	Legato,
+	Retrig,
+	UpArp,
+	DownArp,
+	RandArp,
 
 	Count
 };
@@ -156,7 +158,7 @@ public:
 	                                         // stroke
 
 	bool sync;                               // Whether it is synced
-														  // with tone wave cycle
+	                                         // with tone wave cycle
 
 	float phase;                             // Initial phase, from 0.0
 	                                         // to 1.0
@@ -190,7 +192,7 @@ public:
 		Count
 	};
 
-	bool enabled;					  // Whether the buzzer is enabled. If
+	bool enabled;                // Whether the buzzer is enabled. If
 	                             // so it inherits all attributes of
 	                             // the ring modulator (reset, sync,
 	                             // detune, etc).
@@ -341,7 +343,8 @@ public:
 	std::string name;           // Name
 
 	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
-	PlayMode playmode;          // Monophonic, polyphonic, unison or arp
+	CantusMode cantusmode;      // Monophonic, unson or polyphonic
+	PlayMode playmode;          // Legato, retrig or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	NoisePeriodEnv noise_period_env; // Noise period envelope
@@ -356,8 +359,9 @@ public:
 	Control control;            // Pitchwheel, velocity sensitivity, etc
 };
 
-std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
+std::string to_string(CantusMode cm);
+std::string to_string(PlayMode pm);
 std::string to_string(RingMod::Loop lp);
 std::string to_string(Buzzer::Shape sh);
 std::string to_string(Seq::Mode md);

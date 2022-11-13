@@ -1,22 +1,22 @@
 /****************************************************************************
-    
+
     Zynayumi Synth based on ayumi, a highly precise emulation of the
     YM2149 and AY-3-8910
 
     engine.cpp
 
     Copyleft (c) 2016 Nil Geisweiller
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 01222-1307  USA
@@ -41,7 +41,8 @@ namespace zynayumi {
 Engine::Engine(const Zynayumi& ref)
 	: _zynayumi(ref),
 	  emulmode(EmulMode::YM2149),
-	  playmode(PlayMode::MonoLegato),
+	  cantusmode(CantusMode::Mono),
+	  playmode(PlayMode::Legato),
 	  buzzershape(Buzzer::Shape::Count),
 	  ringmodloop(RingMod::Loop::Count),
 	  ayenvshape(0),
@@ -98,13 +99,13 @@ void Engine::audio_process(float* left_out, float* right_out,
 		emulmode = _zynayumi.patch.emulmode;
 	}
 
-	// Send off notes in case playmode went from poly to mono
-	if (_zynayumi.patch.playmode != playmode) {
-		if (playmode == PlayMode::Poly) {
+	// Send off notes in case cantusmode went from poly to mono or unison
+	if (_zynayumi.patch.cantusmode != cantusmode) {
+		if (cantusmode == CantusMode::Poly) {
 			bool skip_first_enabled = true;
 			for (Voice& v : _voices) {
 				// Skip the note on the first enabled ym channel since it
-				// should still be on in mono playmode.
+				// should still be on in mono cantusmode.
 				if (v.enabled and skip_first_enabled) {
 					skip_first_enabled = false;
 					break;
@@ -114,7 +115,7 @@ void Engine::audio_process(float* left_out, float* right_out,
 				}
 			}
 		}
-		playmode = _zynayumi.patch.playmode;
+		cantusmode = _zynayumi.patch.cantusmode;
 	}
 
 	for (unsigned long i = 0; i < sample_count; i++) {
@@ -143,56 +144,69 @@ void Engine::note_on_process(unsigned char /* channel */,
 	if (sustain_pedal)
 		erase_sustain_pitch(pitch);
 
-	switch(_zynayumi.patch.playmode) {
-	case PlayMode::MonoLegato:
-	case PlayMode::MonoRetrig:
-		if (pitch_stack.size() == 1) {
-			// We go from 0 to 1 on note
-			add_voice(pitch, velocity);
-		} else {
-			// There is already an on note, merely change its pitch
-			unsigned char pitch = pitch_stack.back();
-			int first_enabled_ym_channel = select_ym_channel(false);
-			if (0 <= first_enabled_ym_channel) {
-				_voices[first_enabled_ym_channel].set_note_pitch(pitch);
-				_voices[first_enabled_ym_channel].set_velocity(velocity);
-				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
-					_voices[first_enabled_ym_channel].retrig();
+	switch(_zynayumi.patch.cantusmode) {
+	case CantusMode::Mono:
+		switch(_zynayumi.patch.playmode) {
+		case PlayMode::Legato:
+		case PlayMode::Retrig:
+			if (pitch_stack.size() == 1) {
+				// We go from 0 to 1 on note
+				add_voice(pitch, velocity);
+			} else {
+				// There is already an on note, merely change its pitch
+				unsigned char pitch = pitch_stack.back();
+				int first_enabled_ym_channel = select_ym_channel(false);
+				if (0 <= first_enabled_ym_channel) {
+					_voices[first_enabled_ym_channel].set_note_pitch(pitch);
+					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+						_voices[first_enabled_ym_channel].set_velocity(velocity);
+						_voices[first_enabled_ym_channel].retrig();
+					}
 				}
 			}
+			break;
+		case PlayMode::UpArp:
+		case PlayMode::DownArp:
+		case PlayMode::RandArp:
+			if (pitches.size() == 1) {
+				// We go from 0 to 1 on note
+				add_voice(pitch, velocity);
+			};
+			break;
+		default:
+			break;
 		}
 		break;
-	case PlayMode::MonoUpArp:
-	case PlayMode::MonoDownArp:
-	case PlayMode::MonoRandArp:
-		if (pitches.size() == 1) {
-			// We go from 0 to 1 on note
-			add_voice(pitch, velocity);
-		};
-		break;
-	case PlayMode::UnisonLegato:
-	case PlayMode::UnisonRetrig:
-		if (pitch_stack.size() == 1) {
-			// We go from 0 to 1 on note
-			add_all_voices(pitch, velocity);
-		} else {
-			// There is already an on note, merely change its pitch
-			unsigned char pitch = pitch_stack.back();
-			set_all_voices_with_pitch_and_velocity(pitch, velocity);
-			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
-				retrig_all_voices();
+	case CantusMode::Unison:
+		switch(_zynayumi.patch.playmode) {
+		case PlayMode::Legato:
+		case PlayMode::Retrig:
+			if (pitch_stack.size() == 1) {
+				// We go from 0 to 1 on note
+				add_all_voices(pitch, velocity);
+			} else {
+				// There is already an on note, merely change its pitch
+				unsigned char pitch = pitch_stack.back();
+				set_all_voices_pitch(pitch);
+				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+					set_all_voices_velocity(velocity);
+					retrig_all_voices();
+				}
 			}
+			break;
+		case PlayMode::UpArp:
+		case PlayMode::DownArp:
+		case PlayMode::RandArp:
+			if (pitches.size() == 1) {
+				// We go from 0 to 1 on note
+				add_all_voices(pitch, velocity);
+			};
+			break;
+		default:
+			break;
 		}
 		break;
-	case PlayMode::UnisonUpArp:
-	case PlayMode::UnisonDownArp:
-	case PlayMode::UnisonRandArp:
-		if (pitches.size() == 1) {
-			// We go from 0 to 1 on note
-			add_all_voices(pitch, velocity);
-		};
-		break;
-	case PlayMode::Poly:
+	case CantusMode::Poly:
 		add_voice(pitch, velocity);
 		break;
 	default:
@@ -213,78 +227,91 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 	erase_pitch(pitch);
 
 	// Possibly set the corresponding voice off
-	switch(_zynayumi.patch.playmode) {
-	case PlayMode::MonoLegato:
-	case PlayMode::MonoRetrig:
-	{
-		// If the pitch stack is not empty, get the previous pitch and
-		// the set the voice with it.
-		if (not pitch_stack.empty()) {
-			unsigned char prev_pitch = pitch_stack.back();
-			unsigned char prev_vel = velocity_stack.back();
-			set_last_pitch(prev_pitch);
-			int first_enabled_ym_channel = select_ym_channel(false);
-			if (0 <= first_enabled_ym_channel) {
-				_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
-				_voices[first_enabled_ym_channel].set_velocity(prev_vel);
-				if (_zynayumi.patch.playmode == PlayMode::MonoRetrig) {
-					_voices[first_enabled_ym_channel].retrig();
+	switch(_zynayumi.patch.cantusmode) {
+	case CantusMode::Mono:
+		switch(_zynayumi.patch.playmode) {
+		case PlayMode::Legato:
+		case PlayMode::Retrig:
+		{
+			// If the pitch stack is not empty, get the previous pitch and
+			// the set the voice with it.
+			if (not pitch_stack.empty()) {
+				unsigned char prev_pitch = pitch_stack.back();
+				unsigned char prev_vel = velocity_stack.back();
+				set_last_pitch(prev_pitch);
+				int first_enabled_ym_channel = select_ym_channel(false);
+				if (0 <= first_enabled_ym_channel) {
+					_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
+					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+						_voices[first_enabled_ym_channel].set_velocity(prev_vel);
+						_voices[first_enabled_ym_channel].retrig();
+					}
+				}
+			} else {
+				set_note_off_with_pitch(pitch);
+			}
+			break;
+		}
+		case PlayMode::UpArp:
+		case PlayMode::DownArp:
+		case PlayMode::RandArp:
+			if (pitches.empty()) {
+				set_note_off_with_pitch(pitch);
+			} else if (pitches.size() == 1) {
+				unsigned char last_pitch = *pitches.begin();
+				for (Voice& v : _voices) {
+					if (v.note_on) {
+						v.set_note_pitch(last_pitch);
+						break;
+					}
 				}
 			}
-		} else {
-			set_note_off_with_pitch(pitch);
+			break;
+		default:
+			break;
 		}
 		break;
-	}
-	case PlayMode::MonoUpArp:
-	case PlayMode::MonoDownArp:
-	case PlayMode::MonoRandArp:
-		if (pitches.empty()) {
-			set_note_off_with_pitch(pitch);
-		} else if (pitches.size() == 1) {
-			unsigned char last_pitch = *pitches.begin();
-			for (Voice& v : _voices) {
-				if (v.note_on) {
-					v.set_note_pitch(last_pitch);
-					break;
+	case CantusMode::Unison:
+		switch(_zynayumi.patch.playmode) {
+		case PlayMode::Legato:
+		case PlayMode::Retrig:
+		{
+			// If the pitch stack is not empty, get the previous pitch and
+			// the set the voice with it.
+			if (not pitch_stack.empty()) {
+				unsigned char prev_pitch = pitch_stack.back();
+				unsigned char prev_vel = velocity_stack.back();
+				set_last_pitch(prev_pitch);
+				set_all_voices_pitch(prev_pitch);
+				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
+					set_all_voices_velocity(prev_vel);
+					retrig_all_voices();
+				}
+			} else {
+				set_note_off_all_voices();
+			}
+			break;
+		}
+		case PlayMode::UpArp:
+		case PlayMode::DownArp:
+		case PlayMode::RandArp:
+			if (pitches.empty()) {
+				set_note_off_all_voices();
+			} else if (pitches.size() == 1) {
+				unsigned char last_pitch = *pitches.begin();
+				for (Voice& v : _voices) {
+					if (v.note_on) {
+						v.set_note_pitch(last_pitch);
+						break;
+					}
 				}
 			}
+			break;
+		default:
+			break;
 		}
 		break;
-	case PlayMode::UnisonLegato:
-	case PlayMode::UnisonRetrig:
-	{
-		// If the pitch stack is not empty, get the previous pitch and
-		// the set the voice with it.
-		if (not pitch_stack.empty()) {
-			unsigned char prev_pitch = pitch_stack.back();
-			unsigned char prev_vel = velocity_stack.back();
-			set_last_pitch(prev_pitch);
-			set_all_voices_with_pitch_and_velocity(prev_pitch, prev_vel);
-			if (_zynayumi.patch.playmode == PlayMode::UnisonRetrig) {
-				retrig_all_voices();
-			}
-		} else {
-			set_note_off_all_voices();
-		}
-		break;
-	}
-	case PlayMode::UnisonUpArp:
-	case PlayMode::UnisonDownArp:
-	case PlayMode::UnisonRandArp:
-		if (pitches.empty()) {
-			set_note_off_all_voices();
-		} else if (pitches.size() == 1) {
-			unsigned char last_pitch = *pitches.begin();
-			for (Voice& v : _voices) {
-				if (v.note_on) {
-					v.set_note_pitch(last_pitch);
-					break;
-				}
-			}
-		}
-		break;
-	case PlayMode::Poly:
+	case CantusMode::Poly:
 	{
 		set_note_off_with_pitch(pitch);
 		break;
@@ -473,7 +500,7 @@ int Engine::select_ym_channel(bool poly) const
 		return least_significant_channel;
 	} else {
 		// Otherwise select randomly among the silent ones
-		int rchi = rand() % silent_channels.size();
+		int rchi = rand() % silent_channels.size(); // NEXT: replace rand() by Voice::hash
 		return *std::next(silent_channels.begin(), rchi);
 	}
 }
@@ -495,7 +522,7 @@ void Engine::set_last_pitch(unsigned char pitch)
 
 void Engine::add_voice(unsigned char pitch, unsigned char velocity)
 {
-	int ym_channel = select_ym_channel(_zynayumi.patch.playmode == PlayMode::Poly);
+	int ym_channel = select_ym_channel(_zynayumi.patch.cantusmode == CantusMode::Poly);
 	if (0 <= ym_channel)
 		_voices[ym_channel].set_note_on(pitch, velocity);
 }
@@ -506,11 +533,16 @@ void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
 		_voices[i].set_note_on(pitch, velocity);
 }
 
-void Engine::set_all_voices_with_pitch_and_velocity(unsigned char pitch,
-                                                    unsigned char velocity)
+void Engine::set_all_voices_pitch(unsigned char pitch)
 {
 	for (Voice& voice : _voices) {
 		voice.set_note_pitch(pitch);
+	}
+}
+
+void Engine::set_all_voices_velocity(unsigned char velocity)
+{
+	for (Voice& voice : _voices) {
 		voice.set_velocity(velocity);
 	}
 }
