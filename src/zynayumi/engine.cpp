@@ -204,6 +204,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 		default:
 			break;
 		}
+		break;
 	case CantusMode::Poly:
 		add_voice(pitch, velocity);
 		break;
@@ -268,6 +269,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 		default:
 			break;
 		}
+		break;
 	case CantusMode::Unison:
 		switch(_zynayumi.patch.playmode) {
 		case PlayMode::Legato:
@@ -306,6 +308,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 		default:
 			break;
 		}
+		break;
 	case CantusMode::Poly:
 	{
 		set_note_off_with_pitch(pitch);
