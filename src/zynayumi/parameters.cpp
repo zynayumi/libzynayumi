@@ -260,6 +260,12 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                    &patch.emulmode,
 	                                                    EMUL_MODE_DFLT);
 
+	// Cantus mode
+	parameters[CANTUS_MODE] = new EnumParameter<CantusMode>(CANTUS_MODE_NAME,
+	                                                       CANTUS_MODE_UNIT,
+	                                                       &patch.cantusmode,
+	                                                       CANTUS_MODE_DFLT);
+
 	// Play mode
 	parameters[PLAY_MODE] = new EnumParameter<PlayMode>(PLAY_MODE_NAME,
 	                                                    PLAY_MODE_UNIT,
@@ -985,6 +991,7 @@ std::string Parameters::to_string(std::string indent) const
 
 	// Modes
 	ss << indent << "prmtrs->patch.emulmode = zynayumi::EmulMode::" << zynayumi::to_string(patch.emulmode) << ";" << std::endl;
+	ss << indent << "prmtrs->patch.cantusmode = zynayumi::CantusMode::" << zynayumi::to_string(patch.cantusmode) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.playmode = zynayumi::PlayMode::" << zynayumi::to_string(patch.playmode) << ";" << std::endl;
 
 	// Tone

@@ -75,6 +75,9 @@ public:
 	// Current emulation mode (YM2149 or AY8910)
 	EmulMode emulmode;
 
+	// Current cantus mode
+	CantusMode cantusmode;
+
 	// Current play mode
 	PlayMode playmode;
 

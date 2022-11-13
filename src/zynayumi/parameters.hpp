@@ -298,6 +298,9 @@ enum ParameterIndex {
 	// Emulation mode (YM2149 vs AY-3-8910)
 	EMUL_MODE,
 
+	// Cantus mode
+	CANTUS_MODE,
+
 	// Play mode
 	PLAY_MODE,
 
@@ -528,6 +531,7 @@ enum ParameterIndex {
 
 // Parameter names
 #define EMUL_MODE_NAME "Emulation mode"
+#define CANTUS_MODE_NAME "Cantus mode"
 #define PLAY_MODE_NAME "Play mode"
 #define TONE_RESET_NAME "Tone reset"
 #define TONE_PHASE_NAME "Tone phase"
@@ -604,6 +608,7 @@ enum ParameterIndex {
 #define BPM "bpm"
 #define EMPTY ""
 #define EMUL_MODE_UNIT EMPTY
+#define CANTUS_MODE_UNIT EMPTY
 #define PLAY_MODE_UNIT EMPTY
 #define TONE_RESET_UNIT EMPTY
 #define TONE_PHASE_UNIT EMPTY
@@ -673,7 +678,8 @@ enum ParameterIndex {
 
 // Parameter defaults
 #define EMUL_MODE_DFLT EmulMode::YM2149
-#define PLAY_MODE_DFLT PlayMode::MonoLegato
+#define CANTUS_MODE_DFLT CantusMode::Mono
+#define PLAY_MODE_DFLT PlayMode::Legato
 #define TONE_RESET_DFLT true
 #define TONE_PHASE_DFLT 0.0f
 #define TONE_TIME_DFLT std::numeric_limits<float>::infinity()

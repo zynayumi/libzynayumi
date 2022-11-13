@@ -86,37 +86,8 @@ Control::Control() : pitchwheel(2),
                              Control::MidiChannel::Any} {}
 
 Patch::Patch() : emulmode(EmulMode::YM2149),
-                 playmode(PlayMode::MonoLegato) {}
-
-std::string to_string(PlayMode pm)
-{
-	switch(pm) {
-	case PlayMode::MonoLegato:
-		return "MonoLegato";
-	case PlayMode::MonoRetrig:
-		return "MonoRetrig";
-	case PlayMode::MonoUpArp:
-		return "MonoUpArp";
-	case PlayMode::MonoDownArp:
-		return "MonoDownArp";
-	case PlayMode::MonoRandArp:
-		return "MonoRandArp";
-	case PlayMode::UnisonLegato:
-		return "UnisonLegato";
-	case PlayMode::UnisonRetrig:
-		return "UnisonRetrig";
-	case PlayMode::UnisonUpArp:
-		return "UnisonUpArp";
-	case PlayMode::UnisonDownArp:
-		return "UnisonDownArp";
-	case PlayMode::UnisonRandArp:
-		return "UnisonRandArp";
-	case PlayMode::Poly:
-		return "Poly";
-	default:
-		return "";
-	}
-}
+                 cantusmode(CantusMode::Mono),
+                 playmode(PlayMode::Legato) {}
 
 std::string to_string(EmulMode em)
 {
@@ -125,6 +96,38 @@ std::string to_string(EmulMode em)
 		return "YM2149";
 	case EmulMode::AY8910:
 		return "AY-3-8910";
+	default:
+		return "";
+	}
+}
+
+std::string to_string(CantusMode cm)
+{
+	switch(cm) {
+	case CantusMode::Mono:
+		return "Mono";
+	case CantusMode::Unison:
+		return "Unison";
+	case CantusMode::Poly:
+		return "Poly";
+	default:
+		return "";
+	}
+}
+
+std::string to_string(PlayMode pm)
+{
+	switch(pm) {
+	case PlayMode::Legato:
+		return "Legato";
+	case PlayMode::Retrig:
+		return "Retrig";
+	case PlayMode::UpArp:
+		return "UpArp";
+	case PlayMode::DownArp:
+		return "DownArp";
+	case PlayMode::RandArp:
+		return "RandArp";
 	default:
 		return "";
 	}

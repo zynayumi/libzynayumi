@@ -503,28 +503,20 @@ void Voice::update_arp()
 	};
 
 	// Take care of playmode arp
+	bool enable_arp = _patch->cantusmode != CantusMode::Poly and 1 < _engine->pitches.size();
 	switch (_patch->playmode) {
-	case PlayMode::MonoUpArp:
-	case PlayMode::UnisonUpArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2pitch(false) - _initial_pitch : 0.0;
+	case PlayMode::Legato:
+	case PlayMode::Retrig:
+		_relative_seq_pitch = 0.0;
 		break;
-	case PlayMode::MonoDownArp:
-	case PlayMode::UnisonDownArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2pitch(true) - _initial_pitch : 0.0;
+	case PlayMode::UpArp:
+		_relative_seq_pitch = enable_arp ? count2pitch(false) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::MonoRandArp:
-	case PlayMode::UnisonRandArp:
-		_relative_seq_pitch = 1 < _engine->pitches.size() ?
-			count2rndpitch() - _initial_pitch : 0.0;
+	case PlayMode::DownArp:
+		_relative_seq_pitch = enable_arp ? count2pitch(true) - _initial_pitch : 0.0;
 		break;
-	case PlayMode::MonoLegato:
-	case PlayMode::MonoRetrig:
-	case PlayMode::UnisonLegato:
-	case PlayMode::UnisonRetrig:
-	case PlayMode::Poly:
-		_relative_seq_pitch = 0;
+	case PlayMode::RandArp:
+		_relative_seq_pitch = enable_arp ? count2rndpitch() - _initial_pitch : 0.0;
 		break;
 	default:
 		std::cerr << "Not implemented" << std::endl;

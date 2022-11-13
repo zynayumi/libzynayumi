@@ -41,7 +41,8 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs = parameters_pts[0];
 	prmtrs->patch.name = "Drum:BassDrum1";
 	prmtrs->patch.emulmode = zynayumi::EmulMode::YM2149;
-	prmtrs->patch.playmode = zynayumi::PlayMode::MonoRetrig;
+	prmtrs->patch.cantusmode = zynayumi::CantusMode::Mono;
+	prmtrs->patch.playmode = zynayumi::PlayMode::Retrig;
 	prmtrs->patch.tone.reset = true;
 	prmtrs->patch.tone.phase = 0;
 	prmtrs->patch.tone.time = std::numeric_limits<float>::infinity();
@@ -236,7 +237,8 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs = parameters_pts[1];
 	prmtrs->patch.name = "Drum:SnareDrum1";
 	prmtrs->patch.emulmode = zynayumi::EmulMode::YM2149;
-	prmtrs->patch.playmode = zynayumi::PlayMode::MonoRetrig;
+	prmtrs->patch.cantusmode = zynayumi::CantusMode::Mono;
+	prmtrs->patch.playmode = zynayumi::PlayMode::Retrig;
 	prmtrs->patch.tone.reset = true;
 	prmtrs->patch.tone.phase = 0;
 	prmtrs->patch.tone.time = std::numeric_limits<float>::infinity();
@@ -431,7 +433,8 @@ Programs::Programs(Zynayumi& zynayumi)
 	prmtrs = parameters_pts[2];
 	prmtrs->patch.name = "Misc:BDLead1";
 	prmtrs->patch.emulmode = zynayumi::EmulMode::YM2149;
-	prmtrs->patch.playmode = zynayumi::PlayMode::MonoRetrig;
+	prmtrs->patch.cantusmode = zynayumi::CantusMode::Mono;
+	prmtrs->patch.playmode = zynayumi::PlayMode::Retrig;
 	prmtrs->patch.tone.reset = true;
 	prmtrs->patch.tone.phase = 0;
 	prmtrs->patch.tone.time = std::numeric_limits<float>::infinity();

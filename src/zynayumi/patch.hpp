@@ -39,19 +39,20 @@ enum class EmulMode {
 	Count
 };
 
-enum class PlayMode {
-	// NEXT: split into submodes Legato, Retrig, UpArp, DownArp, RandArp
-	MonoLegato,
-	MonoRetrig,
-	MonoUpArp,
-	MonoDownArp,
-	MonoRandArp,
-	UnisonLegato,
-	UnisonRetrig,
-	UnisonUpArp,
-	UnisonDownArp,
-	UnisonRandArp,
+enum class CantusMode {
+	Mono,
+	Unison,
 	Poly,
+
+	Count
+};
+
+enum class PlayMode {
+	Legato,
+	Retrig,
+	UpArp,
+	DownArp,
+	RandArp,
 
 	Count
 };
@@ -342,7 +343,8 @@ public:
 	std::string name;           // Name
 
 	EmulMode emulmode;          // Emulation mode, YM2149 or AY-3-8910
-	PlayMode playmode;          // Monophonic, polyphonic, unison or arp
+	CantusMode cantusmode;      // Monophonic, unson or polyphonic
+	PlayMode playmode;          // Legato, retrig or arp
 	Tone tone;                  // Tone control
 	Noise noise;                // Noise control
 	NoisePeriodEnv noise_period_env; // Noise period envelope
@@ -357,8 +359,9 @@ public:
 	Control control;            // Pitchwheel, velocity sensitivity, etc
 };
 
-std::string to_string(PlayMode pm);
 std::string to_string(EmulMode em);
+std::string to_string(CantusMode cm);
+std::string to_string(PlayMode pm);
 std::string to_string(RingMod::Loop lp);
 std::string to_string(Buzzer::Shape sh);
 std::string to_string(Seq::Mode md);
