@@ -1,21 +1,21 @@
 /****************************************************************************
-    
+
     Parameters for Zynayumi
 
     parameters.cpp
 
     Copyleft (c) 2016-2019 Nil Geisweiller <ngeiswei@gmail.com>
- 
+
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation; either version 2 of the License, or
     (at your option) any later version.
-    
+
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with this program; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 01222-1307  USA
@@ -278,7 +278,7 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 	                                                  TONE_PHASE_DFLT,
 	                                                  TONE_PHASE_L,
 	                                                  TONE_PHASE_U);
-	
+
 	parameters[TONE_TIME] = new TanFloatParameter(TONE_TIME_NAME,
 	                                              TONE_TIME_UNIT,
 	                                              &patch.tone.time,
@@ -979,11 +979,14 @@ std::string Parameters::to_string(std::string indent) const
 {
 	// NEXT: use Parameters attributes when available
 	std::stringstream ss;
+
 	// Name
 	ss << indent << "prmtrs->patch.name = " << patch.name << ";" << std::endl;
+
 	// Modes
 	ss << indent << "prmtrs->patch.emulmode = zynayumi::EmulMode::" << zynayumi::to_string(patch.emulmode) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.playmode = zynayumi::PlayMode::" << zynayumi::to_string(patch.playmode) << ";" << std::endl;
+
 	// Tone
 	ss << indent << "prmtrs->patch.tone.reset = " << bool_to_string(patch.tone.reset) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.tone.phase = " << patch.tone.phase << ";" << std::endl;
@@ -992,12 +995,15 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->tone_transpose = " << tone_transpose << ";" << std::endl;
 	ss << indent << "prmtrs->patch.tone.spread = " << patch.tone.spread << ";" << std::endl;
 	ss << indent << "prmtrs->patch.tone.legacy_tuning = " << bool_to_string(patch.tone.legacy_tuning) << ";" << std::endl;
+
 	// Noise
 	ss << indent << "prmtrs->patch.noise.time = " << float_to_string(patch.noise.time) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.noise.period = " << patch.noise.period << ";" << std::endl;
+
 	// Noise Period Envelop
 	ss << indent << "prmtrs->patch.noise_period_env.attack = " << patch.noise_period_env.attack << ";" << std::endl;
 	ss << indent << "prmtrs->patch.noise_period_env.time = " << patch.noise_period_env.time << ";" << std::endl;
+
 	// Env
 	ss << indent << "prmtrs->patch.env.attack_time = " << patch.env.attack_time << ";" << std::endl;
 	ss << indent << "prmtrs->patch.env.hold1_level = " << patch.env.hold1_level << ";" << std::endl;
@@ -1008,10 +1014,12 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.env.decay_time = " << patch.env.decay_time << ";" << std::endl;
 	ss << indent << "prmtrs->patch.env.sustain_level = " << patch.env.sustain_level << ";" << std::endl;
 	ss << indent << "prmtrs->patch.env.release = " << patch.env.release << ";" << std::endl;
+
 	// Pitch Env
 	ss << indent << "prmtrs->patch.pitchenv.attack_pitch = " << patch.pitchenv.attack_pitch << ";" << std::endl;
 	ss << indent << "prmtrs->patch.pitchenv.time = " << patch.pitchenv.time << ";" << std::endl;
 	ss << indent << "prmtrs->patch.pitchenv.smoothness = " << patch.pitchenv.smoothness << ";" << std::endl;
+
 	// Ring Mod
 	for (unsigned i = 0; i < RINGMOD_WAVEFORM_SIZE; i++)
 		ss << indent << "prmtrs->patch.ringmod.waveform[" << i << "] = " << patch.ringmod.waveform[i] << ";" << std::endl;
@@ -1024,9 +1032,11 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->patch.ringmod.fixed_pitch = " << patch.ringmod.fixed_pitch << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.fixed_vs_relative = " << patch.ringmod.fixed_vs_relative << ";" << std::endl;
 	ss << indent << "prmtrs->patch.ringmod.depth = " << patch.ringmod.depth << ";" << std::endl;
+
 	// Buzzer
 	ss << indent << "prmtrs->patch.buzzer.enabled = " << bool_to_string(patch.buzzer.enabled) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.buzzer.shape = zynayumi::Buzzer::Shape::" << zynayumi::to_string(patch.buzzer.shape) << ";" << std::endl;
+
 	// Seq
 	for (unsigned i = 0; i < Seq::size; i++) {
 		ss << indent << "prmtrs->patch.seq.states[" << i << "].tone_pitch = " << patch.seq.states[i].tone_pitch << ";" << std::endl;
@@ -1043,20 +1053,24 @@ std::string Parameters::to_string(std::string indent) const
 	ss << indent << "prmtrs->seq_beat_multiplier = " << seq_beat_multiplier << ";" << std::endl;
 	ss << indent << "prmtrs->patch.seq.loop = " << patch.seq.loop << ";" << std::endl;
 	ss << indent << "prmtrs->patch.seq.end = " << patch.seq.end << ";" << std::endl;
+
 	// LFO
 	ss << indent << "prmtrs->patch.lfo.shape = zynayumi::LFO::Shape::" << zynayumi::to_string(patch.lfo.shape) << ";" << std::endl;
 	ss << indent << "prmtrs->patch.lfo.freq = " << patch.lfo.freq << ";" << std::endl;
 	ss << indent << "prmtrs->patch.lfo.delay = " << patch.lfo.delay << ";" << std::endl;
 	ss << indent << "prmtrs->patch.lfo.depth = " << patch.lfo.depth << ";" << std::endl;
+
 	// Portamento
 	ss << indent << "prmtrs->patch.portamento.time = " << patch.portamento.time << ";" << std::endl;
 	ss << indent << "prmtrs->patch.portamento.smoothness = " << patch.portamento.smoothness << ";" << std::endl;
+
 	// Mixer
 	for (unsigned i = 0; i < 3; i++)
 		ss << indent << "prmtrs->patch.mixer.enabled[" << i << "] = " << bool_to_string(patch.mixer.enabled[i]) << ";" << std::endl;
 	for (unsigned i = 0; i < 3; i++)
 		ss << indent << "prmtrs->patch.mixer.pan[" << i << "] = " << patch.mixer.pan[i] << ";" << std::endl;
 	ss << indent << "prmtrs->patch.mixer.gain = " << patch.mixer.gain << ";" << std::endl;
+
 	// Control
 	ss << indent << "prmtrs->patch.control.pitchwheel = " << patch.control.pitchwheel << ";" << std::endl;
 	ss << indent << "prmtrs->patch.control.velocity_sensitivity = " << patch.control.velocity_sensitivity << ";" << std::endl;

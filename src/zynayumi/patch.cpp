@@ -34,7 +34,7 @@ Tone::Tone() : reset(true),
                detune(0),
                spread(0),
                legacy_tuning(false) {}
-	
+
 Noise::Noise() : time(0), period(1) {}
 
 NoisePeriodEnv::NoisePeriodEnv() : attack(1), time(0) {}
