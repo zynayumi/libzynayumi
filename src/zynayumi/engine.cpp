@@ -500,7 +500,7 @@ int Engine::select_ym_channel(bool poly) const
 		return least_significant_channel;
 	} else {
 		// Otherwise select randomly among the silent ones
-		int rchi = rand() % silent_channels.size();
+		int rchi = rand() % silent_channels.size(); // NEXT: replace rand() by Voice::hash
 		return *std::next(silent_channels.begin(), rchi);
 	}
 }
