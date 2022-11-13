@@ -128,7 +128,7 @@ $ sudo make install
 
 - **Env sustain level**: sustain level of the amplitude envelope.
   Ranges from 0 to 15.
-  
+
 - **Env release**: time in second to go from sustain_level to 0.0 of
   the amplitude envelope.  Ranges from 0.0 to 10.0.
 
