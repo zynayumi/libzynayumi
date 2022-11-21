@@ -317,6 +317,13 @@ void Voice::update_seq()
 
 	_seq_step = step;
 
+	// Sequencer with null end is equivalent to disable
+	if (_patch->seq.end == 0) {
+		_seq_index = -1;
+		return;
+	}
+
+	// Sequencer is enabled, possibly
 	switch (_patch->seq.mode) {
 	case Seq::Mode::Off:
 		_seq_index = -1;
@@ -346,12 +353,12 @@ void Voice::update_seq()
 		if (_patch->seq.loop < _patch->seq.end) {
 			// Backward loop
 			int loop_length = _patch->seq.end - _patch->seq.loop;
-			_seq_index = _patch->seq.loop + loop_length - (_seq_step % loop_length);
+			_seq_index = _patch->seq.end - (_seq_step % loop_length) - 1;
 		} else {
 			if (-1 < _seq_index) {
 				// Backward once.  Set to -1 as soon as it has passed the
 				// beginning.
-				_seq_index = _patch->seq.end - _seq_step;
+				_seq_index = _patch->seq.end - _seq_step - 1;
 			}
 		}
 		break;
