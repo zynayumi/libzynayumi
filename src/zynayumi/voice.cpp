@@ -24,7 +24,6 @@
 
 #include <iostream>
 #include <cmath>
-#include <random>
 #include <algorithm>
 
 #include "voice.hpp"
@@ -318,22 +317,86 @@ void Voice::update_seq()
 
 	_seq_step = step;
 
-	auto step2index = [&](size_t repeat, size_t size) -> int {
-		int index = _seq_step;
-		if (size <= index)
-			index = repeat + (index % (size - repeat));
-		return index;
-	};
-
-	if (_patch->seq.loop < _patch->seq.end) {
-		_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
-	} else {
-		if (_seq_step < _patch->seq.end) {
-			_seq_index = (int)_seq_step;
-		} else {
-			_seq_index = -1;
-		}
+	// Sequencer with null end is equivalent to disable
+	if (_patch->seq.end == 0) {
+		_seq_index = -1;
+		return;
 	}
+
+	// Sequencer is enabled, possibly
+	switch (_patch->seq.mode) {
+	case Seq::Mode::Off:
+		_seq_index = -1;
+		break;
+	case Seq::Mode::Forward: {
+		auto step2index = [&](size_t repeat, size_t size) -> int {
+			int index = _seq_step;
+			if (size <= index)
+				index = repeat + ((index - repeat) % (size - repeat));
+			return index;
+		};
+
+		if (_patch->seq.loop < _patch->seq.end) {
+			// Forward loop
+			_seq_index = step2index(_patch->seq.loop, _patch->seq.end);
+		} else {
+			// Forward once.  Set to -1 as soon as it has passed the end.
+			if (_seq_step < _patch->seq.end) {
+				_seq_index = (int)_seq_step;
+			} else {
+				_seq_index = -1;
+			}
+		}
+		break;
+	}
+	case Seq::Mode::Backward: {
+		if (_patch->seq.loop < _patch->seq.end) {
+			// Backward loop
+			int loop_length = _patch->seq.end - _patch->seq.loop;
+			_seq_index = _patch->seq.end - (_seq_step % loop_length) - 1;
+		} else {
+			if (-1 < _seq_index) {
+				// Backward once.  Set to -1 as soon as it has passed the
+				// beginning.
+				_seq_index = _patch->seq.end - _seq_step - 1;
+			}
+		}
+		break;
+	}
+	case Seq::Mode::PingPong: {
+		bool loop_lt_end = _patch->seq.loop < _patch->seq.end;
+		int loop = loop_lt_end ? _patch->seq.loop : 0;
+		int len = _patch->seq.end - loop - 1;
+		if (loop_lt_end) {
+			// PingPong loop
+			_seq_index = _seq_step < loop ? _seq_step
+				: loop + std::abs(((_seq_step + len - loop) % (2 * len)) - len);
+		} else {
+			// PingPong once
+			_seq_index = _seq_step < 2*len ?
+				std::abs(((_seq_step + len) % (2 * len)) - len) : -1;
+		}
+		break;
+	}
+	case Seq::Mode::Random: {
+		if (_patch->seq.loop < _patch->seq.end) {
+			// Random loop
+			_seq_index = _seq_step < _patch->seq.loop ?
+				range_rand(0 , _patch->seq.end, _seq_step)
+				: range_rand(_patch->seq.loop, _patch->seq.end, _seq_step);
+		} else {
+			// Randomly traverse once
+			_seq_index = _seq_step < _patch->seq.end ?
+				range_rand(0, _patch->seq.end, _seq_step) : -1;
+		}
+		break;
+	}
+	default:
+		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+		break;
+	}
+
+	std::cout << "Voice::update_seq() _seq_step = " << _seq_step << ", _seq_index = " << _seq_index << std::endl;
 }
 
 void Voice::update_tone()
@@ -484,16 +547,16 @@ void Voice::update_arp()
 			unsigned new_index;
 			do {                   // Try the next random index if the
 				                    // note wouldn't changed.
-				new_index = hash(_seq_rnd_offset_step + _seq_step) % size;
+				new_index = range_rand(0, size, _seq_rnd_offset_step + _seq_step);
 				same_index = new_index == _rnd_index;
 				if (same_index)
 					++_seq_rnd_offset_step;
-			} while	(same_index);
+			} while (same_index);
 			_rnd_index = new_index;
 			return _rnd_index;
 		}
 		else {
-			_rnd_index = hash(_seq_rnd_offset_step + _seq_step) % size;
+			_rnd_index = range_rand(0, size, _seq_rnd_offset_step + _seq_step);
 			return _rnd_index;
 		}
 	};
@@ -519,7 +582,8 @@ void Voice::update_arp()
 		_relative_seq_pitch = enable_arp ? count2rndpitch() - _initial_pitch : 0.0;
 		break;
 	default:
-		std::cerr << "Not implemented" << std::endl;
+		std::cerr << "Case not implemented, there's likely a bug" << std::endl;
+		break;
 	}
 
 	// Take care of seq tone pitch
@@ -628,7 +692,7 @@ void Voice::update_ringmod_smp_period()
 {
 	_ringmod_whole_smp_period = 2 * _engine->pitch2toneperiod(_ringmod_pitch);
 	int nsegs = (RINGMOD_WAVEFORM_SIZE * (_patch->ringmod.loop == RingMod::Loop::PingPong ? 2 : 1));
-	_ringmod_smp_period = _ringmod_whole_smp_period	/ nsegs;
+	_ringmod_smp_period = _ringmod_whole_smp_period / nsegs;
 }
 
 void Voice::update_ringmod_smp_count()
@@ -770,7 +834,7 @@ void Voice::update_buzzer_shape()
 
 void Voice::update_seq_level()
 {
-   _seq_level = 0 <= _seq_index ? normalize_level(_patch->seq.states[_seq_index].level) : 1.0;
+	_seq_level = 0 <= _seq_index ? normalize_level(_patch->seq.states[_seq_index].level) : 1.0;
 }
 
 void Voice::update_final_level()
@@ -931,6 +995,12 @@ uint32_t Voice::hash(uint32_t a)
 	a = a * 0x27d4eb2d;
 	a = a ^ (a >> 15);
 	return a;
+}
+
+uint32_t Voice::range_rand(uint32_t lo, uint32_t up, uint32_t x)
+{
+	uint32_t length = up - lo;
+	return lo + (hash(x) % length);
 }
 
 double Voice::normalize_level(int level)

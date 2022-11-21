@@ -97,7 +97,7 @@ private:
 	double _initial_pitch;             // Initial note pitch
 
 	double _final_pitch;               // Final pitch after all pitch
-												  // updates
+	                                   // updates
 
 	bool _tone_off;                    // True iff the tone is off
 
@@ -126,7 +126,7 @@ private:
 	bool _seq_change;                  // Whether step has incremented
 
 	int _seq_index;                    // Step index, range from -1 to
-	                                   // 15. Negative means undefined.
+	                                   // 15. Negative means inactive.
 
 	double _seq_level;                 // Volume level determined by
 	                                   // the sequencer.
@@ -167,7 +167,7 @@ private:
 	double _ringmod_smp_period;        // Number of samples to make a
 	                                   // ringmod waveform segment
 	double _ringmod_whole_smp_period;  // Number of samples to make the
-												  // whole ringmod waveform
+	                                   // whole ringmod waveform
 
 	double _buzzer_pitch;              // Pitch of the buzzer
 	int _buzzer_period;                // Period of the buzzer
@@ -208,7 +208,7 @@ private:
 	void update_buzzer_pitch();
 	void update_buzzer_period();
 	void update_buzzer_shape();
-   void update_seq_level();
+	void update_seq_level();
 	void update_final_level();
 	void reset_tone();
 	void reset_ringmod();
@@ -229,7 +229,14 @@ private:
 	static double lfo_square_pitch(double freq, double time);
 	static double lfo_rand_pitch(double freq, double time);
 
-	static uint32_t hash(uint32_t a);
+	// Map a seed x to a pseudo random number within uint32_t
+	static uint32_t hash(uint32_t x);
+
+	// Map a seed x to a pseudo random number within [lo, up).  It is
+	// assumed that lo < up, otherwise behavior is undefined.
+	static uint32_t range_rand(uint32_t lo, uint32_t up, uint32_t x);
+
+	// Normalize a level, i.e. a value within [0, MAX_LEVEL]
 	static double normalize_level(int level);
 };
 
