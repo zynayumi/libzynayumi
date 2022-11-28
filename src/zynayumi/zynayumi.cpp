@@ -76,6 +76,7 @@ void Zynayumi::midi_event_process(unsigned char status,
 {
 	unsigned char channel = 0x0f & status;
 	status &= 0xf0;
+	std::cout << "Zynayumi::midi_event_process(status=" << (int)status << ", byte1=" << (int)byte1 << ", byte2=" << (int)byte2 << ") channel = " << (int)channel << std::endl;
 	switch (status) {
 	case MSC_NOTE_ON:
 	case MSC_NOTE_OFF: {
