@@ -76,42 +76,41 @@ void Zynayumi::midi_event_process(unsigned char status,
 {
 	unsigned char channel = 0x0f & status;
 	status &= 0xf0;
-	std::cout << "Zynayumi::midi_event_process(status=" << (int)status << ", byte1=" << (int)byte1 << ", byte2=" << (int)byte2 << ") channel = " << (int)channel << std::endl;
 	switch (status) {
 	case MSC_NOTE_ON:
 	case MSC_NOTE_OFF: {
 		unsigned char pitch = byte1, velocity = byte2;
 		if (status == MSC_NOTE_ON and velocity > 0)
-			note_on_process(0, pitch, velocity);
+			note_on_process(channel, pitch, velocity);
 		else if (status == MSC_NOTE_OFF or
 		         (status == MSC_NOTE_ON and velocity == 0))
-			note_off_process(0, pitch);
+			note_off_process(channel, pitch);
 		break;
 	}
 	case MSC_PITCH_WHEEL:
-		pitch_wheel_process(0, ((short)byte2 << 7) + (short)byte1);
+		pitch_wheel_process(channel, ((short)byte2 << 7) + (short)byte1);
 		break;
 	case MSC_CONTROL: {
 		unsigned char cc = byte1;
 		unsigned char value = byte2;
 		switch (cc) {
 		case CTL_MODWHEEL:
-			modulation_process(0, value);
+			modulation_process(channel, value);
 			break;
 		case CTL_PORTAMENTO_TIME:
-			portamento_process(0, value);
+			portamento_process(channel, value);
 			break;
 		case CTL_MAIN_VOLUME:
-			volume_process(0, value);
+			volume_process(channel, value);
 			break;
 		case CTL_PAN:
-			pan_process(0, value);
+			pan_process(channel, value);
 			break;
 		case CTL_EXPRESSION:
-			expression_process(0, value);
+			expression_process(channel, value);
 			break;
 		case CTL_DAMPER_PEDAL:
-			sustain_pedal_process(0, value);
+			sustain_pedal_process(channel, value);
 			break;
 		case CTL_ALL_NOTES_OFF:
 			all_notes_off_process();
