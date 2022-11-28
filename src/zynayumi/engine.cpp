@@ -78,8 +78,7 @@ Engine::Engine(const Zynayumi& ref)
 void Engine::set_sample_rate(int sr)
 {
 	sample_rate = sr;
-	ayumi_configure(&ay, emulmode == EmulMode::YM2149,
-	                clock_rate, sample_rate);
+	ayumi_configure(&ay, emulmode == EmulMode::YM2149, clock_rate, sample_rate);
 }
 
 void Engine::set_bpm(double b)
