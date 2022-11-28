@@ -74,7 +74,7 @@ void Zynayumi::midi_event_process(unsigned char status,
                                   unsigned char byte1,
                                   unsigned char byte2)
 {
-	// Ignore midi channel
+	unsigned char channel = 0x0f & status;
 	status &= 0xf0;
 	switch (status) {
 	case MSC_NOTE_ON:
