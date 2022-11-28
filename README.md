@@ -387,10 +387,7 @@ harmful sounds and protect your hearing.
 
 ## TODO
 
-- [ ] Fix issue https://github.com/zynayumi/zynayumi/issues/5
-- [ ] Implement the modes suggested in
-      https://github.com/zynayumi/zynayumi/issues/5#issuecomment-869054663
-- [ ] Implement Retrig
+- [ ] Fix missing notes in poly mode
 - [ ] Implement CC:
   - [ ] Volume
   - [ ] Pan
@@ -401,17 +398,17 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Rate
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
+- [ ] Update tempo when it has changed on the host
 - [ ] Support midi voice receive, Any, 1..16
 - [ ] Improve parameter scaling
 - [ ] Maybe have unison decrease gain by the proper amount
-- [ ] Fix Buzzer reset
+- [ ] Fix buzzer reset
 - [ ] Fix buzzer sync
-- [ ] Have seq ringmod depth also affects buzzer if enabled
-- [ ] Add support for digi drums
-- [ ] Implement *Oversampling*
 - [ ] Fix ringmod phase issue
-- [ ] Update tempo when it has changed on the host
+- [ ] Have seq ringmod depth also affects buzzer if enabled
+- [ ] Implement *Oversampling*
 - [ ] Define presets
+- [ ] Add support for digi drums, maybe
 
 ## Author(s)
 
