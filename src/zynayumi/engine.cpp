@@ -134,12 +134,12 @@ void Engine::audio_process(float* left_out, float* right_out,
 	}
 }
 
-void Engine::note_on_process(unsigned char /* channel */,
+void Engine::note_on_process(unsigned char channel,
                              unsigned char pitch,
                              unsigned char velocity)
 {
 	set_last_pitch(pitch);
-	insert_pitch(pitch, velocity);
+	insert_pitch(channel, pitch, velocity);
 	if (sustain_pedal)
 		erase_sustain_pitch(pitch);
 
@@ -213,7 +213,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 	}
 }
 
-void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
+void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 {
 	// If sustain pedal is on then ignore the off, but save it for when
 	// the pedal will go iff
@@ -223,7 +223,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 	}
 
 	// Otherwise erase the corresponding pitch
-	erase_pitch(pitch);
+	erase_pitch(channel, pitch);
 
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.cantusmode) {
@@ -325,6 +325,7 @@ void Engine::all_notes_off_process()
 	pitches.clear();
 	pitch_stack.clear();
 	velocity_stack.clear();
+	channel_stack.clear();
 	sustain_pitches.clear();
 	set_note_off_all_voices();
 }
@@ -552,6 +553,7 @@ void Engine::retrig_all_voices()
 		voice.retrig();
 }
 
+// NEXT: probably need to add channel
 void Engine::set_note_off_with_pitch(unsigned char pitch)
 {
 	// Set all voices off with this pitch, not just one, as it seems to
@@ -571,20 +573,27 @@ void Engine::set_note_off_all_voices()
 			v.set_note_off();
 }
 
-void Engine::insert_pitch(unsigned char pitch, unsigned char velocity)
+void Engine::insert_pitch(unsigned char channel,
+                          unsigned char pitch,
+                          unsigned char velocity)
 {
 	pitches.insert(pitch);
+	channel_stack.push_back(channel);
 	pitch_stack.push_back(pitch);
 	velocity_stack.push_back(velocity);
 }
 
-void Engine::erase_pitch(unsigned char pitch)
+void Engine::erase_pitch(unsigned char channel, unsigned char pitch)
 {
 	auto range = pitches.equal_range(pitch);
 	pitches.erase(range.first, range.second);
 	boost::remove_erase(pitch_stack, pitch);
 	if (not velocity_stack.empty())
-		velocity_stack.pop_back();
+		velocity_stack.pop_back(); // NEXT: shouldn't be the velocity at
+		                           // the index where the pitch was
+		                           // removed?
+	if (not channel_stack.empty())
+		channel_stack.pop_back(); // NEXT: same thing as above
 }
 
 void Engine::insert_sustain_pitch(unsigned char pitch)
