@@ -25,6 +25,8 @@
 #ifndef __ZYNAYUMI_VOICE_HPP
 #define __ZYNAYUMI_VOICE_HPP
 
+#include <cstdint>
+
 #include "patch.hpp"
 
 namespace zynayumi {
