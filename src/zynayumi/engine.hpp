@@ -195,10 +195,17 @@ public:
 	static float vol2gain(short value);
 
 private:
-	int select_ym_channel(bool poly) const;
-	std::set<unsigned char> get_enabled_ym_channels() const;
+	int select_ym_channel(bool poly, unsigned char channel) const;
+
+	// Return true iff the input midi channel in MIDI format matches
+	// the midi channel in Control::MidiChannel format.
+	bool is_valid_midi_channel(Control::MidiChannel midi_ch, unsigned char channel) const;
+
+	// Return the set of YM channels that are both enabled and accept
+	// the input channel.
+	std::set<unsigned char> get_valid_ym_channels(unsigned char channel) const;
 	void set_last_pitch(unsigned char pitch);
-	void add_voice(unsigned char pitch, unsigned char velocity);
+	void add_voice(unsigned char channel, unsigned char pitch, unsigned char velocity);
 	void add_all_voices(unsigned char pitch, unsigned char velocity);
 	void set_all_voices_pitch(unsigned char pitch);
 	void set_all_voices_velocity(unsigned char velocity);
