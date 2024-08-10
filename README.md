@@ -399,7 +399,6 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Depth
   - [ ] Vibrato Delay
 - [ ] Update tempo when it has changed on the host
-- [ ] Support midi voice receive, Any, 1..16
 - [ ] Improve parameter scaling
 - [ ] Maybe have unison decrease gain by the proper amount
 - [ ] Fix buzzer reset
