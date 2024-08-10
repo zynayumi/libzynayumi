@@ -78,8 +78,7 @@ Engine::Engine(const Zynayumi& ref)
 void Engine::set_sample_rate(int sr)
 {
 	sample_rate = sr;
-	ayumi_configure(&ay, emulmode == EmulMode::YM2149,
-	                clock_rate, sample_rate);
+	ayumi_configure(&ay, emulmode == EmulMode::YM2149, clock_rate, sample_rate);
 }
 
 void Engine::set_bpm(double b)
@@ -135,12 +134,12 @@ void Engine::audio_process(float* left_out, float* right_out,
 	}
 }
 
-void Engine::note_on_process(unsigned char /* channel */,
+void Engine::note_on_process(unsigned char channel,
                              unsigned char pitch,
                              unsigned char velocity)
 {
 	set_last_pitch(pitch);
-	insert_pitch(pitch, velocity);
+	insert_pitch(channel, pitch, velocity);
 	if (sustain_pedal)
 		erase_sustain_pitch(pitch);
 
@@ -151,11 +150,11 @@ void Engine::note_on_process(unsigned char /* channel */,
 		case PlayMode::Retrig:
 			if (pitch_stack.size() == 1) {
 				// We go from 0 to 1 on note
-				add_voice(pitch, velocity);
+				add_voice(channel, pitch, velocity);
 			} else {
 				// There is already an on note, merely change its pitch
 				unsigned char pitch = pitch_stack.back();
-				int first_enabled_ym_channel = select_ym_channel(false);
+				int first_enabled_ym_channel = select_ym_channel(false, channel);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(pitch);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
@@ -170,7 +169,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 		case PlayMode::RandArp:
 			if (pitches.size() == 1) {
 				// We go from 0 to 1 on note
-				add_voice(pitch, velocity);
+				add_voice(channel, pitch, velocity);
 			};
 			break;
 		default:
@@ -183,14 +182,14 @@ void Engine::note_on_process(unsigned char /* channel */,
 		case PlayMode::Retrig:
 			if (pitch_stack.size() == 1) {
 				// We go from 0 to 1 on note
-				add_all_voices(pitch, velocity);
+				add_all_voices(channel, pitch, velocity);
 			} else {
 				// There is already an on note, merely change its pitch
 				unsigned char pitch = pitch_stack.back();
-				set_all_voices_pitch(pitch);
+				set_all_voices_pitch(channel, pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(velocity);
-					retrig_all_voices();
+					set_all_voices_velocity(channel, velocity);
+					retrig_all_voices(channel);
 				}
 			}
 			break;
@@ -199,7 +198,7 @@ void Engine::note_on_process(unsigned char /* channel */,
 		case PlayMode::RandArp:
 			if (pitches.size() == 1) {
 				// We go from 0 to 1 on note
-				add_all_voices(pitch, velocity);
+				add_all_voices(channel, pitch, velocity);
 			};
 			break;
 		default:
@@ -207,14 +206,14 @@ void Engine::note_on_process(unsigned char /* channel */,
 		}
 		break;
 	case CantusMode::Poly:
-		add_voice(pitch, velocity);
+		add_voice(channel, pitch, velocity);
 		break;
 	default:
 		break;
 	}
 }
 
-void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
+void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 {
 	// If sustain pedal is on then ignore the off, but save it for when
 	// the pedal will go iff
@@ -224,7 +223,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 	}
 
 	// Otherwise erase the corresponding pitch
-	erase_pitch(pitch);
+	erase_pitch(channel, pitch);
 
 	// Possibly set the corresponding voice off
 	switch(_zynayumi.patch.cantusmode) {
@@ -239,7 +238,7 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 				unsigned char prev_pitch = pitch_stack.back();
 				unsigned char prev_vel = velocity_stack.back();
 				set_last_pitch(prev_pitch);
-				int first_enabled_ym_channel = select_ym_channel(false);
+				int first_enabled_ym_channel = select_ym_channel(false, channel);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
@@ -282,10 +281,10 @@ void Engine::note_off_process(unsigned char /* channel */, unsigned char pitch)
 				unsigned char prev_pitch = pitch_stack.back();
 				unsigned char prev_vel = velocity_stack.back();
 				set_last_pitch(prev_pitch);
-				set_all_voices_pitch(prev_pitch);
+				set_all_voices_pitch(channel, prev_pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(prev_vel);
-					retrig_all_voices();
+					set_all_voices_velocity(channel, prev_vel);
+					retrig_all_voices(channel);
 				}
 			} else {
 				set_note_off_all_voices();
@@ -326,6 +325,7 @@ void Engine::all_notes_off_process()
 	pitches.clear();
 	pitch_stack.clear();
 	velocity_stack.clear();
+	channel_stack.clear();
 	sustain_pitches.clear();
 	set_note_off_all_voices();
 }
@@ -458,23 +458,22 @@ float Engine::vol2gain(short value)
 	return ((float)value*(float)value) / (127.0f*127.0f);
 }
 
-int Engine::select_ym_channel(bool poly) const
+int Engine::select_ym_channel(bool poly, unsigned char channel) const
 {
-	// NEXT: implement control.midi_ch
-	std::set<unsigned char> enabled_ym_channels = get_enabled_ym_channels();
+	std::set<unsigned char> valid_ym_channels = get_valid_ym_channels(channel);
 
 	// No available ym channel, selection failed.
-	if (enabled_ym_channels.empty())
+	if (valid_ym_channels.empty())
 		return -1;
 
 	// Not polyphonic, return the first enabled one
-	unsigned char first_enabled_ym_channel = *enabled_ym_channels.begin();
+	unsigned char first_enabled_ym_channel = *valid_ym_channels.begin();
 	if (not poly)
 		return first_enabled_ym_channel;
 
 	// Determine silent ym channels for poly selection
 	std::set<unsigned char> silent_channels;
-	for (unsigned char ymch : enabled_ym_channels)
+	for (unsigned char ymch : valid_ym_channels)
 		if (_voices[ymch].is_silent())
 			silent_channels.insert(ymch);
 
@@ -494,7 +493,7 @@ int Engine::select_ym_channel(bool poly) const
 			}
 		};
 		unsigned char least_significant_channel = first_enabled_ym_channel;
-		for (unsigned char i : enabled_ym_channels)
+		for (unsigned char i : valid_ym_channels)
 			if (lt(_voices[i], _voices[least_significant_channel]))
 				least_significant_channel = i;
 		return least_significant_channel;
@@ -505,13 +504,58 @@ int Engine::select_ym_channel(bool poly) const
 	}
 }
 
-std::set<unsigned char> Engine::get_enabled_ym_channels() const
+bool Engine::is_valid_midi_channel(Control::MidiChannel midi_ch, unsigned char channel) const
 {
-	std::set<unsigned char> enabled_ym_channels;
-	for (const Voice& v : _voices)
-		if (v.enabled)
-			enabled_ym_channels.insert((unsigned char)v.ym_channel);
-	return enabled_ym_channels;
+	switch(midi_ch) {
+	case Control::MidiChannel::Any:
+		return true;
+	case Control::MidiChannel::c1:
+		return channel == 0;
+	case Control::MidiChannel::c2:
+		return channel == 1;
+	case Control::MidiChannel::c3:
+		return channel == 2;
+	case Control::MidiChannel::c4:
+		return channel == 3;
+	case Control::MidiChannel::c5:
+		return channel == 4;
+	case Control::MidiChannel::c6:
+		return channel == 5;
+	case Control::MidiChannel::c7:
+		return channel == 6;
+	case Control::MidiChannel::c8:
+		return channel == 7;
+	case Control::MidiChannel::c9:
+		return channel == 8;
+	case Control::MidiChannel::c10:
+		return channel == 9;
+	case Control::MidiChannel::c11:
+		return channel == 10;
+	case Control::MidiChannel::c12:
+		return channel == 11;
+	case Control::MidiChannel::c13:
+		return channel == 12;
+	case Control::MidiChannel::c14:
+		return channel == 13;
+	case Control::MidiChannel::c15:
+		return channel == 14;
+	case Control::MidiChannel::c16:
+		return channel == 15;
+	default:
+		return false;
+	}
+}
+
+std::set<unsigned char> Engine::get_valid_ym_channels(unsigned char channel) const
+{
+	std::set<unsigned char> valid_ym_channels;
+	for (const Voice& v : _voices) {
+		Control::MidiChannel midi_ch = _zynayumi.patch.control.midi_ch[v.ym_channel];
+		if (v.enabled and is_valid_midi_channel(midi_ch, channel)) {
+			valid_ym_channels.insert((unsigned char)v.ym_channel);
+		}
+	}
+	return valid_ym_channels;
 }
 
 void Engine::set_last_pitch(unsigned char pitch)
@@ -520,37 +564,44 @@ void Engine::set_last_pitch(unsigned char pitch)
 	last_pitch = pitch;
 }
 
-void Engine::add_voice(unsigned char pitch, unsigned char velocity)
+void Engine::add_voice(unsigned char channel,
+                       unsigned char pitch,
+                       unsigned char velocity)
 {
-	int ym_channel = select_ym_channel(_zynayumi.patch.cantusmode == CantusMode::Poly);
+	bool poly = _zynayumi.patch.cantusmode == CantusMode::Poly;
+	int ym_channel = select_ym_channel(poly, channel);
 	if (0 <= ym_channel)
 		_voices[ym_channel].set_note_on(pitch, velocity);
 }
 
-void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
+void Engine::add_all_voices(unsigned char channel,
+                            unsigned char pitch,
+                            unsigned char velocity)
 {
-	for (size_t i = 0; i < 3; i++)
+	for (unsigned char i : get_valid_ym_channels(channel)) {
 		_voices[i].set_note_on(pitch, velocity);
-}
-
-void Engine::set_all_voices_pitch(unsigned char pitch)
-{
-	for (Voice& voice : _voices) {
-		voice.set_note_pitch(pitch);
 	}
 }
 
-void Engine::set_all_voices_velocity(unsigned char velocity)
+void Engine::set_all_voices_pitch(unsigned char channel, unsigned char pitch)
 {
-	for (Voice& voice : _voices) {
-		voice.set_velocity(velocity);
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].set_note_pitch(pitch);
 	}
 }
 
-void Engine::retrig_all_voices()
+void Engine::set_all_voices_velocity(unsigned char channel, unsigned char velocity)
 {
-	for (Voice& voice : _voices)
-		voice.retrig();
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].set_velocity(velocity);
+	}
+}
+
+void Engine::retrig_all_voices(unsigned char channel)
+{
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].retrig();
+	}
 }
 
 void Engine::set_note_off_with_pitch(unsigned char pitch)
@@ -572,20 +623,27 @@ void Engine::set_note_off_all_voices()
 			v.set_note_off();
 }
 
-void Engine::insert_pitch(unsigned char pitch, unsigned char velocity)
+void Engine::insert_pitch(unsigned char channel,
+                          unsigned char pitch,
+                          unsigned char velocity)
 {
 	pitches.insert(pitch);
+	channel_stack.push_back(channel);
 	pitch_stack.push_back(pitch);
 	velocity_stack.push_back(velocity);
 }
 
-void Engine::erase_pitch(unsigned char pitch)
+void Engine::erase_pitch(unsigned char channel, unsigned char pitch)
 {
 	auto range = pitches.equal_range(pitch);
 	pitches.erase(range.first, range.second);
 	boost::remove_erase(pitch_stack, pitch);
 	if (not velocity_stack.empty())
-		velocity_stack.pop_back();
+		velocity_stack.pop_back(); // NEXT: shouldn't be the velocity at
+		                           // the index where the pitch was
+		                           // removed?
+	if (not channel_stack.empty())
+		channel_stack.pop_back(); // NEXT: same thing as above
 }
 
 void Engine::insert_sustain_pitch(unsigned char pitch)

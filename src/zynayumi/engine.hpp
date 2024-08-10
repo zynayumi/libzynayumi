@@ -91,9 +91,16 @@ public:
 	int ayenvshape;
 
 	// Current pitches. Useful for handling chord based arp.
+	//
+	// NEXT: Maybe have this per midi channel?
+	//
+	// NEXT: Do we want to have some form of polyphony for mono and arp
+	// in case each ym channel are assigned different midi channels?
 	std::multiset<unsigned char> pitches;
 
-	// Stack of pitches and velocities, for mono and unison mode
+	// Stack of channels, pitches and velocities, for mono and unison
+	// mode.
+	std::vector<unsigned char> channel_stack;
 	std::vector<unsigned char> pitch_stack;
 	std::vector<unsigned char> velocity_stack;
 
@@ -188,18 +195,25 @@ public:
 	static float vol2gain(short value);
 
 private:
-	int select_ym_channel(bool poly) const;
-	std::set<unsigned char> get_enabled_ym_channels() const;
+	int select_ym_channel(bool poly, unsigned char channel) const;
+
+	// Return true iff the input midi channel in MIDI format matches
+	// the midi channel in Control::MidiChannel format.
+	bool is_valid_midi_channel(Control::MidiChannel midi_ch, unsigned char channel) const;
+
+	// Return the set of YM channels that are both enabled and accept
+	// the input channel.
+	std::set<unsigned char> get_valid_ym_channels(unsigned char channel) const;
 	void set_last_pitch(unsigned char pitch);
-	void add_voice(unsigned char pitch, unsigned char velocity);
-	void add_all_voices(unsigned char pitch, unsigned char velocity);
-	void set_all_voices_pitch(unsigned char pitch);
-	void set_all_voices_velocity(unsigned char velocity);
-	void retrig_all_voices();
+	void add_voice(unsigned char channel, unsigned char pitch, unsigned char velocity);
+	void add_all_voices(unsigned char channel, unsigned char pitch, unsigned char velocity);
+	void set_all_voices_pitch(unsigned char channel, unsigned char pitch);
+	void set_all_voices_velocity(unsigned char channel, unsigned char velocity);
+	void retrig_all_voices(unsigned char channel);
 	void set_note_off_with_pitch(unsigned char pitch);
 	void set_note_off_all_voices();
-	void insert_pitch(unsigned char pitch, unsigned char vel);
-	void erase_pitch(unsigned char pitch);
+	void insert_pitch(unsigned char channel, unsigned char pitch, unsigned char vel);
+	void erase_pitch(unsigned char channel, unsigned char pitch);
 	void insert_sustain_pitch(unsigned char pitch);
 	std::multiset<unsigned char>::iterator erase_sustain_pitch(unsigned char pitch);
 
