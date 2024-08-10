@@ -176,21 +176,20 @@ void Engine::note_on_process(unsigned char channel,
 			break;
 		}
 		break;
-	case CantusMode::Unison:	  // NEXT: support enabled and midi
-										  // channel (see get_valid_ym_channels)
+	case CantusMode::Unison:
 		switch(_zynayumi.patch.playmode) {
 		case PlayMode::Legato:
 		case PlayMode::Retrig:
 			if (pitch_stack.size() == 1) {
 				// We go from 0 to 1 on note
-				add_all_voices(pitch, velocity);
+				add_all_voices(channel, pitch, velocity);
 			} else {
 				// There is already an on note, merely change its pitch
 				unsigned char pitch = pitch_stack.back();
-				set_all_voices_pitch(pitch);
+				set_all_voices_pitch(channel, pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(velocity);
-					retrig_all_voices();
+					set_all_voices_velocity(channel, velocity);
+					retrig_all_voices(channel);
 				}
 			}
 			break;
@@ -199,7 +198,7 @@ void Engine::note_on_process(unsigned char channel,
 		case PlayMode::RandArp:
 			if (pitches.size() == 1) {
 				// We go from 0 to 1 on note
-				add_all_voices(pitch, velocity);
+				add_all_voices(channel, pitch, velocity);
 			};
 			break;
 		default:
@@ -282,10 +281,10 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 				unsigned char prev_pitch = pitch_stack.back();
 				unsigned char prev_vel = velocity_stack.back();
 				set_last_pitch(prev_pitch);
-				set_all_voices_pitch(prev_pitch);
+				set_all_voices_pitch(channel, prev_pitch);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(prev_vel);
-					retrig_all_voices();
+					set_all_voices_velocity(channel, prev_vel);
+					retrig_all_voices(channel);
 				}
 			} else {
 				set_note_off_all_voices();
@@ -575,30 +574,34 @@ void Engine::add_voice(unsigned char channel,
 		_voices[ym_channel].set_note_on(pitch, velocity);
 }
 
-void Engine::add_all_voices(unsigned char pitch, unsigned char velocity)
+void Engine::add_all_voices(unsigned char channel,
+                            unsigned char pitch,
+                            unsigned char velocity)
 {
-	for (size_t i = 0; i < 3; i++)
+	for (unsigned char i : get_valid_ym_channels(channel)) {
 		_voices[i].set_note_on(pitch, velocity);
-}
-
-void Engine::set_all_voices_pitch(unsigned char pitch)
-{
-	for (Voice& voice : _voices) {
-		voice.set_note_pitch(pitch);
 	}
 }
 
-void Engine::set_all_voices_velocity(unsigned char velocity)
+void Engine::set_all_voices_pitch(unsigned char channel, unsigned char pitch)
 {
-	for (Voice& voice : _voices) {
-		voice.set_velocity(velocity);
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].set_note_pitch(pitch);
 	}
 }
 
-void Engine::retrig_all_voices()
+void Engine::set_all_voices_velocity(unsigned char channel, unsigned char velocity)
 {
-	for (Voice& voice : _voices)
-		voice.retrig();
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].set_velocity(velocity);
+	}
+}
+
+void Engine::retrig_all_voices(unsigned char channel)
+{
+	for (unsigned char i : get_valid_ym_channels(channel)) {
+		_voices[i].retrig();
+	}
 }
 
 void Engine::set_note_off_with_pitch(unsigned char pitch)
