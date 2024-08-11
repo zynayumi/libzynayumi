@@ -22,9 +22,9 @@
 
 ****************************************************************************/
 
-#include <iostream>
-#include <cmath>
 #include <algorithm>
+#include <cmath>
+#include <iostream>
 
 #include "voice.hpp"
 #include "engine.hpp"
