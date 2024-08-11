@@ -29,6 +29,8 @@
 
 #include "patch.hpp"
 
+using std::uint32_t;
+
 namespace zynayumi {
 
 class Engine;
