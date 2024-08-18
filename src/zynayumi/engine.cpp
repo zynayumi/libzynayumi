@@ -157,8 +157,8 @@ void Engine::note_on_process(unsigned char channel,
 				int first_enabled_ym_channel = select_ym_channel(false, channel);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(pitch);
+					_voices[first_enabled_ym_channel].set_velocity(velocity);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-						_voices[first_enabled_ym_channel].set_velocity(velocity);
 						_voices[first_enabled_ym_channel].retrig();
 					}
 				}
