@@ -187,8 +187,8 @@ void Engine::note_on_process(unsigned char channel,
 				// There is already an on note, merely change its pitch
 				unsigned char pitch = pitch_stack.back();
 				set_all_voices_pitch(channel, pitch);
+				set_all_voices_velocity(channel, velocity);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(channel, velocity);
 					retrig_all_voices(channel);
 				}
 			}
@@ -241,8 +241,8 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 				int first_enabled_ym_channel = select_ym_channel(false, channel);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
+					_voices[first_enabled_ym_channel].set_velocity(prev_vel);
 					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-						_voices[first_enabled_ym_channel].set_velocity(prev_vel);
 						_voices[first_enabled_ym_channel].retrig();
 					}
 				}
@@ -282,8 +282,8 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 				unsigned char prev_vel = velocity_stack.back();
 				set_last_pitch(prev_pitch);
 				set_all_voices_pitch(channel, prev_pitch);
+				set_all_voices_velocity(channel, prev_vel);
 				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					set_all_voices_velocity(channel, prev_vel);
 					retrig_all_voices(channel);
 				}
 			} else {
