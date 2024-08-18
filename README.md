@@ -61,13 +61,21 @@ $ sudo make install
   - 2: Poly, alternate between the three voices of the YM2149.
 
 - **Play mode**:
-  - 0: Legato, play mono or unison mode in legato mode.
-  - 1: Retrig, play mono or unison mode in retrig mode.
+  - 0: Legato, play mono or unison mode in legato mode.  In legato
+       mode, the velocity is always taken into account.
+  - 1: Retrig, play mono or unison mode in retrig mode.  In retrig
+       mode, the velocity is always taken into account.
   - 2: UpArp, in mono or unison mode, create arpegio with all pressed
-       keys, going from lowest to highest pitch.
-  - 3: DownArp, like UpArp but goes from higest to lowest pitch.
+       keys, going from lowest to highest pitch.  In UpArp mode the
+       velocity of the subsequent notes of the chord is not taken into
+       account, only the first one.
+  - 3: DownArp, like UpArp but goes from higest to lowest pitch.  In
+       DownArp mode the velocity of the subsequent notes of the chord
+       is not taken into account, only the first one.
   - 4: RandArp, like UpArp or DownArp but the pitch is randomly
-       selected amongst the pressed keys.
+       selected amongst the pressed keys.  In RandArp mode the
+       velocity of the subsequent notes of the chord is not taken into
+       account, only the first one.
 
 - **Tone reset**: whether the phase of the tone oscillator gets reset
   to *Tone phase* when a new on note is created.
@@ -400,14 +408,12 @@ harmful sounds and protect your hearing.
   - [ ] Vibrato Delay
 - [ ] Update tempo when it has changed on the host
 - [ ] Improve parameter scaling
-- [ ] Maybe have unison decrease gain by the proper amount
 - [ ] Fix buzzer reset
 - [ ] Fix buzzer sync
 - [ ] Fix ringmod phase issue
 - [ ] Have seq ringmod depth also affects buzzer if enabled
 - [ ] Implement *Oversampling*
 - [ ] Define presets
-- [ ] Add support for digi drums, maybe
 
 ## Author(s)
 
