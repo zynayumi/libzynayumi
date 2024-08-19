@@ -91,18 +91,10 @@ public:
 	int ayenvshape;
 
 	// Current pitches. Useful for handling chord based arp.
-	//
-	// NEXT: Maybe have this per midi channel?
-	//
-	// NEXT: Do we want to have some form of polyphony for mono and arp
-	// in case each ym channel are assigned different midi channels?
 	std::multiset<unsigned char> pitches;
 
-	// Stack of channels, pitches and velocities, for mono and unison
-	// mode.
-	std::vector<unsigned char> channel_stack;
+	// Stack of pitches for mono and unison mode.
 	std::vector<unsigned char> pitch_stack;
-	std::vector<unsigned char> velocity_stack;
 
 	// Pitches hold by the sustain pedal
 	std::multiset<unsigned char> sustain_pitches;

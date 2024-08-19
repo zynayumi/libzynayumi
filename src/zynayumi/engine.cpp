@@ -320,8 +320,6 @@ void Engine::all_notes_off_process()
 {
 	pitches.clear();
 	pitch_stack.clear();
-	velocity_stack.clear();
-	channel_stack.clear();
 	sustain_pitches.clear();
 	set_note_off_all_voices();
 }
@@ -397,10 +395,6 @@ std::string Engine::to_string(const std::string& indent) const
 	ss << indent << "pitch_stack:";
 	for (unsigned char p : pitch_stack)
 		ss << " " << (int)p;
-	ss << std::endl;
-	ss << indent << "velocity_stack:";
-	for (unsigned char v : velocity_stack)
-		ss << " " << (int)v;
 	ss << std::endl;
 	ss << indent << "sustain pitches:";
 	for (unsigned char p : sustain_pitches)
@@ -624,9 +618,7 @@ void Engine::insert_pitch(unsigned char channel,
                           unsigned char velocity)
 {
 	pitches.insert(pitch);
-	channel_stack.push_back(channel);
 	pitch_stack.push_back(pitch);
-	velocity_stack.push_back(velocity);
 }
 
 void Engine::erase_pitch(unsigned char channel, unsigned char pitch)
@@ -634,12 +626,6 @@ void Engine::erase_pitch(unsigned char channel, unsigned char pitch)
 	auto range = pitches.equal_range(pitch);
 	pitches.erase(range.first, range.second);
 	boost::remove_erase(pitch_stack, pitch);
-	if (not velocity_stack.empty())
-		velocity_stack.pop_back(); // NEXT: shouldn't be the velocity at
-		                           // the index where the pitch was
-		                           // removed?
-	if (not channel_stack.empty())
-		channel_stack.pop_back(); // NEXT: same thing as above
 }
 
 void Engine::insert_sustain_pitch(unsigned char pitch)
