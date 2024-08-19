@@ -240,9 +240,6 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 				int first_enabled_ym_channel = select_ym_channel(false, channel);
 				if (0 <= first_enabled_ym_channel) {
 					_voices[first_enabled_ym_channel].set_note_pitch(prev_pitch);
-					if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-						_voices[first_enabled_ym_channel].retrig();
-					}
 				}
 			} else {
 				set_note_off_with_pitch(pitch);
@@ -279,9 +276,6 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 				unsigned char prev_pitch = pitch_stack.back();
 				set_last_pitch(prev_pitch);
 				set_all_voices_pitch(channel, prev_pitch);
-				if (_zynayumi.patch.playmode == PlayMode::Retrig) {
-					retrig_all_voices(channel);
-				}
 			} else {
 				set_note_off_all_voices();
 			}
