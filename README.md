@@ -66,16 +66,15 @@ $ sudo make install
   - 1: Retrig, play mono or unison mode in retrig mode.  In retrig
        mode, the velocity is always taken into account.
   - 2: UpArp, in mono or unison mode, create arpegio with all pressed
-       keys, going from lowest to highest pitch.  In UpArp mode the
+       keys, going from lowest to highest pitch.  In Arp mode the
        velocity of the subsequent notes of the chord is not taken into
        account, only the first one.
-  - 3: DownArp, like UpArp but goes from higest to lowest pitch.  In
-       DownArp mode the velocity of the subsequent notes of the chord
-       is not taken into account, only the first one.
-  - 4: RandArp, like UpArp or DownArp but the pitch is randomly
-       selected amongst the pressed keys.  In RandArp mode the
-       velocity of the subsequent notes of the chord is not taken into
-       account, only the first one.
+  - 3: UpDownArp, like UpArp but with a pingpong loop.
+  - 4: DownArp, like UpArp but goes from higest to lowest pitch.
+  - 5: DownUpArp, like DownArp but with a pingpong loop.
+  - 6: RandArp, like the other arp modes but the pitch is randomly
+       selected amongst the pressed keys.  Note that the selected
+       pitch is always different than the previous one.
 
 - **Tone reset**: whether the phase of the tone oscillator gets reset
   to *Tone phase* when a new on note is created.

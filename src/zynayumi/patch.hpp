@@ -51,7 +51,9 @@ enum class PlayMode {
 	Legato,
 	Retrig,
 	UpArp,
+	UpDownArp,
 	DownArp,
+	DownUpArp,
 	RandArp,
 
 	Count

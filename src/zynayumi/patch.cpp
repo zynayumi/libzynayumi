@@ -124,8 +124,12 @@ std::string to_string(PlayMode pm)
 		return "Retrig";
 	case PlayMode::UpArp:
 		return "UpArp";
+	case PlayMode::UpDownArp:
+		return "UpDownArp";
 	case PlayMode::DownArp:
 		return "DownArp";
+	case PlayMode::DownUpArp:
+		return "DownUpArp";
 	case PlayMode::RandArp:
 		return "RandArp";
 	default:
