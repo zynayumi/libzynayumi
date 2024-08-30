@@ -262,9 +262,9 @@ Parameters::Parameters(Zynayumi& zyn, Patch& pat)
 
 	// Cantus mode
 	parameters[CANTUS_MODE] = new EnumParameter<CantusMode>(CANTUS_MODE_NAME,
-	                                                       CANTUS_MODE_UNIT,
-	                                                       &patch.cantusmode,
-	                                                       CANTUS_MODE_DFLT);
+	                                                        CANTUS_MODE_UNIT,
+	                                                        &patch.cantusmode,
+	                                                        CANTUS_MODE_DFLT);
 
 	// Play mode
 	parameters[PLAY_MODE] = new EnumParameter<PlayMode>(PLAY_MODE_NAME,

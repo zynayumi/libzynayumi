@@ -165,7 +165,9 @@ void Engine::note_on_process(unsigned char channel,
 			}
 			break;
 		case PlayMode::UpArp:
+		case PlayMode::UpDownArp:
 		case PlayMode::DownArp:
+		case PlayMode::DownUpArp:
 		case PlayMode::RandArp:
 			if (pitches.size() == 1) {
 				// We go from 0 to 1 on note
@@ -194,7 +196,9 @@ void Engine::note_on_process(unsigned char channel,
 			}
 			break;
 		case PlayMode::UpArp:
+		case PlayMode::UpDownArp:
 		case PlayMode::DownArp:
+		case PlayMode::DownUpArp:
 		case PlayMode::RandArp:
 			if (pitches.size() == 1) {
 				// We go from 0 to 1 on note
@@ -247,7 +251,9 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 			break;
 		}
 		case PlayMode::UpArp:
+		case PlayMode::UpDownArp:
 		case PlayMode::DownArp:
+		case PlayMode::DownUpArp:
 		case PlayMode::RandArp:
 			if (pitches.empty()) {
 				set_note_off_with_pitch(pitch);
@@ -282,7 +288,9 @@ void Engine::note_off_process(unsigned char channel, unsigned char pitch)
 			break;
 		}
 		case PlayMode::UpArp:
+		case PlayMode::UpDownArp:
 		case PlayMode::DownArp:
+		case PlayMode::DownUpArp:
 		case PlayMode::RandArp:
 			if (pitches.empty()) {
 				set_note_off_all_voices();

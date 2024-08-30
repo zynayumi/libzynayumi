@@ -532,11 +532,18 @@ void Voice::update_arp()
 			index = repeat + (index % (size - repeat));
 		return index;
 	};
-	// Find the pitch
+	// Find the pitch of a looping arp
 	auto count2pitch = [&](bool down) -> unsigned char {
 		unsigned index = count2index(0, _engine->pitches.size());
 		if (down)
 			index = (_engine->pitches.size() - 1) - index;
+		return *std::next(_engine->pitches.begin(), index);
+	};
+	// Find the pitch of a pingpong arp
+	auto pingpong2pitch = [&](bool down) -> unsigned char {
+		int ps = _engine->pitches.size() - 1;
+		int step = (down ? 0 : ps) + _seq_step;
+		unsigned index = std::abs((step % (2 * ps)) - ps);
 		return *std::next(_engine->pitches.begin(), index);
 	};
 
@@ -555,7 +562,7 @@ void Voice::update_arp()
 			_rnd_index = new_index;
 			return _rnd_index;
 		}
-		else {
+		else {						  // NEXT: probably dead code
 			_rnd_index = range_rand(0, size, _seq_rnd_offset_step + _seq_step);
 			return _rnd_index;
 		}
@@ -575,8 +582,14 @@ void Voice::update_arp()
 	case PlayMode::UpArp:
 		_relative_seq_pitch = enable_arp ? count2pitch(false) - _initial_pitch : 0.0;
 		break;
+	case PlayMode::UpDownArp:
+		_relative_seq_pitch = enable_arp ? pingpong2pitch(false) - _initial_pitch : 0.0;
+		break;
 	case PlayMode::DownArp:
 		_relative_seq_pitch = enable_arp ? count2pitch(true) - _initial_pitch : 0.0;
+		break;
+	case PlayMode::DownUpArp:
+		_relative_seq_pitch = enable_arp ? pingpong2pitch(true) - _initial_pitch : 0.0;
 		break;
 	case PlayMode::RandArp:
 		_relative_seq_pitch = enable_arp ? count2rndpitch() - _initial_pitch : 0.0;
